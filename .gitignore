@@ -1,0 +1,11 @@
+# temp files
+__pycache__
+.pytest_cache
+
+# IDEs etc
+.idea
+.kdev4
+
+# test things
+*.pcap
+test.py
