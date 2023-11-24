@@ -5,14 +5,14 @@ Run from package root:
 import datetime
 import pytest
 
-from message import Message, constants
-from message.avp import Avp, AvpOctetString
-from message.commands import CreditControlRequest, CreditControlAnswer
-from message.commands.credit_control import GrantedServiceUnit
-from message.commands.credit_control import RequestedServiceUnit
-from message.commands.credit_control import UsedServiceUnit
-from message.commands.credit_control import UserEquipmentInfo
-from message.commands.credit_control import FinalUnitIndication
+from diameter.message import Message, constants
+from diameter.message.avp import Avp, AvpOctetString
+from diameter.message.commands import CreditControlRequest, CreditControlAnswer
+from diameter.message.commands.credit_control import GrantedServiceUnit
+from diameter.message.commands.credit_control import RequestedServiceUnit
+from diameter.message.commands.credit_control import UsedServiceUnit
+from diameter.message.commands.credit_control import UserEquipmentInfo
+from diameter.message.commands.credit_control import FinalUnitIndication
 
 
 def test_ccr_create_new():

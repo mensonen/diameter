@@ -6,8 +6,8 @@ import datetime
 import pytest
 from pytest import approx
 
-from message import avp
-from message import constants
+from diameter.message import avp
+from diameter.message import constants
 
 
 def test_create_from_new():

@@ -14,8 +14,8 @@ from lxml import etree as ElementTree
 # point this to a directory containing wireshark dictionaries
 WIRESHARK_DICTIONARY = "/usr/share/wireshark/diameter/dictionary.xml"
 
-const_outfile = pathlib.Path("message/avp/constants.py")
-dict_outfile = pathlib.Path("message/avp/dictionary.py")
+const_outfile = pathlib.Path("../src/diameter/message/avp/constants.py")
+dict_outfile = pathlib.Path("../src/diameter/message/avp/dictionary.py")
 
 tree = ElementTree.parse(WIRESHARK_DICTIONARY)
 clean_name = re.compile(r"\W+")

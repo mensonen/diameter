@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "diameter"
+description = "A python library for parsing and creating Diameter messages"
+readme = "README.md"
+license = {file = "LICENSE"}
+version = "0.1.1"
+requires-python = ">= 3.11"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Communications :: Telephony"
+]

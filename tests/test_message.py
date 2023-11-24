@@ -4,9 +4,9 @@ Run from package root:
 """
 import pytest
 
-from message import Message, constants
-from message.avp import Avp
-from message.commands import CapabilitiesExchangeRequest, CapabilitiesExchangeAnswer
+from diameter.message import Message, constants
+from diameter.message.avp import Avp
+from diameter.message.commands import CapabilitiesExchangeRequest, CapabilitiesExchangeAnswer
 
 cer = ("010000b48000010100000000b237ee976801428f00000108400000216472612e73776c"
        "61622e726f616d2e7365727665722e6e6574000000000001284000001d73776c61622e"

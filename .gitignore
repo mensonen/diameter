@@ -1,6 +1,8 @@
-# temp files
+# temp and build files
 __pycache__
 .pytest_cache
+*.egg-info/
+dist
 
 # IDEs etc
 .idea
