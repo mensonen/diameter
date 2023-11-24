@@ -140,7 +140,7 @@ asr.append_avp(
 )
 ```
 
-Commands can be constructed manually as well, in case a Python implementaion is
+Commands can be constructed manually as well, in case a Python implementation is
 not ready yet, or if custom behaviour is required:
 
 ```python
@@ -155,4 +155,24 @@ msg.avps = [
 ]
 # etc
 msg.as_bytes()
+```
+
+Using `Avp.new` to build new AVPs ensures that a correct type of AVP is 
+eturned, i.e "Float32", "OctetString" etc. AVPs encode and decode their content
+automatically according to the spec, when their `value` attribute is altered.
+The actual, byte-encoded payload is stored in the `payload` attribute:
+
+```python
+from diameter.message.constants import *
+from diameter.message import Avp
+from diameter.message.avp import AvpUtf8String
+
+a = Avp.new(AVP_USER_NAME)
+# Has returned an instance of AvpUtf8String
+assert isinstance(a, AvpUtf8String)
+a.value = "汉语"
+
+# `value` is human-readable, `payload` has the network bytes
+assert a.value == "汉语"
+assert a.payload == b"\xe6\xb1\x89\xe8\xaf\xad"
 ```
