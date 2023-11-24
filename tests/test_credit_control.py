@@ -66,7 +66,7 @@ def test_ccr_create_new():
     assert ccr.header.length == 656
     assert ccr.header.is_request is True
     # Should be set automatically
-    assert ccr.auth_application_id == 4
+    assert ccr.auth_application_id == constants.APP_DIAMETER_CREDIT_CONTROL_APPLICATION
 
 
 def test_ccr_create_and_copy():
@@ -132,7 +132,7 @@ def test_cca_create_new():
     assert cca.header.length == 312
     assert cca.header.is_request is False
     # Should be set automatically
-    assert cca.auth_application_id == 4
+    assert cca.auth_application_id == constants.APP_DIAMETER_CREDIT_CONTROL_APPLICATION
 
 
 def test_ccr_error_new_missing_attributes():

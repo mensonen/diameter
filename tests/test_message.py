@@ -152,7 +152,7 @@ def test_create_new_plain_defaults():
     assert msg.header.version == 1
     assert msg.header.length == 0
     assert msg.header.command_code == 0
-    assert msg.header.application_id == 0
+    assert msg.header.application_id == constants.APP_DIAMETER_COMMON_MESSAGES
     assert msg.header.hop_by_hop_identifier == 0
     assert msg.header.end_to_end_identifier == 0
     assert msg.header.is_request is False

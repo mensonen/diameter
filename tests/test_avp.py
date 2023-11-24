@@ -11,6 +11,7 @@ from diameter.message import constants
 
 
 def test_create_from_new():
+    # create an AVP using the factory function
     a = avp.Avp.new(constants.AVP_ORIGIN_HOST, value=b"dra4.gy.mvno.net")
     assert a.code == 264
     assert a.value == b"dra4.gy.mvno.net"
@@ -18,23 +19,27 @@ def test_create_from_new():
 
 
 def test_create_from_new_mandatory_override():
+    # create an AVP and set mandatory flag manually
     a = avp.Avp.new(constants.AVP_ORIGIN_HOST, value=b"dra4.gy.mvno.net",
                     is_mandatory=False)
     assert a.is_mandatory is False
 
 
 def test_create_from_new_private_override():
+    # create an AVP and set private flag manually
     a = avp.Avp.new(constants.AVP_ORIGIN_HOST, value=b"dra4.gy.mvno.net",
                     is_private=False)
     assert a.is_private is False
 
 
 def test_create_from_new_vendor_override():
+    # create an AVP and set vendor manually
     a = avp.Avp.new(constants.AVP_CISCO_USER_AGENT, constants.VENDOR_CISCO)
     assert a.vendor_id == constants.VENDOR_CISCO
 
 
 def test_decode_from_bytes():
+    # create an AVP from network received bytes
     avp_bytes = bytes.fromhex("000001cd40000016333232353140336770702e6f72670000")
     a = avp.Avp.from_bytes(avp_bytes)
 
@@ -47,6 +52,7 @@ def test_decode_from_bytes():
 
 
 def test_decode_from_avp():
+    # create a copy of an AVP and ensure that it's identical to the original
     avp_bytes = bytes.fromhex("000001cd40000016333232353140336770702e6f72670000")
     a1 = avp.Avp.from_bytes(avp_bytes)
     a2 = avp.Avp.from_avp(a1)
@@ -60,35 +66,40 @@ def test_decode_from_avp():
 
 
 def test_create_address_type():
+    # create an "Address" type AVP
     a = avp.AvpAddress(constants.AVP_TGPP_SGSN_ADDRESS)
-    a.value = "193.16.219.96"
 
-    # 1 = IPv4
+    # reading the value produces a tuple with family and address, even though
+    # input is only a single string
+    # family 1 = IPv4
+    a.value = "193.16.219.96"
     assert a.value == (1, "193.16.219.96")
     assert a.payload == bytes.fromhex("0001c110db60")
 
     a = avp.AvpAddress(constants.AVP_TGPP_PDP_ADDRESS)
-    a.value = "8b71:8c8a:1e29:716a:6184:7966:fd43:4200"
 
-    # 2 = IPv6
+    # family 2 = IPv6
+    a.value = "8b71:8c8a:1e29:716a:6184:7966:fd43:4200"
     assert a.value == (2, "8b71:8c8a:1e29:716a:6184:7966:fd43:4200")
     assert a.payload == bytes.fromhex("00028b718c8a1e29716a61847966fd434200")
 
     a = avp.AvpAddress(constants.AVP_TGPP_SMSC_ADDRESS)
-    a.value = "48507909008"
 
-    # 8 = E.164, according to ETSI
+    # family 8 = E.164, according to ETSI
+    a.value = "48507909008"
     assert a.value == (8, "48507909008")
     assert a.payload == bytes.fromhex("00083438353037393039303038")
 
 
 def test_create_float_type():
+    # create a "Float32" AVP
     a = avp.AvpFloat32(constants.AVP_BANDWIDTH)
     a.value = 128.65
 
     assert a.value == approx(128.65)  # due to floating-point errors
     assert a.payload == b"C\x00\xa6f"
 
+    # create a "Float64" AVP
     a = avp.AvpFloat64(constants.AVP_ERICSSON_COST,
                        vendor_id=constants.VENDOR_ERICSSON)
     a.value = 128.65
@@ -98,12 +109,14 @@ def test_create_float_type():
 
 
 def test_create_int_type():
+    # create "Integer32" AVP. This is also the same as an "Enumerated" AVP
     a = avp.AvpInteger32(constants.AVP_ACCT_INPUT_PACKETS)
     a.value = 294967
 
     assert a.value == 294967
     assert a.payload == b"\x00\x04\x807"
 
+    # create "Integer64" AVP
     a = avp.AvpInteger64(constants.AVP_VALUE_DIGITS)
     a.value = 17347878958773879024
 
@@ -139,6 +152,8 @@ def test_create_octetstring_type():
 
 
 def test_create_time_type():
+    # create a "Time" type AVP. Time AVPs demand that their input is a pytho
+    # datetime instance, even though the actual stored payload is an integer
     a = avp.AvpTime(constants.AVP_EVENT_TIMESTAMP)
 
     now = datetime.datetime.now()
@@ -165,6 +180,7 @@ def test_create_grouped_type():
 
 
 def test_error_avp_vendor_mismatch():
+    # cannot create an AVP where the AVP code does not belong to the vendor
     with pytest.raises(ValueError):
         a = avp.Avp.new(constants.AVP_ORIGIN_HOST, constants.VENDOR_CISCO)
 
@@ -172,19 +188,22 @@ def test_error_avp_vendor_mismatch():
 def test_error_address_type():
     a = avp.AvpAddress(constants.AVP_TGPP_SGSN_ADDRESS)
 
+    # this is not a valid IPv4 address
     with pytest.raises(avp.AvpEncodeError):
         a.value = "193.16.219.960"
 
+    # this is not a valid IPv6 address
     with pytest.raises(avp.AvpEncodeError):
         a.value = "8b71:8c8a:1e29:716a:6184:7966:fd43"
 
-    # E.164 accepts anything as long as it is a UTF-8 string
+    # E.164 accepts anything as long as it is a UTF-8 string, anything else is
+    # an error
     with pytest.raises(avp.AvpEncodeError):
         a.value = 1
 
 
 def test_error_from_bytes():
-    # too short
+    # too short, the payload is cut mid-transfer
     avp_bytes = bytes.fromhex("000001cd40000016333232353140336770702e60")
 
     with pytest.raises(avp.AvpDecodeError):
@@ -194,10 +213,11 @@ def test_error_from_bytes():
 def test_error_float_type():
     a = avp.AvpFloat32(constants.AVP_BANDWIDTH)
 
+    # strings not accepted
     with pytest.raises(avp.AvpEncodeError):
         a.value = "128.65"
 
-    # junk in payload
+    # junk in payload, this is not a packed 32-bit float
     a.payload = b"C\x00\xa6f\x00"
     with pytest.raises(avp.AvpDecodeError):
         _ = a.value
@@ -206,25 +226,27 @@ def test_error_float_type():
 def test_error_int_type():
     a = avp.AvpInteger32(constants.AVP_ACCT_INPUT_PACKETS)
 
+    # too big, does not fit in a 32-bit integer
     with pytest.raises(avp.AvpEncodeError):
-        # too big
         a.value = 17347878958773879024
 
+    # wrong type, is not an integer
     with pytest.raises(avp.AvpEncodeError):
-        # wrong type
         a.value = "some string"
 
 
 def test_error_octetstring_type():
     a = avp.AvpOctetString(constants.AVP_USER_PASSWORD)
 
-    # must be bytes
+    # must be bytes, nothing else will do
     with pytest.raises(avp.AvpEncodeError):
         a.value = "secret"
 
 
 def test_error_utf8_type():
     a = avp.AvpUtf8String(constants.AVP_SUBSCRIPTION_ID_DATA)
+
+    # must be a string
     with pytest.raises(avp.AvpEncodeError):
         a.value = 1
 
@@ -259,13 +281,13 @@ def test_error_grouped_type():
     at.value = 1
     ag.value = [at]
 
-    # assign an AVP with a junk payload
+    # assign an AVP with a junk payload, grouped AVP value must always be a
+    # list that contains AVP instances
     at.payload = "invalid"
     with pytest.raises(avp.AvpEncodeError):
         ag.value = [at]
 
     # inject junk into the grouped AVP portion
     new_ag = avp.Avp.from_bytes(ag.as_bytes()[:-6] + b"00" + ag.as_bytes()[-6:])
-
     with pytest.raises(avp.AvpDecodeError):
         _ = new_ag.value
