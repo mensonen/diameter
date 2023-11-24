@@ -139,6 +139,38 @@ class CreditControlAnswer(CreditControl):
         assign_attr_from_defs(self, self._avps)
         self._avps = []
 
+    def add_mscc(self, granted_service_unit: GrantedServiceUnit = None,
+                 requested_service_unit: RequestedServiceUnit = None,
+                 used_service_unit: list[UsedServiceUnit] | UsedServiceUnit = None,
+                 tariff_change_usage: int = None,
+                 service_identifier: list[int] | int = None,
+                 rating_group: int = None,
+                 g_s_u_pool_reference: list[GsuPoolReference] = None,
+                 validity_time: int = None,
+                 result_code: int = None,
+                 final_unit_indication: FinalUnitIndication = None,
+                 avp: list[Avp] = None):
+        """Add a multiple services credit control instance to the request."""
+        if used_service_unit is not None and not isinstance(used_service_unit, list):
+            used_service_unit = [used_service_unit]
+
+        if service_identifier is not None and not isinstance(service_identifier, list):
+            service_identifier = [service_identifier]
+
+        self.multiple_services_credit_control.append(Mscc(
+            granted_service_unit=granted_service_unit,
+            requested_service_unit=requested_service_unit,
+            used_service_unit=used_service_unit,
+            tariff_change_usage=tariff_change_usage,
+            service_identifier=service_identifier,
+            rating_group=rating_group,
+            g_s_u_pool_reference=g_s_u_pool_reference,
+            validity_time=validity_time,
+            result_code=result_code,
+            final_unit_indication=final_unit_indication,
+            additional_avps=avp or []
+        ))
+
 
 class CreditControlRequest(CreditControl):
     """A Credit-Control-Request message.

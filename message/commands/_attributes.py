@@ -295,6 +295,8 @@ class FinalUnitIndication:
     restriction_filter_rule: list[bytes] = dataclasses.field(default_factory=list)
     filter_id: list[str] = dataclasses.field(default_factory=list)
     redirect_server: RedirectServer = None
+    # rfc8560 doesn't say this is permitted, but realworld samples say otherwise
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
 
     avp_def: dataclasses.InitVar[AvpGenType] = (
         AvpGenDef("final_unit_action", AVP_FINAL_UNIT_ACTION, is_required=True),
