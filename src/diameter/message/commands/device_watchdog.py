@@ -68,7 +68,7 @@ class DeviceWatchdogAnswer(DeviceWatchdog):
     origin_host: bytes
     origin_realm: str
     error_message: str
-    failed_avp: int
+    failed_avp: FailedAvp
     origin_state_id: int
 
     avp_def: AvpGenType = (

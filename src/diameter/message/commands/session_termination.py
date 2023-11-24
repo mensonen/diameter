@@ -100,7 +100,7 @@ class SessionTerminationAnswer(SessionTermination):
     def __post_init__(self):
         super().__post_init__()
         self.header.is_request = False
-        self.header.is_proxyable = False
+        self.header.is_proxyable = True
 
         setattr(self, "state_class", [])
         setattr(self, "redirect_host", [])
@@ -151,7 +151,7 @@ class SessionTerminationRequest(SessionTermination):
     def __post_init__(self):
         super().__post_init__()
         self.header.is_request = True
-        self.header.is_proxyable = False
+        self.header.is_proxyable = True
 
         setattr(self, "auth_application_id", 0)
         setattr(self, "state_class", [])

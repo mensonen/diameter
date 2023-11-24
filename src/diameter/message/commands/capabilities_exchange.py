@@ -73,12 +73,12 @@ class CapabilitiesExchangeAnswer(CapabilitiesExchange):
     product_name: str
     origin_state_id: int
     error_message: str
-    failed_avp: int
+    failed_avp: FailedAvp
     supported_vendor_id: list[int]
     auth_application_id: int
     inband_security_id: list[int]
     acct_application_id: list[int]
-    vendor_specific_application_id: list[int]
+    vendor_specific_application_id: list[VendorSpecificApplicationId]
     firmware_revision: int
 
     avp_def: AvpGenType = (
@@ -135,7 +135,7 @@ class CapabilitiesExchangeRequest(CapabilitiesExchange):
     auth_application_id: int
     inband_security_id: list[int]
     acct_application_id: list[int]
-    vendor_specific_application_id: list[int]
+    vendor_specific_application_id: list[VendorSpecificApplicationId]
     firmware_revision: int
 
     avp_def: AvpGenType = (

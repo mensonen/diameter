@@ -71,14 +71,14 @@ class AccountingAnswer(Accounting):
     accounting_record_type: int
     accounting_record_number: int
     acct_application_id: int
-    vendor_specific_application_id: int
+    vendor_specific_application_id: VendorSpecificApplicationId
     user_name: str
     accounting_sub_session_id: int
     acct_session_id: bytes
-    acct_multi_session_id: bytes
+    acct_multi_session_id: str
     error_message: str
     error_reporting_host: bytes
-    failed_avp: int
+    failed_avp: FailedAvp
     acct_interim_interval: int
     accounting_realtime_required: int
     origin_state_id: int
@@ -136,12 +136,12 @@ class AccountingRequest(Accounting):
     accounting_record_type: int
     accounting_record_number: int
     acct_application_id: int
-    vendor_specific_application_id: int
+    vendor_specific_application_id: VendorSpecificApplicationId
     user_name: str
     destination_host: bytes
     accounting_sub_session_id: int
     acct_session_id: bytes
-    acct_multi_session_id: bytes
+    acct_multi_session_id: str
     acct_interim_interval: int
     accounting_realtime_required: int
     origin_state_id: int

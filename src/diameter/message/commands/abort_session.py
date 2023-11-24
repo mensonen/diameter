@@ -72,7 +72,7 @@ class AbortSessionAnswer(AbortSession):
     origin_state_id: int
     error_message: str
     error_reporting_host: bytes
-    failed_avp: int
+    failed_avp: FailedAvp
     redirect_host: list[str]
     redirect_host_usage: int
     redirect_max_cache_time: int
@@ -99,7 +99,7 @@ class AbortSessionAnswer(AbortSession):
     def __post_init__(self):
         super().__post_init__()
         self.header.is_request = False
-        self.header.is_proxyable = False
+        self.header.is_proxyable = True
 
         setattr(self, "redirect_host", [])
         setattr(self, "proxy_info", [])
@@ -146,7 +146,7 @@ class AbortSessionRequest(AbortSession):
     def __post_init__(self):
         super().__post_init__()
         self.header.is_request = True
-        self.header.is_proxyable = False
+        self.header.is_proxyable = True
 
         setattr(self, "auth_application_id", 0)
         setattr(self, "proxy_info", [])

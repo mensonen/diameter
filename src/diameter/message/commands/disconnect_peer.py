@@ -68,7 +68,7 @@ class DisconnectPeerAnswer(DisconnectPeer):
     origin_host: bytes
     origin_realm: str
     error_message: str
-    failed_avp: int
+    failed_avp: FailedAvp
 
     avp_def: AvpGenType = (
         AvpGenDef("result_code", AVP_RESULT_CODE, is_required=True),
