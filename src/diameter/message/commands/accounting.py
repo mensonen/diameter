@@ -113,7 +113,6 @@ class AccountingAnswer(Accounting):
         self.header.is_request = False
         self.header.is_proxyable = True
 
-        setattr(self, "auth_application_id", 3)
         setattr(self, "proxy_info", [])
 
         assign_attr_from_defs(self, self._avps)
@@ -177,7 +176,6 @@ class AccountingRequest(Accounting):
         self.header.is_request = True
         self.header.is_proxyable = True
 
-        setattr(self, "auth_application_id", 3)
         setattr(self, "proxy_info", [])
         setattr(self, "route_record", [])
 

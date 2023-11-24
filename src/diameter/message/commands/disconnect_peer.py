@@ -83,8 +83,6 @@ class DisconnectPeerAnswer(DisconnectPeer):
         self.header.is_request = False
         self.header.is_proxyable = False
 
-        setattr(self, "auth_application_id", 0)
-
         assign_attr_from_defs(self, self._avps)
         self._avps = []
 
@@ -113,8 +111,6 @@ class DisconnectPeerRequest(DisconnectPeer):
         super().__post_init__()
         self.header.is_request = True
         self.header.is_proxyable = False
-
-        setattr(self, "auth_application_id", 0)
 
         assign_attr_from_defs(self, self._avps)
         self._avps = []

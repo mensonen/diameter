@@ -102,7 +102,6 @@ class SessionTerminationAnswer(SessionTermination):
         self.header.is_request = False
         self.header.is_proxyable = False
 
-        setattr(self, "auth_application_id", 0)
         setattr(self, "state_class", [])
         setattr(self, "redirect_host", [])
         setattr(self, "proxy_info", [])
