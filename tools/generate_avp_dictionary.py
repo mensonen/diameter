@@ -2,7 +2,7 @@
 #
 # A crude helper script that reads the dictionary.xml file, and all of its
 # included external entities, and produces two python files
-# `message/avp/constants.py` and `message/avp/dictionary.py` that contain
+# `message/constants.py` and `message/avp/dictionary.py` that contain
 # constant values mapping AVPs, vendors and ENUMs to their integer values, and
 # a large dictionary that maps each AVP to a definition of how they can be
 # built (python type, mandatory flags etc).
@@ -14,7 +14,7 @@ from lxml import etree as ElementTree
 # point this to a directory containing wireshark dictionaries
 WIRESHARK_DICTIONARY = "/usr/share/wireshark/diameter/dictionary.xml"
 
-const_outfile = pathlib.Path("../src/diameter/message/avp/constants.py")
+const_outfile = pathlib.Path("../src/diameter/message/constants.py")
 dict_outfile = pathlib.Path("../src/diameter/message/avp/dictionary.py")
 
 tree = ElementTree.parse(WIRESHARK_DICTIONARY)
@@ -44,6 +44,7 @@ avp_dictionary = []
 avp_vendor_dictionaries = {}
 
 enum_constants = {}
+application_constants = {}
 
 vendors = {}
 
@@ -127,12 +128,22 @@ iter_tree(tree.find("base"))
 # application entity files
 for base in tree.iterfind("application"):
     iter_tree(base)
+
+    app_id = base.attrib["id"]
+    app_name = base.attrib["name"]
+
+    application_constants[int(app_id)] = re.sub(clean_name, "_", app_name).upper()
+
 # vendor entity files
 for base in tree.iterfind("vendor"):
     iter_tree(base)
 
 with const_outfile.open("w") as f:
     f.write("# Automatically generated from a dictionary.xml file\n\n")
+
+    f.write("\n# All known Application IDs\n")
+    for app_id, app_constant in application_constants.items():
+        f.write(f"APP_{app_constant} = {app_id}\n")
 
     f.write("\n# All known Vendor IDs\n")
     for vendor_id, vendor_code in vendors.items():
