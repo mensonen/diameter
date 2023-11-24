@@ -6,11 +6,13 @@ import datetime
 import pytest
 
 from message import Message, constants
-from message.avp import Avp
+from message.avp import Avp, AvpOctetString
 from message.commands import CreditControlRequest, CreditControlAnswer
+from message.commands.credit_control import GrantedServiceUnit
 from message.commands.credit_control import RequestedServiceUnit
 from message.commands.credit_control import UsedServiceUnit
 from message.commands.credit_control import UserEquipmentInfo
+from message.commands.credit_control import FinalUnitIndication
 
 
 def test_ccr_create_new():
@@ -63,6 +65,8 @@ def test_ccr_create_new():
     assert ccr.header.length == len(msg)
     assert ccr.header.length == 656
     assert ccr.header.is_request is True
+    # Should be set automatically
+    assert ccr.auth_application_id == 4
 
 
 def test_ccr_create_and_copy():
@@ -91,6 +95,44 @@ def test_ccr_create_and_copy():
     assert ccr.cc_request_type == ccr_new.cc_request_type
     assert ccr.cc_request_number == ccr_new.cc_request_number
     assert ccr.destination_host == ccr_new.destination_host
+
+
+def test_cca_create_new():
+    cca = CreditControlAnswer()
+    cca.header.hop_by_hop_identifier = 10001
+    cca.header.end_to_end_identifier = 20001
+    cca.session_id = "sctp-saegwc-poz01.lte.orange.pl;221424325;287370797;65574b0c-2d02"
+    cca.origin_host = b"ocs6.mvno.net"
+    cca.origin_realm = b"mvno.net"
+    cca.cc_request_number = 952
+    cca.result_code = constants.E_RESULT_CODE_DIAMETER_SUCCESS
+    cca.cc_request_type = constants.E_CC_REQUEST_TYPE_UPDATE_REQUEST
+
+    # A tricky MSCC that contains both vendor-specific AVPs and one entirely
+    # unknown one
+    cca.add_mscc(
+        granted_service_unit=GrantedServiceUnit(cc_total_octets=174076000),
+        rating_group=8000,
+        validity_time=3600,
+        result_code=constants.E_RESULT_CODE_DIAMETER_SUCCESS,
+        final_unit_indication=FinalUnitIndication(
+            final_unit_action=constants.E_FINAL_UNIT_ACTION_TERMINATE,
+            additional_avps=[
+                AvpOctetString(code=9838, vendor_id=39216, payload=b"\x54\x45\x52\x4d\x49\x4e\x41\x54\x45")
+            ]
+        ),
+        avp=[
+            Avp.new(constants.AVP_TGPP_QUOTA_HOLDING_TIME, constants.VENDOR_TGPP, value=0)
+        ]
+    )
+
+    msg = cca.as_bytes()
+
+    assert cca.header.length == len(msg)
+    assert cca.header.length == 312
+    assert cca.header.is_request is False
+    # Should be set automatically
+    assert cca.auth_application_id == 4
 
 
 def test_ccr_error_new_missing_attributes():
