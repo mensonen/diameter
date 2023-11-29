@@ -67,7 +67,7 @@ class CreditControlAnswer(CreditControl):
     session_id: str
     result_code: int
     origin_host: bytes
-    origin_realm: str
+    origin_realm: bytes
     auth_application_id: int
     cc_request_type: int
     cc_request_number: int
@@ -184,7 +184,7 @@ class CreditControlRequest(CreditControl):
     """
     session_id: str
     origin_host: bytes
-    origin_realm: str
+    origin_realm: bytes
     destination_realm: str
     auth_application_id: int
     service_context_id: str

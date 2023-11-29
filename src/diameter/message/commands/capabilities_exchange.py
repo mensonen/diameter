@@ -67,7 +67,7 @@ class CapabilitiesExchangeAnswer(CapabilitiesExchange):
     """
     result_code: int
     origin_host: bytes
-    origin_realm: str
+    origin_realm: bytes
     host_ip_address: list[str]
     vendor_id: int
     product_name: str
@@ -126,7 +126,7 @@ class CapabilitiesExchangeRequest(CapabilitiesExchange):
     they are not to be used.
     """
     origin_host: bytes
-    origin_realm: str
+    origin_realm: bytes
     host_ip_address: list[str]
     vendor_id: int
     product_name: str

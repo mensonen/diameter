@@ -67,7 +67,7 @@ class ReAuthAnswer(ReAuth):
     session_id: str
     result_code: int
     origin_host: bytes
-    origin_realm: str
+    origin_realm: bytes
     user_name: str
     origin_state_id: int
     error_message: str
@@ -121,7 +121,7 @@ class ReAuthRequest(ReAuth):
     """
     session_id: str
     origin_host: bytes
-    origin_realm: str
+    origin_realm: bytes
     destination_realm: str
     destination_host: bytes
     auth_application_id: int

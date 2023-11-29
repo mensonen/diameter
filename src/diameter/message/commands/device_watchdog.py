@@ -66,7 +66,7 @@ class DeviceWatchdogAnswer(DeviceWatchdog):
     """
     result_code: int
     origin_host: bytes
-    origin_realm: str
+    origin_realm: bytes
     error_message: str
     failed_avp: FailedAvp
     origin_state_id: int
@@ -100,7 +100,7 @@ class DeviceWatchdogRequest(DeviceWatchdog):
     they are not to be used.
     """
     origin_host: bytes
-    origin_realm: str
+    origin_realm: bytes
     origin_state_id: int
 
     avp_def: AvpGenType = (

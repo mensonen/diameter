@@ -66,7 +66,7 @@ class DisconnectPeerAnswer(DisconnectPeer):
     """
     result_code: int
     origin_host: bytes
-    origin_realm: str
+    origin_realm: bytes
     error_message: str
     failed_avp: FailedAvp
 
@@ -98,7 +98,7 @@ class DisconnectPeerRequest(DisconnectPeer):
     they are not to be used.
     """
     origin_host: bytes
-    origin_realm: str
+    origin_realm: bytes
     disconnect_cause: bytes
 
     avp_def: AvpGenType = (

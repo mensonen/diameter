@@ -68,7 +68,7 @@ class SessionTerminationAnswer(SessionTermination):
     session_id: str
     result_code: int
     origin_host: bytes
-    origin_realm: str
+    origin_realm: bytes
     user_name: str
     state_class: list[bytes]  # this should be "class", but that's a reserved keyword
     error_message: str
@@ -122,7 +122,7 @@ class SessionTerminationRequest(SessionTermination):
     """
     session_id: str
     origin_host: bytes
-    origin_realm: str
+    origin_realm: bytes
     destination_realm: str
     auth_application_id: int
     termination_cause: int

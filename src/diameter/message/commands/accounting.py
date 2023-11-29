@@ -67,7 +67,7 @@ class AccountingAnswer(Accounting):
     session_id: str
     result_code: int
     origin_host: bytes
-    origin_realm: str
+    origin_realm: bytes
     accounting_record_type: int
     accounting_record_number: int
     acct_application_id: int
@@ -131,7 +131,7 @@ class AccountingRequest(Accounting):
     """
     session_id: str
     origin_host: bytes
-    origin_realm: str
+    origin_realm: bytes
     destination_realm: str
     accounting_record_type: int
     accounting_record_number: int
