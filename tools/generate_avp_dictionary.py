@@ -45,7 +45,7 @@ avp_vendor_dictionaries = {}
 
 enum_constants = {}
 application_constants = {}
-
+command_constants = {}
 vendors = {}
 
 # pre-populate vendor name to vendor code mapping
@@ -57,6 +57,20 @@ for vendor in tree.iterfind("vendor"):
 
 def iter_tree(base: ElementTree._Element):
     """Go through an XML node and parse all 'avp' tags that it contains."""
+    for cmd in base.iterfind("command"):
+        cmd_code = int(cmd.attrib["code"])
+        cmd_name = cmd.attrib["name"]
+        cmd_name = re.sub(clean_name, "_", cmd_name).upper()
+
+        if (cmd.attrib.get("vendor-id") and
+                cmd.attrib["vendor-id"] in vendors and
+                cmd.attrib["vendor-id"] != "None"):
+            vendor_name = cmd.attrib["vendor-id"]
+            vendor_constant = re.sub(clean_name, "_", vendor_name).upper()
+            cmd_name = f"{vendor_constant}_{cmd_name}"
+
+        command_constants[cmd_name] = cmd_code
+
     for avp in base.iterfind("avp"):
         avp_name = avp.attrib["name"]
         if avp_name.startswith(skip):
@@ -154,6 +168,10 @@ with const_outfile.open("w") as f:
     f.write("VENDORS = {\n    ")
     f.write(",\n    ".join(f'{c}: "{n}"' for n, c in vendors.items()))
     f.write("}\n")
+
+    f.write("\n# All known command codes\n")
+    for cmd_constant, cmd_code in command_constants.items():
+        f.write(f"CMD_{cmd_constant} = {cmd_code}\n")
 
     f.write("\n# All known AVPs\n")
     for avp_constant, avp_code in avp_constants.items():
