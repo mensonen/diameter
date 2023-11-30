@@ -108,6 +108,51 @@ class Message:
         """
         return None
 
+    def to_answer(self) -> _AnyMessageType:
+        """Produce answer from a request.
+
+        Copies the request message header to a new answer message, clearing all
+        the flags except the proxyable bit. Attempts to by determine if a
+        suitable python Answer class exists, if not, uses the base class and
+        returns a new instance with the copied header.
+        """
+        hdr = MessageHeader(
+            self.header.version,
+            command_code=self.header.command_code,
+            application_id=self.header.application_id,
+            hop_by_hop_identifier=self.header.hop_by_hop_identifier,
+            end_to_end_identifier=self.header.end_to_end_identifier)
+
+        hdr.is_proxyable = self.header.is_proxyable
+
+        # base scenario, it's either a Message or one of its immediate
+        # subclasses that have no python implementation yet
+        return_type = self.__class__
+
+        cls_name = return_type.__name__
+        if cls_name.endswith("Request"):
+            # just in case the rest fails, ensure that we will not return
+            # another instance of "Request"
+            return_type = Message
+
+            # going up the ancestor tree and then looking up every subclass of
+            # the first matching parent, returning the first subclass that ends
+            # with "Answer". I.e.
+            # CreditControlRequest -> CreditControl -> CreditControlAnswer
+            assumed_base = cls_name[:-7]
+            for cls in self.__class__.__mro__:
+                if cls.__name__ == assumed_base:
+                    return_type = cls
+                    for subcls in cls.__subclasses__():
+                        if subcls.__name__ == f"{assumed_base}Answer":
+                            return_type = subcls
+                            break
+                    break
+        try:
+            return return_type(hdr)
+        except NameError:
+            return Message(hdr)
+
     @classmethod
     def from_bytes(cls, msg_data: bytes, plain_msg: bool = False) -> _AnyMessageType:
         """Generate a new Message from network received bytes.

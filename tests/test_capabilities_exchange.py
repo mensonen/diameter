@@ -68,3 +68,11 @@ def test_cea_create_new():
     assert cea.header.is_request is False
     # this defaults to "diameter common messages", check that it has been overridden
     assert cea.auth_application_id == constants.APP_DIAMETER_CREDIT_CONTROL_APPLICATION
+
+
+def test_cer_to_cea():
+    req = CapabilitiesExchangeRequest()
+    ans = req.to_answer()
+
+    assert isinstance(ans, CapabilitiesExchangeAnswer)
+    assert ans.header.is_request is False

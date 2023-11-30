@@ -41,3 +41,11 @@ def test_dwa_create_new():
 
     assert dwa.header.length == len(msg)
     assert dwa.header.is_request is False
+
+
+def test_dwr_to_dwa():
+    req = DeviceWatchdogRequest()
+    ans = req.to_answer()
+
+    assert isinstance(ans, DeviceWatchdogAnswer)
+    assert ans.header.is_request is False

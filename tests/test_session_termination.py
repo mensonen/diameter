@@ -68,3 +68,11 @@ def test_sta_create_new():
 
     assert sta.header.length == len(msg)
     assert sta.header.is_request is False
+
+
+def test_str_to_sta():
+    req = SessionTerminationRequest()
+    ans = req.to_answer()
+
+    assert isinstance(ans, SessionTerminationAnswer)
+    assert ans.header.is_request is False

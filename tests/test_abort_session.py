@@ -61,3 +61,11 @@ def test_asa_create_new():
 
     assert asa.header.length == len(msg)
     assert asa.header.is_request is False
+
+
+def test_asr_to_asa():
+    asr = AbortSessionRequest()
+    asa = asr.to_answer()
+
+    assert isinstance(asa, AbortSessionAnswer)
+    assert asa.header.is_request is False

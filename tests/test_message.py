@@ -184,3 +184,16 @@ def test_error_command_unset_avp():
     with pytest.raises(AttributeError):
         # this is not present
         _ = msg.failed_avp
+
+
+def test_answer_from_request():
+    req = Message.from_bytes(bytes.fromhex(cer))
+    ans = req.to_answer()
+
+    assert isinstance(ans, CapabilitiesExchangeAnswer)
+    assert ans.header.is_request is False
+    assert ans.header.is_error is False
+    assert ans.header.is_retransmit is False
+    assert ans.header.hop_by_hop_identifier == req.header.hop_by_hop_identifier
+    assert ans.header.end_to_end_identifier == req.header.end_to_end_identifier
+    assert ans.header.is_proxyable == req.header.is_proxyable

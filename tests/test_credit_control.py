@@ -143,3 +143,11 @@ def test_ccr_error_new_missing_attributes():
     cca = CreditControlAnswer()
     with pytest.raises(ValueError):
         cca.as_bytes()
+
+
+def test_ccr_to_cca():
+    req = CreditControlRequest()
+    ans = req.to_answer()
+
+    assert isinstance(ans, CreditControlAnswer)
+    assert ans.header.is_request is False

@@ -65,3 +65,11 @@ def test_raa_create_new():
 
     assert raa.header.length == len(msg)
     assert raa.header.is_request is False
+
+
+def test_rar_to_raa():
+    req = ReAuthRequest()
+    ans = req.to_answer()
+
+    assert isinstance(ans, ReAuthAnswer)
+    assert ans.header.is_request is False

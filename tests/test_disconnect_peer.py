@@ -40,3 +40,11 @@ def test_dpa_create_new():
 
     assert dpa.header.length == len(msg)
     assert dpa.header.is_request is False
+
+
+def test_dpr_to_dpa():
+    req = DisconnectPeerRequest()
+    ans = req.to_answer()
+
+    assert isinstance(ans, DisconnectPeerAnswer)
+    assert ans.header.is_request is False

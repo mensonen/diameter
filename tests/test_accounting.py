@@ -77,3 +77,11 @@ def test_aca_create_new():
 
     assert aca.header.length == len(msg)
     assert aca.header.is_request is False
+
+
+def test_acr_to_aca():
+    req = AccountingRequest()
+    ans = req.to_answer()
+
+    assert isinstance(ans, AccountingAnswer)
+    assert ans.header.is_request is False
