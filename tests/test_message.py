@@ -176,3 +176,11 @@ def test_create_new_plain():
     # building message sets header
     assert len(msg.as_bytes()) == msg.header.length
     assert msg.header.length == 72
+
+
+def test_error_command_unset_avp():
+    msg = CapabilitiesExchangeAnswer.from_bytes(bytes.fromhex(cea))
+
+    with pytest.raises(AttributeError):
+        # this is not present
+        _ = msg.failed_avp

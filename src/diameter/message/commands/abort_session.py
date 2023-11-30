@@ -25,7 +25,7 @@ class AbortSession(Message):
         self._additional_avps: list[Avp] = []
 
     @classmethod
-    def factory(cls, header: MessageHeader) -> Type[_AnyMessageType] | None:
+    def type_factory(cls, header: MessageHeader) -> Type[_AnyMessageType] | None:
         if header.is_request:
             return AbortSessionRequest
         return AbortSessionAnswer

@@ -98,7 +98,14 @@ class Message:
         return result
 
     @classmethod
-    def factory(cls, header: MessageHeader) -> Type[_AnyMessageType] | None:
+    def type_factory(cls, header: MessageHeader) -> Type[_AnyMessageType] | None:
+        """Generate a type that should be used to create new instances.
+
+        This method can be overridden by inheriting classes to indicate the
+        specific type of message class to generate, e.g. return different types
+        for "Request" and "Answer" messages. If no type is returned, the base
+        class type will be used.
+        """
         return None
 
     @classmethod
@@ -142,7 +149,7 @@ class Message:
                 # subclass that differentiates between a request and a
                 # response. If the command factory does nothing, the command
                 # itself will be the type of message instance.
-                msg_type = cmd_type.factory(header)
+                msg_type = cmd_type.type_factory(header)
                 if msg_type is None:
                     msg_type = cmd_type
         else:
