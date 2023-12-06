@@ -2,7 +2,7 @@
 Diameter Credit Control Application
 
 This module contains Credit Control Request and Answer messages, implementing
-AVPs documented in rfc8506, rfc5777 and rfc6733.
+AVPs documented in `rfc8506`, `rfc5777` and `rfc6733`.
 """
 from __future__ import annotations
 
@@ -16,6 +16,48 @@ __all__ = ["CreditControl", "CreditControlAnswer", "CreditControlRequest"]
 
 
 class CreditControl(Message):
+    """A Credit-Control message.
+
+    This message class lists message attributes based on the current
+    [rfc8506](https://datatracker.ietf.org/doc/html/rfc8506) as python
+    properties, acessible as instance attributes. AVPs not listed in the base
+    protocol can be retrieved using the
+    [CreditControl.find_avps][diameter.message.Message.find_avps] search
+    method.
+
+        >>> msg = Message.from_bytes(b"...")
+        >>> msg.session_id
+        dra1.mvno.net;2323;546
+        >>> msg.find_avps((AVP_SESSION_ID, 0))
+        ['dra1.mvno.net;2323;546']
+
+    When diameter message is decoded using
+    [Message.from_bytes][diameter.message.Message.from_bytes], it returns either
+    an instance of `CreditControlRequest` or `CreditControlAnswer`
+    automatically.
+
+    When creating a new message, the `CreditControlRequest` or
+    `CreditControlAnswer` class should be instantiated directly, and values for
+    AVPs set as class attributes:
+
+        >>> msg = CreditControlRequest()
+        >>> msg.session_id = "dra1.mvno.net;2323;546"
+
+    Other, custom AVPs can be appended to the message using the
+    [CreditControl.append_avp][diameter.message.Message.append_avp] method, or
+    by overwriting the `avp` attribute entirely. Regardless of the custom AVPs
+    set, the mandatory values listed in RFC6733 must be set, however they can
+    be set as `None`, if they are not to be used.
+
+    !!! Warning
+
+        Messages may not contain every attribute documented here; the
+        attributes are only set when part of the original, network-received
+        message, or when done so manually. Attempting to access AVPs that are
+        not part of the message will raise an `AttributeError` and their
+        presence should be validated with `hasattr` before accessing.
+
+    """
     code: int = 272
     name: str = "Credit-Control"
     avp_def: AvpGenType
@@ -57,12 +99,12 @@ class CreditControl(Message):
 class CreditControlAnswer(CreditControl):
     """A Credit-Control-Answer message.
 
-    This message class lists message attributes based on the current RFC8506
-    (https://datatracker.ietf.org/doc/html/rfc8506). Other, custom AVPs can be
-    appended to the message using the `append_avp` method, or by assigning them
-    to the `avp` attribute. Regardless of the custom AVPs set, the mandatory
-    values listed in RFC8506 must be set, however they can be set as `None`, if
-    they are not to be used.
+    !!! Note
+
+        This message class lacks the "QoS-Final-Unit-Indication" AVP as a
+        class attribute. If the AVP is required, it must be constructed by
+        hand and appended to the `additional_avps` attribute.
+
     """
     session_id: str
     result_code: int
@@ -150,7 +192,22 @@ class CreditControlAnswer(CreditControl):
                  result_code: int = None,
                  final_unit_indication: FinalUnitIndication = None,
                  avp: list[Avp] = None):
-        """Add a multiple services credit control instance to the request."""
+        """Add a multiple services credit control instance to the answer.
+
+        Args:
+            granted_service_unit: Optional granted service units
+            requested_service_unit: Optional requested service units
+            used_service_unit: Optional reported used service units
+            tariff_change_usage: Optional tariff changed usage indication
+            service_identifier: A list of service identifiers
+            rating_group: An optional rating group identifier
+            g_s_u_pool_reference: An optional list of G-S-U-Pool references
+            validity_time: Validity time in seconds
+            result_code: A sub-result code for this specific MSCC
+            final_unit_indication: An optional final unit indiciation
+            avp: A list of custom AVPs to attach
+
+        """
         if used_service_unit is not None and not isinstance(used_service_unit, list):
             used_service_unit = [used_service_unit]
 
@@ -173,15 +230,7 @@ class CreditControlAnswer(CreditControl):
 
 
 class CreditControlRequest(CreditControl):
-    """A Credit-Control-Request message.
-
-    This message class lists message attributes based on the current RFC8506
-    (https://datatracker.ietf.org/doc/html/rfc8506). Other, custom AVPs can be
-    appended to the message using the `append_avp` method, or by assigning them
-    to the `avp` attribute. Regardless of the custom AVPs set, the mandatory
-    values listed in RFC8506 must be set, however they can be set as `None`, if
-    they are not to be used.
-    """
+    """A Credit-Control-Request message."""
     session_id: str
     origin_host: bytes
     origin_realm: bytes
@@ -276,7 +325,22 @@ class CreditControlRequest(CreditControl):
                  result_code: int = None,
                  final_unit_indication: FinalUnitIndication = None,
                  avp: list[Avp] = None):
-        """Add a multiple services credit control instance to the request."""
+        """Add a multiple services credit control instance to the request.
+
+        Args:
+            granted_service_unit: Optional granted service units
+            requested_service_unit: Optional requested service units
+            used_service_unit: Optional reported used service units
+            tariff_change_usage: Optional tariff changed usage indication
+            service_identifier: A list of service identifiers
+            rating_group: An optional rating group identifier
+            g_s_u_pool_reference: An optional list of G-S-U-Pool references
+            validity_time: Validity time in seconds
+            result_code: A sub-result code for this specific MSCC
+            final_unit_indication: An optional final unit indiciation
+            avp: A list of custom AVPs to attach
+
+        """
         if used_service_unit is not None and not isinstance(used_service_unit, list):
             used_service_unit = [used_service_unit]
 

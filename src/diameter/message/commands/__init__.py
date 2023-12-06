@@ -1,3 +1,7 @@
+"""
+Placeholder classes that extend `Message`, but do not provide any direct
+python API for reading and setting AVPs.
+"""
 from typing import Type
 
 from .._base import Message
@@ -22,6 +26,12 @@ from .session_termination import *
 
 
 class AaMobileNode(Message):
+    """An AA-Mobile-Node message.
+
+    This message implementation provides no python subclasses for requests and
+    answers; AVPs must be created manually and added using the
+    [AaMobileNode.append_avp][diameter.message.Message.append_avp] method.
+    """
     code: int = 260
     name: str = "AA-Mobile-Node"
 
@@ -30,6 +40,12 @@ class AaMobileNode(Message):
 
 
 class HomeAgentMip(Message):
+    """A Home-Agent-MIP message.
+
+    This message implementation provides no python subclasses for requests and
+    answers; AVPs must be created manually and added using the
+    [AaMobileNode.append_avp][diameter.message.Message.append_avp] method.
+    """
     code: int = 262
     name: str = "Home-Agent-MIP"
 
@@ -38,6 +54,12 @@ class HomeAgentMip(Message):
 
 
 class Aa(Message):
+    """An AA message.
+
+    This message implementation provides no python subclasses for requests and
+    answers; AVPs must be created manually and added using the
+    [Aa.append_avp][diameter.message.Message.append_avp] method.
+    """
     code: int = 265
     name: str = "AA"
 
@@ -46,6 +68,12 @@ class Aa(Message):
 
 
 class DiameterEap(Message):
+    """A Diameter-EAP message.
+
+    This message implementation provides no python subclasses for requests and
+    answers; AVPs must be created manually and added using the
+    [DiameterEap.append_avp][diameter.message.Message.append_avp] method.
+    """
     code: int = 268
     name: str = "Diameter-EAP"
 
@@ -54,6 +82,12 @@ class DiameterEap(Message):
 
 
 class SipUserAuthorization(Message):
+    """A SIP-User-Authorization message.
+
+    This message implementation provides no python subclasses for requests and
+    answers; AVPs must be created manually and added using the
+    [SipUserAuthorization.append_avp][diameter.message.Message.append_avp] method.
+    """
     code: int = 283
     name: str = "SIP-User-Authorization"
 
@@ -62,6 +96,12 @@ class SipUserAuthorization(Message):
 
 
 class SipServerAssignment(Message):
+    """A SIP-Server-Assignment message.
+
+    This message implementation provides no python subclasses for requests and
+    answers; AVPs must be created manually and added using the
+    [SipServerAssignment.append_avp][diameter.message.Message.append_avp] method.
+    """
     code: int = 284
     name: str = "SIP-Server-Assignment"
 
@@ -70,6 +110,12 @@ class SipServerAssignment(Message):
 
 
 class SipLocationInfo(Message):
+    """A SIP-Location-Info message.
+
+    This message implementation provides no python subclasses for requests and
+    answers; AVPs must be created manually and added using the
+    [SipLocationInfo.append_avp][diameter.message.Message.append_avp] method.
+    """
     code: int = 285
     name: str = "SIP-Location-Info"
 
@@ -78,6 +124,12 @@ class SipLocationInfo(Message):
 
 
 class SipMultimediaAuth(Message):
+    """A SIP-Multimedia-Auth message.
+
+    This message implementation provides no python subclasses for requests and
+    answers; AVPs must be created manually and added using the
+    [SipMultimediaAuth.append_avp][diameter.message.Message.append_avp] method.
+    """
     code: int = 286
     name: str = "SIP-Multimedia-Auth"
 
@@ -86,6 +138,12 @@ class SipMultimediaAuth(Message):
 
 
 class SipRegistrationTermination(Message):
+    """A SIP-Registration-Termination message.
+
+    This message implementation provides no python subclasses for requests and
+    answers; AVPs must be created manually and added using the
+    [SipRegistrationTermination.append_avp][diameter.message.Message.append_avp] method.
+    """
     code: int = 287
     name: str = "SIP-Registration-Termination"
 
@@ -94,6 +152,12 @@ class SipRegistrationTermination(Message):
 
 
 class SipPushProfile(Message):
+    """A SIP-Push-Profile message.
+
+    This message implementation provides no python subclasses for requests and
+    answers; AVPs must be created manually and added using the
+    [SipPushProfile.append_avp][diameter.message.Message.append_avp] method.
+    """
     code: int = 288
     name: str = "SIP-Push-Profile"
 
@@ -102,6 +166,12 @@ class SipPushProfile(Message):
 
 
 class UserAuthorization(Message):
+    """A User-Authorization message.
+
+    This message implementation provides no python subclasses for requests and
+    answers; AVPs must be created manually and added using the
+    [UserAuthorization.append_avp][diameter.message.Message.append_avp] method.
+    """
     code: int = 300
     name: str = "User-Authorization"
 
@@ -110,6 +180,12 @@ class UserAuthorization(Message):
 
 
 class ServerAssignment(Message):
+    """A Server-Assignment message.
+
+    This message implementation provides no python subclasses for requests and
+    answers; AVPs must be created manually and added using the
+    [ServerAssignment.append_avp][diameter.message.Message.append_avp] method.
+    """
     code: int = 301
     name: str = "Server-Assignment"
 
@@ -118,6 +194,12 @@ class ServerAssignment(Message):
 
 
 class LocationInfo(Message):
+    """A Location-Info message.
+
+    This message implementation provides no python subclasses for requests and
+    answers; AVPs must be created manually and added using the
+    [LocationInfo.append_avp][diameter.message.Message.append_avp] method.
+    """
     code: int = 302
     name: str = "Location-Info"
 
@@ -126,6 +208,12 @@ class LocationInfo(Message):
 
 
 class MultimediaAuth(Message):
+    """A Multimedia-Auth message.
+
+    This message implementation provides no python subclasses for requests and
+    answers; AVPs must be created manually and added using the
+    [MultimediaAuth.append_avp][diameter.message.Message.append_avp] method.
+    """
     code: int = 303
     name: str = "Multimedia-Auth"
 
@@ -134,6 +222,12 @@ class MultimediaAuth(Message):
 
 
 class RegistrationTermination(Message):
+    """A Registration-Termination message.
+
+    This message implementation provides no python subclasses for requests and
+    answers; AVPs must be created manually and added using the
+    [AaMobileNode.append_avpRegistrationTerminationdiameter.message.Message.append_avp] method.
+    """
     code: int = 304
     name: str = "Registration-Termination"
 
@@ -142,6 +236,12 @@ class RegistrationTermination(Message):
 
 
 class PushProfile(Message):
+    """A Push-Profile message.
+
+    This message implementation provides no python subclasses for requests and
+    answers; AVPs must be created manually and added using the
+    [PushProfile.append_avp][diameter.message.Message.append_avp] method.
+    """
     code: int = 305
     name: str = "Push-Profile"
 
@@ -150,6 +250,12 @@ class PushProfile(Message):
 
 
 class UserData(Message):
+    """A User-Data message.
+
+    This message implementation provides no python subclasses for requests and
+    answers; AVPs must be created manually and added using the
+    [UserData.append_avp][diameter.message.Message.append_avp] method.
+    """
     code: int = 306
     name: str = "User-Data"
 
@@ -158,6 +264,12 @@ class UserData(Message):
 
 
 class ProfileUpdate(Message):
+    """A Profile-Update message.
+
+    This message implementation provides no python subclasses for requests and
+    answers; AVPs must be created manually and added using the
+    [ProfileUpdate.append_avp][diameter.message.Message.append_avp] method.
+    """
     code: int = 307
     name: str = "Profile-Update"
 
@@ -166,6 +278,12 @@ class ProfileUpdate(Message):
 
 
 class SubscribeNotifications(Message):
+    """A Subscribe-Notifications message.
+
+    This message implementation provides no python subclasses for requests and
+    answers; AVPs must be created manually and added using the
+    [SubscribeNotifications.append_avp][diameter.message.Message.append_avp] method.
+    """
     code: int = 308
     name: str = "Subscribe-Notifications"
 
@@ -174,6 +292,12 @@ class SubscribeNotifications(Message):
 
 
 class PushNotification(Message):
+    """A Push-Notification message.
+
+    This message implementation provides no python subclasses for requests and
+    answers; AVPs must be created manually and added using the
+    [PushNotification.append_avp][diameter.message.Message.append_avp] method.
+    """
     code: int = 309
     name: str = "Push-Notification"
 
@@ -182,6 +306,12 @@ class PushNotification(Message):
 
 
 class BootstrapingInfo(Message):
+    """A Bootstraping-Info message.
+
+    This message implementation provides no python subclasses for requests and
+    answers; AVPs must be created manually and added using the
+    [BootstrapingInfo.append_avp][diameter.message.Message.append_avp] method.
+    """
     code: int = 310
     name: str = "Bootstraping-Info"
 
@@ -190,6 +320,12 @@ class BootstrapingInfo(Message):
 
 
 class MessageProcess(Message):
+    """A Message-Process message.
+
+    This message implementation provides no python subclasses for requests and
+    answers; AVPs must be created manually and added using the
+    [MessageProcess.append_avp][diameter.message.Message.append_avp] method.
+    """
     code: int = 311
     name: str = "Message-Process"
 
@@ -198,6 +334,12 @@ class MessageProcess(Message):
 
 
 class UpdateLocation(Message):
+    """A 3GPP-Update-Location message.
+
+    This message implementation provides no python subclasses for requests and
+    answers; AVPs must be created manually and added using the
+    [UpdateLocation.append_avp][diameter.message.Message.append_avp] method.
+    """
     code: int = 316
     name: str = "3GPP-Update-Location"
 
@@ -206,6 +348,12 @@ class UpdateLocation(Message):
 
 
 class CancelLocation(Message):
+    """A 3GPP-Cancel-Location message.
+
+    This message implementation provides no python subclasses for requests and
+    answers; AVPs must be created manually and added using the
+    [CancelLocation.append_avp][diameter.message.Message.append_avp] method.
+    """
     code: int = 317
     name: str = "3GPP-Cancel-Location"
 
@@ -214,6 +362,12 @@ class CancelLocation(Message):
 
 
 class AuthenticationInformation(Message):
+    """A 3GPP-Authentication-Information message.
+
+    This message implementation provides no python subclasses for requests and
+    answers; AVPs must be created manually and added using the
+    [AuthenticationInformation.append_avp][diameter.message.Message.append_avp] method.
+    """
     code: int = 318
     name: str = "3GPP-Authentication-Information"
 
@@ -222,6 +376,12 @@ class AuthenticationInformation(Message):
 
 
 class InsertSubscriberData(Message):
+    """A 3GPP-Insert-Subscriber-Data message.
+
+    This message implementation provides no python subclasses for requests and
+    answers; AVPs must be created manually and added using the
+    [InsertSubscriberData.append_avp][diameter.message.Message.append_avp] method.
+    """
     code: int = 319
     name: str = "3GPP-Insert-Subscriber-Data"
 
@@ -230,6 +390,12 @@ class InsertSubscriberData(Message):
 
 
 class DeleteSubscriberData(Message):
+    """A 3GPP-Delete-Subscriber-Data message.
+
+    This message implementation provides no python subclasses for requests and
+    answers; AVPs must be created manually and added using the
+    [DeleteSubscriberData.append_avp][diameter.message.Message.append_avp] method.
+    """
     code: int = 320
     name: str = "3GPP-Delete-Subscriber-Data"
 
@@ -238,6 +404,12 @@ class DeleteSubscriberData(Message):
 
 
 class PurgeUE(Message):
+    """A 3GPP-Purge-UE message.
+
+    This message implementation provides no python subclasses for requests and
+    answers; AVPs must be created manually and added using the
+    [PurgeUE.append_avp][diameter.message.Message.append_avp] method.
+    """
     code: int = 321
     name: str = "3GPP-Purge-UE"
 
@@ -246,6 +418,12 @@ class PurgeUE(Message):
 
 
 class Reset(Message):
+    """A 3GPP-Reset message.
+
+    This message implementation provides no python subclasses for requests and
+    answers; AVPs must be created manually and added using the
+    [Reset.append_avp][diameter.message.Message.append_avp] method.
+    """
     code: int = 322
     name: str = "3GPP-Reset"
 
@@ -254,6 +432,12 @@ class Reset(Message):
 
 
 class Notify(Message):
+    """A 3GPP-Notify message.
+
+    This message implementation provides no python subclasses for requests and
+    answers; AVPs must be created manually and added using the
+    [Notify.append_avp][diameter.message.Message.append_avp] method.
+    """
     code: int = 323
     name: str = "3GPP-Notify"
 
@@ -262,6 +446,12 @@ class Notify(Message):
 
 
 class MeIdentityCheck(Message):
+    """A 3GPP-ME-Identity-Check message.
+
+    This message implementation provides no python subclasses for requests and
+    answers; AVPs must be created manually and added using the
+    [AaMobileNode.append_avp][diameter.message.Message.append_avp] method.
+    """
     code: int = 324
     name: str = "3GPP-ME-Identity-Check"
 
@@ -270,6 +460,12 @@ class MeIdentityCheck(Message):
 
 
 class MIp6(Message):
+    """A MIP6 message.
+
+    This message implementation provides no python subclasses for requests and
+    answers; AVPs must be created manually and added using the
+    [MIp6.append_avp][diameter.message.Message.append_avp] method.
+    """
     code: int = 325
     name: str = "MIP6"
 

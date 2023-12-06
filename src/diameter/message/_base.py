@@ -7,11 +7,32 @@ from .packer import Packer, Unpacker
 
 
 class Message:
+    """Base message class.
+
+    All implemented diameter commands extend this class.
+
+    The base message class is not intended to be used directly; its main
+    purpose is to provide the [Message.from_bytes][diameter.message.Message.from_bytes]
+    class method, for parsing network-received bytes into Python diameter
+    command message instances.
+    """
     code: int = 0
+    """Diameter command code value."""
     name: str = "Unknown"
+    """A human-readable diameter command code name, e.g. "Accounting-Request"."""
 
     def __init__(self, header: MessageHeader = None, avps: list[Avp] = None):
+        """Create a new base message."""
         self.header: MessageHeader = header or MessageHeader()
+        """A message header. Always exists, defaults to an empty header for 
+        new messages.
+        
+        !!! note
+        
+            The `lenght` property of the message header is zero for newly 
+            created messages and will not be set until the message is rendered
+            using the [as_bytes][diameter.message.Message.as_bytes] method.
+        """
         self._avps: list[Avp] = avps or []
         self.__find_cache = {}
         self.__post_init__()
@@ -51,20 +72,22 @@ class Message:
         AVPs found at the end of each chain.
 
         E.g. in an AVP structure such as:
-          Multiple-Services-Credit-Control <Code: 0x1c8, Flags: 0x40 (-M-), Length: 168>
-            Requested-Service-Unit <Code: 0x1b5, Flags: 0x40 (-M-), Length: 0>
-            Used-Service-Unit <Code: 0x1be, Flags: 0x40 (-M-), Length: 84>
-              CC-Time <Code: 0x1a4, Flags: 0x40 (-M-), Length: 12, Val: 9>
-              CC-Total-Octets <Code: 0x1a5, Flags: 0x40 (-M-), Length: 16, Val: 0>
+
+            Multiple-Services-Credit-Control <Code: 0x1c8, Flags: 0x40 (-M-), Length: 168>
+              Requested-Service-Unit <Code: 0x1b5, Flags: 0x40 (-M-), Length: 0>
+              Used-Service-Unit <Code: 0x1be, Flags: 0x40 (-M-), Length: 84>
+                CC-Time <Code: 0x1a4, Flags: 0x40 (-M-), Length: 12, Val: 9>
+                CC-Total-Octets <Code: 0x1a5, Flags: 0x40 (-M-), Length: 16, Val: 0>
 
         The "CC-Total-Octets" AVP can be found with:
-        >>> msg = Message()
-        >>> avp = msg.find_avps(
-        >>>     (AVP_MULTIPLE_SERVICES_CREDIT_CONTROL, 0),
-        >>>     (AVP_USED_SERVICE_UNIT, 0),
-        >>>     (AVP_CC_TOTAL_OCTETS, 0))
-        >>> print(avp[0])
-        CC-Total-Octets <Code: 0x1a5, Flags: 0x40 (-M-), Length: 16, Val: 0>
+
+            >>> msg = Message()
+            >>> avp = msg.find_avps(
+            >>>     (AVP_MULTIPLE_SERVICES_CREDIT_CONTROL, 0),
+            >>>     (AVP_USED_SERVICE_UNIT, 0),
+            >>>     (AVP_CC_TOTAL_OCTETS, 0))
+            >>> print(avp[0])
+            CC-Total-Octets <Code: 0x1a5, Flags: 0x40 (-M-), Length: 16, Val: 0>
 
         The search is cached internally, repeating the same find operation will
         return a cached result.
@@ -74,9 +97,10 @@ class Message:
         received network bytes, it is much cheaper to simply access the values
         of the message attributes directly. E.g. the example above is the same
         as:
-        >>> avp = msg.multiple_services_credit_control[0].used_service_unit[0].cc_total_octets
-        >>> print(avp[0])
-        0
+
+            >>> avp = msg.multiple_services_credit_control[0].used_service_unit[0].cc_total_octets
+            >>> print(avp[0])
+            0
 
         The method can also be used to search any arbitrary AVP list, by passing
         an optional keyword argument `alt_avps`.
@@ -169,19 +193,19 @@ class Message:
         True, which returns just an instance of `Message` that holds the list
         of parsed AVPs and does nothing else.
 
-        >>> # construct a specific Message with parsed attributes
-        >>> ccr = Message.from_bytes(b"...")
-        >>> ccr.session_id
-        labocs1.gy;379;3434872354
-        >>> # construct a plain message with no attribute access
-        >>> msg = Message.from_bytes(b"...", plain_msg=True)
-        >>> # does not work
-        >>> msg.session_id
-        AttributeError: 'CreditControl' object has no attribute 'session_id'
-        >>> # this will work
-        >>> session_id = msg.find_avps((AVP_SESSION_ID, 0))[0]
-        >>> session_id.value
-        labocs1.gy;379;3434872354
+            >>> # construct a specific Message with parsed attributes
+            >>> ccr = Message.from_bytes(b"...")
+            >>> ccr.session_id
+            labocs1.gy;379;3434872354
+            >>> # construct a plain message with no attribute access
+            >>> msg = Message.from_bytes(b"...", plain_msg=True)
+            >>> # does not work
+            >>> msg.session_id
+            AttributeError: 'CreditControl' object has no attribute 'session_id'
+            >>> # this will work
+            >>> session_id = msg.find_avps((AVP_SESSION_ID, 0))[0]
+            >>> session_id.value
+            labocs1.gy;379;3434872354
 
         """
         header = MessageHeader.from_bytes(msg_data)
@@ -221,6 +245,7 @@ class Message:
         self._avps = new_avps
 
     def append_avp(self, avp: Avp):
+        """Add an AVP to the internal list of AVPs."""
         self._avps.append(avp)
 
 

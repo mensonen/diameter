@@ -160,13 +160,18 @@ class GenericSpec:
 
 @dataclasses.dataclass
 class FailedAvp:
-    # From RFC6733, defines Failed-AVP as just a list of arbitrary AVPs
+    """A data container that represents the "Failed-AVP" grouped AVP.
+
+    `rfc6733`, defines this as just a list of arbitrary AVPs; the actual failed
+    AVPs should be copied into the `additional_avps` attribute.
+    """
     additional_avps: list[Avp] = dataclasses.field(default_factory=list)
     avp_def: dataclasses.InitVar[AvpGenType] = ()
 
 
 @dataclasses.dataclass
 class VendorSpecificApplicationId:
+    """A data container that represents the "Vendor-Specific-Application-ID" grouped AVP."""
     vendor_id: int = None
     auth_application_id: int = None
     acct_application_id: int = None
@@ -180,6 +185,7 @@ class VendorSpecificApplicationId:
 
 @dataclasses.dataclass
 class UnitValue:
+    """A data container that represents the "Unit-Value" grouped AVP."""
     value_digits: int = None
     exponent: int = None
 
@@ -191,6 +197,7 @@ class UnitValue:
 
 @dataclasses.dataclass
 class CcMoney:
+    """A data container that represents the "CC-Money" grouped AVP."""
     unit_value: UnitValue = None
     currency_code: int = None
 
@@ -202,6 +209,7 @@ class CcMoney:
 
 @dataclasses.dataclass
 class GrantedServiceUnit:
+    """A data container that represents the "Granted-Service-Unit" grouped AVP."""
     cc_time: int = None
     cc_money: CcMoney = None
     cc_total_octets: int = None
@@ -218,10 +226,16 @@ class GrantedServiceUnit:
 
 
 RequestedServiceUnit = GrantedServiceUnit
+"""A data container that represents the "Requested-Service-Unit" grouped AVP.
+
+This is an alias for "Granted-Service-Unit", as they both are technically 
+identical.
+"""
 
 
 @dataclasses.dataclass
 class UsedServiceUnit:
+    """A data container that represents the "Used-Service-Unit" grouped AVP."""
     tariff_change_usage: int = None
     cc_time: int = None
     cc_money: CcMoney = None
@@ -243,6 +257,7 @@ class UsedServiceUnit:
 
 @dataclasses.dataclass
 class GsuPoolReference:
+    """A data container that represents the "G-S-U-Pool-Reference" grouped AVP."""
     g_s_u_pool_identifier: int = None
     cc_unit_type: int = None
     unit_value: UnitValue = None
@@ -256,6 +271,7 @@ class GsuPoolReference:
 
 @dataclasses.dataclass
 class RedirectServer:
+    """A data container that represents the "Redirect-Server" grouped AVP."""
     redirect_address_type: int = None
     redirect_server_address: str = None
 
@@ -267,6 +283,7 @@ class RedirectServer:
 
 @dataclasses.dataclass
 class TimeOfDayCondition:
+    """A data container that represents the "Time-Of-Day-Condition" grouped AVP."""
     time_of_day_start: int = None
     time_of_day_end: int = None
     day_of_week_mask: int = None
@@ -291,6 +308,12 @@ class TimeOfDayCondition:
 
 @dataclasses.dataclass
 class FinalUnitIndication:
+    """A data container that represents the "Final-Unit-Indication" grouped AVP.
+
+    This data container also has the `additional_avps` attribute, which permits
+    appending custom AVPs to the Final-Unit-Indication, even though `rfc8560`
+    doesn't actually permit it.
+    """
     final_unit_action: int = None
     restriction_filter_rule: list[bytes] = dataclasses.field(default_factory=list)
     filter_id: list[str] = dataclasses.field(default_factory=list)
@@ -350,6 +373,7 @@ class EthOption(GenericSpec):
 
 @dataclasses.dataclass
 class Classifier:
+    """A data container that represents the "Clasifier" grouped AVP."""
     classifier_id: int = None
     protocol: int = None
     direction: int = None
@@ -382,12 +406,14 @@ class Classifier:
 
 @dataclasses.dataclass
 class QosParameters:
+    """A data container that represents the "QoS-Parameters" grouped AVP."""
     additional_avps: list[Avp] = dataclasses.field(default_factory=list)
     avp_def: dataclasses.InitVar[AvpGenType] = ()
 
 
 @dataclasses.dataclass
 class QosProfileTemplate:
+    """A data container that represents the "QoS-Profile-Template" grouped AVP."""
     vendor_id: int = None
     qos_profile_id: int = None
     additional_avps: list[Avp] = dataclasses.field(default_factory=list)
@@ -400,6 +426,7 @@ class QosProfileTemplate:
 
 @dataclasses.dataclass
 class ExcessTreatment:
+    """A data container that represents the "Excess-Treatment" grouped AVP."""
     treatment_action: int = None
     qos_profile_template: QosProfileTemplate = None
     qos_parameters: QosParameters = None
@@ -414,6 +441,7 @@ class ExcessTreatment:
 
 @dataclasses.dataclass
 class FilterRule:
+    """A data container that represents the "Filter-Rule" grouped AVP."""
     filter_rule_precedence: int = None
     classifier: Classifier = None
     time_of_day_condition: list[TimeOfDayCondition] = dataclasses.field(default_factory=list)
@@ -437,6 +465,7 @@ class FilterRule:
 
 @dataclasses.dataclass
 class Mscc:
+    """A data container that represents the "Multiple-Services-Credit-Control" grouped AVP."""
     granted_service_unit: GrantedServiceUnit = None
     requested_service_unit: RequestedServiceUnit = None
     used_service_unit: list[UsedServiceUnit] = dataclasses.field(default_factory=list)
@@ -465,6 +494,7 @@ class Mscc:
 
 @dataclasses.dataclass
 class ServiceParameterInfo:
+    """A data container that represents the "Service-Parameter-Info" grouped AVP."""
     service_parameter_type: int = None
     service_parameter_value: bytes = None
 
@@ -476,6 +506,7 @@ class ServiceParameterInfo:
 
 @dataclasses.dataclass
 class SubscriptionId:
+    """A data container that represents the "Subscription-ID" grouped AVP."""
     subscription_id_type: int = None
     subscription_id_data: str = None
 
@@ -487,6 +518,7 @@ class SubscriptionId:
 
 @dataclasses.dataclass
 class UserEquipmentInfo:
+    """A data container that represents the "User-Equipment-Info" grouped AVP."""
     user_equipment_info_type: int = None
     user_equipment_info_value: bytes = None
 
@@ -498,6 +530,7 @@ class UserEquipmentInfo:
 
 @dataclasses.dataclass
 class UserEquipmentInfoExtension:
+    """A data container that represents the "User-Equipment-Info-Extension" grouped AVP."""
     user_equipment_info_imeisv: bytes = None
     user_equipment_info_mac: bytes = None
     user_equipment_info_eui64: bytes = None
@@ -515,6 +548,7 @@ class UserEquipmentInfoExtension:
 
 @dataclasses.dataclass
 class ProxyInfo:
+    """A data container that represents the "Proxy-Info" grouped AVP."""
     proxy_host: bytes = None
     proxy_state: bytes = None
 
@@ -526,6 +560,7 @@ class ProxyInfo:
 
 @dataclasses.dataclass
 class CostInformation:
+    """A data container that represents the "Cost-Information" grouped AVP."""
     unit_value: UnitValue = None
     currency_code: int = None
     cost_unit: str = None
@@ -539,6 +574,15 @@ class CostInformation:
 
 @dataclasses.dataclass
 class QosFinalUnitIndication:
+    """A data container that represents the "QoS-Final-Unit-Indication" grouped AVP.
+
+    !!! Note
+
+        This grouped AVP currently lacks the "Redirect-Server-Extension"
+        grouped AVP. If the AVP is needed, it must be constructed by hand and
+        appended to the `additional_avps` attribute.
+
+    """
     final_unit_action: int = None
     filter_rule: list[FilterRule] = dataclasses.field(default_factory=list)
     filter_id: list[str] = dataclasses.field(default_factory=list)

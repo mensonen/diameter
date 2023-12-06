@@ -1,7 +1,7 @@
 """
 Diameter Base Protocol
 
-This module contains Device Watchdog Request and Answer messages, implementing
+This module contains Accounting Request and Answer messages, implementing
 AVPs documented in rfc6733.
 """
 from __future__ import annotations
@@ -16,6 +16,47 @@ __all__ = ["Accounting", "AccountingAnswer", "AccountingRequest"]
 
 
 class Accounting(Message):
+    """An Accounting message.
+
+    This message class lists message attributes based on the current
+    [RFC6733](https://datatracker.ietf.org/doc/html/rfc6733) as python
+    properties, acessible as instance attributes. AVPs not listed in the base
+    protocol can be retrieved using the
+    [Accounting.find_avps][diameter.message.Message.find_avps] search
+    method.
+
+        >>> msg = Message.from_bytes(b"...")
+        >>> msg.session_id
+        dra1.mvno.net;2323;546
+        >>> msg.find_avps((AVP_SESSION_ID, 0))
+        ['dra1.mvno.net;2323;546']
+
+    When diameter message is decoded using
+    [Message.from_bytes][diameter.message.Message.from_bytes], it returns either
+    an instance of `AccountingRequest` or `AccountingAnswer` automatically.
+
+    When creating a new message, the `AccountingRequest` or
+    `AccountingAnswer` class should be instantiated directly, and values for
+    AVPs set as class attributes:
+
+        >>> msg = AccountingRequest()
+        >>> msg.session_id = "dra1.mvno.net;2323;546"
+
+    Other, custom AVPs can be appended to the message using the
+    [Accounting.append_avp][diameter.message.Message.append_avp] method, or
+    by overwriting the `avp` attribute entirely. Regardless of the custom AVPs
+    set, the mandatory values listed in RFC6733 must be set, however they can
+    be set as `None`, if they are not to be used.
+
+    !!! Warning
+
+        Messages may not contain every attribute documented here; the
+        attributes are only set when part of the original, network-received
+        message, or when done so manually. Attempting to access AVPs that are
+        not part of the message will raise an `AttributeError` and their
+        presence should be validated with `hasattr` before accessing.
+
+    """
     code: int = 271
     name: str = "Accounting"
     avp_def: AvpGenType
@@ -55,15 +96,7 @@ class Accounting(Message):
 
 
 class AccountingAnswer(Accounting):
-    """An Accounting-Answer message.
-
-    This message class lists message attributes based on the current RFC6733
-    (https://datatracker.ietf.org/doc/html/rfc6733). Other, custom AVPs can be
-    appended to the message using the `append_avp` method, or by assigning them
-    to the `avp` attribute. Regardless of the custom AVPs set, the mandatory
-    values listed in RFC6733 must be set, however they can be set as `None`, if
-    they are not to be used.
-    """
+    """An Accounting-Answer message."""
     session_id: str
     result_code: int
     origin_host: bytes
@@ -120,15 +153,7 @@ class AccountingAnswer(Accounting):
 
 
 class AccountingRequest(Accounting):
-    """An Accounting-Request message.
-
-    This message class lists message attributes based on the current RFC6733
-    (https://datatracker.ietf.org/doc/html/rfc6733). Other, custom AVPs can be
-    appended to the message using the `append_avp` method, or by assigning them
-    to the `avp` attribute. Regardless of the custom AVPs set, the mandatory
-    values listed in RFC6733 must be set, however they can be set as `None`, if
-    they are not to be used.
-    """
+    """An Accounting-Request message."""
     session_id: str
     origin_host: bytes
     origin_realm: bytes

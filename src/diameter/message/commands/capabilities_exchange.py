@@ -1,8 +1,8 @@
 """
 Diameter Base Protocol
 
-This module contains Capabilities Request and Answer messages, implementing
-AVPs documented in rfc6733.
+This module contains Capabilities-Exchange Request and Answer messages,
+implementing AVPs documented in rfc6733.
 """
 from __future__ import annotations
 
@@ -17,6 +17,48 @@ __all__ = ["CapabilitiesExchange", "CapabilitiesExchangeAnswer",
 
 
 class CapabilitiesExchange(Message):
+    """A Capabilities-Exchange message.
+
+    This message class lists message attributes based on the current
+    [RFC6733](https://datatracker.ietf.org/doc/html/rfc6733) as python
+    properties, acessible as instance attributes. AVPs not listed in the base
+    protocol can be retrieved using the
+    [CapabilitiesExchange.find_avps][diameter.message.Message.find_avps] search
+    method.
+
+        >>> msg = Message.from_bytes(b"...")
+        >>> msg.origin_realm
+        b'mvno.net'
+        >>> msg.find_avps((AVP_ORIGIN_REALM, 0))
+        [b'mvno.net']
+
+    When diameter message is decoded using
+    [Message.from_bytes][diameter.message.Message.from_bytes], it returns either
+    an instance of `CapabilitiesExchangeRequest` or
+    `CapabilitiesExchangeAnswer` automatically.
+
+    When creating a new message, the `CapabilitiesExchangeRequest` or
+    `CapabilitiesExchangeAnswer` class should be instantiated directly, and
+    values for AVPs set as class attributes:
+
+        >>> msg = CapabilitiesExchangeRequest()
+        >>> msg.origin_realm = b"mvno.net"
+
+    Other, custom AVPs can be appended to the message using the
+    [CapabilitiesExchange.append_avp][diameter.message.Message.append_avp]
+    method, or by overwriting the `avp` attribute entirely. Regardless of the
+    custom AVPs set, the mandatory values listed in RFC6733 must be set,
+    however they can be set as `None`, if they are not to be used.
+
+    !!! Warning
+
+        Messages may not contain every attribute documented here; the
+        attributes are only set when part of the original, network-received
+        message, or when done so manually. Attempting to access AVPs that are
+        not part of the message will raise an `AttributeError` and their
+        presence should be validated with `hasattr` before accessing.
+
+    """
     code: int = 257
     name: str = "Capabilities-Exchange"
     avp_def: AvpGenType
@@ -56,15 +98,7 @@ class CapabilitiesExchange(Message):
 
 
 class CapabilitiesExchangeAnswer(CapabilitiesExchange):
-    """A Capabilities-Exchange-Answer message.
-
-    This message class lists message attributes based on the current RFC6733
-    (https://datatracker.ietf.org/doc/html/rfc6733). Other, custom AVPs can be
-    appended to the message using the `append_avp` method, or by assigning them
-    to the `avp` attribute. Regardless of the custom AVPs set, the mandatory
-    values listed in RFC6733 must be set, however they can be set as `None`, if
-    they are not to be used.
-    """
+    """A Capabilities-Exchange-Answer message."""
     result_code: int
     origin_host: bytes
     origin_realm: bytes
@@ -116,15 +150,7 @@ class CapabilitiesExchangeAnswer(CapabilitiesExchange):
 
 
 class CapabilitiesExchangeRequest(CapabilitiesExchange):
-    """A Capabilities-Exchange-Request message.
-
-    This message class lists message attributes based on the current RFC6733
-    (https://datatracker.ietf.org/doc/html/rfc6733). Other, custom AVPs can be
-    appended to the message using the `append_avp` method, or by assigning them
-    to the `avp` attribute. Regardless of the custom AVPs set, the mandatory
-    values listed in RFC6733 must be set, however they can be set as `None`, if
-    they are not to be used.
-    """
+    """A Capabilities-Exchange-Request message."""
     origin_host: bytes
     origin_realm: bytes
     host_ip_address: list[str]

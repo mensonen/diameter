@@ -11,10 +11,14 @@ from ..packer import ConversionError, Packer, Unpacker
 
 
 class AvpDecodeError(Exception):
+    """An exception raised when an AVP value contains data that cannot be
+    decoded into a python type."""
     pass
 
 
 class AvpEncodeError(Exception):
+    """An exception raised when a value of an AVP has been set to something
+    that the AVP type cannot encode."""
     pass
 
 
@@ -31,27 +35,31 @@ class Avp:
     that produces a correct AVP type and pre-populates it if necessary, using
     the `AVP_*` and `VENDOR_*` constant values:
 
-    >>> session_id = Avp.new(constants.AVP_SESSION_ID)
-    >>> session_id.value = "dra.gy.mvno.net;221424325;287370797;65574b0c-2d02"
-    >>> pdp_address = Avp.new(constants.AVP_TGPP_PDP_ADDRESS, constants.VENDOR_TGPP)
-    >>> pdp_address.value = "10.40.93.32"
-    >>> # this has been set automatically
-    >>> pdp_address.is_mandatory
-    True
+        >>> session_id = Avp.new(constants.AVP_SESSION_ID)
+        >>> session_id.value = "dra.gy.mvno.net;221424325;287370797;65574b0c-2d02"
+        >>> pdp_address = Avp.new(constants.AVP_TGPP_PDP_ADDRESS, constants.VENDOR_TGPP)
+        >>> pdp_address.value = "10.40.93.32"
+        >>> # this has been set automatically
+        >>> pdp_address.is_mandatory
+        True
 
     AVPs can also be created directly from received network bytes, or from an
     `Unpacker` instance that has its position set to the start of an AVP:
-    >>> avp_bytes = bytes.fromhex("000001cd40000016333232353140336770702e6f72670000")
-    >>> service_context_id = Avp.from_bytes(avp_bytes)
-    >>> str(service_context_id)
-    Service-Context-Id <Code: 0x1cd, Flags: 0x40 (-M-), Length: 22, Val: 32251@3gpp.org>
 
-    See `Avp.from_bytes` and `Avp.from_packer` for more details.
+        >>> avp_bytes = bytes.fromhex("000001cd40000016333232353140336770702e6f72670000")
+        >>> service_context_id = Avp.from_bytes(avp_bytes)
+        >>> str(service_context_id)
+        Service-Context-Id <Code: 0x1cd, Flags: 0x40 (-M-), Length: 22, Val: 32251@3gpp.org>
 
-    AVPs have a human-readable str output:
-    >>> input_packets = Avp.new(constants.AVP_ACCT_INPUT_PACKETS, value=17347878)
-    >>> str(input_packets)
-    Acct-Input-Packets <Code: 0x2f, Flags: 0x00 (---), Length: 12, Val: 17347878>
+    See [Avp.from_bytes][diameter.message.avp.Avp.from_bytes] and
+    [Avp.from_unpacker][diameter.message.avp.Avp.from_unpacker] for more
+    details.
+
+    AVPs have a human-readable `str` output:
+
+        >>> input_packets = Avp.new(constants.AVP_ACCT_INPUT_PACKETS, value=17347878)
+        >>> str(input_packets)
+        Acct-Input-Packets <Code: 0x2f, Flags: 0x00 (---), Length: 12, Val: 17347878>
 
     """
     avp_flag_vendor = 0x80
@@ -60,6 +68,15 @@ class Avp:
 
     def __init__(self, code: int = 0, vendor_id: int = 0, payload: bytes = b"",
                  flags: int = 0):
+        """Create a new AVP manually.
+
+        Args:
+            code: An AVP code, does not need to be a known code
+            vendor_id: A vendor ID, or zero if no vendor is set
+            payload: An optional AVP payload to initialise the AVP with. Must
+                be a properly encoded value that matches the type of AVP.
+            flags: An optional integer value for the AVP flags
+        """
         self._vendor_id: int = vendor_id
 
         self.code: int = code
@@ -98,7 +115,7 @@ class Avp:
         packer = Packer()
         return self.as_packed(packer).get_buffer()
 
-    def as_packed(self, packer: Packer):
+    def as_packed(self, packer: Packer) -> Packer:
         """Append AVP byte-encoded contents, into a Packer instance.
 
         Args:
@@ -124,7 +141,7 @@ class Avp:
 
     @classmethod
     def from_bytes(cls, avp_data) -> _AnyAvpType:
-        """Create new AVP from network bytes."""
+        """Create new AVP from network received bytes."""
         try:
             return Avp.from_unpacker(Unpacker(avp_data))
         except ConversionError as e:
@@ -140,8 +157,8 @@ class Avp:
                 position where an AVP begins.
 
         Returns:
-            A new AVP. The position of the unpacker is set at the end of the
-            AVP byte stream.
+            A new AVP. The position of the unpacker is set at the end of
+                the AVP byte stream.
         """
         avp_code = unpacker.unpack_uint()
         flags_len = unpacker.unpack_uint()
@@ -239,7 +256,7 @@ class Avp:
 
     @property
     def is_mandatory(self) -> bool:
-        """Indicates if the mandatory (M) flag is set."""
+        """Indicates if the mandatory (M) flag is set, or sets it."""
         return (self.flags & self.avp_flag_mandatory) != 0
 
     @is_mandatory.setter
@@ -252,7 +269,7 @@ class Avp:
 
     @property
     def is_private(self) -> bool:
-        """Indicates if the private (P) flag is set."""
+        """Indicates if the private (P) flag is set, or sets it."""
         return (self.flags & self.avp_flag_private) != 0
 
     @is_private.setter
@@ -275,6 +292,8 @@ class Avp:
 
     @property
     def value(self) -> Any:
+        """The actual AVP value. When altered, the AVP instance encodes and
+        decodes the property accordingly, and alters its `payload` property."""
         return self.payload
 
     @value.setter
@@ -283,7 +302,8 @@ class Avp:
 
     @property
     def vendor_id(self) -> int:
-        """The current vendor ID."""
+        """The current vendor ID. When modified, the AVP flags are also
+        automatically updated with the vendor set bit."""
         return self._vendor_id
 
     @vendor_id.setter
@@ -298,8 +318,37 @@ class Avp:
 
 
 class AvpAddress(Avp):
+    """An AVP type that implements "Address".
+
+    According to `rfc677`, an Address format is derived from the OctetString
+    format and represents usually an IPv4 or an IPv6 address, or an E.164
+    subscriber ID. The format contains both the value and the address family
+    defined by IANAADFAM.
+    """
     @property
     def value(self) -> tuple[int, str]:
+        """The address family and its value. When reading, always returns a
+        tuple containing the address family and a string representation of
+        the actual address. Currently implemented address families are:
+
+        * 1: IP version 4
+        * 2: IP version 6
+        * 8: E.164
+
+        When setting a new value, only the actual string value should be set,
+        the address family is determined automatically. E.g.:
+
+            >>> a = AvpAddress()
+            >>> a.value = "10.0.0.1"
+            >>> a.value
+            (1, '10.0.0.1')
+            >>> a.value = "41780009999"
+            >>> a.value
+            (8, '41780009999')
+
+        If the value to be set cannot be parsed as a valid IPv4 or an IPv6
+        address, the address family is automatically set to E.164.
+        """
         addr_type = struct.unpack(">H", self.payload[:2])[0]
 
         if addr_type == 1:
@@ -346,8 +395,11 @@ class AvpAddress(Avp):
 
 
 class AvpFloat32(Avp):
+    """An AVP type that implements "Float32"."""
     @property
     def value(self) -> float:
+        """AVP value as a python float. When setting the value, it must be a
+        32-bit integer. Larger intergers will raise an `AvpEncodeError`."""
         try:
             return struct.unpack("!f", self.payload)[0]
         except struct.error as e:
@@ -366,8 +418,11 @@ class AvpFloat32(Avp):
 
 
 class AvpFloat64(Avp):
+    """An AVP type that implements "Float64"."""
     @property
     def value(self) -> float:
+        """AVP value as a python float. When setting the value, it must be a
+        64-bit integer. Larger intergers will raise an `AvpEncodeError`."""
         try:
             return struct.unpack("!d", self.payload)[0]
         except struct.error as e:
@@ -386,8 +441,28 @@ class AvpFloat64(Avp):
 
 
 class AvpGrouped(Avp):
+    """An AVP type that implements "Grouped".
+
+    The "Grouped" AVP contains a sequence of AVPs. The actual AVP payload
+    consists of a concatenated byte stream of individual AVPs, containing also
+    their headers. The python value is represented as a `list` of `Avp`
+    instances.
+    """
     @property
     def value(self) -> list[_AnyAvpType]:
+        """Set or read the list of grouped AVPs. The actual AVPs contained
+        within are not decoded until the value is read for the first time.
+        Once read, the value is cached internally and will not change, unless
+        the entire AVP list is overwritten.
+
+        When setting a value, it must be set to an entire list of AVPs; no
+        list operations, such as append, are possible.
+
+        Examples:
+            >>> g = AvpGrouped()
+            >>> g.value = [AvpOctetString(), AvpOctetString()]
+
+        """
         if not hasattr(self, "_avps"):
             unpacker = Unpacker(self.payload)
             avps = []
@@ -420,8 +495,15 @@ class AvpGrouped(Avp):
 
 
 class AvpInteger32(Avp):
+    """An AVP type that implements the "Integer32" type.
+
+    The "Integer32" type has a 32-bit signed value.
+    """
     @property
     def value(self) -> int:
+        """Sets or retrieves the AVP value as a python integer. When setting
+        the value, it must be a 32-bit integer. Larger integers will raise
+        an `AvpEncodeError`."""
         try:
             return struct.unpack("!I", self.payload)[0]
         except struct.error as e:
@@ -440,8 +522,15 @@ class AvpInteger32(Avp):
 
 
 class AvpInteger64(Avp):
+    """An AVP type that implements the "Integer64" type.
+
+    The "Integer64" type has a 64-bit signed value.
+    """
     @property
     def value(self) -> int:
+        """Sets or retrieves the AVP value as a python integer. When setting
+        the value, it must be a 64-bit integer. Larger integers will raise
+        an `AvpEncodeError`."""
         try:
             return struct.unpack("!Q", self.payload)[0]
         except struct.error as e:
@@ -460,8 +549,15 @@ class AvpInteger64(Avp):
 
 
 class AvpOctetString(Avp):
+    """An AVP type that implements the "OctetString" type.
+
+    The "OctetString" type contains arbitrary data of variable length.
+    """
     @property
     def value(self) -> bytes:
+        """Sets or retrieves the AVP value, as python bytes. When setting
+        the value, it must be bytes. Any other type will raise an
+        `AvpEncodeError`."""
         return self.payload
 
     @value.setter
@@ -472,8 +568,20 @@ class AvpOctetString(Avp):
 
 
 class AvpUtf8String(Avp):
+    """An AVP type that implements the "UTF8String" type.
+
+    According to `rfc677`, a UTF8String format is derived from the OctetString
+    basic AVP format. It is defined as a human-readable string represented
+    using the ISO/IEC IS 10646-1 character set, encoded as an OctetString using
+    the UTF-8 transformation format. It translates to the basic python `str`
+    type.
+    """
     @property
     def value(self) -> str:
+        """Sets or retrieves the AVP value, as a python str. When setting
+        the value, it must be a string that can be encoded as utf-8. Any other
+        data type, or strings that will not encode as utf-8, will raise an
+        `AvpEncodeError`."""
         try:
             return self.payload.decode("utf8")
         except (AttributeError, TypeError, UnicodeDecodeError) as e:
@@ -492,10 +600,23 @@ class AvpUtf8String(Avp):
 
 
 class AvpTime(Avp):
+    """An AVP type that implements the "Time" type.
+
+    According to `rfc677`, a Time format is derived from the OctetString basic
+    AVP format. It contains four octets, in the same format as the first four
+    bytes are in the NTP timestamp format, defined in `rfc5905`.
+
+    The octets represent the number of seconds since 0h on 1 January 1900, in
+    UTC. This value will overflow at 6h 28m 16s UTC, 7 February 2036.
+    """
     seconds_since_1900 = ((70 * 365) + 17) * 86400
 
     @property
     def value(self) -> datetime.datetime:
+        """Sets or retrieves the AVP value, as an instance of python datetime.
+        When setting the value, it must be an instance of datetime. Any other
+        data type, or if the datetime instance contains an unsupported value,
+        will raise an `AvpEncodeError`."""
         try:
             seconds = struct.unpack("!I", self.payload)[0]
             return datetime.datetime.fromtimestamp(
@@ -520,8 +641,21 @@ class AvpTime(Avp):
 
 
 AvpEnumerated = AvpInteger32
+"""An AVP type that implements the "Enumerated". type.
+
+As enumeration is a list of valid integer values, is an alias for 
+[AvpInteger32][diameter.message.avp.AvpInteger32]
+"""
 AvpUnsigned32 = AvpInteger32
+"""An AVP type that implements the "Unsigned32". type.
+
+This is an alias for [AvpInteger32][diameter.message.avp.AvpInteger32]
+"""
 AvpUnsigned64 = AvpInteger64
+"""An AVP type that implements the "Unsigned64". type.
+
+This is an alias for [AvpInteger64][diameter.message.avp.AvpInteger64]
+"""
 
 _AnyAvpType = TypeVar("_AnyAvpType", bound=Avp)
 

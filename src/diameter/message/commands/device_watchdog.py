@@ -16,6 +16,47 @@ __all__ = ["DeviceWatchdog", "DeviceWatchdogAnswer", "DeviceWatchdogRequest"]
 
 
 class DeviceWatchdog(Message):
+    """A Device-Watchdog message.
+
+    This message class lists message attributes based on the current
+    [RFC6733](https://datatracker.ietf.org/doc/html/rfc6733) as python
+    properties, acessible as instance attributes. AVPs not listed in the base
+    protocol can be retrieved using the
+    [DeviceWatchdog.find_avps][diameter.message.Message.find_avps] search
+    method.
+
+        >>> msg = Message.from_bytes(b"...")
+        >>> msg.origin_realm
+        b'mvno.net'
+        >>> msg.find_avps((AVP_ORIGIN_REALM, 0))
+        [b'mvno.net']
+
+    When diameter message is decoded using
+    [Message.from_bytes][diameter.message.Message.from_bytes], it returns either
+    an instance of `DeviceWatchdogRequest` or `DeviceWatchdogAnswer` automatically.
+
+    When creating a new message, the `DeviceWatchdogRequest` or
+    `DeviceWatchdogAnswer` class should be instantiated directly, and values for
+    AVPs set as class attributes:
+
+        >>> msg = DeviceWatchdogRequest()
+        >>> msg.origin_realm = b"mvno.net"
+
+    Other, custom AVPs can be appended to the message using the
+    [DeviceWatchdog.append_avp][diameter.message.Message.append_avp] method, or
+    by overwriting the `avp` attribute entirely. Regardless of the custom AVPs
+    set, the mandatory values listed in RFC6733 must be set, however they can
+    be set as `None`, if they are not to be used.
+
+    !!! Warning
+
+        Messages may not contain every attribute documented here; the
+        attributes are only set when part of the original, network-received
+        message, or when done so manually. Attempting to access AVPs that are
+        not part of the message will raise an `AttributeError` and their
+        presence should be validated with `hasattr` before accessing.
+
+    """
     code: int = 280
     name: str = "Device-Watchdog"
     avp_def: AvpGenType
@@ -55,15 +96,7 @@ class DeviceWatchdog(Message):
 
 
 class DeviceWatchdogAnswer(DeviceWatchdog):
-    """A Device-Watchdog-Answer message.
-
-    This message class lists message attributes based on the current RFC6733
-    (https://datatracker.ietf.org/doc/html/rfc6733). Other, custom AVPs can be
-    appended to the message using the `append_avp` method, or by assigning them
-    to the `avp` attribute. Regardless of the custom AVPs set, the mandatory
-    values listed in RFC6733 must be set, however they can be set as `None`, if
-    they are not to be used.
-    """
+    """A Device-Watchdog-Answer message."""
     result_code: int
     origin_host: bytes
     origin_realm: bytes
@@ -90,15 +123,7 @@ class DeviceWatchdogAnswer(DeviceWatchdog):
 
 
 class DeviceWatchdogRequest(DeviceWatchdog):
-    """A Device-Watchdog-Request message.
-
-    This message class lists message attributes based on the current RFC6733
-    (https://datatracker.ietf.org/doc/html/rfc6733). Other, custom AVPs can be
-    appended to the message using the `append_avp` method, or by assigning them
-    to the `avp` attribute. Regardless of the custom AVPs set, the mandatory
-    values listed in RFC6733 must be set, however they can be set as `None`, if
-    they are not to be used.
-    """
+    """A Device-Watchdog-Request message."""
     origin_host: bytes
     origin_realm: bytes
     origin_state_id: int
