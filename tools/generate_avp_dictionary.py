@@ -44,8 +44,8 @@ avp_dictionary = []
 avp_vendor_dictionaries = {}
 
 enum_constants = {}
-application_constants = {}
 command_constants = {}
+applications = {}
 vendors = {}
 
 # pre-populate vendor name to vendor code mapping
@@ -145,8 +145,7 @@ for base in tree.iterfind("application"):
 
     app_id = base.attrib["id"]
     app_name = base.attrib["name"]
-
-    application_constants[int(app_id)] = re.sub(clean_name, "_", app_name).upper()
+    applications[int(app_id)] = app_name
 
 # vendor entity files
 for base in tree.iterfind("vendor"):
@@ -156,13 +155,19 @@ with const_outfile.open("w") as f:
     f.write("# Automatically generated from a dictionary.xml file\n\n")
 
     f.write("\n# All known Application IDs\n")
-    for app_id, app_constant in application_constants.items():
+    for app_id, app_name in applications.items():
+        app_constant = re.sub(clean_name, "_", app_name).upper()
         f.write(f"APP_{app_constant} = {app_id}\n")
 
     f.write("\n# All known Vendor IDs\n")
     for vendor_id, vendor_code in vendors.items():
         vendor_constant = re.sub(clean_name, "_", vendor_id).upper()
         f.write(f"VENDOR_{vendor_constant} = {vendor_code}\n")
+
+    f.write("\n# Application ID-to-name mapping\n")
+    f.write("APPLICATIONS = {\n    ")
+    f.write(",\n    ".join(f'{c}: "{n}"' for c, n in applications.items()))
+    f.write("}\n")
 
     f.write("\n# Vendor ID-to-name mapping\n")
     f.write("VENDORS = {\n    ")
