@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import dataclasses
 import datetime
+import logging
 
 from typing import NamedTuple, Protocol
 
@@ -31,11 +32,12 @@ class AvpGenDef(NamedTuple):
     attributes needed for the grouped sub-AVPs."""
 
 
+logger = logging.getLogger("diameter.message.avp")
 # class attribute, required, avp code, vendor id, mandatory flag, typedef, is list
 AvpGenType = tuple[AvpGenDef, ...]
 
 
-def generate_avps_from_defs(obj: AvpGenerator) -> list[Avp]:
+def generate_avps_from_defs(obj: AvpGenerator, strict: bool = False) -> list[Avp]:
     """Go through a tree of AVP attribute definitions and produce AVPs.
 
     Traverses recursively through an `avp_def` attribute in an object instance
@@ -47,7 +49,12 @@ def generate_avps_from_defs(obj: AvpGenerator) -> list[Avp]:
 
     for gen_def in obj.avp_def:
         if not hasattr(obj, gen_def.attr_name) and gen_def.is_required:
-            raise ValueError(f"Mandatory AVP attribute `{gen_def.attr_name}` is not set")
+            msg = f"mandatory AVP attribute `{gen_def.attr_name}` is not set"
+            if strict:
+                raise ValueError(msg)
+            else:
+                logger.debug(msg)
+            continue
         elif not hasattr(obj, gen_def.attr_name):
             continue
         if getattr(obj, gen_def.attr_name) is None:
