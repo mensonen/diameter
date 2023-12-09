@@ -234,12 +234,14 @@ class CreditControlRequest(CreditControl):
     session_id: str
     origin_host: bytes
     origin_realm: bytes
-    destination_realm: str
+    destination_realm: bytes
     auth_application_id: int
     service_context_id: str
     cc_request_type: int
     cc_request_number: int
     destination_host: bytes
+    """Destination peer; should not be set for CCR-I, but should be set for 
+    the subsequent requests, based on the CCR-I answer."""
     user_name: str
     cc_sub_session_id: int
     acct_multi_session_id: bytes

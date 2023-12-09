@@ -157,7 +157,7 @@ class AccountingRequest(Accounting):
     session_id: str
     origin_host: bytes
     origin_realm: bytes
-    destination_realm: str
+    destination_realm: bytes
     accounting_record_type: int
     accounting_record_number: int
     acct_application_id: int

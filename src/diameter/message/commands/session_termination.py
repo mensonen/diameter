@@ -156,7 +156,7 @@ class SessionTerminationRequest(SessionTermination):
     session_id: str
     origin_host: bytes
     origin_realm: bytes
-    destination_realm: str
+    destination_realm: bytes
     auth_application_id: int
     termination_cause: int
     user_name: str

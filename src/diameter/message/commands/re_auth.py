@@ -147,7 +147,7 @@ class ReAuthRequest(ReAuth):
     session_id: str
     origin_host: bytes
     origin_realm: bytes
-    destination_realm: str
+    destination_realm: bytes
     destination_host: bytes
     auth_application_id: int
     re_auth_request_type: int
