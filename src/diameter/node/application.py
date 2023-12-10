@@ -1,10 +1,21 @@
+"""
+Diameter application implementations.
+
+Instances of Applications, or their subclasses, provided by this module can be
+passed directly to an instance of a `Node`, for receiving and sending diameter
+application messages.
+
+In most cases, [SimpleThreadingApplication][diameter.node.application.SimpleThreadingApplication]
+is the most suitable option to use, which will cover the most scenarios without
+requiring any unnecessary setup.
+"""
 from __future__ import annotations
 
 import queue
 import logging
 import threading
 
-from typing import TypeVar
+from typing import TypeVar, Callable
 
 from ..message import Message
 from ..message import constants
@@ -17,7 +28,12 @@ logger = logging.getLogger("diameter.application")
 
 
 class Application:
-    """A basic diameter application that can be registered with a Node."""
+    """A basic diameter application that can be registered with a Node.
+
+    Can be used as a starting point for building applications with custom
+    logic. In most cases, `SimpleThreadingApplication` and
+    `ThreadingApplication` are more practical.
+    """
     def __init__(self, application_id: int = None,
                  is_acct_application: bool = False,
                  is_auth_application: bool = False):
@@ -301,9 +317,10 @@ class ThreadingApplication(Application):
             answer = self.generate_answer(
                 message,
                 result_code=constants.E_RESULT_CODE_DIAMETER_UNABLE_TO_COMPLY)
-        self._resp_msg_queue.put(answer)
+        if answer is not None:
+            self._resp_msg_queue.put(answer)
 
-    def handle_request(self, message: Message) -> Message:
+    def handle_request(self, message: Message) -> Message | None:
         """Called by diameter node every time a request message is received.
 
         Unlike the base `Application` version of this same method, the
@@ -328,6 +345,67 @@ class ThreadingApplication(Application):
         self._resp_queue_consumer.join(2)
         self._recv_queue_consumer.join(2)
         super().stop()
+
+
+class SimpleThreadingApplication(ThreadingApplication):
+    """A diameter application that starts a thread for each request.
+
+    An alternative to the base threading application, that does not require
+    subclassing or overwriting. The implementing party should pass a callback
+    function in the `request_handler` argument. The application will call
+    the passed function for every received request in a separate thread,
+    passing an instance of the app itself and the message to handle as
+    arguments.
+
+    If the application acts as a client only and never expects any requests,
+    the callback function is optional.
+
+        >>> from diameter.node.application import SimpleThreadingApplication
+        >>> from diameter.message import constants
+        >>>
+        >>> def handle_request(app: Application, message: Message):
+        >>>     print("Got", message)
+        >>>     answer = app.generate_answer(message)
+        >>>     return answer
+        >>>
+        >>> app = SimpleThreadingApplication(
+        >>>     constants.APP_DIAMETER_BASE_ACCOUNTING,
+        >>>     is_acct_application=True,
+        >>>     request_handler=handle_request)
+
+    """
+    def __init__(self, application_id: int = None,
+                 is_acct_application: bool = False,
+                 is_auth_application: bool = False,
+                 max_threads: int = 0,
+                 request_handler: Callable = None):
+        """Create a new threading diameter application.
+
+        Args:
+            application_id: Authentication application ID
+            is_acct_application: Flag the application as an accounting app
+            is_auth_application: Flag the application as an authorisation app
+            max_threads: Maximum threads to start simultaneously for processing
+                messages. When maximum thread count is reached, the application
+                does not handle any further messages, until at least one of the
+                already started threads has exited. If set to 0, the amount of
+                threads to spawn is unlimited.
+            request_handler: Any callable that will be called whenever a
+                request is received. It will receive an instance of the app and
+                request message as its arguments and is expected to return an
+                answer message
+
+        """
+        super().__init__(application_id,
+                         is_acct_application=is_acct_application,
+                         is_auth_application=is_auth_application,
+                         max_threads=max_threads)
+        self._request_handler = request_handler
+
+    def handle_request(self, message: Message) -> Message | None:
+        if self._request_handler:
+            return self._request_handler(self, message)
+        return None
 
 
 class ApplicationError(Exception):
