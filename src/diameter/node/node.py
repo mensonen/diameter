@@ -225,7 +225,10 @@ class Node:
             realm_name: {"_default": []}
         }
         self._app_waiting_answer: dict[str, Application] = {}
-        self._peer_waiting_answer: dict[str, Peer] = {}
+        # An internal list of hop-by-hop IDs and peers waiting for a matching
+        # answer message. The dictionary contains host identities as keys, with
+        # dictionaries of hop-by-hop ids and request sent timestamps as values.
+        self._peer_waiting_answer: dict[str, dict[int, float]] = {}
 
         self.vendor_ids: set[int] = set(
             vendor_ids or [i for i in constants.VENDORS.keys() if i > 0])
@@ -780,10 +783,11 @@ class Node:
                     break
 
         if receiving_app:
+            if peer.host_identity not in self._peer_waiting_answer:
+                self._peer_waiting_answer[peer.host_identity] = {}
+            waiting = self._peer_waiting_answer[peer.host_identity]
+            waiting[message.header.hop_by_hop_identifier] = time.time()
             receiving_app.receive_request(message)
-            message_id = (f"{message.header.hop_by_hop_identifier}:"
-                          f"{message.header.end_to_end_identifier}")
-            self._peer_waiting_answer[message_id] = peer
             return
 
         self.logger.warning(
@@ -801,7 +805,8 @@ class Node:
                       f"{message.header.end_to_end_identifier}")
 
         # rfc6733, 6.2.1: we are expected to just ignore unkown hop-by-hop
-        # identifiers
+        # identifiers. Not 100% spec compliant, we only track app-routed
+        # messages, leaving CER/CEA, DWR/DWA and DPR/DEA message IDs untracked
         if message_id not in self._app_waiting_answer:
             self.logger.warning(
                 f"{peer} no application ID {app_id} present to receive answer "
@@ -1086,7 +1091,10 @@ class Node:
             peer_cfg.peer_ident = None
             peer_cfg.last_disconnect = int(time.time())
 
-        # TODO: cleanup answer waiting table
+        # Remove pending answer tracking; we cannot know if the peer will
+        # persist its hop-by-hop IDs over reconnect.
+        if peer.host_identity in self._peer_waiting_answer:
+            del self._peer_waiting_answer[peer.host_identity]
         self.logger.debug(f"{peer} removed")
 
     def send_cer(self, peer: Peer):
@@ -1154,11 +1162,29 @@ class Node:
                 time
 
         """
-        message_id = f"{message.header.hop_by_hop_identifier}:{message.header.end_to_end_identifier}"
-        if message_id not in self._peer_waiting_answer:
-            raise NotRoutable("No peer is waiting for this answer")
-        peer = self._peer_waiting_answer[message_id]
-        del self._peer_waiting_answer[message_id]
+        message_id = message.header.hop_by_hop_identifier
+        waiting_host_identity = None
+        for host_identity, messages in self._peer_waiting_answer.items():
+            if message_id in messages:
+                waiting_host_identity = host_identity
+                break
+
+        if waiting_host_identity is None:
+            raise NotRoutable(
+                f"No peer is waiting for an answer with ID {hex(message_id)}")
+
+        del self._peer_waiting_answer[waiting_host_identity][message_id]
+
+        peer = None
+        for connected_peer in self.peers.values():
+            if connected_peer.host_identity == waiting_host_identity:
+                peer = connected_peer
+                break
+
+        if peer is None:
+            raise NotRoutable(
+                f"Peer waiting for an answer with ID {hex(message_id)} has "
+                f"gone away")
 
         if peer.state not in PEER_READY_STATES:
             raise NotRoutable(
@@ -1249,12 +1275,13 @@ class Node:
             message: A valid diameter message instance to send
 
         """
-        message_id = (f"{message.header.hop_by_hop_identifier}:"
-                      f"{message.header.end_to_end_identifier}")
-        if not message.header.is_request and message_id in self._peer_waiting_answer:
+        message_id = message.header.hop_by_hop_identifier
+        if (not message.header.is_request and
+                peer.host_identity in self._peer_waiting_answer and
+                message_id in self._peer_waiting_answer[peer.host_identity]):
             # cleanup in case someone is sending messages directly without
             # using _route_answer
-            del self._peer_waiting_answer[message_id]
+            del self._peer_waiting_answer[peer.host_identity][message_id]
         peer.add_out_msg(message)
 
     def start(self):
