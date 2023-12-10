@@ -702,10 +702,10 @@ class Node:
                     self.receive_dpa(peer, msg)
                 case (True, _):
                     self._update_peer_counters(peer, app_request=1)
-                    self._route_app_request(peer, msg)
+                    self._receive_app_request(peer, msg)
                 case (False, _):
                     self._update_peer_counters(peer, app_answer=1)
-                    self._route_app_answer(peer, msg)
+                    self._receive_app_answer(peer, msg)
 
         except Exception as e:
             self.logger.error(f"{peer} failed to handle message: {e}",
@@ -715,29 +715,11 @@ class Node:
             err.error_message = "Message handling error"
             peer.add_out_msg(err)
 
-    def _reconnect_peers(self):
-        if self._stopping:
-            return
-        for peer_config in self.configured_peers.values():
-            if not peer_config.persistent:
-                continue
-            if peer_config.peer_ident:
-                continue
-            if not peer_config.last_disconnect:
-                continue
-            if peer_config.disconnected_since < peer_config.reconnect_wait:
-                continue
-            self.logger.info(
-                f"connection to {peer_config.node_name} has been lost for "
-                f"{peer_config.disconnected_since} seconds, reconnecting")
-            try:
-                self._connect_to_peer(peer_config)
-            except Exception as e:
-                self.logger.warning(
-                    f"failed to reconnect to {peer_config.node_name}: {e}")
+    def _receive_app_request(self, peer: Peer, message: _AnyMessageType):
+        """Forward a received request message to an application.
 
-    def _route_app_request(self, peer: Peer, message: _AnyMessageType):
-        """Forward a received request message to an application."""
+        This is called internally by `_receive_message`, when necessary.
+        """
         app_id = message.header.application_id
         peer_cfg = self._get_peer_config(peer)
 
@@ -798,8 +780,11 @@ class Node:
         err.result_code = constants.E_RESULT_CODE_DIAMETER_APPLICATION_UNSUPPORTED
         peer.add_out_msg(err)
 
-    def _route_app_answer(self, peer: Peer, message: Message):
-        """Forward a received answer message to an application."""
+    def _receive_app_answer(self, peer: Peer, message: Message):
+        """Forward a received answer message to an application.
+
+        This is called internally by `_receive_message`, when necessary.
+        """
         app_id = message.header.application_id
         message_id = (f"{message.header.hop_by_hop_identifier}:"
                       f"{message.header.end_to_end_identifier}")
@@ -823,6 +808,27 @@ class Node:
         self.logger.debug(f"{peer} application {app} expects answer "
                           f"{hex(message.header.hop_by_hop_identifier)}")
         app.receive_answer(message)
+
+    def _reconnect_peers(self):
+        if self._stopping:
+            return
+        for peer_config in self.configured_peers.values():
+            if not peer_config.persistent:
+                continue
+            if peer_config.peer_ident:
+                continue
+            if not peer_config.last_disconnect:
+                continue
+            if peer_config.disconnected_since < peer_config.reconnect_wait:
+                continue
+            self.logger.info(
+                f"connection to {peer_config.node_name} has been lost for "
+                f"{peer_config.disconnected_since} seconds, reconnecting")
+            try:
+                self._connect_to_peer(peer_config)
+            except Exception as e:
+                self.logger.warning(
+                    f"failed to reconnect to {peer_config.node_name}: {e}")
 
     def _update_peer_config(self, peer: Peer):
         if not peer.host_identity:
