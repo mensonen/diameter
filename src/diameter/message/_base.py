@@ -71,15 +71,16 @@ class Message:
         to be a chain of AVPs to follow. The returned list of AVPs will be the
         AVPs found at the end of each chain.
 
-        E.g. in an AVP structure such as:
+        Examples:
+            In an AVP structure such as:
 
-            Multiple-Services-Credit-Control <Code: 0x1c8, Flags: 0x40 (-M-), Length: 168>
-              Requested-Service-Unit <Code: 0x1b5, Flags: 0x40 (-M-), Length: 0>
-              Used-Service-Unit <Code: 0x1be, Flags: 0x40 (-M-), Length: 84>
-                CC-Time <Code: 0x1a4, Flags: 0x40 (-M-), Length: 12, Val: 9>
-                CC-Total-Octets <Code: 0x1a5, Flags: 0x40 (-M-), Length: 16, Val: 0>
+                Multiple-Services-Credit-Control <Code: 0x1c8, Flags: 0x40 (-M-), Length: 168>
+                  Requested-Service-Unit <Code: 0x1b5, Flags: 0x40 (-M-), Length: 0>
+                  Used-Service-Unit <Code: 0x1be, Flags: 0x40 (-M-), Length: 84>
+                    CC-Time <Code: 0x1a4, Flags: 0x40 (-M-), Length: 12, Val: 9>
+                    CC-Total-Octets <Code: 0x1a5, Flags: 0x40 (-M-), Length: 16, Val: 0>
 
-        The "CC-Total-Octets" AVP can be found with:
+            The "CC-Total-Octets" AVP can be found with:
 
             >>> msg = Message()
             >>> avp = msg.find_avps(
@@ -89,18 +90,21 @@ class Message:
             >>> print(avp[0])
             CC-Total-Octets <Code: 0x1a5, Flags: 0x40 (-M-), Length: 16, Val: 0>
 
-        The search is cached internally, repeating the same find operation will
-        return a cached result.
+            The search is cached internally, repeating the same find operation will
+            return a cached result.
 
-        Note that searching for AVPs can be somewhat resource intensive,
-        especially for larger command structures. For messages constructed from
-        received network bytes, it is much cheaper to simply access the values
-        of the message attributes directly. E.g. the example above is the same
-        as:
+        !!! Note
+            Searching for AVPs can be somewhat resource intensive,
+            especially for larger command structures. For messages constructed from
+            received network bytes, it is much cheaper to simply access the values
+            of the message attributes directly. E.g. the example above is the same
+            as:
 
+            ```pycon
             >>> avp = msg.multiple_services_credit_control[0].used_service_unit[0].cc_total_octets
             >>> print(avp[0])
             0
+            ```
 
         The method can also be used to search any arbitrary AVP list, by passing
         an optional keyword argument `alt_avps`.
@@ -125,10 +129,13 @@ class Message:
     def type_factory(cls, header: MessageHeader) -> Type[_AnyMessageType] | None:
         """Generate a type that should be used to create new instances.
 
-        This method can be overridden by inheriting classes to indicate the
-        specific type of message class to generate, e.g. return different types
-        for "Request" and "Answer" messages. If no type is returned, the base
-        class type will be used.
+        This method is called internally by
+        [Message.from_bytes][diameter.message.Message.from_bytes] and it can
+        be overridden by inheriting classes to indicate the specific type of
+        message class to generate, e.g. in order to produce different types
+        for "Request" and "Answer" messages, based on the given header.
+
+        If no type is returned, the base class type will be used.
         """
         return None
 
