@@ -80,7 +80,7 @@ class Avp:
         self._vendor_id: int = 0
 
         self.code: int = code
-        """AVP code. Corresponds to AVP_* constant values."""
+        """AVP code. Corresponds to `AVP_*` constant values."""
         self.flags: int = flags
         """AVP flags. These should not be set manually, refer to `is_mandatory`,
         `is_private` and `vendor_id`. The flags are updated automatically as 
@@ -139,12 +139,43 @@ class Avp:
 
     @classmethod
     def from_avp(cls, another_avp: _AnyAvpType) -> _AnyAvpType:
-        """Create a copy based on another AVP."""
+        """Create a copy based on another AVP.
+
+        Encodes the given AVP into bytes, then constructs a new AVP instance
+        using `Avp.from_bytes`.
+
+        Args:
+            another_avp: The AVP to copy.
+
+        Returns:
+            A new AVP instance with data identical to the copy.
+
+        """
         return Avp.from_bytes(another_avp.as_bytes())
 
     @classmethod
-    def from_bytes(cls, avp_data) -> _AnyAvpType:
-        """Create new AVP from network received bytes."""
+    def from_bytes(cls, avp_data: bytes) -> _AnyAvpType:
+        """Create new AVP from network received bytes.
+
+        Accepts byte strings and returns a python representation of the contents.
+
+            >>> avp_bytes = bytes.fromhex("000001cd40000016333232353140336770702e6f72670000")
+            >>> a = avp.Avp.from_bytes(avp_bytes)
+            >>>
+            >>> assert a.code == 461
+            >>> assert a.is_mandatory is True
+            >>> assert a.is_private is False
+            >>> assert a.is_vendor is False
+            >>> assert a.length == 22
+            >>> assert a.value == "32251@3gpp.org"
+
+        Args:
+            avp_data: Any network-received bytes that starts at an AVP
+                boundary. May contain more than one AVP; the byte string is
+                consumed until one full AVP has been decoded and the rest is
+                discarded.
+
+        """
         try:
             return Avp.from_unpacker(Unpacker(avp_data))
         except ConversionError as e:
@@ -197,7 +228,7 @@ class Avp:
 
     @classmethod
     def new(cls, avp_code: int, vendor_id: int = 0,
-            value: str | int | float | bytes = None,
+            value: str | int | float | bytes | list | datetime.datetime = None,
             is_mandatory: bool = None, is_private: bool = None) -> _AnyAvpType:
         """Generates a new AVP.
 
@@ -212,7 +243,10 @@ class Avp:
             value: An optional AVP value. If not given, will also not set
                 any value, which may be an invalid operation for the AVP. A
                 value can be set later by assigning a value to the `value`
-                attribute
+                attribute. If given, the value must be valid for the type of
+                AVP being created. E.g. an "Integer32" AVP must have a 32-bit
+                integer as its value, a "Grouped" AVP must have a list of AVPs
+                as its value, etc.
             is_mandatory: Optionally sets or unsets the mandatory flag manually.
                 If not given, detaults to setting the flag based on whatever
                 was defined in the dictionary originally
@@ -334,19 +368,19 @@ class AvpAddress(Avp):
         tuple containing the address family and a string representation of
         the actual address. Currently implemented address families are:
 
-        * 1: IP version 4
-        * 2: IP version 6
-        * 8: E.164
+         * 1: IP version 4
+         * 2: IP version 6
+         * 8: E.164
 
         When setting a new value, only the actual string value should be set,
         the address family is determined automatically. E.g.:
 
-            >>> a = AvpAddress()
-            >>> a.value = "10.0.0.1"
-            >>> a.value
+            >>> addr = AvpAddress()
+            >>> addr.value = "10.0.0.1"
+            >>> addr.value
             (1, '10.0.0.1')
-            >>> a.value = "41780009999"
-            >>> a.value
+            >>> addr.value = "41780009999"
+            >>> addr.value
             (8, '41780009999')
 
         If the value to be set cannot be parsed as a valid IPv4 or an IPv6
@@ -458,12 +492,15 @@ class AvpGrouped(Avp):
         Once read, the value is cached internally and will not change, unless
         the entire AVP list is overwritten.
 
-        When setting a value, it must be set to an entire list of AVPs; no
-        list operations, such as append, are possible.
+        When setting a value, it must be set to an entire list of AVPs:
 
-        Examples:
-            >>> g = AvpGrouped()
-            >>> g.value = [AvpOctetString(), AvpOctetString()]
+            >>> grp = AvpGrouped()
+            >>> grp.value = [AvpOctetString(), AvpOctetString()]
+
+        Alternatively, the value can be operated as a regular list:
+
+            >>> grp = AvpGrouped()
+            >>> grp.value.append(AvpOctetString())
 
         """
         if not hasattr(self, "_avps"):
