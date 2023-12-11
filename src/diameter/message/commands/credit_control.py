@@ -251,6 +251,8 @@ class CreditControlRequest(CreditControl):
     service_identifier: int
     termination_cause: int
     requested_service_unit: RequestedServiceUnit
+    requested_action: int
+    used_service_unit: list[UsedServiceUnit]
     multiple_services_indicator: int
     multiple_services_credit_control: list[Mscc]
     service_parameter_info: list[ServiceParameterInfo]
@@ -279,6 +281,8 @@ class CreditControlRequest(CreditControl):
         AvpGenDef("service_identifier", AVP_SERVICE_IDENTIFIER),
         AvpGenDef("termination_cause", AVP_TERMINATION_CAUSE),
         AvpGenDef("requested_service_unit", AVP_REQUESTED_SERVICE_UNIT, type_class=RequestedServiceUnit),
+        AvpGenDef("requested_action", AVP_REQUESTED_ACTION),
+        AvpGenDef("used_service_unit", AVP_USED_SERVICE_UNIT, type_class=UsedServiceUnit),
         AvpGenDef("multiple_services_indicator", AVP_MULTIPLE_SERVICES_INDICATOR),
         AvpGenDef("multiple_services_credit_control", AVP_MULTIPLE_SERVICES_CREDIT_CONTROL, type_class=Mscc),
         AvpGenDef("service_parameter_info", AVP_SERVICE_PARAMETER_INFO, type_class=ServiceParameterInfo),
@@ -296,6 +300,7 @@ class CreditControlRequest(CreditControl):
 
         setattr(self, "auth_application_id", 4)
         setattr(self, "subscription_id", [])
+        setattr(self, "used_service_unit", [])
         setattr(self, "multiple_services_credit_control", [])
         setattr(self, "service_parameter_info", [])
         setattr(self, "proxy_info", [])
