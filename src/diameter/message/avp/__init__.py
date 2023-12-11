@@ -77,7 +77,7 @@ class Avp:
                 be a properly encoded value that matches the type of AVP.
             flags: An optional integer value for the AVP flags
         """
-        self._vendor_id: int = vendor_id
+        self._vendor_id: int = 0
 
         self.code: int = code
         """AVP code. Corresponds to AVP_* constant values."""
@@ -92,6 +92,9 @@ class Avp:
         AVP."""
         self.name: str = "Unknown"
         """The name of the AVP, e.g. "Session-Id". Not unique in any way."""
+
+        # Do this through the property setter as it sets also the correct flags
+        self.vendor_id = vendor_id
 
     def __str__(self) -> str:
         own_value = self.value
