@@ -22,8 +22,10 @@ class ReAuth(Message):
     [RFC6733](https://datatracker.ietf.org/doc/html/rfc6733) as python
     properties, acessible as instance attributes. AVPs not listed in the base
     protocol can be retrieved using the
-    [ReAuth.find_avps][diameter.message.Message.find_avps] search
-    method.
+    [ReAuth.find_avps][diameter.message.Message.find_avps] search method.
+
+    Examples:
+        AVPs accessible either as instance attributes or by searching:
 
         >>> msg = Message.from_bytes(b"...")
         >>> msg.origin_realm
@@ -31,13 +33,17 @@ class ReAuth(Message):
         >>> msg.find_avps((AVP_ORIGIN_REALM, 0))
         [b'mvno.net']
 
-    When diameter message is decoded using
-    [Message.from_bytes][diameter.message.Message.from_bytes], it returns either
-    an instance of `ReAuthRequest` or `ReAuthAnswer` automatically.
+        When a diameter message is decoded using
+        [Message.from_bytes][diameter.message.Message.from_bytes], it returns
+        either an instance of `ReAuthRequest` or `ReAuthAnswer` automatically:
 
-    When creating a new message, the `ReAuthRequest` or
-    `ReAuthAnswer` class should be instantiated directly, and values for
-    AVPs set as class attributes:
+        >>> msg = Message.from_bytes(b"...")
+        >>> assert msg.header.is_request is True
+        >>> assert isinstance(msg, ReAuthRequest)
+
+        When creating a new message by hand, the `ReAuthRequest` or
+        `ReAuthAnswer` class should be instantiated directly, and values for
+        AVPs set as class attributes:
 
         >>> msg = ReAuthRequest()
         >>> msg.origin_realm = b"mvno.net"
@@ -49,7 +55,6 @@ class ReAuth(Message):
     be set as `None`, if they are not to be used.
 
     !!! Warning
-
         Messages may not contain every attribute documented here; the
         attributes are only set when part of the original, network-received
         message, or when done so manually. Attempting to access AVPs that are

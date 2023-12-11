@@ -25,20 +25,27 @@ class DisconnectPeer(Message):
     [DisconnectPeer.find_avps][diameter.message.Message.find_avps] search
     method.
 
+    Examples:
+        AVPs accessible either as instance attributes or by searching:
+
         >>> msg = Message.from_bytes(b"...")
         >>> msg.origin_realm
         b'mvno.net'
         >>> msg.find_avps((AVP_ORIGIN_REALM, 0))
         [b'mvno.net']
 
-    When diameter message is decoded using
-    [Message.from_bytes][diameter.message.Message.from_bytes], it returns either
-    an instance of `DisconnectPeerRequest` or `DisconnectPeerAnswer`
-    automatically.
+        When diameter message is decoded using
+        [Message.from_bytes][diameter.message.Message.from_bytes], it returns
+        either an instance of `DisconnectPeerRequest` or `DisconnectPeerAnswer`
+        automatically:
 
-    When creating a new message, the `DisconnectPeerRequest` or
-    `DisconnectPeerAnswer` class should be instantiated directly, and values for
-    AVPs set as class attributes:
+        >>> msg = Message.from_bytes(b"...")
+        >>> assert msg.header.is_request is True
+        >>> assert isinstance(msg, DisconnectPeerRequest)
+
+        When creating a new message, the `DisconnectPeerRequest` or
+        `DisconnectPeerAnswer` class should be instantiated directly, and values for
+        AVPs set as class attributes:
 
         >>> msg = DisconnectPeerRequest()
         >>> msg.origin_realm = b"mvno.net"
@@ -50,7 +57,6 @@ class DisconnectPeer(Message):
     be set as `None`, if they are not to be used.
 
     !!! Warning
-
         Messages may not contain every attribute documented here; the
         attributes are only set when part of the original, network-received
         message, or when done so manually. Attempting to access AVPs that are

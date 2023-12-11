@@ -25,19 +25,27 @@ class Accounting(Message):
     [Accounting.find_avps][diameter.message.Message.find_avps] search
     method.
 
+    Examples:
+        AVPs accessible either as instance attributes or by searching:
+
         >>> msg = Message.from_bytes(b"...")
         >>> msg.session_id
         dra1.mvno.net;2323;546
         >>> msg.find_avps((AVP_SESSION_ID, 0))
         ['dra1.mvno.net;2323;546']
 
-    When diameter message is decoded using
-    [Message.from_bytes][diameter.message.Message.from_bytes], it returns either
-    an instance of `AccountingRequest` or `AccountingAnswer` automatically.
+        When diameter message is decoded using
+        [Message.from_bytes][diameter.message.Message.from_bytes], it returns
+        either an instance of `AccountingRequest` or `AccountingAnswer`
+        automatically:
 
-    When creating a new message, the `AccountingRequest` or
-    `AccountingAnswer` class should be instantiated directly, and values for
-    AVPs set as class attributes:
+        >>> msg = Message.from_bytes(b"...")
+        >>> assert msg.header.is_request is True
+        >>> assert isinstance(msg, AccountingRequest)
+
+        When creating a new message, the `AccountingRequest` or
+        `AccountingAnswer` class should be instantiated directly, and values
+        for AVPs set as class attributes:
 
         >>> msg = AccountingRequest()
         >>> msg.session_id = "dra1.mvno.net;2323;546"
@@ -49,7 +57,6 @@ class Accounting(Message):
     be set as `None`, if they are not to be used.
 
     !!! Warning
-
         Messages may not contain every attribute documented here; the
         attributes are only set when part of the original, network-received
         message, or when done so manually. Attempting to access AVPs that are
