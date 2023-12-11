@@ -119,6 +119,7 @@ class PeerConfig:
     last_disconnect: int = None
     """Unix timestamp of last disconnect."""
     counters: PeerCounters = dataclasses.field(default_factory=PeerCounters)
+    """Peer statistics."""
 
     @property
     def disconnected_since(self) -> int:
@@ -450,6 +451,14 @@ class Node:
         peer_cfg = self._get_peer_config(peer)
         if peer_cfg:
             peer_cfg.last_connect = int(time.time())
+
+    def _flag_peer_as_ready(self, peer: Peer):
+        peer.state = PEER_READY
+        for app, peer_configs in self._peer_routes[self.realm_name].items():
+            for peer_config in peer_configs:
+                if peer_config.peer_ident == peer.ident:
+                    app._is_ready.set()
+                    break
 
     def _generate_answer(self, peer: Peer, msg: _AnyMessageType) -> _AnyAnswerType:
         answer_msg = msg.to_answer()
@@ -933,6 +942,13 @@ class Node:
 
         If the peer has persistency enabled, the node will automatically
         re-establish the connection after `Node.reconnect_timeout` seconds.
+
+        Closing the peer socket will automatically call
+        [Node.remove_peer][diameter.node.Node.remove_peer].
+
+        Args:
+            peer: An instance of peer to disconnect
+
         """
         peer_socket = self.peer_sockets.get(peer.ident)
         if peer_socket:
@@ -965,8 +981,9 @@ class Node:
         peer.acct_application_ids = list(
             self.acct_application_ids & cer_acct_apps)
         peer.host_identity = message.origin_host.decode()
-        peer.state = PEER_READY
+
         self._update_peer_config(peer)
+        self._flag_peer_as_ready(peer)
         self.logger.info(
             f"{peer} is now ready, determined supported auth applications: "
             f"{peer.auth_application_ids}, supported acct applications: "
@@ -1045,8 +1062,9 @@ class Node:
         peer.origin_host = self.origin_host
         peer.host_identity = cer_origin_host
         peer.host_ip_address = [i[1] for i in message.host_ip_address]
-        peer.state = PEER_READY
+
         self._update_peer_config(peer)
+        self._flag_peer_as_ready(peer)
         self.logger.info(
             f"{peer} is now ready, determined supported auth applications: "
             f"{supported_auth_apps}, supported acct applications: "
@@ -1087,6 +1105,20 @@ class Node:
         peer.add_out_msg(answer)
 
     def remove_peer(self, peer: Peer):
+        """Removes a peer that is no longer connected.
+
+        !!! Warning
+            This method should not be called directly, unless it is absolutely
+            certain that the peer socket is no longer connected. The safer way
+            is to use [Node.close_peer_socket][diameter.node.Node.close_peer_socket]
+            instead, which will first close the socket and then remove the peer.
+
+        Args:
+            peer: An instance of peer to remove from the list of active peers
+
+        Returns:
+
+        """
         if peer.ident in self.peers:
             del self.peers[peer.ident]
         if peer.ident in self.peer_sockets:
@@ -1101,6 +1133,25 @@ class Node:
         # persist its hop-by-hop IDs over reconnect.
         if peer.host_identity in self._peer_waiting_answer:
             del self._peer_waiting_answer[peer.host_identity]
+
+        # Check if this was the last available peer for an app and clear app
+        # ready flag if so, resulting in `wait_for_ready` to block again.
+        for app, peer_configs in self._peer_routes[self.realm_name].items():
+            if not isinstance(app, Application):
+                continue
+            any_peer_ready = False
+            for app_peer_cfg in peer_configs:
+                if app_peer_cfg.peer_ident and app_peer_cfg.peer_ident in self.peers:
+                    app_peer = self.peers[app_peer_cfg.peer_ident]
+                    if app_peer.state in PEER_READY_STATES:
+                        any_peer_ready = True
+                        break
+            if not any_peer_ready:
+                self.logger.warning(
+                    f"{peer} was last available peer for {app}, flagging app "
+                    f"as not ready")
+                app._is_ready.clear()
+
         self.logger.debug(f"{peer} removed")
 
     def send_cer(self, peer: Peer):
@@ -1398,4 +1449,4 @@ class Node:
             app.stop()
 
 
-from .application import Application, ThreadingApplication
+from .application import Application

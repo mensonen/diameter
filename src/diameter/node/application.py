@@ -55,6 +55,7 @@ class Application:
         self.name = constants.APPLICATIONS.get(
             self.application_id, "Unknown Application")
 
+        self._is_ready: threading.Event = threading.Event()
         self._node: Node | None = None
         self._answer_waiting: dict[int, WaitingMessage] = {}
 
@@ -227,6 +228,32 @@ class Application:
             waiting.event.set()
         logger.info(f"{self} application stopped")
 
+    def wait_for_ready(self, timeout: int = 30):
+        """Wait for application connectivity to become ready.
+
+        Waits until at least one of the peers specified for the application has
+        completed its CER/CEA procedure and become ready to accept requests. If
+        all the configured peers for the application become again disconnected,
+        `wait_for_ready` will block again, until at least one of the peers has
+        returned and completed their CER/CEA.
+
+        !!! Note
+            This method can be called every time before `send_request` is to be
+            used, for increased certainty that a request will go through,
+            however it will not guarantee that a peer will not go offline
+            between calling this method and sending the request.
+
+        Args:
+            timeout: Amount of time to wait, in seconds
+
+        Raises:
+            ApplicationError: If no peer becomes available before timeout
+
+        """
+        if self._is_ready.wait(timeout) is not True:
+            raise ApplicationError("No connection available within timeout")
+        logger.info(f"{self} at least one peer has become available")
+
 
 class ThreadingApplication(Application):
     """A diameter application that starts a thread for each request.
@@ -360,18 +387,20 @@ class SimpleThreadingApplication(ThreadingApplication):
     If the application acts as a client only and never expects any requests,
     the callback function is optional.
 
-        >>> from diameter.node.application import SimpleThreadingApplication
-        >>> from diameter.message import constants
-        >>>
-        >>> def handle_request(app: Application, message: Message):
-        >>>     print("Got", message)
-        >>>     answer = app.generate_answer(message)
-        >>>     return answer
-        >>>
-        >>> app = SimpleThreadingApplication(
-        >>>     constants.APP_DIAMETER_BASE_ACCOUNTING,
-        >>>     is_acct_application=True,
-        >>>     request_handler=handle_request)
+    ```
+    from diameter.node.application import SimpleThreadingApplication
+    from diameter.message import constants
+
+    def handle_request(app: Application, message: Message):
+        print("Got", message)
+        answer = app.generate_answer(message)
+        return answer
+
+    app = SimpleThreadingApplication(
+        constants.APP_DIAMETER_BASE_ACCOUNTING,
+        is_acct_application=True,
+        request_handler=handle_request)
+    ```
 
     """
     def __init__(self, application_id: int = None,
