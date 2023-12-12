@@ -1,10 +1,10 @@
 
 ## System requirements
 
-The `diameter` package can be installed from pypi:
+The `diameter` package can be installed from PyPI:
 
 ```shell
-~# pip install diameter
+~# pip install python-diameter
 ```
 
 The minimum required Python version is 3.11, a fairly recent Linux kernel is
