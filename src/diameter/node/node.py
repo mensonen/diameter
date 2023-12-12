@@ -937,7 +937,7 @@ class Node:
         seconds.
 
         Closing the peer socket will automatically call
-        [`Node.remove_peer`][diameter.node.Node.remove_peer].
+        [`Node.remove_peer_connection`][diameter.node.Node.remove_peer_connection].
 
         Args:
             conn: An instance of a peer connection to disconnect
@@ -1103,7 +1103,7 @@ class Node:
         !!! Warning
             This method should not be called directly, unless it is absolutely
             certain that the peer socket is no longer connected. The safer way
-            is to use [`Node.close_peer_socket`][diameter.node.Node.close_peer_socket]
+            is to use [`Node.close_connection_socket`][diameter.node.Node.close_connection_socket]
             instead, which will first close the socket and then remove the peer.
 
         Args:

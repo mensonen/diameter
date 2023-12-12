@@ -38,13 +38,13 @@ PEER_READY = 0x12
 """PeerConnection is ready to process messages."""
 PEER_READY_WAITING_DWA = 0x13
 """PeerConnection is ready to process messages, but is waiting for a DWA."""
-PEER_DISCONNECTING = 0x14
+PEER_DISCONNECTING = 0x1a
 """PeerConnection has sent a disconnect-peer-request and is waiting for DPA."""
-PEER_CLOSING = 0x15
+PEER_CLOSING = 0x1b
 """PeerConnection is about to be closed; it will no longer read any messages and will
 close its socket as soon as the write buffer has been emptied. This state is 
 not part of rfc6733, it is only an internal temporary flag."""
-PEER_CLOSED = 0x16
+PEER_CLOSED = 0x1c
 """PeerConnection has closed connection."""
 
 PEER_READY_STATES: tuple[int, ...] = (PEER_READY, PEER_READY_WAITING_DWA)
