@@ -1,0 +1,3224 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../node/">
+      
+      
+        <link rel="next" href="../application/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.1">
+    
+    
+      
+        <title>Peer - Python Diameter Stack</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.45e1311d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#diameter.node.peer.PEER_CLOSED" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Python Diameter Stack" class="md-header__button md-logo" aria-label="Python Diameter Stack" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Python Diameter Stack
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Peer
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3 3.19.09m3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95 2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5c-.84 0-1.65.15-2.39.42L12 2M3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29L3.34 7m.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14L3.36 17M20.65 7l-1.77 3.79a7.023 7.023 0 0 0-2.38-4.15l4.15.36m-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29L20.64 17M12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44L12 22Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/mensonen/diameter" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Python Diameter Stack" class="md-nav__button md-logo" aria-label="Python Diameter Stack" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    Python Diameter Stack
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/mensonen/diameter" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../setup/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    User Guide
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            User Guide
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guide/avp/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Working with AVPs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guide/message/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Working with messages
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guide/node/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Creating nodes and connecting to peers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guide/application/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Writing diameter applications
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    API Refrence
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            API Refrence
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../message_avp/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AVP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../message/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Message
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Commands
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Commands
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../commands/abort_session/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Abort Session
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../commands/accounting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Accounting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../commands/capabilities_exchange/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Capabilities Exchange
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../commands/credit_control/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Credit Control
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../commands/device_watchdog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Device Watchdog
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../commands/disconnect_peer/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Disconnect Peer
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../commands/re_auth/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Re Auth
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../commands/session_termination/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Session Termination
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../commands/other_commands/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Other
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../node/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Node
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Peer
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Peer
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#diameter.node.peer.PEER_CLOSED" class="md-nav__link">
+    <span class="md-ellipsis">
+      PEER_CLOSED
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#diameter.node.peer.PEER_CLOSING" class="md-nav__link">
+    <span class="md-ellipsis">
+      PEER_CLOSING
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#diameter.node.peer.PEER_CONNECTED" class="md-nav__link">
+    <span class="md-ellipsis">
+      PEER_CONNECTED
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#diameter.node.peer.PEER_CONNECTING" class="md-nav__link">
+    <span class="md-ellipsis">
+      PEER_CONNECTING
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#diameter.node.peer.PEER_DISCONNECTING" class="md-nav__link">
+    <span class="md-ellipsis">
+      PEER_DISCONNECTING
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#diameter.node.peer.PEER_READY" class="md-nav__link">
+    <span class="md-ellipsis">
+      PEER_READY
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#diameter.node.peer.PEER_READY_WAITING_DWA" class="md-nav__link">
+    <span class="md-ellipsis">
+      PEER_READY_WAITING_DWA
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#diameter.node.peer.PEER_RECV" class="md-nav__link">
+    <span class="md-ellipsis">
+      PEER_RECV
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#diameter.node.peer.PEER_SEND" class="md-nav__link">
+    <span class="md-ellipsis">
+      PEER_SEND
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#diameter.node.peer.PEER_TRANSPORT_SCTP" class="md-nav__link">
+    <span class="md-ellipsis">
+      PEER_TRANSPORT_SCTP
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#diameter.node.peer.PEER_TRANSPORT_TCP" class="md-nav__link">
+    <span class="md-ellipsis">
+      PEER_TRANSPORT_TCP
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#diameter.node.peer.Peer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Peer
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Peer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.Peer.cea_timeout" class="md-nav__link">
+    <span class="md-ellipsis">
+      cea_timeout
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.Peer.cer_timeout" class="md-nav__link">
+    <span class="md-ellipsis">
+      cer_timeout
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.Peer.connection" class="md-nav__link">
+    <span class="md-ellipsis">
+      connection
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.Peer.counters" class="md-nav__link">
+    <span class="md-ellipsis">
+      counters
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.Peer.disconnected_since" class="md-nav__link">
+    <span class="md-ellipsis">
+      disconnected_since
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.Peer.dwa_timeout" class="md-nav__link">
+    <span class="md-ellipsis">
+      dwa_timeout
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.Peer.idle_timeout" class="md-nav__link">
+    <span class="md-ellipsis">
+      idle_timeout
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.Peer.ip_addresses" class="md-nav__link">
+    <span class="md-ellipsis">
+      ip_addresses
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.Peer.last_connect" class="md-nav__link">
+    <span class="md-ellipsis">
+      last_connect
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.Peer.last_disconnect" class="md-nav__link">
+    <span class="md-ellipsis">
+      last_disconnect
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.Peer.node_name" class="md-nav__link">
+    <span class="md-ellipsis">
+      node_name
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.Peer.persistent" class="md-nav__link">
+    <span class="md-ellipsis">
+      persistent
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.Peer.port" class="md-nav__link">
+    <span class="md-ellipsis">
+      port
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.Peer.realm_name" class="md-nav__link">
+    <span class="md-ellipsis">
+      realm_name
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.Peer.reconnect_wait" class="md-nav__link">
+    <span class="md-ellipsis">
+      reconnect_wait
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.Peer.transport" class="md-nav__link">
+    <span class="md-ellipsis">
+      transport
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#diameter.node.peer.PeerConnection" class="md-nav__link">
+    <span class="md-ellipsis">
+      PeerConnection
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PeerConnection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.PeerConnection.acct_application_ids" class="md-nav__link">
+    <span class="md-ellipsis">
+      acct_application_ids
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.PeerConnection.auth_application_ids" class="md-nav__link">
+    <span class="md-ellipsis">
+      auth_application_ids
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.PeerConnection.dwa_wait_time" class="md-nav__link">
+    <span class="md-ellipsis">
+      dwa_wait_time
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.PeerConnection.hop_by_hop_seq" class="md-nav__link">
+    <span class="md-ellipsis">
+      hop_by_hop_seq
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.PeerConnection.host_identity" class="md-nav__link">
+    <span class="md-ellipsis">
+      host_identity
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.PeerConnection.host_ip_address" class="md-nav__link">
+    <span class="md-ellipsis">
+      host_ip_address
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.PeerConnection.ident" class="md-nav__link">
+    <span class="md-ellipsis">
+      ident
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.PeerConnection.ip" class="md-nav__link">
+    <span class="md-ellipsis">
+      ip
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.PeerConnection.is_receiver" class="md-nav__link">
+    <span class="md-ellipsis">
+      is_receiver
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.PeerConnection.is_sender" class="md-nav__link">
+    <span class="md-ellipsis">
+      is_sender
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.PeerConnection.is_waiting_for_dwa" class="md-nav__link">
+    <span class="md-ellipsis">
+      is_waiting_for_dwa
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.PeerConnection.last_read_since" class="md-nav__link">
+    <span class="md-ellipsis">
+      last_read_since
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.PeerConnection.message_handler" class="md-nav__link">
+    <span class="md-ellipsis">
+      message_handler
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.PeerConnection.node_name" class="md-nav__link">
+    <span class="md-ellipsis">
+      node_name
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.PeerConnection.origin_host" class="md-nav__link">
+    <span class="md-ellipsis">
+      origin_host
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.PeerConnection.port" class="md-nav__link">
+    <span class="md-ellipsis">
+      port
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.PeerConnection.socket_fileno" class="md-nav__link">
+    <span class="md-ellipsis">
+      socket_fileno
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.PeerConnection.socket_proto" class="md-nav__link">
+    <span class="md-ellipsis">
+      socket_proto
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.PeerConnection.state" class="md-nav__link">
+    <span class="md-ellipsis">
+      state
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.PeerConnection.add_in_bytes" class="md-nav__link">
+    <span class="md-ellipsis">
+      add_in_bytes()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.PeerConnection.add_out_msg" class="md-nav__link">
+    <span class="md-ellipsis">
+      add_out_msg()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.PeerConnection.close" class="md-nav__link">
+    <span class="md-ellipsis">
+      close()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.PeerConnection.demand_attention" class="md-nav__link">
+    <span class="md-ellipsis">
+      demand_attention()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.PeerConnection.remove_out_bytes" class="md-nav__link">
+    <span class="md-ellipsis">
+      remove_out_bytes()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.PeerConnection.reset_last_dwa" class="md-nav__link">
+    <span class="md-ellipsis">
+      reset_last_dwa()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.PeerConnection.reset_last_dwr" class="md-nav__link">
+    <span class="md-ellipsis">
+      reset_last_dwr()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.PeerConnection.reset_last_message" class="md-nav__link">
+    <span class="md-ellipsis">
+      reset_last_message()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.node.peer.PeerConnection.reset_last_read" class="md-nav__link">
+    <span class="md-ellipsis">
+      reset_last_read()
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#diameter.node.peer.PeerCounters" class="md-nav__link">
+    <span class="md-ellipsis">
+      PeerCounters
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../application/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Application
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../utilities/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Node utilities
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+  <h1>Peer</h1>
+
+<p>API reference for <code>diameter.node.peer</code>.</p>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+
+  <div class="doc doc-contents first">
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h2 id="diameter.node.peer.PEER_CLOSED" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">PEER_CLOSED</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#diameter.node.peer.PEER_CLOSED" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">PEER_CLOSED</span> <span class="o">=</span> <span class="mi">28</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>PeerConnection has closed connection.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h2 id="diameter.node.peer.PEER_CLOSING" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">PEER_CLOSING</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#diameter.node.peer.PEER_CLOSING" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">PEER_CLOSING</span> <span class="o">=</span> <span class="mi">27</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>PeerConnection is about to be closed; it will no longer read any messages and will
+close its socket as soon as the write buffer has been emptied. This state is 
+not part of rfc6733, it is only an internal temporary flag.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h2 id="diameter.node.peer.PEER_CONNECTED" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">PEER_CONNECTED</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#diameter.node.peer.PEER_CONNECTED" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">PEER_CONNECTED</span> <span class="o">=</span> <span class="mi">17</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>PeerConnection has established connection and is waiting for initial CER/CEA to 
+complete.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h2 id="diameter.node.peer.PEER_CONNECTING" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">PEER_CONNECTING</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#diameter.node.peer.PEER_CONNECTING" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">PEER_CONNECTING</span> <span class="o">=</span> <span class="mi">16</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>PeerConnection is in a state waiting for socket to become active.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h2 id="diameter.node.peer.PEER_DISCONNECTING" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">PEER_DISCONNECTING</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#diameter.node.peer.PEER_DISCONNECTING" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">PEER_DISCONNECTING</span> <span class="o">=</span> <span class="mi">26</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>PeerConnection has sent a disconnect-peer-request and is waiting for DPA.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h2 id="diameter.node.peer.PEER_READY" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">PEER_READY</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#diameter.node.peer.PEER_READY" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">PEER_READY</span> <span class="o">=</span> <span class="mi">18</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>PeerConnection is ready to process messages.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h2 id="diameter.node.peer.PEER_READY_WAITING_DWA" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">PEER_READY_WAITING_DWA</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#diameter.node.peer.PEER_READY_WAITING_DWA" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">PEER_READY_WAITING_DWA</span> <span class="o">=</span> <span class="mi">19</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>PeerConnection is ready to process messages, but is waiting for a DWA.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h2 id="diameter.node.peer.PEER_RECV" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">PEER_RECV</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#diameter.node.peer.PEER_RECV" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">PEER_RECV</span> <span class="o">=</span> <span class="mi">1</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>PeerConnection is a server, i.e. receives requests and sends answers.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h2 id="diameter.node.peer.PEER_SEND" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">PEER_SEND</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#diameter.node.peer.PEER_SEND" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">PEER_SEND</span> <span class="o">=</span> <span class="mi">2</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>PeerConnection is a client, i.e. sends requests and receives answers.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h2 id="diameter.node.peer.PEER_TRANSPORT_SCTP" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">PEER_TRANSPORT_SCTP</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#diameter.node.peer.PEER_TRANSPORT_SCTP" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">PEER_TRANSPORT_SCTP</span> <span class="o">=</span> <span class="mi">11</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>PeerConnection connection is via SCTP.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h2 id="diameter.node.peer.PEER_TRANSPORT_TCP" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">PEER_TRANSPORT_TCP</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#diameter.node.peer.PEER_TRANSPORT_TCP" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">PEER_TRANSPORT_TCP</span> <span class="o">=</span> <span class="mi">10</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>PeerConnection connection is via TCP.</p>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="diameter.node.peer.Peer" class="doc doc-heading">
+          <span class="doc doc-object-name doc-class-name">Peer</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+<a href="#diameter.node.peer.Peer" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+  <div class="doc doc-contents ">
+
+  
+      <p>Single configured or known peer.</p>
+<p>Collects all settings and a few timers for a single peer. The node collects
+one instance of <code>Peer</code> for every configured peer, or every discovered
+unknown peer. There exists one peer for each FQDN. An instance of <code>Peer</code>
+exists whether the peer is currently connected or not. The state peer
+connectivity is determined by the <code>connection</code> attribute.</p>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="diameter.node.peer.Peer.cea_timeout" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">cea_timeout</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#diameter.node.peer.Peer.cea_timeout" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">cea_timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Timeout waiting for a CEA after sending a CER. If no CEA is received 
+within this timeframe, the connection to the peer is closed.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="diameter.node.peer.Peer.cer_timeout" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">cer_timeout</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#diameter.node.peer.Peer.cer_timeout" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">cer_timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Timeout waiting for a CER after receiving a connection attempt. If the 
+peer does not send a CER within this timeframe, the connection is closed.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="diameter.node.peer.Peer.connection" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">connection</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#diameter.node.peer.Peer.connection" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">connection</span><span class="p">:</span> <span class="n">PeerConnection</span> <span class="o">=</span> <span class="kc">None</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>The actual, current connection to the peer. If the peer is not 
+connected, the value will be <code>None</code>. Note that even if the peer may be 
+connected, the actual connection readiness is determined by the 
+<a class="autorefs autorefs-internal" href="#diameter.node.peer.PeerConnection.state"><code>Peer.connection.state</code></a> 
+attribute.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="diameter.node.peer.Peer.counters" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">counters</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#diameter.node.peer.Peer.counters" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">counters</span><span class="p">:</span> <span class="n">PeerCounters</span> <span class="o">=</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">field</span><span class="p">(</span>
+</span><span id="__span-0-2">    <span class="n">default_factory</span><span class="o">=</span><span class="n">PeerCounters</span>
+</span><span id="__span-0-3"><span class="p">)</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Peer statistics.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="diameter.node.peer.Peer.disconnected_since" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">disconnected_since</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#diameter.node.peer.Peer.disconnected_since" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">disconnected_since</span><span class="p">:</span> <span class="nb">int</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Time since last disconnect, as seconds. If the peer has never been
+disconnected, the value -1 is returned.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="diameter.node.peer.Peer.dwa_timeout" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">dwa_timeout</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#diameter.node.peer.Peer.dwa_timeout" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">dwa_timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Timeout waiting for a DWA after sending a DWR. If no DWA is received 
+within this timeframe, the connection to the peer is closed.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="diameter.node.peer.Peer.idle_timeout" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">idle_timeout</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#diameter.node.peer.Peer.idle_timeout" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">idle_timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Time spent idle before a DWR is triggered.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="diameter.node.peer.Peer.ip_addresses" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">ip_addresses</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#diameter.node.peer.Peer.ip_addresses" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">ip_addresses</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>A list of IP addresses configured for the peer.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="diameter.node.peer.Peer.last_connect" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">last_connect</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#diameter.node.peer.Peer.last_connect" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">last_connect</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Unix timestamp of last successful connect.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="diameter.node.peer.Peer.last_disconnect" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">last_disconnect</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#diameter.node.peer.Peer.last_disconnect" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">last_disconnect</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Unix timestamp of last disconnect.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="diameter.node.peer.Peer.node_name" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">node_name</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#diameter.node.peer.Peer.node_name" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">node_name</span><span class="p">:</span> <span class="nb">str</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Configured node name.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="diameter.node.peer.Peer.persistent" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">persistent</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#diameter.node.peer.Peer.persistent" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">persistent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Indicates that the connection to the peer is automatically established,
+at Node startup and at connection lost (see <code>reconnect_wait</code> timer). A 
+connection is automatically established regardless of whether the node acts 
+as a server or a client.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="diameter.node.peer.Peer.port" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">port</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#diameter.node.peer.Peer.port" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">port</span><span class="p">:</span> <span class="nb">int</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Port number is always set, even if the peer has not been configured 
+for outgoing connections. It defaults to 3868.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="diameter.node.peer.Peer.realm_name" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">realm_name</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#diameter.node.peer.Peer.realm_name" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">realm_name</span><span class="p">:</span> <span class="nb">str</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Configured realm name.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="diameter.node.peer.Peer.reconnect_wait" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">reconnect_wait</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#diameter.node.peer.Peer.reconnect_wait" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">reconnect_wait</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Time waited before a reconnect is attempted for a persistent peer.
+The wait time is only applied in a scenario where the peer connection has
+failed least once and has the <code>persistent</code> attribute enabled. If the
+peer has not yet (ever) been disconnected, a connection attempt is made
+immediately.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="diameter.node.peer.Peer.transport" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">transport</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#diameter.node.peer.Peer.transport" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">transport</span><span class="p">:</span> <span class="nb">int</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Transport method, either <code>PEER_TRANSPORT_TCP</code> or 
+<code>PEER_TRANSPORT_SCTP</code>.</p>
+  </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="diameter.node.peer.PeerConnection" class="doc doc-heading">
+          <span class="doc doc-object-name doc-class-name">PeerConnection</span>
+
+
+<a href="#diameter.node.peer.PeerConnection" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">PeerConnection</span><span class="p">(</span>
+</span><span id="__span-0-2">    <span class="n">peer_ip</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-0-3">    <span class="n">peer_port</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-0-4">    <span class="n">peer_direction</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-0-5">    <span class="n">interrupt_fileno</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-0-6"><span class="p">)</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+
+  
+      <p>A connection with another diameter node.</p>
+<p>Instances of this class are assigned as the value for the
+<a class="autorefs autorefs-internal" href="#diameter.node.peer.Peer.connection"><code>Peer.connection</code></a> attribute.
+Connections are created and closed by the parent governing diameter node.</p>
+  
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>peer_ip</code></td>
+          <td>
+                <code>list[str] | str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Either a list of possible IP addresses to connect to, or
+an individual IP address that the connection socket is already
+connected with.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>peer_port</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Peer connection port number</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>peer_direction</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Indicates whether the connection is either a
+receiving or a sending instance</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>interrupt_fileno</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>A write socket/pipe file number that this
+connection will write its connection ID every time it needs
+attention. This occurs most often when the connection has
+something to write and needs to wake up the parent node's
+<code>select</code> sleep.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="diameter.node.peer.PeerConnection.acct_application_ids" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">acct_application_ids</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#diameter.node.peer.PeerConnection.acct_application_ids" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">acct_application_ids</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>List of supported accounting application IDs for this peer. The 
+list is populated when CER/CEA has been completed and will be used by 
+the node to route messages to their proper applications.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="diameter.node.peer.PeerConnection.auth_application_ids" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">auth_application_ids</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#diameter.node.peer.PeerConnection.auth_application_ids" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">auth_application_ids</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>List of supported authentication application IDs for this peer. The 
+list is populated when CER/CEA has been completed and will be used by 
+the node to route messages to their proper applications.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="diameter.node.peer.PeerConnection.dwa_wait_time" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">dwa_wait_time</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#diameter.node.peer.PeerConnection.dwa_wait_time" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">dwa_wait_time</span><span class="p">:</span> <span class="nb">int</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Time spent waiting for DWA, in seconds. If no DWR has been sent,
+returns zero.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="diameter.node.peer.PeerConnection.hop_by_hop_seq" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">hop_by_hop_seq</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#diameter.node.peer.PeerConnection.hop_by_hop_seq" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">hop_by_hop_seq</span> <span class="o">=</span> <span class="n">SequenceGenerator</span><span class="p">()</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>A sequence generator that will produce unique hop-by-hop IDs. Use 
+<code>PeerConnection.hop_by_hop_seq.next_sequence()</code> to retrieve the next 
+ID.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="diameter.node.peer.PeerConnection.host_identity" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">host_identity</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#diameter.node.peer.PeerConnection.host_identity" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">host_identity</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Resolved peer host ID. Will be set after CER/CEA has taken place.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="diameter.node.peer.PeerConnection.host_ip_address" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">host_ip_address</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#diameter.node.peer.PeerConnection.host_ip_address" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">host_ip_address</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Node's host IP addresses, resolved at the time of peer creation.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="diameter.node.peer.PeerConnection.ident" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">ident</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#diameter.node.peer.PeerConnection.ident" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">ident</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;00&#39;</span> <span class="o">*</span> <span class="mi">6</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>A unique (for the lifetime of the parent node) connection 
+identifier, a 6-byte long hexadecimal string.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="diameter.node.peer.PeerConnection.ip" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">ip</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#diameter.node.peer.PeerConnection.ip" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">ip</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">peer_ip</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>The actual peer IP address(es) that the connection socket is 
+connected with.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="diameter.node.peer.PeerConnection.is_receiver" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">is_receiver</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#diameter.node.peer.PeerConnection.is_receiver" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">is_receiver</span><span class="p">:</span> <span class="nb">bool</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Indicates the direction of connectivity. A receiver is a connection
+that has been established by a foreign peer, towards us. A receiver
+can both send and receive diameter messages, this property affects
+mostly only the CER/CEA procedure.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="diameter.node.peer.PeerConnection.is_sender" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">is_sender</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#diameter.node.peer.PeerConnection.is_sender" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">is_sender</span><span class="p">:</span> <span class="nb">bool</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Indicates the direction of connectivity. A sender is a connection
+that has been by our node, towards a foreign peer. A sender can both
+send and receive diameter messages, this property affects mostly only
+the CER/CEA procedure.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="diameter.node.peer.PeerConnection.is_waiting_for_dwa" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">is_waiting_for_dwa</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#diameter.node.peer.PeerConnection.is_waiting_for_dwa" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">is_waiting_for_dwa</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Indicates that the connection is in a waiting-for-DWA state.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="diameter.node.peer.PeerConnection.last_read_since" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">last_read_since</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#diameter.node.peer.PeerConnection.last_read_since" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">last_read_since</span><span class="p">:</span> <span class="nb">int</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Seconds since bytes were last receveid from the network.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="diameter.node.peer.PeerConnection.message_handler" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">message_handler</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#diameter.node.peer.PeerConnection.message_handler" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">message_handler</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">PeerConnection</span><span class="p">,</span> <span class="n">_AnyMessageType</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span> <span class="p">,</span> <span class="p">:</span> <span class="kc">None</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>A callback function that will be called each time a diameter 
+message is received. This should always be <code>Node._receive_message</code>.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="diameter.node.peer.PeerConnection.node_name" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">node_name</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#diameter.node.peer.PeerConnection.node_name" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">node_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Configured node name. Is set for every known peer and should always 
+equal <code>host_identity</code>. If connections from unknown peers are accepted,
+this attribute remains always empty.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="diameter.node.peer.PeerConnection.origin_host" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">origin_host</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#diameter.node.peer.PeerConnection.origin_host" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">origin_host</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>The value that will be used in sent requests, in the Host-Origin 
+AVP.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="diameter.node.peer.PeerConnection.port" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">port</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#diameter.node.peer.PeerConnection.port" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">peer_port</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>The peer connection socket port.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="diameter.node.peer.PeerConnection.socket_fileno" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">socket_fileno</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#diameter.node.peer.PeerConnection.socket_fileno" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">socket_fileno</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>The ID of the underlying socket. The peer does not hold the socket 
+itself, only the ID. The sockets are tracked by the parent node.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="diameter.node.peer.PeerConnection.socket_proto" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">socket_proto</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#diameter.node.peer.PeerConnection.socket_proto" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">socket_proto</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Connected socket protocol, either PEER_TRANSPORT_TCP or 
+PEER_TRANSPORT_SCTP.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="diameter.node.peer.PeerConnection.state" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">state</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#diameter.node.peer.PeerConnection.state" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">state</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">PEER_CLOSED</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>The current peer state, one of <code>PEER_*</code> constants. The peer will 
+go through a transition of CONNECTING - CONNECTED - READY and will not
+handle any messages until the READY state has been reached.</p>
+  </div>
+
+</div>
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="diameter.node.peer.PeerConnection.add_in_bytes" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">add_in_bytes</span>
+
+
+<a href="#diameter.node.peer.PeerConnection.add_in_bytes" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">add_in_bytes</span><span class="p">(</span><span class="n">read_bytes</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Add network-received bytes to parse and handle.</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>read_bytes</code></td>
+          <td>
+                <code>bytes</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>A byte string. Does not have to contain a complete
+message; the connection will buffer received bytes internally,
+until at least one valid message has been received</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="diameter.node.peer.PeerConnection.add_out_msg" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">add_out_msg</span>
+
+
+<a href="#diameter.node.peer.PeerConnection.add_out_msg" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">add_out_msg</span><span class="p">(</span><span class="n">out_msg</span><span class="p">:</span> <span class="n">_AnyMessageType</span><span class="p">)</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Add an outgoing Diameter message to send to network.</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>out_msg</code></td>
+          <td>
+                <code><span title="diameter.node.peer._AnyMessageType">_AnyMessageType</span></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>A message to send back towards the network. The message
+is queued internally and sent out as soon as possible. Messages
+are processed in the order that they were added.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="diameter.node.peer.PeerConnection.close" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">close</span>
+
+
+<a href="#diameter.node.peer.PeerConnection.close" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">close</span><span class="p">(</span><span class="n">signal_node</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Close the peer connection.</p>
+<p>Sets peer connection state as closed and signals parent Node to close
+the underlying socket. Also stops processing input and output bytes
+immediately.</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>signal_node</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Send a signal to parent node so that it knows that the
+underlying socket should be closed. Should always be set to
+True, unless the socket has already been closed, before
+shutting down the peer.</p>
+            </div>
+          </td>
+          <td>
+                <code>True</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="diameter.node.peer.PeerConnection.demand_attention" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">demand_attention</span>
+
+
+<a href="#diameter.node.peer.PeerConnection.demand_attention" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">demand_attention</span><span class="p">()</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Signal parent node that data can be sent or read for this peer.</p>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="diameter.node.peer.PeerConnection.remove_out_bytes" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">remove_out_bytes</span>
+
+
+<a href="#diameter.node.peer.PeerConnection.remove_out_bytes" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">remove_out_bytes</span><span class="p">(</span><span class="n">sent_bytes</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Remove a given amount of bytes from outgoing buffer.</p>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="diameter.node.peer.PeerConnection.reset_last_dwa" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">reset_last_dwa</span>
+
+
+<a href="#diameter.node.peer.PeerConnection.reset_last_dwa" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">reset_last_dwa</span><span class="p">()</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Mark that a DWA has been received.</p>
+<p>Resets the timer that starts counting from a sent DWR. If no DWA is
+received within the configured timeout period, the peer connection is
+closed.</p>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="diameter.node.peer.PeerConnection.reset_last_dwr" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">reset_last_dwr</span>
+
+
+<a href="#diameter.node.peer.PeerConnection.reset_last_dwr" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">reset_last_dwr</span><span class="p">()</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Mark that a DWR has been sent.</p>
+<p>Starts the DWA wait timer and changes connection state to
+PEER_READY_WAITING_DWA.</p>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="diameter.node.peer.PeerConnection.reset_last_message" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">reset_last_message</span>
+
+
+<a href="#diameter.node.peer.PeerConnection.reset_last_message" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">reset_last_message</span><span class="p">()</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Mark that a full diameter message has been received.</p>
+<p>Resets the internal idle counter.</p>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="diameter.node.peer.PeerConnection.reset_last_read" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">reset_last_read</span>
+
+
+<a href="#diameter.node.peer.PeerConnection.reset_last_read" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">reset_last_read</span><span class="p">()</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Mark that bytes have been received from the network.</p>
+<p>Resets the internal idle counter.</p>
+
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="diameter.node.peer.PeerCounters" class="doc doc-heading">
+          <span class="doc doc-object-name doc-class-name">PeerCounters</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+<a href="#diameter.node.peer.PeerCounters" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+  <div class="doc doc-contents ">
+
+  
+      <p>Peer message counters.</p>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "toc.follow", "toc.integrate"], "search": "../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7c377c4.min.js"></script>
+      
+    
+  </body>
+</html>
