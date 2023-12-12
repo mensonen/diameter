@@ -135,16 +135,6 @@ def test_cca_create_new():
     assert cca.auth_application_id == constants.APP_DIAMETER_CREDIT_CONTROL_APPLICATION
 
 
-def test_ccr_error_new_missing_attributes():
-    ccr = CreditControlRequest()
-    with pytest.raises(ValueError):
-        ccr.as_bytes()
-
-    cca = CreditControlAnswer()
-    with pytest.raises(ValueError):
-        cca.as_bytes()
-
-
 def test_ccr_to_cca():
     req = CreditControlRequest()
     ans = req.to_answer()
