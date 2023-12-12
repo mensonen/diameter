@@ -1,16 +1,21 @@
 [build-system]
-requires = ["setuptools"]
+requires = ["setuptools", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "diameter"
-description = "A python library for parsing and creating Diameter messages"
+description = "A diameter stack implemented in python"
 readme = "README.md"
 license = {file = "LICENSE"}
-version = "0.1.1"
 requires-python = ">= 3.11"
+authors = [
+    {name = "Mikko Mensonen"}
+]
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 3 - Alpha",
     "Programming Language :: Python :: 3.11",
     "Topic :: Communications :: Telephony"
 ]
+dynamic = ["version"]
+
+[tool.setuptools_scm]
