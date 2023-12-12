@@ -1,0 +1,76 @@
+site_name: Python Diameter Stack
+repo_url: https://github.com/mensonen/diameter
+theme:
+  name: "material"
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: black
+      accent: blue
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: black
+      accent: blue
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  features:
+    - navigation.indexes
+    - toc.follow
+    - toc.integrate
+nav:
+  - Home: index.md
+  - Installation: setup.md
+  - User Guide:
+    - Working with AVPs: guide/avp.md
+    - Working with messages: guide/message.md
+    - Creating nodes and connecting to peers: guide/node.md
+    - Writing diameter applications: guide/application.md
+  - API Refrence:
+    - AVP: api/message_avp.md
+    - Message: api/message.md
+    - Commands:
+      - Abort Session: api/commands/abort_session.md
+      - Accounting: api/commands/accounting.md
+      - Capabilities Exchange: api/commands/capabilities_exchange.md
+      - Credit Control: api/commands/credit_control.md
+      - Device Watchdog: api/commands/device_watchdog.md
+      - Disconnect Peer: api/commands/disconnect_peer.md
+      - Re Auth: api/commands/re_auth.md
+      - Session Termination: api/commands/session_termination.md
+      - Other: api/commands/other_commands.md
+    - Node: api/node.md
+    - Peer: api/peer.md
+    - Application: api/application.md
+    - Node utilities: api/utilities.md
+plugins:
+- search
+- autorefs
+- mkdocstrings:
+    default_handler: python
+    handlers:
+      python:
+        options:
+          docstring_options:
+            ignore_init_summary: true
+          merge_init_into_class: true
+          docstring_style: google
+          show_source: false
+          separate_signature: true
+          show_signature_annotations: true
+          line_length: 70
+watch:
+  - src
+markdown_extensions:
+  - def_list
+  - pymdownx.highlight:
+      guess_lang: true
+      stripnl: false
+      line_spans: __span
+  - pymdownx.superfences
+  - admonition
+  - toc:
+      permalink: true

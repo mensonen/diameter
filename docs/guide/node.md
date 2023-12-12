@@ -1,0 +1,333 @@
+# Connecting to Diameter Peers
+
+The `diameter` module provides tools to connect to multiple diameter peers 
+within the same diameter realm, with automated CER/CEA, DWR/DWA and DPR/DPA 
+handling, and message routing to local applications.
+
+The diameter node implementation supports both TCP and SCTP transports. It does
+not support secure transports.
+
+
+## Diameter Node
+
+A diameter node represents the local diameter peer. It can be either a server,
+or a client, with the only difference being in the applications that want to 
+receive requests (server) and applications that want to send requests (client)
+through the node.
+
+In both cases, the diameter node is the same and it will handle messages 
+flowing in both directions.
+
+
+### Basic client usage
+
+A basic node that acts as a client is constructed with [`Node`][diameter.node.Node].
+
+```python
+from diameter.node import Node
+
+node = Node("peername.gy", "realm.net")
+```
+
+A client node with no other arguments than the origin host and the local realm
+name will connect to any other peer and will advertise support for every vendor
+known to the `diameter` package. If necessary, the list of advertised vendors
+can be limited with:
+
+```python
+from diameter.message.constants import *
+from diameter.node import Node
+
+node = Node("peername.gy", "realm.net",
+            vendor_ids=[VENDOR_ETSI, VENDOR_TGPP, VENDOR_TGPP2])
+```
+
+A node will only establish outgoing connections to known peers. Each peer must
+be added individually:
+
+```python
+from diameter.node import Node
+
+node = Node("peername.gy", "realm.net")
+node.add_peer("aaa://ocs1.gy", "realm.net", 
+              ip_addresses=["10.16.0.7"])
+node.add_peer("aaa://ocs2.gy;transport=sctp", "realm.net", 
+              ip_addresses=["10.16.0.8", "10.16.5.8"], is_persistent=True)
+```
+
+Adding a peer as `persistent` will result in the node establishing an outgoing 
+connection at startup and ensuring that the connection remains up, by 
+reconnecting after connection loss, if necessary. A peer that is not set as 
+persistent will never be automatically connected to. 
+
+Adding a peer without specifying its ip addresses will only make the peer 
+"known"; no outgoing connection is ever attempted and the initial connection 
+must be made by the peer themselves, towards our node (for this the node must 
+[act as a server](#starting-a-server)).
+
+Peers must be added using a "DiameterURI" syntax, consisting of a scheme, peer
+FQDN, a connection port and transport protocol. Valid URIs are for instance:
+
+ * aaa://node1.gy;3868;transport=tcp
+ * aaa://node1.gy;9009;transport=sctp
+
+If not specified, a peer defaults `tcp` over  port `3868`. The FQDN of the peer
+should not contain the realm name.
+
+After one or more peers have been configured, it must be started with 
+[`start`][diameter.node.Node.start] and stopped with 
+[`stop`][diameter.node.Node.start]. When started, the node will establish an 
+outgoing connection with every connected peer and perform a CER/CEA message 
+exchange. When stopped, the node sends a DPR towards every connected peer.
+
+```python
+from diameter.node import Node
+
+node = Node("peername.gy", "realm.net")
+node.start()
+# wait
+node.stop()
+```
+
+For sending diameter messages through the node, see 
+[writing diameter applications](application.md).
+
+
+### Starting a server
+
+Operating a node as a server is near-identical to starting a node as a client.
+The main difference is, that a server will be listening for incoming 
+connections on local socket(s):
+
+```python
+from diameter.message.constants import *
+from diameter.node import Node
+
+node = Node("peername.gy", "realm.net",
+            ip_addresses=["10.17.20.9", "172.16.13.9"],
+            tcp_port=3868,
+            sctp_port=3868,
+            vendor_ids=[VENDOR_ETSI, VENDOR_TGPP, VENDOR_TGPP2])
+node.start()
+```
+
+The node can handle both TCP and SCTP transports simultaneously. More than one
+IP address can be provided for SCTP multi-homing. The same address list is 
+used for both TCP and SCTP. If more than one address is provided and only a 
+`tcp_port` is given, the node will only listen on the first address of the list.
+
+For sending and receiving diameter messages through the node, see 
+[writing diameter applications](application.md).
+
+
+### Node attributes
+
+A node has several attributes that can be used or altered after its creation:
+
+`vendor_id`
+:   The vendor ID that node will advertise in every CER and CEA. Defaults to 
+    99999, i.e. "Unknown". Can be changed at any time, though preferably before
+    `Node.start()` is called.
+
+`product_name`
+:   The product name that the noed will advertise in CER and CEA. Defaults to 
+    "python-diameter". Can be changed at any time, though preferably before
+    `Node.start()` is called.
+
+`cea_timeout`
+:   Default time in seconds that the node will wait for a CEA to arrive after
+    sending a CER. This can also be set individually for each peer.
+
+`cer_timeout`
+:   Default time in seconds that the node will wait for a CER to arrive after
+    a connection attempt is received. This can also be set individually for 
+    each peer.
+
+`dwa_timeout`
+:   Default time in seconds that the node will wait for a DWA to arrive after
+    a DWR has been sent. This can also be set individually for each peer.
+
+`idle_timeout`
+:   Default time of peer inactivity, in seconds that the node will accept 
+    before a DWR will be sent. This can also be set individually for each peer.
+
+`end_to_end_seq`
+:   The end-to-end identifier generator. This must be used every time a new 
+    request message is to be sent through the node:
+
+    ```python
+    n = Node()
+    m = Message()
+    m.header.end_to_end_identifier = n.end_to_end_seq.next_sequence()
+    ```
+
+    Note that when working with [applications](application.md), the end-to-end 
+    identifier will be set automatically for every outgoing request.
+
+`session_generator`
+:   A generator that produces "globally and eternally unique" IDs, as required
+    by rfc6733. The produced session IDs consist of the node's diameter 
+    identity, a node startup timestamp and a 64-bit counter that is increased by
+    one for each session ID and is initialised to a random integer at node 
+    startup.
+
+    ```pycon
+    >>> n = Node("test1.gy")
+    >>> n.session_generator.next_id()
+    test1.gy;6571a525;5bd295f2;6c76d6b6
+    >>> n.session_generator.next_id()
+    test1.gy;6571a525;5bd295f2;6c76d6b7
+    ```
+
+`peers`
+:   Contains a dictionary of all peers known to the node, both those that have 
+    been configured manually using `add_peer` and those that have been 
+    discovered. The dictionary holds host identities as strings as its keys and
+    instances of [`Peer`][diameter.node.peer.Peer] as its values.
+
+
+## Diameter peer
+
+An instance of [`Peer`][diameter.node.peer.Peer] represents a single diameter
+peer, other than the local peer. The local diameter node collects one instance
+of `Peer` for each connection that it either makes, receives, will connect to
+or will accept a connection from.
+
+An instance of a peer is returned every time 
+[`Node.add_peer`][diameter.node.Node.add_peer] is called:
+
+```python
+from diameter.node import Node
+
+node = Node("peername.gy", "realm.net")
+peer = node.add_peer("aaa://ocs2.gy;transport=sctp", "realm.net", 
+                     ip_addresses=["10.16.0.8", "10.16.5.8"])
+```
+
+A configured peer can be passed on to [a diameter application](application.md).
+
+An instance of a peer will exist always, whether the peer is connected or not.
+The connectivity of the peer is indicated by the 
+[`Peer.connection`][diameter.node.peer.Peer.connection] instance attribute, 
+which holds an instance of a [`PeerConnection`][diameter.node.peer.PeerConnection] 
+if the peer is currently connected, otherwise `None`.
+
+
+### Peer attributes
+
+Peers have several attributes that can be queried and/or altered after creation:
+
+`cea_timeout`
+:   Time in seconds that the node will wait for a CEA to arrive for the peer 
+    after sending a CER. Not set by default, uses the values configured for the
+    node.
+
+`cer_timeout`
+:   Default time in seconds that the node will wait for a CER to arrive for
+    the peer after a connection attempt is received.  Not set by default, uses 
+    the values configured for the node.
+
+`dwa_timeout`
+:   Default time in seconds that the node will wait for a DWA to arrive for the
+    peer after a DWR has been sent. Not set by default, uses the values 
+    configured for the node.
+
+`idle_timeout`
+:   Time of peer inactivity, in seconds that the node will accept before a DWR 
+    will be sent. Not set by default, uses the values configured for the node.
+
+`reconnect_wait`
+:   Time to wait before attempting a re-connect for a persistent peer. Must be
+    set individually for each peer, there are no default values provided by the
+    node.
+
+`connection`
+:   An instance of `PeerConnection`, if the peer is currently connected.
+
+`counters`
+:   An instance of `PeerCounters`, which counts each CER, CEA, DWR, DWA, DPR,
+    DPA and other app-routed requests and answers individually.
+
+For a full list of instance attributes, see [`Peer API reference`][diameter.node.peer.Peer].
+
+
+### Peer connection attributes
+
+Peer connections have several attributes that can be queried and/or altered 
+after creation:
+
+`auth_application_ids` and `acct_application_ids`
+:   List of authentication and accounting application IDs that have been 
+    determined as the supported application IDs after a CER/CEA has taken place.
+
+`hop_by_hop_seq`
+:   The hop-by-hop identifier generator. This must be used every time a new 
+    request message is to be sent through the peer:
+
+    ```python
+    from diameter.node import Node
+    from diameter.node.peer import PEER_READY_STATES
+
+    n = Node()
+    # just pick any ready peer
+    usable_peers = [
+        peer for peer in node.peers.values()
+        if peer.conenction and peer.connection.state in PEER_READY_STATES]
+    peer = usable_peers[0]
+    m.header.hop_by_hop_identifier = peer.connection.hop_by_hop_seq.next_sequence()
+    ```
+
+    Note that when working with [applications](application.md), the end-to-end 
+    identifier will be set automatically for every outgoing request, when 
+    [`Node.route_request`][diameter.node.Node.route_request] is used.
+
+`state`
+:   The current connection state. One of the `"PEER_*"` constants within 
+    `diameter.node.peer`. A connection will go through state transition
+    "CONNECTING" -> "CONNECTED" -> "READY" -> "DISCONNECTING" -> "CLOSING" -> "CLOSED"
+    and will accept requests and answers from other peers and own applications 
+    when it is "READY". 
+
+    The "ready" state can have several sub-states. When checking readiness, 
+    it should be checked that the `Peer.connection.state` is within 
+    `diameter.peer.PEER_READY_STATES`.
+
+`is_sender` and `is_receiver`
+:   These read-only attributes indicate the direction the original connection
+    was established as. A "receiver" connection is one that was established by
+    a remote peer towards us, a "sender" connection was established by us 
+    towards a remote peer.
+
+For a full list of connection instance attributes, see 
+[`PeerConnection API reference`][diameter.node.peer.PeerConnection].
+
+
+### Sending messages through a peer
+
+Normally incoming and outgoing messages are expected to be handled and 
+generated by [applications](), however a message can also be manually pushed 
+through any connected peer:
+
+```python
+from diameter.message.commands.re_auth import ReAuthRequest
+from diameter.node import Node
+from diameter.node.peer import PEER_READY_STATES
+
+node = Node("peername.gy", "realm.net")
+peer = node.add_peer("aaa://ocs2.gy;transport=sctp", "realm.net", 
+                     ip_addresses=["10.16.0.8", "10.16.5.8"], 
+                     is_persistent=True)
+node.start()
+
+# ideally wait until connection becomes available; the READY state is not 
+# achieved until CER/CEA has completed, which is likely to take a few seconds
+if peer.connection and peer.connection.state in PEER_READY_STATES:
+    rar = ReAuthRequest()
+    rar.header.end_to_end_identifier = node.end_to_end_seq.next_sequence()
+    rar.header.hop_by_hop_identifier = peer.connection.hop_by_hop_seq.next_sequence()
+    rar.session_id = node.session_generator.next_id()
+    # set all other required attributes
+    peer.connection.add_out_msg(rar)
+
+```
+
