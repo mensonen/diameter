@@ -5,9 +5,9 @@ Instances of Applications, or their subclasses, provided by this module can be
 passed directly to an instance of a `Node`, for receiving and sending diameter
 application messages.
 
-In most cases, [SimpleThreadingApplication][diameter.node.application.SimpleThreadingApplication]
-is the most suitable option to use, which will cover the most scenarios without
-requiring any unnecessary setup.
+In most cases, the most suitable option to use is
+[`SimpleThreadingApplication`][diameter.node.application.SimpleThreadingApplication],
+which will cover the most scenarios without requiring any unnecessary setup.
 """
 from __future__ import annotations
 

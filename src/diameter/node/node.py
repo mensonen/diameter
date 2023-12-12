@@ -55,93 +55,33 @@ class NotRoutable(NodeError):
     pass
 
 
-@dataclasses.dataclass
-class PeerCounters:
-    cer: int = 0
-    cea: int = 0
-    dwr: int = 0
-    dwa: int = 0
-    dpr: int = 0
-    dpa: int = 0
-    requests: int = 0
-    answers: int = 0
-
-
-@dataclasses.dataclass
-class PeerConfig:
-    """Configuration settings for a single peer.
-
-    Collects all settings and a few timers for a single peer. Does not
-    represent an actual, connected peer. For connected peers, see
-    [diameter.node.peer.Peer][].
-    """
-    node_name: str
-    """Configured node name."""
-    realm_name: str
-    """Configured realm name."""
-    transport: int
-    """Transport method, either `PEER_TRANSPORT_TCP` or 
-    `PEER_TRANSPORT_SCTP`."""
-    port: int
-    """Port number is always set, even if the peer has not been configured 
-    for outgoing connections."""
-    ip_addresses: list[str] = dataclasses.field(default_factory=list)
-    """A list of IP addresses configured for the peer."""
-    persistent: bool = False
-    """Indicates that the connection to the peer is automatically established,
-    at Node startup and at connection lost (see `reconnect_wait` timer). A 
-    connection is automatically established regardless of whether the node acts 
-    as a server or a client."""
-    peer_ident: str | None = None
-    """An automatically generated 6-byte identifier as a hexadecimal string.
-    Guaranteed to be unique throughout the node lifecycle."""
-    cea_timeout: int = None
-    """Timeout waiting for a CEA after sending a CER. If no CEA is received 
-    within this timeframe, the connection to the peer is closed."""
-    cer_timeout: int = None
-    """Timeout waiting for a CER after receiving a connection attempt. If the 
-    peer does not send a CER within this timeframe, the connection is closed.
-    """
-    dwa_timeout: int = None
-    """Timeout waiting for a DWA after sending a DWR. If no DWA is received 
-    within this timeframe, the connection to the peer is closed."""
-    idle_timeout: int = None
-    """Time spent idle before a DWR is triggered."""
-    reconnect_wait: int = 10
-    """Time waited before a reconnect is attempted for a persistent peer.
-    The wait time is only applied in a scenario where the peer connection has
-    failed least once and has the `persistent` attribute enabled. If the
-    peer has not yet (ever) been disconnected, a connection attempt is made
-    immediately.
-    """
-    last_connect: int = None
-    """Unix timestamp of last successful connect."""
-    last_disconnect: int = None
-    """Unix timestamp of last disconnect."""
-    counters: PeerCounters = dataclasses.field(default_factory=PeerCounters)
-    """Peer statistics."""
-
-    @property
-    def disconnected_since(self) -> int:
-        """Time since last disconnect, as seconds. If the peer has never been
-        disconnected, the value -1 is returned."""
-        if not self.last_disconnect:
-            return -1
-        return int(time.time()) - self.last_disconnect
-
-
 class StatsLogAdapter(logging.LoggerAdapter):
     def log_peers(self):
         if not self.isEnabledFor(logging.DEBUG):
             return
-        peers = [
-            {"node_name": p.node_name, "id": p.ident,
-             "host_identity": p.host_identity, "origin_host": p.origin_host,
-             "host_ip_address": p.host_ip_address, "ip": p.ip, "port": p.port,
-             "state": state_names.get(p.state, "UNKNOWN"),
-             "idle": p.last_read_since, "dwr_sent": p.is_waiting_for_dwa,
-             "dwa_wait_time": p.dwa_wait_time}
-            for p in self.extra["node"].peers.values()]
+        peers = []
+
+        for p in self.extra["node"].peers.values():
+            peer = {
+                "node_name": p.node_name, "connection_id": None,
+                "host_identity": None, "origin_host": None,
+                "host_ip_address": None, "connection_ip": None,
+                "connection_port": None, "state": "DISCONNECTED",
+                "idle": 0, "dwr_sent": False, "dwa_wait_time": False}
+            if p.connection:
+                peer.update({
+                    "connection_id": p.connection.ident,
+                    "host_identity": p.connection.host_identity,
+                    "origin_host": p.connection.origin_host,
+                    "host_ip_address": p.connection.host_ip_address,
+                    "connection_ip": p.connection.ip,
+                    "connection_port": p.connection.port,
+                    "state": state_names.get(p.connection.state, "UNKNOWN"),
+                    "idle": p.connection.last_read_since,
+                    "dwr_sent": p.connection.is_waiting_for_dwa,
+                    "dwa_wait_time": p.connection.dwa_wait_time
+                })
+            peers.append(peer)
         self.debug(f"PEERS={json.dumps(peers)}")
 
 
@@ -164,14 +104,14 @@ class Node:
     TCP address at a time.
 
     The node can connect to multiple peers simultaneously; peers can be added
-    using [Node.add_peer][diameter.node.Node.add_peer]. Both TCP and SCTP
+    using [`Node.add_peer`][diameter.node.Node.add_peer]. Both TCP and SCTP
     transport modes are accepted and can be mixed at will. Peers can be flagged
     as persistent, in which case the Node will periodically attempt to
     reconnect, if a connection is lost.
 
         >>> node = Node()
-        >>> node.add_peer("aaa://dra1.other.net:3868;transport=tcp", "other.net", ["10.16.17.5"])
-        >>> node.add_peer("aaa://dra2.other.net;transport=sctp", "other.net", ["10.16.17.6", "172.16.0.6"])
+        >>> node.add_peer("aaa://dra1.gy:3868;transport=tcp", "realm.net", ["10.16.17.5"])
+        >>> node.add_peer("aaa://dra2.gy;transport=sctp", "realm.net", ["10.16.17.6", "172.16.0.6"])
         >>> node.start()
 
     Any other message than CER/CEA, DWR/DWA and DPR/DPA will be routed to a
@@ -213,16 +153,17 @@ class Node:
 
         """
         self._busy_lock = threading.Lock()
+        self._half_ready_connections: dict[str, PeerConnection] = {}
         self._started = False
         self._stopping = False
         # this represents roughly the routing table described in rfc6733 2.7
         # it's a dictionary of realm names as keys, and route dictionaries as
         # values. Each route dictionary has an app as a key and a list of
-        # PeerConfig instances as a value. It als contains one app entry with
+        # Peer instances as a value. It als contains one app entry with
         # string value "_default", which is a list of default peers for the
         # realm (slight deviation of the standard). Note that the realm is
         # always `Node.realm_name` as the node cannot function as a relay.
-        self._peer_routes: dict[str, dict[Application | str, list[PeerConfig]]] = {
+        self._peer_routes: dict[str, dict[Application | str, list[Peer]]] = {
             realm_name: {"_default": []}
         }
         self._app_waiting_answer: dict[str, Application] = {}
@@ -276,14 +217,15 @@ class Node:
         self.stats_logger: StatsLogAdapter = StatsLogAdapter(
             logging.getLogger("diameter.stats"), extra={"node": self})
 
-        self.configured_peers: dict[str, PeerConfig] = {}
-        """Currently configured peers."""
         self.peers: dict[str, Peer] = {}
-        """Currently handled peer connectins."""
+        """All currently known peers as a dictionary of host identities as 
+        keys and instances of `Peer` as values.."""
+        self.connections: dict[str, PeerConnection] = {}
+        """Currently handled peer connections."""
         self.peer_sockets: dict[str, socket.socket | sctp.sctpsocket] = {}
         """Currently held sockets, one for each peer connection."""
-        self.socket_peers: dict[int, Peer] = {}
-        """Peer lookup based on socket fileno."""
+        self.socket_peers: dict[int, PeerConnection] = {}
+        """Peer connection lookup based on socket fileno."""
         self.applications: list[Application] = []
         """List of configured applications."""
 
@@ -302,42 +244,93 @@ class Node:
         return set(a.application_id for a in self.applications
                    if a.is_acct_application)
 
-    def _add_peer_connection(self, peer: Peer,
+    def _add_peer_connection(self, conn: PeerConnection,
                              peer_socket: socket.socket | sctp.sctpsocket,
                              proto: int) -> str | None:
-        """Record a connected peer."""
+        """Record new connection.
+
+        Args:
+            conn: A peer connection instance. If the connection instance
+                contains a value for `node_name`, the connection is also
+                assigned as the value for the `connection` attribute for a
+                matching `Peer` instance. If there is no node name known yet,
+                the assignment will take place after CER/CEA has completed.
+            peer_socket: The socket instance for the connection
+            proto: Connection protocol identifier
+
+        Returns:
+            Either a peer connection unique ID, or `None` if no connection was
+                accepted.
+
+        """
         if self._stopping:
             self.logger.warning(
-                f"rejecting a new connection attempt from {peer.node_name}, "
+                f"rejecting a new connection attempt from {conn.node_name}, "
                 f"because the node is shutting down")
             peer_socket.close()
             return None
 
         with self._busy_lock:
-            if (peer.node_name and peer.node_name in self.configured_peers and
-                    self.configured_peers[peer.node_name].peer_ident):
+            if (conn.node_name and conn.node_name in self.peers and
+                    self.peers[conn.node_name].connection):
                 self.logger.warning(
-                    f"rejecting a new connection attempt from {peer.node_name}, "
-                    f"as the peer is already connected")
+                    f"rejecting a new connection attempt from "
+                    f"{conn.node_name}, as the peer is already connected")
                 peer_socket.close()
                 return None
 
-            peer.ident = self._generate_peer_id()
-            peer.socket_fileno = peer_socket.fileno()
-            peer.socket_proto = proto
-            self.peers[peer.ident] = peer
-            self.peer_sockets[peer.ident] = peer_socket
-            self.socket_peers[peer.socket_fileno] = peer
-            peer_cfg = self._get_peer_config(peer)
-            if peer_cfg and not peer_cfg.peer_ident:
-                peer_cfg.peer_ident = peer.ident
+            conn.ident = self._generate_connection_id()
+            conn.socket_fileno = peer_socket.fileno()
+            conn.socket_proto = proto
+            self.connections[conn.ident] = conn
+            self.peer_sockets[conn.ident] = peer_socket
+            self.socket_peers[conn.socket_fileno] = conn
 
-            peer.message_handler = self._receive_message
+        peer = self._find_connection_peer(conn)
+        if peer and not peer.connection:
+            peer.connection = conn
+            self.logger.info(
+                f"added a new connection {conn.ip}:{conn.port} "
+                f"for peer {peer}")
+        else:
+            self._half_ready_connections[conn.ident] = conn
+            self.logger.info(
+                f"added a new pending peer connection "
+                f"{conn.ip}:{conn.port}")
 
-        self.logger.info(f"added a new peer connection {peer.ip}:{peer.port}")
-        return peer.ident
+        conn.message_handler = self._receive_message
 
-    def _check_timers(self, peer: Peer):
+        return conn.ident
+
+    def _assign_peer_connection(self, conn: PeerConnection):
+        if not conn.host_identity:
+            return
+        if conn.host_identity not in self.peers:
+            return
+        peer = self.peers[conn.host_identity]
+        if not peer.connection:
+            peer.connection = conn
+        if conn.ident in self._half_ready_connections:
+            del self._half_ready_connections[conn.ident]
+
+    def _check_timers(self, conn: PeerConnection):
+        """Validate timers for a connection.
+
+        Will go through each timer for a connection and react to them, in the
+        following order:
+
+        1. If peer is in waiting Capabilities-Exchange procedure to complete,
+            and the wait time has been exceeded, disconnects
+        2. If peer is otherwise not ready (e.g. during a DPR phase), does nothing
+        3. If peer is waiting for a Device-Watchdog-Answer, and the wait time
+            has been exceeded, disconnects
+        4. If the peer has been idle for too long, sends a DPR and goes into
+            a waiting-for-dwa state
+
+        Args:
+            conn: A peer connection instance
+
+        """
         if self._stopping:
             return
         idle_timeout = self.idle_timeout
@@ -345,122 +338,134 @@ class Node:
         cea_timeout = self.cea_timeout
         cer_timeout = self.cer_timeout
 
-        peer_cfg = self._get_peer_config(peer)
-        if peer_cfg:
-            idle_timeout = peer_cfg.idle_timeout or idle_timeout
-            dwa_timeout = peer_cfg.dwa_timeout or dwa_timeout
-            cea_timeout = peer_cfg.cea_timeout or cea_timeout
-            cer_timeout = peer_cfg.cer_timeout or cer_timeout
+        peer = self._find_connection_peer(conn)
+        if peer:
+            idle_timeout = peer.idle_timeout or idle_timeout
+            dwa_timeout = peer.dwa_timeout or dwa_timeout
+            cea_timeout = peer.cea_timeout or cea_timeout
+            cer_timeout = peer.cer_timeout or cer_timeout
 
-        if peer.state == PEER_CONNECTED:
-            if peer.is_sender and peer.last_read_since > cea_timeout:
+        if conn.state == PEER_CONNECTED:
+            if conn.is_sender and conn.last_read_since > cea_timeout:
                 self.logger.warning(
-                    f"{peer} exceeded CEA timeout, closing connection")
-                self.close_peer_socket(peer)
-            elif peer.is_receiver and peer.last_read_since > cer_timeout:
+                    f"{conn} exceeded CEA timeout, closing connection")
+                self.close_connection_socket(conn)
+            elif conn.is_receiver and conn.last_read_since > cer_timeout:
                 self.logger.warning(
-                    f"{peer} exceeded CER timeout, closing connection")
-                self.close_peer_socket(peer)
+                    f"{conn} exceeded CER timeout, closing connection")
+                self.close_connection_socket(conn)
             return
 
-        if peer.state not in PEER_READY_STATES:
+        if conn.state not in PEER_READY_STATES:
             return
 
-        if peer.state == PEER_READY_WAITING_DWA and peer.dwa_wait_time > dwa_timeout:
+        if conn.state == PEER_READY_WAITING_DWA and conn.dwa_wait_time > dwa_timeout:
             self.logger.warning(
-                f"{peer} exceeded DWA timeout, closing connection")
-            self.close_peer_socket(peer)
+                f"{conn} exceeded DWA timeout, closing connection")
+            self.close_connection_socket(conn)
             return
-        elif peer.state == PEER_READY_WAITING_DWA:
+        elif conn.state == PEER_READY_WAITING_DWA:
             self.logger.debug(
-                f"{peer} waiting for DWA since {peer.dwa_wait_time} seconds")
+                f"{conn} waiting for DWA since {conn.dwa_wait_time} seconds")
             return
 
-        if peer.last_read_since > idle_timeout:
-            self.send_dwr(peer)
+        if conn.last_read_since > idle_timeout:
+            self.send_dwr(conn)
 
-    def _connect_to_peer(self, peer_config: PeerConfig):
-        if peer_config.peer_ident:
+    def _connect_to_peer(self, peer: Peer):
+        """Establishes a connection to a known peer."""
+        if peer.connection:
             self.logger.warning(
-                f"a connection to {peer_config.node_name} exists already")
+                f"a connection to {peer.node_name} exists already")
             return
 
-        if not peer_config.ip_addresses:
+        if not peer.ip_addresses:
             self.logger.warning(
-                f"{peer_config.node_name} has no socket configuration present")
+                f"{peer.node_name} has no socket configuration present")
             return
 
-        if peer_config.transport == PEER_TRANSPORT_TCP:
+        if peer.transport == PEER_TRANSPORT_TCP:
             peer_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             peer_socket.setblocking(False)
 
-            peer = Peer(peer_config.ip_addresses, peer_config.port,
-                        PEER_SEND, self.interrupt_write)
-            peer.state = PEER_CONNECTING
-            peer.node_name = peer_config.node_name
-            peer.origin_host = self.origin_host
-            self._add_peer_connection(peer, peer_socket, PEER_TRANSPORT_TCP)
+            conn = PeerConnection(peer.ip_addresses, peer.port,
+                                  PEER_SEND, self.interrupt_write)
+            conn.state = PEER_CONNECTING
+            conn.node_name = peer.node_name
+            conn.origin_host = self.origin_host
+            self._add_peer_connection(conn, peer_socket, PEER_TRANSPORT_TCP)
 
             try:
-                peer_socket.connect((peer_config.ip_addresses[0],
-                                     peer_config.port))
+                peer_socket.connect((peer.ip_addresses[0],
+                                     peer.port))
             except socket.error as e:
                 if e.args[0] != errno.EINPROGRESS:
-                    self.remove_peer(peer)
+                    self.remove_peer_connection(conn)
                     return
-                self.logger.warning(f"{peer} socket not yet ready, waiting")
+                self.logger.warning(f"{conn} socket not yet ready, waiting")
             else:
-                peer.state = PEER_CONNECTED
-                self.logger.info(f"{peer} socket is now connected")
+                conn.state = PEER_CONNECTED
+                self.logger.info(f"{conn} socket is now connected")
 
-            peer.host_ip_address = [peer_socket.getsockname()[0]]
+            conn.host_ip_address = [peer_socket.getsockname()[0]]
 
         else:
             peer_socket = sctp.sctpsocket_tcp(socket.AF_INET)
             peer_socket.setblocking(False)
 
-            peer = Peer(peer_config.ip_addresses, peer_config.port,
-                        PEER_SEND, self.interrupt_write)
-            peer.state = PEER_CONNECTING
-            peer.node_name = peer_config.node_name
-            peer.origin_host = self.origin_host
-            self._add_peer_connection(peer, peer_socket, PEER_TRANSPORT_SCTP)
+            conn = PeerConnection(peer.ip_addresses, peer.port,
+                                  PEER_SEND, self.interrupt_write)
+            conn.state = PEER_CONNECTING
+            conn.node_name = peer.node_name
+            conn.origin_host = self.origin_host
+            self._add_peer_connection(conn, peer_socket, PEER_TRANSPORT_SCTP)
 
-            connect_addr = [(ip, peer_config.port)
-                            for ip in peer_config.ip_addresses]
+            connect_addr = [(ip, peer.port)
+                            for ip in peer.ip_addresses]
             try:
                 peer_socket.connectx(connect_addr)
             except socket.error as e:
                 if e.args[0] != errno.EINPROGRESS:
-                    self.remove_peer(peer)
+                    self.remove_peer_connection(conn)
                     return
-                self.logger.warning(f"{peer} socket not yet ready, waiting")
+                self.logger.warning(f"{conn} socket not yet ready, waiting")
             else:
-                peer.state = PEER_CONNECTED
-                self.logger.info(f"{peer} socket is now connected")
+                conn.state = PEER_CONNECTED
+                self.logger.info(f"{conn} socket is now connected")
 
-            peer.host_ip_address = [peer_socket.getsockname()[0]]
+            conn.host_ip_address = [peer_socket.getsockname()[0]]
 
-        if peer.state == PEER_CONNECTED:
-            self.send_cer(peer)
+        if conn.state == PEER_CONNECTED:
+            self.send_cer(conn)
         else:
-            peer.demand_attention()
+            conn.demand_attention()
 
-    def _flag_peer_as_connected(self, peer: Peer):
-        peer.state = PEER_CONNECTED
-        peer_cfg = self._get_peer_config(peer)
-        if peer_cfg:
-            peer_cfg.last_connect = int(time.time())
+    def _find_connection_peer(self, conn: PeerConnection) -> Peer | None:
+        if conn.node_name in self.peers:
+            return self.peers[conn.node_name]
+        elif conn.host_identity in self.peers:
+            return self.peers[conn.host_identity]
+        else:
+            return None
 
-    def _flag_peer_as_ready(self, peer: Peer):
-        peer.state = PEER_READY
-        for app, peer_configs in self._peer_routes[self.realm_name].items():
-            for peer_config in peer_configs:
-                if peer_config.peer_ident == peer.ident:
+    def _flag_peer_as_connected(self, conn: PeerConnection):
+        conn.state = PEER_CONNECTED
+        peer = self._find_connection_peer(conn)
+        if peer:
+            peer.last_connect = int(time.time())
+
+        self.connection_logger.info(
+            f"{conn} is now connected, waiting CER/CEA to complete")
+
+    def _flag_connection_as_ready(self, conn: PeerConnection):
+        conn.state = PEER_READY
+        for app, peers in self._peer_routes[self.realm_name].items():
+            for peer in peers:
+                if peer.connection == conn:
                     app._is_ready.set()
                     break
 
-    def _generate_answer(self, peer: Peer, msg: _AnyMessageType) -> _AnyAnswerType:
+    def _generate_answer(self, conn: PeerConnection, msg: _AnyMessageType) -> _AnyAnswerType:
         answer_msg = msg.to_answer()
         answer_msg.origin_host = self.origin_host.encode()
         answer_msg.origin_realm = self.realm_name.encode()
@@ -475,22 +480,15 @@ class Node:
 
         return answer_msg
 
-    def _generate_peer_id(self, cur_iteration: int = 0) -> str:
+    def _generate_connection_id(self, cur_iteration: int = 0) -> str:
+        """Produces a connection ID that is unique to this node instance."""
         if cur_iteration > 10:
-            raise RuntimeError("Not able to generate a peer ID")
+            raise RuntimeError("Not able to generate a unique connection ID")
 
         new_id = os.urandom(6).hex()
-        if new_id in self.peers:
-            return self._generate_peer_id(cur_iteration + 1)
+        if new_id in self.connections:
+            return self._generate_connection_id(cur_iteration + 1)
         return new_id
-
-    def _get_peer_config(self, peer: Peer) -> PeerConfig | None:
-        if peer.node_name in self.configured_peers:
-            return self.configured_peers[peer.node_name]
-        elif peer.host_identity in self.configured_peers:
-            return self.configured_peers[peer.host_identity]
-        else:
-            return None
 
     def _handle_connections(self, _thread: StoppableThread):
         while True:
@@ -498,11 +496,11 @@ class Node:
 
             if _thread.is_stopped:
                 self.connection_logger.info(
-                    "stop event received, closing sockets")
-                for peer in list(self.peers.values()):
-                    self.close_peer_socket(peer)
-                    # be nice and let the peer worker threads wind down
-                    peer.close(signal_node=False)
+                    "stop event received, closing all sockets")
+                for conn in list(self.connections.values()):
+                    self.close_connection_socket(conn)
+                    # be nice and let the connection worker threads wind down
+                    conn.close(signal_node=False)
                 return
 
             r_list = [self.interrupt_read]
@@ -511,37 +509,37 @@ class Node:
                 r_list += self.tcp_sockets
             if self.sctp_sockets:
                 r_list += self.sctp_sockets
-            for peer_ident, peer_socket in self.peer_sockets.items():
-                peer = self.peers.get(peer_ident)
-                if not peer:
+            for conn_id, conn_socket in self.peer_sockets.items():
+                conn = self.connections.get(conn_id)
+                if not conn:
                     continue
-                if peer.state != PEER_CLOSED:
-                    r_list.append(peer_socket)
+                if conn.state != PEER_CLOSED:
+                    r_list.append(conn_socket)
                 # peer is either waiting for the initial socket to become ready,
                 # or wants to send something
-                if (peer.state == PEER_CONNECTING or
-                        (peer.state != PEER_CLOSED and len(peer.write_buffer) > 0)):
-                    w_list.append(peer_socket)
+                if (conn.state == PEER_CONNECTING or
+                        (conn.state != PEER_CLOSED and len(conn.write_buffer) > 0)):
+                    w_list.append(conn_socket)
 
             # TODO: go higher with timeout when testing is done
             ready_r, ready_w, _ = select.select(r_list, w_list, [], 2)
 
             for rsock in ready_r:
                 if rsock == self.interrupt_read:
-                    peer_ident = os.read(self.interrupt_read, 6).hex()
-                    peer = self.peers.get(peer_ident)
-                    if peer:
-                        self.connection_logger.debug(f"{peer} wants attention")
-                        if peer.state == PEER_CLOSED:
-                            self.close_peer_socket(peer)
-                        elif len(peer.write_buffer) == 0 and peer.state == PEER_CLOSING:
+                    conn_id = os.read(self.interrupt_read, 6).hex()
+                    conn = self.connections.get(conn_id)
+                    if conn:
+                        self.connection_logger.debug(f"{conn} wants attention")
+                        if conn.state == PEER_CLOSED:
+                            self.close_connection_socket(conn)
+                        elif len(conn.write_buffer) == 0 and conn.state == PEER_CLOSING:
                             self.connection_logger.debug(
-                                f"{peer} in CLOSING state and no more bytes to "
+                                f"{conn} in CLOSING state and no more bytes to "
                                 f"send, closing socket")
-                            self.close_peer_socket(peer)
+                            self.close_connection_socket(conn)
                     else:
                         self.connection_logger.debug(
-                            f"interrupt from peer connection {peer_ident}, "
+                            f"interrupt from peer connection {conn_id}, "
                             f"which has already gone away")
                     continue
 
@@ -553,10 +551,10 @@ class Node:
                     self.connection_logger.debug(
                         f"new client TCP connection from {ip}:{port}")
 
-                    peer = Peer(ip, port, PEER_RECV,
-                                interrupt_fileno=self.interrupt_write)
-                    peer.state = PEER_CONNECTED
-                    self._add_peer_connection(peer, clientsocket,
+                    conn = PeerConnection(ip, port, PEER_RECV,
+                                          interrupt_fileno=self.interrupt_write)
+                    conn.state = PEER_CONNECTED
+                    self._add_peer_connection(conn, clientsocket,
                                               PEER_TRANSPORT_TCP)
                     continue
 
@@ -568,21 +566,21 @@ class Node:
                     self.connection_logger.debug(
                         f"new client SCTP connection from {ip}:{port}")
 
-                    peer = Peer(ip, port, PEER_RECV,
-                                interrupt_fileno=self.interrupt_write)
-                    peer.state = PEER_CONNECTED
-                    self._add_peer_connection(peer, clientsocket,
+                    conn = PeerConnection(ip, port, PEER_RECV,
+                                          interrupt_fileno=self.interrupt_write)
+                    conn.state = PEER_CONNECTED
+                    self._add_peer_connection(conn, clientsocket,
                                               PEER_TRANSPORT_SCTP)
                     continue
 
-                peer = self.socket_peers.get(rsock.fileno())
-                if not peer:
+                conn = self.socket_peers.get(rsock.fileno())
+                if not conn:
                     self.connection_logger.warning(
                         f"socket {rsock.fileno()} ready for reading but no "
                         f"peer connected, ignoring")
                     continue
 
-                self.connection_logger.debug(f"{peer} ready to receive")
+                self.connection_logger.debug(f"{conn} ready to receive")
 
                 try:
                     # most diameter messages fit well within this size
@@ -590,206 +588,206 @@ class Node:
                 except socket.error as e:
                     if e.args[0] in SOFT_SOCKET_FAILURES:
                         self.connection_logger.debug(
-                            f"{peer} socket read soft fail: {e.args[1]}, "
+                            f"{conn} socket read soft fail: {e.args[1]}, "
                             f"errno {e.args[0]}, trying again")
                     else:
                         self.connection_logger.warning(
-                            f"{peer} socket read fail: {e.args[1]}, errno "
+                            f"{conn} socket read fail: {e.args[1]}, errno "
                             f"{e.args[0]}, disconnecting peer")
-                        self.close_peer_socket(peer)
-                        peer.close(signal_node=False)
+                        self.close_connection_socket(conn)
+                        conn.close(signal_node=False)
                     continue
 
                 if len(data) == 0:
                     self.connection_logger.warning(
-                        f"{peer} has gone away (read zero bytes), closing "
+                        f"{conn} has gone away (read zero bytes), closing "
                         f"socket and removing peer")
-                    self.close_peer_socket(peer)
-                    peer.close(signal_node=False)
+                    self.close_connection_socket(conn)
+                    conn.close(signal_node=False)
                     continue
 
-                peer.add_in_bytes(data)
+                conn.add_in_bytes(data)
 
             for wsock in ready_w:
-                peer = self.socket_peers.get(wsock.fileno())
-                if not peer:
+                conn = self.socket_peers.get(wsock.fileno())
+                if not conn:
                     self.connection_logger.warning(
                         f"socket {wsock.fileno()} ready for writing but the "
                         f"peer has gone, ignoring")
                     continue
-                if peer.state == PEER_CONNECTING:
+                if conn.state == PEER_CONNECTING:
                     socket_error = wsock.getsockopt(
                         socket.SOL_SOCKET, socket.SO_ERROR)
                     if socket_error == 0:
-                        self.connection_logger.info(f"{peer} socket is now connected")
-                        self._flag_peer_as_connected(peer)
-                        self.send_cer(peer)
+                        self._flag_peer_as_connected(conn)
+                        self.send_cer(conn)
                     else:
                         self.connection_logger.warning(
-                            f"{peer} connection socket has permanently failed "
+                            f"{conn} connection socket has permanently failed "
                             f"with error {socket_error}, removing connection")
-                        self.close_peer_socket(peer)
-                        peer.close(signal_node=False)
+                        self.close_connection_socket(conn)
+                        conn.close(signal_node=False)
                         continue
 
-                if len(peer.write_buffer) == 0:
-                    if peer.state == PEER_CLOSING:
+                if len(conn.write_buffer) == 0:
+                    if conn.state == PEER_CLOSING:
                         self.connection_logger.debug(
-                            f"{peer} in CLOSING state nothing to write, "
+                            f"{conn} in CLOSING state nothing to write, "
                             f"closing socket")
-                        self.close_peer_socket(peer)
+                        self.close_connection_socket(conn)
                     continue
 
                 try:
-                    if peer.socket_proto == PEER_TRANSPORT_TCP:
-                        sent_bytes = wsock.send(peer.write_buffer)
+                    if conn.socket_proto == PEER_TRANSPORT_TCP:
+                        sent_bytes = wsock.send(conn.write_buffer)
                     else:
                         # rfc6733, 2.1.1: to avoid head-of-the-line blocking,
                         # the recommended way is to set the unordered flag
                         sent_bytes = wsock.sctp_send(
-                            peer.write_buffer, flags=sctp.MSG_UNORDERED)
+                            conn.write_buffer, flags=sctp.MSG_UNORDERED)
                 except socket.error as e:
                     if e.args[0] in SOFT_SOCKET_FAILURES:
                         self.connection_logger.debug(
-                            f"{peer} socket write soft fail: {e.args[1]}, "
+                            f"{conn} socket write soft fail: {e.args[1]}, "
                             f"errno {e.args[0]}, trying again")
                     else:
                         self.connection_logger.warning(
-                            f"{peer} socket write fail: {e.args[1]}, errno "
+                            f"{conn} socket write fail: {e.args[1]}, errno "
                             f"{e.args[0]}, disconnecting peer")
-                        peer.close()
+                        conn.close()
                     continue
 
-                with peer.write_lock:
-                    peer.remove_out_bytes(sent_bytes)
+                with conn.write_lock:
+                    conn.remove_out_bytes(sent_bytes)
                     self.connection_logger.debug(
-                        f"{peer} sent {sent_bytes} bytes, "
-                        f"{len(peer.write_buffer)} bytes remain")
+                        f"{conn} sent {sent_bytes} bytes, "
+                        f"{len(conn.write_buffer)} bytes remain")
 
-                    if len(peer.write_buffer) == 0 and peer.state == PEER_CLOSING:
+                    if len(conn.write_buffer) == 0 and conn.state == PEER_CLOSING:
                         self.connection_logger.debug(
-                            f"{peer} in CLOSING state and no more bytes to "
+                            f"{conn} in CLOSING state and no more bytes to "
                             f"send, closing socket")
-                        self.close_peer_socket(peer)
+                        self.close_connection_socket(conn)
 
-            for peer in list(self.peers.values()):
-                self._check_timers(peer)
+            for conn in list(self.connections.values()):
+                self._check_timers(conn)
 
             self._reconnect_peers()
 
-    def _receive_message(self, peer: Peer, msg: _AnyMessageType):
+    def _receive_message(self, conn: PeerConnection, msg: _AnyMessageType):
         if msg.header.is_request:
             failed_avp = validate_message_avps(msg)
             if failed_avp:
-                self.logger.warning(f"{peer} message failed AVP validation")
-                err = self._generate_answer(peer, msg)
+                self.logger.warning(f"{conn} message failed AVP validation")
+                err = self._generate_answer(conn, msg)
                 err.result_code = constants.E_RESULT_CODE_DIAMETER_MISSING_AVP
                 err.error_message = "Mandatory AVPs missing"
                 err.failed_avp = FailedAvp(additional_avps=failed_avp)
-                peer.add_out_msg(err)
+                conn.add_out_msg(err)
                 return
 
         try:
             match (msg.header.is_request, msg.header.command_code):
                 case (True, constants.CMD_CAPABILITIES_EXCHANGE):
-                    self._update_peer_counters(peer, cer=1)
-                    self.receive_cer(peer, msg)
+                    self._update_peer_counters(conn, cer=1)
+                    self.receive_cer(conn, msg)
                 case (False, constants.CMD_CAPABILITIES_EXCHANGE):
-                    self._update_peer_counters(peer, cea=1)
-                    self.receive_cea(peer, msg)
+                    self._update_peer_counters(conn, cea=1)
+                    self.receive_cea(conn, msg)
                 case (True, constants.CMD_DEVICE_WATCHDOG):
-                    self._update_peer_counters(peer, dwr=1)
-                    self.receive_dwr(peer, msg)
+                    self._update_peer_counters(conn, dwr=1)
+                    self.receive_dwr(conn, msg)
                 case (False, constants.CMD_DEVICE_WATCHDOG):
-                    self._update_peer_counters(peer, dwa=1)
-                    self.receive_dwa(peer, msg)
+                    self._update_peer_counters(conn, dwa=1)
+                    self.receive_dwa(conn, msg)
                 case (True, constants.CMD_DISCONNECT_PEER):
-                    self._update_peer_counters(peer, dpr=1)
-                    self.receive_dpr(peer, msg)
+                    self._update_peer_counters(conn, dpr=1)
+                    self.receive_dpr(conn, msg)
                 case (False, constants.CMD_DISCONNECT_PEER):
-                    self._update_peer_counters(peer, dpa=1)
-                    self.receive_dpa(peer, msg)
+                    self._update_peer_counters(conn, dpa=1)
+                    self.receive_dpa(conn, msg)
                 case (True, _):
-                    self._update_peer_counters(peer, app_request=1)
-                    self._receive_app_request(peer, msg)
+                    self._update_peer_counters(conn, app_request=1)
+                    self._receive_app_request(conn, msg)
                 case (False, _):
-                    self._update_peer_counters(peer, app_answer=1)
-                    self._receive_app_answer(peer, msg)
+                    self._update_peer_counters(conn, app_answer=1)
+                    self._receive_app_answer(conn, msg)
 
         except Exception as e:
-            self.logger.error(f"{peer} failed to handle message: {e}",
+            self.logger.error(f"{conn} failed to handle message: {e}",
                               exc_info=True)
-            err = self._generate_answer(peer, msg)
+            err = self._generate_answer(conn, msg)
             err.result_code = constants.E_RESULT_CODE_DIAMETER_UNABLE_TO_COMPLY
             err.error_message = "Message handling error"
-            peer.add_out_msg(err)
+            conn.add_out_msg(err)
 
-    def _receive_app_request(self, peer: Peer, message: _AnyMessageType):
+    def _receive_app_request(self, conn: PeerConnection, message: _AnyMessageType):
         """Forward a received request message to an application.
 
         This is called internally by `_receive_message`, when necessary.
         """
         app_id = message.header.application_id
-        peer_cfg = self._get_peer_config(peer)
+        peer = self._find_connection_peer(conn)
 
         if not hasattr(message, "destination_realm"):
             self.logger.warning(
-                f"{peer} realm name present in request "
+                f"{conn} realm name present in request "
                 f"{hex(message.header.hop_by_hop_identifier)}")
 
-            err = self._generate_answer(peer, message)
+            err = self._generate_answer(conn, message)
             err.result_code = constants.E_RESULT_CODE_DIAMETER_APPLICATION_UNSUPPORTED
-            peer.add_out_msg(err)
+            conn.add_out_msg(err)
             return
 
         realm_name = message.destination_realm.decode()
         if realm_name not in self._peer_routes:
             self.logger.warning(
-                f"{peer} realm {realm_name} not served by this node "
+                f"{conn} realm {realm_name} not served by this node "
                 f"{hex(message.header.hop_by_hop_identifier)}")
 
-            err = self._generate_answer(peer, message)
+            err = self._generate_answer(conn, message)
             err.result_code = constants.E_RESULT_CODE_DIAMETER_REALM_NOT_SERVED
-            peer.add_out_msg(err)
+            conn.add_out_msg(err)
             return
 
         receiving_app: Application | None = None
-        for app, peer_configs in self._peer_routes[realm_name].items():
+        for app, peers in self._peer_routes[realm_name].items():
             if not isinstance(app, Application):
                 continue
             if app.application_id == app_id:
-                if peer_cfg:
+                if peer:
                     # we could have more than app with same ID, but configured
-                    # for different peers
-                    if peer_cfg in peer_configs:
+                    # for different connections
+                    if peer in peers:
                         self.logger.debug(
-                            f"{peer} is configured as preferred peer for {app}")
+                            f"{conn} is configured as preferred peer "
+                            f"connection for {app}")
                         receiving_app = app
                         break
                 else:
                     # peer is unknown, any app will do
                     self.logger.debug(
-                        f"{peer} is unknown, picking {app} as first best match")
+                        f"{conn} is unknown, picking {app} as first best match")
                     receiving_app = app
                     break
 
         if receiving_app:
-            if peer.host_identity not in self._peer_waiting_answer:
-                self._peer_waiting_answer[peer.host_identity] = {}
-            waiting = self._peer_waiting_answer[peer.host_identity]
+            if conn.host_identity not in self._peer_waiting_answer:
+                self._peer_waiting_answer[conn.host_identity] = {}
+            waiting = self._peer_waiting_answer[conn.host_identity]
             waiting[message.header.hop_by_hop_identifier] = time.time()
             receiving_app.receive_request(message)
             return
 
         self.logger.warning(
-            f"{peer} no application ID {app_id} present to receive request "
+            f"{conn} no application ID {app_id} present to receive request "
             f"{hex(message.header.hop_by_hop_identifier)}")
 
-        err = self._generate_answer(peer, message)
+        err = self._generate_answer(conn, message)
         err.result_code = constants.E_RESULT_CODE_DIAMETER_APPLICATION_UNSUPPORTED
-        peer.add_out_msg(err)
+        conn.add_out_msg(err)
 
-    def _receive_app_answer(self, peer: Peer, message: Message):
+    def _receive_app_answer(self, conn: PeerConnection, message: Message):
         """Forward a received answer message to an application.
 
         This is called internally by `_receive_message`, when necessary.
@@ -803,68 +801,59 @@ class Node:
         # messages, leaving CER/CEA, DWR/DWA and DPR/DEA message IDs untracked
         if message_id not in self._app_waiting_answer:
             self.logger.warning(
-                f"{peer} no application ID {app_id} present to receive answer "
+                f"{conn} no application ID {app_id} present to receive answer "
                 f"{hex(message.header.hop_by_hop_identifier)}")
             return
 
         app = self._app_waiting_answer[message_id]
         if app not in self.applications:
             self.logger.warning(
-                f"{peer} application ID {app_id} wants to receive answer "
+                f"{conn} application ID {app_id} wants to receive answer "
                 f"{hex(message.header.hop_by_hop_identifier)}, but is gone")
             return
 
-        self.logger.debug(f"{peer} application {app} expects answer "
+        self.logger.debug(f"{conn} application {app} expects answer "
                           f"{hex(message.header.hop_by_hop_identifier)}")
         app.receive_answer(message)
 
     def _reconnect_peers(self):
         if self._stopping:
             return
-        for peer_config in self.configured_peers.values():
-            if not peer_config.persistent:
+        for peer in self.peers.values():
+            if not peer.persistent:
                 continue
-            if peer_config.peer_ident:
+            if peer.connection:
                 continue
-            if not peer_config.last_disconnect:
+            if not peer.last_disconnect:
                 continue
-            if peer_config.disconnected_since < peer_config.reconnect_wait:
+            if peer.disconnected_since < peer.reconnect_wait:
                 continue
             self.logger.info(
-                f"connection to {peer_config.node_name} has been lost for "
-                f"{peer_config.disconnected_since} seconds, reconnecting")
+                f"connection to {peer.node_name} has been lost for "
+                f"{peer.disconnected_since} seconds, reconnecting")
             try:
-                self._connect_to_peer(peer_config)
+                self._connect_to_peer(peer)
             except Exception as e:
                 self.logger.warning(
-                    f"failed to reconnect to {peer_config.node_name}: {e}")
+                    f"failed to reconnect to {peer.node_name}: {e}")
 
-    def _update_peer_config(self, peer: Peer):
-        if not peer.host_identity:
+    def _update_peer_counters(self, conn: PeerConnection,
+                              cer: int = 0, cea: int = 0, dwr: int = 0,
+                              dwa: int = 0, dpr: int = 0, dpa: int = 0,
+                              app_request: int = 0, app_answer: int = 0):
+        peer = self._find_connection_peer(conn)
+        if not peer:
             return
-        if peer.host_identity not in self.configured_peers:
-            return
-        peer_cfg = self.configured_peers[peer.host_identity]
-        if not peer_cfg.peer_ident:
-            peer_cfg.peer_ident = peer.ident
+        peer.counters.cer += cer
+        peer.counters.cea += cea
+        peer.counters.dwr += dwr
+        peer.counters.dwa += dwa
+        peer.counters.dpr += dpr
+        peer.counters.dpa += dpa
+        peer.counters.requests += cer + dwr + dpr + app_request
+        peer.counters.answers += cea + dwa + dpa + app_answer
 
-    def _update_peer_counters(self, peer: Peer, cer: int = 0, cea: int = 0,
-                              dwr: int = 0, dwa: int = 0, dpr: int = 0,
-                              dpa: int = 0, app_request: int = 0,
-                              app_answer: int = 0):
-        peer_cfg = self._get_peer_config(peer)
-        if not peer_cfg:
-            return
-        peer_cfg.counters.cer += cer
-        peer_cfg.counters.cea += cea
-        peer_cfg.counters.dwr += dwr
-        peer_cfg.counters.dwa += dwa
-        peer_cfg.counters.dpr += dpr
-        peer_cfg.counters.dpa += dpa
-        peer_cfg.counters.requests += cer + dwr + dpr + app_request
-        peer_cfg.counters.answers += cea + dwa + dpa + app_answer
-
-    def add_application(self, app: Application, peers: list[PeerConfig]):
+    def add_application(self, app: Application, peers: list[Peer]):
         """Register an application with diameter node.
 
         The added application will receive diameter requests that the node
@@ -876,9 +865,9 @@ class Node:
 
         Args:
             app: An instance of a class that implements
-                [Application][diameter.node.application.Application]
-            peers: A list of PeerConfig instances that have been returned by
-                [Node.add_peer][diameter.node.node.Node.add_peer]. The given
+                [`Application`][diameter.node.application.Application]
+            peers: A list of Peer instances that have been returned by
+                [`Node.add_peer`][diameter.node.node.Node.add_peer]. The given
                 list of peers will be used to determine how messages are to be
                 routed
 
@@ -888,14 +877,14 @@ class Node:
         app._node = self
         app.start()
 
-    def add_peer(self, peer_uri: str, realm_name: str,
+    def add_peer(self, peer_uri: str, realm_name: str = None,
                  ip_addresses: list[str] = None,
                  is_persistent: bool = False,
-                 is_default: bool = False) -> PeerConfig:
+                 is_default: bool = False) -> Peer:
         """Add a known peer.
 
-        The node will only connect to known peers and (optionally) accept
-        requests from known peers only.
+        The node will only connect to known connections and (optionally) accept
+        requests from known connections only.
 
         Args:
             peer_uri: A diameter node's DiameterIdentity as a DiameterURI
@@ -903,7 +892,8 @@ class Node:
                 The URI must contain at least the scheme and FQDN;
                 the port and transport will default to 3868 and "TCP" if not
                 included
-            realm_name: Peer realm name
+            realm_name: Peer realm name. If not given, will be set to the
+                same realm as the node has been configured with
             ip_addresses: A list of IP addresses for the peer. If not given,
                 no outgoing connection attempt to the peer will be made. For
                 TCP, only the first IP of the list is used. For SCTP, a
@@ -916,55 +906,58 @@ class Node:
                 as default will result in load balancing between the peers.
 
         Returns:
-            An instance of the peer configuration. The returned instance is
-                not a copy of the peer's configuration, but the actual
-                configuration instance, permitting configuration to be adjusted
-                after node has been started by altering its attributes.
+            An instance of the peer. The returned instance is the actual peer
+                instance, permitting configuration to be adjusted after node
+                has been started, by altering its attributes.
 
         """
         uri = parse_diameter_uri(peer_uri)
+        if uri.fqdn in self.peers:
+            return self.peers[uri.fqdn]
+
         transport = uri.params.get("transport", "tcp").lower()
-        peer_cfg = PeerConfig(
+        peer = Peer(
             node_name=uri.fqdn,
-            realm_name=realm_name,
+            realm_name=realm_name or self.realm_name,
             transport=PEER_TRANSPORT_SCTP if transport == "sctp" else PEER_TRANSPORT_TCP,
             port=uri.port,
             ip_addresses=ip_addresses or [],
             persistent=is_persistent)
-        self.configured_peers[uri.fqdn] = peer_cfg
+        self.peers[uri.fqdn] = peer
         if is_default:
-            self._peer_routes[realm_name]["_default"].append(peer_cfg)
+            self._peer_routes[realm_name]["_default"].append(peer)
 
-        return peer_cfg
+        return peer
 
-    def close_peer_socket(self, peer: Peer):
-        """Shuts down peer socket and stops observing the connection forever.
+    def close_connection_socket(self, conn: PeerConnection):
+        """Shuts down connection socket and stops observing it forever.
 
-        If the peer has persistency enabled, the node will automatically
-        re-establish the connection after `Node.reconnect_timeout` seconds.
+        If the corresponding peer has persistency enabled, the node will
+        automatically re-establish the connection after `Node.reconnect_timeout`
+        seconds.
 
         Closing the peer socket will automatically call
-        [Node.remove_peer][diameter.node.Node.remove_peer].
+        [`Node.remove_peer`][diameter.node.Node.remove_peer].
 
         Args:
-            peer: An instance of peer to disconnect
+            conn: An instance of a peer connection to disconnect
 
         """
-        peer_socket = self.peer_sockets.get(peer.ident)
+        peer_socket = self.peer_sockets.get(conn.ident)
         if peer_socket:
-            self.connection_logger.info(f"closing connection {peer}")
+            self.connection_logger.info(f"{conn} shutting down socket")
             # rfc6733 states TCP sockets must be closed with a RESET call,
             # while sctp sockets must be aborted
-            if peer.socket_proto == PEER_TRANSPORT_TCP:
+            if conn.socket_proto == PEER_TRANSPORT_TCP:
                 peer_socket.setsockopt(
                     socket.SOL_SOCKET, socket.SO_LINGER,
                     struct.pack("ii", 1, 0))
             peer_socket.close()
-            peer.close(False)
+            conn.close(False)
 
-        self.remove_peer(peer)
+        self.remove_peer_connection(conn)
 
-    def receive_cea(self, peer: Peer, message: CapabilitiesExchangeRequest):
+    def receive_cea(self, conn: PeerConnection, message: CapabilitiesExchangeRequest):
         # TODO: for SCTP, compare configured IP addresses with advertised and
         # remove those that are not mentioned
         cer_auth_apps = set(message.auth_application_id)
@@ -976,21 +969,21 @@ class Node:
             if hasattr(vendor_app, "acct_application_id"):
                 cer_acct_apps.add(vendor_app.acct_application_id)
 
-        peer.auth_application_ids = list(
+        conn.auth_application_ids = list(
             self.auth_application_ids & cer_auth_apps)
-        peer.acct_application_ids = list(
+        conn.acct_application_ids = list(
             self.acct_application_ids & cer_acct_apps)
-        peer.host_identity = message.origin_host.decode()
+        conn.host_identity = message.origin_host.decode()
 
-        self._update_peer_config(peer)
-        self._flag_peer_as_ready(peer)
+        self._assign_peer_connection(conn)
+        self._flag_connection_as_ready(conn)
         self.logger.info(
-            f"{peer} is now ready, determined supported auth applications: "
-            f"{peer.auth_application_ids}, supported acct applications: "
-            f"{peer.acct_application_ids}")
+            f"{conn} is now ready, determined supported auth applications: "
+            f"{conn.auth_application_ids}, supported acct applications: "
+            f"{conn.acct_application_ids}")
 
-    def receive_cer(self, peer: Peer, message: CapabilitiesExchangeRequest):
-        answer: CapabilitiesExchangeAnswer = self._generate_answer(peer, message)
+    def receive_cer(self, conn: PeerConnection, message: CapabilitiesExchangeRequest):
+        answer: CapabilitiesExchangeAnswer = self._generate_answer(conn, message)
         answer.vendor_id = self.vendor_id
         answer.product_name = self.product_name
         answer.supported_vendor_id = list(self.vendor_ids)
@@ -999,43 +992,43 @@ class Node:
 
         cer_origin_host = message.origin_host.decode().lower()
 
-        if cer_origin_host not in self.configured_peers:
-            # TODO: mechanism to accept incoming connections from unknown peers
+        if cer_origin_host not in self.peers:
+            # TODO: mechanism to accept incoming connections from unknown connections
             # rfc6733 5.3
             self.logger.warning(
                 f"received a CER from an unknown peer {cer_origin_host}, "
                 f"closing this connection")
             answer.result_code = constants.E_RESULT_CODE_DIAMETER_UNKNOWN_PEER
-            peer.state = PEER_CLOSING
-            peer.add_out_msg(answer)
+            conn.state = PEER_CLOSING
+            conn.add_out_msg(answer)
             return
 
-        elif not peer.node_name:
-            # A set node_name separates known peers from unknown peers
-            peer.node_name = cer_origin_host
+        elif not conn.node_name:
+            # A set node_name separates known connections from unknown connections
+            conn.node_name = cer_origin_host
 
         # rfc6733 5.6.4, election mechanism. If our local origin host is
         # lexicographically (case-insensitive) higher than the remote host, we
         # have won the election and must close our earlier initiated
         # connections. If this is the only connection with the peer, nothing to
         # do.
-        other_connections = [peer for peer in self.peers.values()
+        other_connections = [peer for peer in self.connections.values()
                              if peer.origin_host == cer_origin_host]
         if other_connections:
             if self.origin_host.lower() > cer_origin_host:
                 # election won, this peer connection may stay
                 self.logger.info(
-                    f"{peer} CER election won, closing other possible "
+                    f"{conn} CER election won, closing other possible "
                     f"connections to the same host")
-                for peer in other_connections:
-                    peer.close()
+                for other_conn in other_connections:
+                    other_conn.close()
             else:
                 # election lost, this connection must go
                 self.logger.warning(
-                    f"{peer} CER election lost, closing this connection")
+                    f"{conn} CER election lost, closing this connection")
                 answer.result_code = constants.E_RESULT_CODE_DIAMETER_ELECTION_LOST
-                peer.state = PEER_CLOSING
-                peer.add_out_msg(answer)
+                conn.state = PEER_CLOSING
+                conn.add_out_msg(answer)
                 return
 
         cer_auth_apps = set(message.auth_application_id)
@@ -1054,124 +1047,121 @@ class Node:
         if not supported_auth_apps and not supported_acct_apps:
             self.logger.warning(f"no supported application IDs")
             answer.result_code = constants.E_RESULT_CODE_DIAMETER_NO_COMMON_APPLICATION
-            peer.add_out_msg(answer)
+            conn.add_out_msg(answer)
             return
 
-        peer.auth_application_ids = supported_auth_apps
-        peer.acct_application_ids = supported_acct_apps
-        peer.origin_host = self.origin_host
-        peer.host_identity = cer_origin_host
-        peer.host_ip_address = [i[1] for i in message.host_ip_address]
+        conn.auth_application_ids = supported_auth_apps
+        conn.acct_application_ids = supported_acct_apps
+        conn.origin_host = self.origin_host
+        conn.host_identity = cer_origin_host
+        conn.host_ip_address = [i[1] for i in message.host_ip_address]
 
-        self._update_peer_config(peer)
-        self._flag_peer_as_ready(peer)
+        self._assign_peer_connection(conn)
+        self._flag_connection_as_ready(conn)
         self.logger.info(
-            f"{peer} is now ready, determined supported auth applications: "
+            f"{conn} is now ready, determined supported auth applications: "
             f"{supported_auth_apps}, supported acct applications: "
             f"{supported_acct_apps}")
 
         answer.result_code = constants.E_RESULT_CODE_DIAMETER_SUCCESS
-        peer.add_out_msg(answer)
+        conn.add_out_msg(answer)
 
-    def receive_dpa(self, peer: Peer, message: DisconnectPeerAnswer):
-        self.logger.info(f"{peer} got DPA")
+    def receive_dpa(self, conn: PeerConnection, message: DisconnectPeerAnswer):
+        self.logger.info(f"{conn} got DPA")
         # peer will auto-close as soon as write-buffer is emptied, no new
         # outgoing messages will be accepted
-        self.logger.debug(f"{peer} changing state to CLOSING")
-        peer.state = PEER_CLOSING
-        peer.demand_attention()
+        self.logger.debug(f"{conn} changing state to CLOSING")
+        conn.state = PEER_CLOSING
+        conn.demand_attention()
 
-    def receive_dpr(self, peer: Peer, message: DisconnectPeerRequest):
-        answer: DisconnectPeerAnswer = self._generate_answer(peer, message)
+    def receive_dpr(self, conn: PeerConnection, message: DisconnectPeerRequest):
+        answer: DisconnectPeerAnswer = self._generate_answer(conn, message)
         answer.result_code = constants.E_RESULT_CODE_DIAMETER_SUCCESS
 
-        self.logger.info(f"{peer} sending DPA")
-        self.logger.debug(f"{peer} changing state to DISCONNECTING")
-        # TODO: for persistent peers, stop reconnecting until a new CER has
+        self.logger.info(f"{conn} sending DPA")
+        self.logger.debug(f"{conn} changing state to DISCONNECTING")
+        # TODO: for persistent connections, stop reconnecting until a new CER has
         # been received
-        peer.state = PEER_DISCONNECTING
-        peer.add_out_msg(answer)
+        conn.state = PEER_DISCONNECTING
+        conn.add_out_msg(answer)
 
-    def receive_dwa(self, peer: Peer, message: DeviceWatchdogAnswer):
-        self.logger.info(f"{peer} got DWA")
-        peer.reset_last_dwa()
+    def receive_dwa(self, conn: PeerConnection, message: DeviceWatchdogAnswer):
+        self.logger.info(f"{conn} got DWA")
+        conn.reset_last_dwa()
 
-    def receive_dwr(self, peer: Peer, message: DeviceWatchdogRequest):
-        answer: DeviceWatchdogAnswer = self._generate_answer(peer, message)
+    def receive_dwr(self, conn: PeerConnection, message: DeviceWatchdogRequest):
+        answer: DeviceWatchdogAnswer = self._generate_answer(conn, message)
         answer.result_code = constants.E_RESULT_CODE_DIAMETER_SUCCESS
         answer.origin_state_id = self.state_id
 
-        self.logger.info(f"{peer} sending DWA")
-        peer.add_out_msg(answer)
+        self.logger.info(f"{conn} sending DWA")
+        conn.add_out_msg(answer)
 
-    def remove_peer(self, peer: Peer):
-        """Removes a peer that is no longer connected.
+    def remove_peer_connection(self, conn: PeerConnection):
+        """Removes a peer connection that is no longer connected.
 
         !!! Warning
             This method should not be called directly, unless it is absolutely
             certain that the peer socket is no longer connected. The safer way
-            is to use [Node.close_peer_socket][diameter.node.Node.close_peer_socket]
+            is to use [`Node.close_peer_socket`][diameter.node.Node.close_peer_socket]
             instead, which will first close the socket and then remove the peer.
 
         Args:
-            peer: An instance of peer to remove from the list of active peers
-
-        Returns:
+            conn: An instance of peer connection to remove from the list of
+                active connections
 
         """
-        if peer.ident in self.peers:
-            del self.peers[peer.ident]
-        if peer.ident in self.peer_sockets:
-            del self.peer_sockets[peer.ident]
-        peer_cfg = self._get_peer_config(peer)
-        if peer_cfg:
+        if conn.ident in self.connections:
+            del self.connections[conn.ident]
+        if conn.ident in self.peer_sockets:
+            del self.peer_sockets[conn.ident]
+        peer = self._find_connection_peer(conn)
+        if peer:
             # unset so that a new connection may be made later
-            peer_cfg.peer_ident = None
-            peer_cfg.last_disconnect = int(time.time())
+            peer.connection = None
+            peer.last_disconnect = int(time.time())
 
         # Remove pending answer tracking; we cannot know if the peer will
         # persist its hop-by-hop IDs over reconnect.
-        if peer.host_identity in self._peer_waiting_answer:
-            del self._peer_waiting_answer[peer.host_identity]
+        if conn.host_identity in self._peer_waiting_answer:
+            del self._peer_waiting_answer[conn.host_identity]
 
         # Check if this was the last available peer for an app and clear app
         # ready flag if so, resulting in `wait_for_ready` to block again.
-        for app, peer_configs in self._peer_routes[self.realm_name].items():
+        for app, peers in self._peer_routes[self.realm_name].items():
             if not isinstance(app, Application):
                 continue
             any_peer_ready = False
-            for app_peer_cfg in peer_configs:
-                if app_peer_cfg.peer_ident and app_peer_cfg.peer_ident in self.peers:
-                    app_peer = self.peers[app_peer_cfg.peer_ident]
-                    if app_peer.state in PEER_READY_STATES:
-                        any_peer_ready = True
-                        break
+            for app_peer in peers:
+                if app_peer.connection and app_peer.connection.state in PEER_READY_STATES:
+                    any_peer_ready = True
+                    break
             if not any_peer_ready:
                 self.logger.warning(
-                    f"{peer} was last available peer for {app}, flagging app "
-                    f"as not ready")
+                    f"{conn} was last available peer connection for {app}, "
+                    f"flagging app as not ready")
                 app._is_ready.clear()
 
-        self.logger.debug(f"{peer} removed")
+        self.logger.debug(f"{conn} removed")
 
-    def send_cer(self, peer: Peer):
-        self.logger.info(f"{peer} sending CER")
+    def send_cer(self, conn: PeerConnection):
+        self.logger.info(f"{conn} sending CER")
 
         msg = CapabilitiesExchangeRequest()
-        msg.header.hop_by_hop_identifier = peer.hop_by_hop_seq.next_sequence()
+        msg.header.hop_by_hop_identifier = conn.hop_by_hop_seq.next_sequence()
         msg.header.end_to_end_identifier = self.end_to_end_seq.next_sequence()
         msg.origin_host = self.origin_host.encode()
         msg.origin_realm = self.realm_name.encode()
-        msg.host_ip_address = peer.host_ip_address
+        msg.host_ip_address = conn.host_ip_address
         msg.vendor_id = self.vendor_id
         msg.product_name = self.product_name
         msg.origin_state_id = self.state_id
         msg.auth_application_id = list(self.auth_application_ids)
         msg.acct_application_id = list(self.acct_application_ids)
 
-        peer.add_out_msg(msg)
+        conn.add_out_msg(msg)
 
-    def send_dwr(self, peer: Peer):
+    def send_dwr(self, peer: PeerConnection):
         self.logger.info(f"{peer} sending DWR")
 
         msg = DeviceWatchdogRequest()
@@ -1184,27 +1174,27 @@ class Node:
 
         peer.reset_last_dwr()
 
-    def send_dpr(self, peer: Peer):
-        self.logger.info(f"{peer} sending DPR")
+    def send_dpr(self, conn: PeerConnection):
+        self.logger.info(f"{conn} sending DPR")
 
         msg = DisconnectPeerRequest()
-        msg.header.hop_by_hop_identifier = peer.hop_by_hop_seq.next_sequence()
+        msg.header.hop_by_hop_identifier = conn.hop_by_hop_seq.next_sequence()
         msg.header.end_to_end_identifier = self.end_to_end_seq.next_sequence()
         msg.origin_host = self.origin_host.encode()
         msg.origin_realm = self.realm_name.encode()
         msg.disconnect_cause = constants.E_DISCONNECT_CAUSE_REBOOTING
-        self.logger.debug(f"{peer} changing state to DISCONNECTING")
-        peer.state = PEER_DISCONNECTING
-        peer.add_out_msg(msg)
+        self.logger.debug(f"{conn} changing state to DISCONNECTING")
+        conn.state = PEER_DISCONNECTING
+        conn.add_out_msg(msg)
 
-    def route_answer(self, message: Message) -> tuple[Peer, Message]:
+    def route_answer(self, message: Message) -> tuple[PeerConnection, Message]:
         """Determine which peer should be used for sending an answer message.
 
         Should always be used by an application before sending an answer.
 
         Determines the proper peer to be used, by keeping track of which
         requests have been sent, and always forwarding answers in reverse
-        direction to correct peers.
+        direction to correct peer connections.
 
         Args:
             message: The exact answer message to send
@@ -1232,34 +1222,35 @@ class Node:
 
         del self._peer_waiting_answer[waiting_host_identity][message_id]
 
-        peer = None
-        for connected_peer in self.peers.values():
+        conn = None
+        for connected_peer in self.connections.values():
             if connected_peer.host_identity == waiting_host_identity:
-                peer = connected_peer
+                conn = connected_peer
                 break
 
-        if peer is None:
+        if conn is None:
             raise NotRoutable(
-                f"Peer waiting for an answer with ID {hex(message_id)} has "
-                f"gone away")
+                f"Connection waiting for an answer with ID {hex(message_id)} "
+                f"has gone away")
 
-        if peer.state not in PEER_READY_STATES:
+        if conn.state not in PEER_READY_STATES:
             raise NotRoutable(
-                "A peer exists, but does not currently accept any messages")
+                "A peer connection exists, but does not currently accept any "
+                "messages")
 
-        self.logger.debug(f"{peer} expects answer "
+        self.logger.debug(f"{conn} expects answer "
                           f"{hex(message.header.hop_by_hop_identifier)}")
 
-        return peer, message
+        return conn, message
 
-    def route_request(self, app: Application, message: Message) -> tuple[Peer, Message]:
+    def route_request(self, app: Application, message: Message) -> tuple[PeerConnection, Message]:
         """Determine which peer should be used for sending a request message.
 
         Should always be used by an application before sending a request.
 
         Determines the proper peer to be used for the particular message, by
         comparing the configured peer list with what is currently connected
-        and ready to receive requests. If multiple peers are available, a
+        and ready to receive requests. If multiple connections are available, a
         rudimentary load balancing is used, with least-used peer selected.
 
         Sets the hop-by-hop identifier automatically based on the selected
@@ -1274,8 +1265,8 @@ class Node:
                 message as was passed to the method.
 
         Raises:
-            NotRoutable: when there is either no peers configured for the
-                application, or if none of the configured peers is connected
+            NotRoutable: when there is either no connections configured for the
+                application, or if none of the configured connections is connected
                 or accepting requests at the time
 
         """
@@ -1283,70 +1274,69 @@ class Node:
         if hasattr(message, "destination_realm"):
             realm_name = message.destination_realm.decode()
 
-        peer_cfg_list = None
-        for route_app, peer_configs in self._peer_routes[realm_name].items():
+        peer_list = None
+        for route_app, peers in self._peer_routes[realm_name].items():
             if app == route_app:
-                peer_cfg_list = peer_configs
+                peer_list = peers
                 break
 
-        if peer_cfg_list is None and "_default" in self._peer_routes[realm_name]:
-            peer_cfg_list = self._peer_routes[realm_name]["_default"]
+        if peer_list is None and "_default" in self._peer_routes[realm_name]:
+            peer_list = self._peer_routes[realm_name]["_default"]
 
-        if not peer_cfg_list:
+        if not peer_list:
             raise NotRoutable(
-                "No peers configured for the application and no default peers "
-                "exist")
+                "No peers configured for the application and no default "
+                "peer connections exist")
 
         usable_peers = [
-            (peer_cfg, self.peers[peer_cfg.peer_ident])
-            for peer_cfg in peer_cfg_list
-            if self.peers.get(peer_cfg.peer_ident) and
-            self.peers[peer_cfg.peer_ident].state in PEER_READY_STATES]
+            peer for peer in peer_list
+            if peer.connection and peer.connection.state in PEER_READY_STATES]
 
         if not usable_peers:
-            raise NotRoutable("No peers is available to route to")
+            raise NotRoutable("No connections is available to route to")
 
-        peer_cfg, peer = min(usable_peers, key=lambda c: c[0].counters.requests)
+        peer = min(usable_peers, key=lambda c: c.counters.requests)
+        conn = peer.connection
         self.logger.debug(
-            f"{peer} is least used for app {app}, with "
-            f"{peer_cfg.counters.requests} total outgoing requests")
+            f"{conn} is least used for app {app}, with "
+            f"{peer.counters.requests} total outgoing requests")
 
         if not message.header.hop_by_hop_identifier:
-            message.header.hop_by_hop_identifier = peer.hop_by_hop_seq.next_sequence()
+            message.header.hop_by_hop_identifier = conn.hop_by_hop_seq.next_sequence()
 
         message_id = (f"{message.header.hop_by_hop_identifier}:"
                       f"{message.header.end_to_end_identifier}")
         self._app_waiting_answer[message_id] = app
 
-        return peer, message
+        return conn, message
 
-    def send_message(self, peer: Peer, message: Message):
+    def send_message(self, conn: PeerConnection, message: Message):
         """Manually send a message towards a peer.
 
         Normally messages are sent through applications, but this method
-        permits manually sending messages towards known peers.
+        permits manually sending messages towards known connections.
 
         Args:
-            peer: An instance of a peer to send the message to. The peer must
+            conn: An instance of a peer to send the message to. The peer must
                 be in `PEER_READY` or `PEER_READY_WAITING_DWA` state
             message: A valid diameter message instance to send
 
         """
         message_id = message.header.hop_by_hop_identifier
         if (not message.header.is_request and
-                peer.host_identity in self._peer_waiting_answer and
-                message_id in self._peer_waiting_answer[peer.host_identity]):
+                conn.host_identity in self._peer_waiting_answer and
+                message_id in self._peer_waiting_answer[conn.host_identity]):
             # cleanup in case someone is sending messages directly without
             # using _route_answer
-            del self._peer_waiting_answer[peer.host_identity][message_id]
-        peer.add_out_msg(message)
+            del self._peer_waiting_answer[conn.host_identity][message_id]
+        conn.add_out_msg(message)
 
     def start(self):
         """Start the node.
 
         This method must be called once after the peer has been created. At
         startup, the node will create the local listening sockets, start its
-        work threads and connect to any peers that have persistent connections
+        work threads and connect to any connections that have persistent connections
         enabled.
         """
         if self._started:
@@ -1376,23 +1366,23 @@ class Node:
 
         self._connection_thread.start()
 
-        for peer_config in self.configured_peers.values():
-            if peer_config.persistent:
-                self.logger.info(f"auto-connecting to {peer_config.node_name}")
-                self._connect_to_peer(peer_config)
+        for peer in self.peers.values():
+            if peer.persistent:
+                self.logger.info(f"auto-connecting to {peer.node_name}")
+                self._connect_to_peer(peer)
 
     def stop(self, wait_timeout: int = 180, force: bool = False):
         """Stop node.
 
-        Stopping the node will emit a `Disconnect-Peer-Request` towards each
+        Stopping the node will emit a `Disconnect-PeerConnection-Request` towards each
         currently connected peer, with disonnect cause "REBOOTING".
         The node will then wait until each peer has produced a
-        `Disconnect-Peer-Answer`, and regardless of the answer's result code
+        `Disconnect-PeerConnection-Answer`, and regardless of the answer's result code
         or error status, the peer sockets are closed. Some diameter vendors
         may also already close the socket from their end immediately, if no
         messages are pending.
 
-        After all peers have disconnected, the node's own listening sockets
+        After all connections have disconnected, the node's own listening sockets
         will close, and afterwards the active applications are shut down.
 
         Args:
@@ -1416,17 +1406,17 @@ class Node:
         if force:
             self.logger.warning(f"forced close, sockets may not close claenly")
         else:
-            for peer in self.peers.values():
-                if peer.state in PEER_READY_STATES:
-                    self.send_dpr(peer)
+            for conn in self.connections.values():
+                if conn.state in PEER_READY_STATES:
+                    self.send_dpr(conn)
             abort_wait = False
             wait_until = time.time() + wait_timeout
-            while len(self.peers) > 0 and not abort_wait:
+            while len(self.connections) > 0 and not abort_wait:
                 if time.time() >= wait_until:
                     self.logger.error(
-                        "shutdown timeout reached, forcing peers to close")
+                        "shutdown timeout reached, forcing connections to close")
                     break
-                for peer in self.peers.values():
+                for peer in self.connections.values():
                     self.logger.debug(f"{peer} waiting for closure")
                 time.sleep(1)
 

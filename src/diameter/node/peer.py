@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import dataclasses
 import logging
 import os
 import queue
@@ -16,34 +17,35 @@ from ._helpers import SequenceGenerator, StoppableThread
 __all__ = ["PEER_RECV", "PEER_SEND", "PEER_TRANSPORT_TCP",
            "PEER_TRANSPORT_SCTP", "PEER_CONNECTING", "PEER_CONNECTED",
            "PEER_READY", "PEER_READY_WAITING_DWA", "PEER_DISCONNECTING",
-           "PEER_CLOSING", "PEER_CLOSED", "PEER_READY_STATES", "Peer"]
+           "PEER_CLOSING", "PEER_CLOSED", "PEER_READY_STATES",
+           "Peer", "PeerConnection", "PeerCounters"]
 
 
 PEER_RECV = 0x01
-"""Peer is a server, i.e. receives requests and sends answers."""
+"""PeerConnection is a server, i.e. receives requests and sends answers."""
 PEER_SEND = 0x02
-"""Peer is a client, i.e. sends requests and receives answers."""
+"""PeerConnection is a client, i.e. sends requests and receives answers."""
 PEER_TRANSPORT_TCP = 0x0a
-"""Peer connection is via TCP."""
+"""PeerConnection connection is via TCP."""
 PEER_TRANSPORT_SCTP = 0x0b
-"""Peer connection is via SCTP."""
+"""PeerConnection connection is via SCTP."""
 PEER_CONNECTING = 0x10
-"""Peer is in a state waiting for socket to become active."""
+"""PeerConnection is in a state waiting for socket to become active."""
 PEER_CONNECTED = 0x11
-"""Peer has established connection and is waiting for initial CER/CEA to 
+"""PeerConnection has established connection and is waiting for initial CER/CEA to 
 complete."""
 PEER_READY = 0x12
-"""Peer is ready to process messages."""
+"""PeerConnection is ready to process messages."""
 PEER_READY_WAITING_DWA = 0x13
-"""Peer is ready to process messages, but is waiting for a DWA."""
+"""PeerConnection is ready to process messages, but is waiting for a DWA."""
 PEER_DISCONNECTING = 0x14
-"""Peer has sent a disconnect-peer-request and is waiting for DPA."""
+"""PeerConnection has sent a disconnect-peer-request and is waiting for DPA."""
 PEER_CLOSING = 0x15
-"""Peer is about to be closed; it will no longer read any messages and will
+"""PeerConnection is about to be closed; it will no longer read any messages and will
 close its socket as soon as the write buffer has been emptied. This state is 
 not part of rfc6733, it is only an internal temporary flag."""
 PEER_CLOSED = 0x16
-"""Peer has closed connection."""
+"""PeerConnection has closed connection."""
 
 PEER_READY_STATES: tuple[int, ...] = (PEER_READY, PEER_READY_WAITING_DWA)
 _AnyMessageType = TypeVar("_AnyMessageType", bound=Message)
@@ -73,22 +75,127 @@ class MessageDumpLogAdapter(logging.LoggerAdapter):
     def received(self, msg: Message):
         if not self.isEnabledFor(logging.DEBUG):
             return
-        peer: Peer = self.extra["peer"]
+        peer: PeerConnection = self.extra["peer"]
         node = peer.node_name or peer.host_identity
         self.debug(f"RECV {node}\n{self._dump_msg(msg)}")
 
     def sent(self, msg: Message):
         if not self.isEnabledFor(logging.DEBUG):
             return
-        peer: Peer = self.extra["peer"]
+        peer: PeerConnection = self.extra["peer"]
         node = peer.node_name or peer.host_identity
         self.debug(f"SENT {node}\n{self._dump_msg(msg)}")
 
 
+@dataclasses.dataclass
+class PeerCounters:
+    """Peer message counters."""
+    cer: int = 0
+    cea: int = 0
+    dwr: int = 0
+    dwa: int = 0
+    dpr: int = 0
+    dpa: int = 0
+    requests: int = 0
+    answers: int = 0
+
+
+@dataclasses.dataclass
 class Peer:
-    """A connection with another diameter node."""
+    """Single configured or known peer.
+
+    Collects all settings and a few timers for a single peer. The node collects
+    one instance of `Peer` for every configured peer, or every discovered
+    unknown peer. There exists one peer for each FQDN. An instance of `Peer`
+    exists whether the peer is currently connected or not. The state peer
+    connectivity is determined by the `connection` attribute.
+    """
+    node_name: str
+    """Configured node name."""
+    realm_name: str
+    """Configured realm name."""
+    transport: int
+    """Transport method, either `PEER_TRANSPORT_TCP` or 
+    `PEER_TRANSPORT_SCTP`."""
+    port: int
+    """Port number is always set, even if the peer has not been configured 
+    for outgoing connections. It defaults to 3868."""
+    ip_addresses: list[str] = dataclasses.field(default_factory=list)
+    """A list of IP addresses configured for the peer."""
+    persistent: bool = False
+    """Indicates that the connection to the peer is automatically established,
+    at Node startup and at connection lost (see `reconnect_wait` timer). A 
+    connection is automatically established regardless of whether the node acts 
+    as a server or a client."""
+    cea_timeout: int = None
+    """Timeout waiting for a CEA after sending a CER. If no CEA is received 
+    within this timeframe, the connection to the peer is closed."""
+    cer_timeout: int = None
+    """Timeout waiting for a CER after receiving a connection attempt. If the 
+    peer does not send a CER within this timeframe, the connection is closed.
+    """
+    dwa_timeout: int = None
+    """Timeout waiting for a DWA after sending a DWR. If no DWA is received 
+    within this timeframe, the connection to the peer is closed."""
+    idle_timeout: int = None
+    """Time spent idle before a DWR is triggered."""
+    reconnect_wait: int = 10
+    """Time waited before a reconnect is attempted for a persistent peer.
+    The wait time is only applied in a scenario where the peer connection has
+    failed least once and has the `persistent` attribute enabled. If the
+    peer has not yet (ever) been disconnected, a connection attempt is made
+    immediately.
+    """
+    last_connect: int = None
+    """Unix timestamp of last successful connect."""
+    last_disconnect: int = None
+    """Unix timestamp of last disconnect."""
+    counters: PeerCounters = dataclasses.field(default_factory=PeerCounters)
+    """Peer statistics."""
+    connection: PeerConnection = None
+    """The actual, current connection to the peer. If the peer is not 
+    connected, the value will be `None`. Note that even if the peer may be 
+    connected, the actual connection readiness is determined by the 
+    [`Peer.connection.state`][diameter.node.peer.PeerConnection.state] 
+    attribute."""
+
+    @property
+    def disconnected_since(self) -> int:
+        """Time since last disconnect, as seconds. If the peer has never been
+        disconnected, the value -1 is returned."""
+        if not self.last_disconnect:
+            return -1
+        return int(time.time()) - self.last_disconnect
+
+    def __str__(self):
+        return f"Peer<({self.node_name})>"
+
+
+class PeerConnection:
+    """A connection with another diameter node.
+
+    Instances of this class are assigned as the value for the
+    [`Peer.connection`][diameter.node.peer.Peer.connection] attribute.
+    Connections are created and closed by the parent governing diameter node.
+    """
     def __init__(self, peer_ip: list[str] | str, peer_port: int,
                  peer_direction: int, interrupt_fileno: int):
+        """Create a new connection.
+
+        Args:
+            peer_ip: Either a list of possible IP addresses to connect to, or
+                an individual IP address that the connection socket is already
+                connected with.
+            peer_port: Peer connection port number
+            peer_direction: Indicates whether the connection is either a
+                receiving or a sending instance
+            interrupt_fileno: A write socket/pipe file number that this
+                connection will write its connection ID every time it needs
+                attention. This occurs most often when the connection has
+                something to write and needs to wake up the parent node's
+                `select` sleep.
+
+        """
         self._direction: int = peer_direction
         self._interrupt_fileno: int = interrupt_fileno
         self._last_msg: int = 0
@@ -106,7 +213,6 @@ class Peer:
             logging.getLogger("diameter.peer"), extra={"peer": self})
         self.msg_dump: MessageDumpLogAdapter = MessageDumpLogAdapter(
             logging.getLogger("diameter.peer.msg"), extra={"peer": self})
-
         self.write_lock: threading.Lock = threading.Lock()
 
         self.auth_application_ids: list[int] = []
@@ -119,20 +225,21 @@ class Peer:
         the node to route messages to their proper applications."""
         self.hop_by_hop_seq = SequenceGenerator()
         """A sequence generator that will produce unique hop-by-hop IDs. Use 
-        `Peer.hop_by_hop_seq.next_sequence()` to retrieve the next ID."""
+        `PeerConnection.hop_by_hop_seq.next_sequence()` to retrieve the next 
+        ID."""
         self.host_identity: str = ""
         """Resolved peer host ID. Will be set after CER/CEA has taken place."""
         self.host_ip_address: list[str] = []
         """Node's host IP addresses, resolved at the time of peer creation."""
         self.ident: str = "00" * 6  # needs to be 8 bytes always
-        """A unique (for the lifetime of the parent node) peer identifier, a
-        6-byte long hexadecimal string."""
+        """A unique (for the lifetime of the parent node) connection 
+        identifier, a 6-byte long hexadecimal string."""
         self.ip: list[str] | str = peer_ip
         """The actual peer IP address(es) that the connection socket is 
         connected with."""
-        self.message_handler: Callable[[Peer, _AnyMessageType], None] = lambda p, m: None
+        self.message_handler: Callable[[PeerConnection, _AnyMessageType], None] = lambda p, m: None
         """A callback function that will be called each time a diameter 
-        message is received."""
+        message is received. This should always be `Node._receive_message`."""
         self.node_name: str = ""
         """Configured node name. Is set for every known peer and should always 
         equal `host_identity`. If connections from unknown peers are accepted,
@@ -159,7 +266,7 @@ class Peer:
         self._write_thread.start()
 
     def __str__(self):
-        return f"<Peer({self.ident}, {self.node_name}>"
+        return f"<PeerConnection({self.ident}, {self.node_name}>"
 
     def __dispatch_message(self, msg: _AnyMessageType):
         if self.state == PEER_CONNECTED:
@@ -183,24 +290,36 @@ class Peer:
 
     @property
     def is_receiver(self) -> bool:
+        """Indicates the direction of connectivity. A receiver is a connection
+        that has been established by a foreign peer, towards us. A receiver
+        can both send and receive diameter messages, this property affects
+        mostly only the CER/CEA procedure."""
         return self._direction == PEER_RECV
 
     @property
     def is_sender(self) -> bool:
+        """Indicates the direction of connectivity. A sender is a connection
+        that has been by our node, towards a foreign peer. A sender can both
+        send and receive diameter messages, this property affects mostly only
+        the CER/CEA procedure."""
         return self._direction == PEER_SEND
 
     @property
     def is_waiting_for_dwa(self):
+        """Indicates that the connection is in a waiting-for-DWA state."""
         return self._last_dwr > 0
 
     @property
     def dwa_wait_time(self) -> int:
+        """Time spent waiting for DWA, in seconds. If no DWR has been sent,
+        returns zero."""
         if not self.is_waiting_for_dwa:
             return 0
         return int(time.time()) - self._last_dwr
 
     @property
     def last_read_since(self) -> int:
+        """Seconds since bytes were last receveid from the network."""
         return int(time.time()) - self._last_read
 
     @property
@@ -212,8 +331,8 @@ class Peer:
 
         Args:
             read_bytes: A byte string. Does not have to contain a complete
-                message; the Peer will buffer received bytes internally, until
-                at least one valid message has been received
+                message; the connection will buffer received bytes internally,
+                until at least one valid message has been received
 
         """
         self._read_buffer_queue.put(read_bytes)
@@ -285,7 +404,8 @@ class Peer:
     def reset_last_dwr(self):
         """Mark that a DWR has been sent.
 
-        Starts the DWA wait timer.
+        Starts the DWA wait timer and changes connection state to
+        PEER_READY_WAITING_DWA.
         """
         if self.state in PEER_READY_STATES:
             self.state = PEER_READY_WAITING_DWA
