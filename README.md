@@ -27,7 +27,8 @@ The diameter Application and Node implementations handle the majority of the
 basic protocol-level operations automatically, such as managing peer tables, 
 sending CER/CEA, DWR/DEA and disconnecting with DPR/DPA. 
 
-The latest version can be installed from PyPI:
+The latest version can be installed from PyPI as 
+[python-diameter](https://pypi.org/project/python-diameter/):
 
 ```shell
 ~# pip install python-diameter
