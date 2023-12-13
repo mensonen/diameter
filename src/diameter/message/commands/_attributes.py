@@ -165,6 +165,7 @@ class GenericSpec:
 # specific order that variables must be declared in.
 
 
+
 @dataclasses.dataclass
 class FailedAvp:
     """A data container that represents the "Failed-AVP" grouped AVP.
@@ -173,6 +174,7 @@ class FailedAvp:
     AVPs should be copied into the `additional_avps` attribute.
     """
     additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+    # noinspection PyDataclass
     avp_def: dataclasses.InitVar[AvpGenType] = ()
 
 
@@ -183,6 +185,7 @@ class VendorSpecificApplicationId:
     auth_application_id: int = None
     acct_application_id: int = None
 
+    # noinspection PyDataclass
     avp_def: dataclasses.InitVar[AvpGenType] = (
         AvpGenDef("vendor_id", AVP_VENDOR_ID, is_required=True),
         AvpGenDef("auth_application_id", AVP_AUTH_APPLICATION_ID),
@@ -196,6 +199,7 @@ class UnitValue:
     value_digits: int = None
     exponent: int = None
 
+    # noinspection PyDataclass
     avp_def: dataclasses.InitVar[AvpGenType] = (
         AvpGenDef("value_digits", AVP_VALUE_DIGITS, is_required=True),
         AvpGenDef("exponent", AVP_EXPONENT)
@@ -208,6 +212,7 @@ class CcMoney:
     unit_value: UnitValue = None
     currency_code: int = None
 
+    # noinspection PyDataclass
     avp_def: dataclasses.InitVar[AvpGenType] = (
         AvpGenDef("unit_value", AVP_UNIT_VALUE, is_required=True, type_class=UnitValue),
         AvpGenDef("currency_code", AVP_CURRENCY_CODE)
@@ -223,6 +228,7 @@ class GrantedServiceUnit:
     cc_input_octets: int = None
     cc_service_specific_units: int = None
 
+    # noinspection PyDataclass
     avp_def: dataclasses.InitVar[AvpGenType] = (
         AvpGenDef("cc_time", AVP_CC_TIME),
         AvpGenDef("cc_money", AVP_CC_MONEY, type_class=CcMoney),
@@ -251,6 +257,7 @@ class UsedServiceUnit:
     cc_output_octets: int = None
     cc_service_specific_units: int = None
 
+    # noinspection PyDataclass
     avp_def: dataclasses.InitVar[AvpGenType] = (
         AvpGenDef("tariff_change_usage", AVP_TARIFF_CHANGE_USAGE),
         AvpGenDef("cc_time", AVP_CC_TIME),
@@ -269,6 +276,7 @@ class GsuPoolReference:
     cc_unit_type: int = None
     unit_value: UnitValue = None
 
+    # noinspection PyDataclass
     avp_def: dataclasses.InitVar[AvpGenType] = (
         AvpGenDef("g_s_u_pool_identifier", AVP_G_S_U_POOL_IDENTIFIER, is_required=True),
         AvpGenDef("cc_unit_type", AVP_CC_UNIT_TYPE, is_required=True),
@@ -282,6 +290,7 @@ class RedirectServer:
     redirect_address_type: int = None
     redirect_server_address: str = None
 
+    # noinspection PyDataclass
     avp_def: dataclasses.InitVar[AvpGenType] = (
         AvpGenDef("redirect_address_type", AVP_REDIRECT_ADDRESS_TYPE, is_required=True),
         AvpGenDef("redirect_server_address", AVP_REDIRECT_SERVER_ADDRESS, is_required=True)
@@ -301,6 +310,7 @@ class TimeOfDayCondition:
     timezone_flag: int = None
     additional_avps: list[Avp] = dataclasses.field(default_factory=list)
 
+    # noinspection PyDataclass
     avp_def: dataclasses.InitVar[AvpGenType] = (
         AvpGenDef("time_of_day_start", AVP_TIME_OF_DAY_START),
         AvpGenDef("time_of_day_end", AVP_TIME_OF_DAY_END),
@@ -328,6 +338,7 @@ class FinalUnitIndication:
     # rfc8560 doesn't say this is permitted, but realworld samples say otherwise
     additional_avps: list[Avp] = dataclasses.field(default_factory=list)
 
+    # noinspection PyDataclass
     avp_def: dataclasses.InitVar[AvpGenType] = (
         AvpGenDef("final_unit_action", AVP_FINAL_UNIT_ACTION, is_required=True),
         AvpGenDef("restriction_filter_rule", AVP_RESTRICTION_FILTER_RULE),
@@ -337,45 +348,241 @@ class FinalUnitIndication:
 
 
 @dataclasses.dataclass
-class FromSpec(GenericSpec):
-    # TODO write spec if QoS is added to dictionary
+class IpAddressRange:
+    """A data container that represents the "IP-Address-Range" grouped AVP."""
+    ip_address_start: str = None
+    ip_address_end: str = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("ip_address_start", AVP_IP_ADDRESS_START),
+        AvpGenDef("ip_address_end", AVP_IP_ADDRESS_END)
+    )
+
+
+@dataclasses.dataclass
+class IpAddressMask:
+    """A data container that represents the "IP-Address-Mask" grouped AVP."""
+    ip_address: str = None
+    ip_bit_mask_width: int = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("ip_address", AVP_IP_ADDRESS),
+        AvpGenDef("ip_bit_mask_width", AVP_IP_BIT_MASK_WIDTH)
+    )
+
+
+@dataclasses.dataclass
+class MacAddressMask:
+    """A data container that represents the "MAC-Address-Mask" grouped AVP."""
+    mac_address: bytes = None
+    mac_address_mask_pattern: bytes = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("mac_address", AVP_MAC_ADDRESS, is_required=True),
+        AvpGenDef("mac_address_mask_pattern", AVP_MAC_ADDRESS_MASK_PATTERN, is_required=True)
+    )
+
+
+@dataclasses.dataclass
+class Eui64AddressMask:
+    """A data container that represents the "EUI64-Address-Mask" grouped AVP."""
+    eui64_address: bytes = None
+    eui64_address_mask_pattern: bytes = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("eui64_address", AVP_EUI64_ADDRESS, is_required=True),
+        AvpGenDef("eui64_address_mask_pattern", AVP_EUI64_ADDRESS_MASK_PATTERN, is_required=True)
+    )
+
+
+@dataclasses.dataclass
+class PortRange:
+    """A data container that represents the "Port-Range" grouped AVP."""
+    port_start: int = None
+    port_end: int = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("port_start", AVP_PORT_START),
+        AvpGenDef("port_end", AVP_PORT_END)
+    )
+
+
+@dataclasses.dataclass
+class FromToSpec:
+    ip_address: list[str] = dataclasses.field(default_factory=list)
+    ip_address_range: list[IpAddressRange] = dataclasses.field(default_factory=list)
+    ip_address_mask: list[IpAddressMask] = dataclasses.field(default_factory=list)
+    mac_address: list[bytes] = dataclasses.field(default_factory=list)
+    mac_address_mask: list[MacAddressMask] = dataclasses.field(default_factory=list)
+    eu164_address: list[str] = dataclasses.field(default_factory=list)
+    eu164_address_mask: list[Eui64AddressMask] = dataclasses.field(default_factory=list)
+    port: list[int] = dataclasses.field(default_factory=list)
+    port_range: list[PortRange] = dataclasses.field(default_factory=list)
+    negated: int = None
+    use_assigned_address: int = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("ip_address", AVP_IP_ADDRESS),
+        AvpGenDef("ip_address_range", AVP_IP_ADDRESS_RANGE, type_class=IpAddressRange),
+        AvpGenDef("ip_address_mask", AVP_IP_ADDRESS_MASK, type_class=IpAddressMask),
+        AvpGenDef("mac_address", AVP_MAC_ADDRESS),
+        AvpGenDef("mac_address_mask", AVP_MAC_ADDRESS_MASK, type_class=MacAddressMask),
+        AvpGenDef("eu164_address", AVP_EUI64_ADDRESS),
+        AvpGenDef("eu164_address_mask", AVP_EUI64_ADDRESS_MASK, type_class=Eui64AddressMask),
+        AvpGenDef("port", AVP_PORT),
+        AvpGenDef("port_range", AVP_PORT_RANGE, type_class=PortRange),
+        AvpGenDef("negated", AVP_NEGATED),
+        AvpGenDef("use_assigned_address", AVP_USE_ASSIGNED_ADDRESS),
+    )
+
+
+@dataclasses.dataclass
+class FromSpec(FromToSpec):
+    """A data container that represents the From-Spec AVP."""
     pass
 
 
 @dataclasses.dataclass
-class ToSpec(GenericSpec):
-    # TODO write spec if QoS is added to dictionary
+class ToSpec(FromToSpec):
+    """A data container that represents the To-Spec AVP."""
     pass
 
 
 @dataclasses.dataclass
-class IpOption(GenericSpec):
-    # TODO write spec if QoS is added to dictionary
-    pass
+class IpOption:
+    """A data container that represents the IP-Option AVP."""
+    ip_option_type: int = None
+    ip_option_value: list[bytes] = dataclasses.field(default_factory=list)
+    negated: int = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("ip_option_type", AVP_IP_OPTION_TYPE, is_required=True),
+        AvpGenDef("ip_option_value", AVP_IP_OPTION_VALUE),
+        AvpGenDef("negated", AVP_NEGATED)
+    )
 
 
 @dataclasses.dataclass
 class TcpOption(GenericSpec):
-    # TODO write spec if QoS is added to dictionary
-    pass
+    """A data container that represents the Tcp-Option AVP."""
+    tcp_option_type: int = None
+    tcp_option_value: list[bytes] = dataclasses.field(default_factory=list)
+    negated: int = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("tcp_option_type", AVP_TCP_OPTION_TYPE, is_required=True),
+        AvpGenDef("tcp_option_value", AVP_TCP_OPTION_VALUE),
+        AvpGenDef("negated", AVP_NEGATED)
+    )
 
 
 @dataclasses.dataclass
-class TcpFlags(GenericSpec):
-    # TODO write spec if QoS is added to dictionary
-    pass
+class TcpFlags:
+    """A data container that represents the Tcp-Flags AVP."""
+    tcp_flag_type: int = None
+    negated: int = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("tcp_flag_type", AVP_TCP_FLAG_TYPE, is_required=True),
+        AvpGenDef("negated", AVP_NEGATED)
+    )
 
 
 @dataclasses.dataclass
-class IcmpType(GenericSpec):
-    # TODO write spec if QoS is added to dictionary
-    pass
+class IcmpType:
+    """A data container that represents the ICMP-Type AVP."""
+    icmp_type_number: int = None
+    icmp_code: list[int] = dataclasses.field(default_factory=list)
+    negated: int = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("icmp_type_number", AVP_ICMP_TYPE_NUMBER, is_required=True),
+        AvpGenDef("icmp_code", AVP_ICMP_CODE),
+        AvpGenDef("negated", AVP_NEGATED)
+    )
 
 
 @dataclasses.dataclass
-class EthOption(GenericSpec):
-    # TODO write spec if QoS is added to dictionary
-    pass
+class EthProtoType:
+    """A data container that represents the ETH-Proto-Type AVP."""
+    eth_ether_type: list[bytes] = dataclasses.field(default_factory=list)
+    eth_sap: list[bytes] = dataclasses.field(default_factory=list)
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("eth_ether_type", AVP_ETH_ETHER_TYPE),
+        AvpGenDef("eth_sap", AVP_ETH_SAP)
+    )
+
+
+@dataclasses.dataclass
+class UserPriorityRange:
+    """A data container that represents the User-Priority-Range AVP."""
+    low_user_priority: list[int] = dataclasses.field(default_factory=list)
+    high_user_priority: list[int] = dataclasses.field(default_factory=list)
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("low_user_priority", AVP_LOW_USER_PRIORITY),
+        AvpGenDef("high_user_priority", AVP_HIGH_USER_PRIORITY)
+    )
+
+
+@dataclasses.dataclass
+class VlanIdRange:
+    """A data container that represents the VLAN-ID-Range AVP."""
+    s_vid_start: int = None
+    s_vid_end: int = None
+    c_vid_start: int = None
+    c_vid_end: int = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("s_vid_start", AVP_S_VID_START),
+        AvpGenDef("s_vid_end", AVP_S_VID_END),
+        AvpGenDef("c_vid_start", AVP_C_VID_START),
+        AvpGenDef("c_vid_end", AVP_C_VID_END),
+    )
+
+
+
+@dataclasses.dataclass
+class EthOption:
+    """A data container that represents the ETH-Option AVP."""
+    eth_proto_type: EthProtoType = None
+    vlan_id_range: list[VlanIdRange] = dataclasses.field(default_factory=list)
+    user_priority_range: list[int] = dataclasses.field(default_factory=list)
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("eth_proto_type", AVP_ETH_PROTO_TYPE, is_required=True, type_class=EthProtoType),
+        AvpGenDef("vlan_id_range", AVP_VLAN_ID_RANGE, type_class=VlanIdRange),
+        AvpGenDef("user_priority_range", AVP_USER_PRIORITY_RANGE, type_class=UserPriorityRange)
+    )
 
 
 @dataclasses.dataclass
@@ -395,6 +602,7 @@ class Classifier:
     eth_option: list[EthOption] = dataclasses.field(default_factory=list)
     additional_avps: list[Avp] = dataclasses.field(default_factory=list)
 
+    # noinspection PyDataclass
     avp_def: dataclasses.InitVar[AvpGenType] = (
         AvpGenDef("vendor_id", AVP_VENDOR_ID, is_required=True),
         AvpGenDef("protocol", AVP_PROTOCOL),
@@ -415,6 +623,7 @@ class Classifier:
 class QosParameters:
     """A data container that represents the "QoS-Parameters" grouped AVP."""
     additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+    # noinspection PyDataclass
     avp_def: dataclasses.InitVar[AvpGenType] = ()
 
 
@@ -425,6 +634,7 @@ class QosProfileTemplate:
     qos_profile_id: int = None
     additional_avps: list[Avp] = dataclasses.field(default_factory=list)
 
+    # noinspection PyDataclass
     avp_def: dataclasses.InitVar[AvpGenType] = (
         AvpGenDef("vendor_id", AVP_VENDOR_ID, is_required=True),
         AvpGenDef("qos_profile_id", AVP_QOS_PROFILE_ID, is_required=True)
@@ -439,6 +649,7 @@ class ExcessTreatment:
     qos_parameters: QosParameters = None
     additional_avps: list[Avp] = dataclasses.field(default_factory=list)
 
+    # noinspection PyDataclass
     avp_def: dataclasses.InitVar[AvpGenType] = (
         AvpGenDef("treatment_action", AVP_TREATMENT_ACTION, is_required=True),
         AvpGenDef("qos_profile_template", AVP_QOS_PROFILE_TEMPLATE, type_class=QosProfileTemplate),
@@ -448,7 +659,11 @@ class ExcessTreatment:
 
 @dataclasses.dataclass
 class FilterRule:
-    """A data container that represents the "Filter-Rule" grouped AVP."""
+    """A data container that represents the "Filter-Rule" grouped AVP.
+
+    The "Filter-Rule" AVP, as well as its sub-AVP "Classifier" are defined
+    in rfc5777.
+    """
     filter_rule_precedence: int = None
     classifier: Classifier = None
     time_of_day_condition: list[TimeOfDayCondition] = dataclasses.field(default_factory=list)
@@ -458,6 +673,7 @@ class FilterRule:
     qos_parameters: QosParameters = None
     excess_treatment: ExcessTreatment = None
 
+    # noinspection PyDataclass
     avp_def: dataclasses.InitVar[AvpGenType] = (
         AvpGenDef("filter_rule_precedence", AVP_FILTER_RULE_PRECEDENCE),
         AvpGenDef("classifier", AVP_CLASSIFIER, type_class=Classifier),
@@ -471,7 +687,7 @@ class FilterRule:
 
 
 @dataclasses.dataclass
-class Mscc:
+class MultipleServicesCreditControl:
     """A data container that represents the "Multiple-Services-Credit-Control" grouped AVP."""
     granted_service_unit: GrantedServiceUnit = None
     requested_service_unit: RequestedServiceUnit = None
@@ -485,6 +701,7 @@ class Mscc:
     final_unit_indication: FinalUnitIndication = None
     additional_avps: list[Avp] = dataclasses.field(default_factory=list)
 
+    # noinspection PyDataclass
     avp_def: dataclasses.InitVar[AvpGenType] = (
         AvpGenDef("granted_service_unit", AVP_GRANTED_SERVICE_UNIT, type_class=GrantedServiceUnit),
         AvpGenDef("requested_service_unit", AVP_REQUESTED_SERVICE_UNIT, type_class=RequestedServiceUnit),
@@ -505,6 +722,7 @@ class ServiceParameterInfo:
     service_parameter_type: int = None
     service_parameter_value: bytes = None
 
+    # noinspection PyDataclass
     avp_def: dataclasses.InitVar[AvpGenType] = (
         AvpGenDef("service_parameter_type", AVP_SERVICE_PARAMETER_TYPE, is_required=True),
         AvpGenDef("service_parameter_value", AVP_SERVICE_PARAMETER_VALUE, is_required=True)
@@ -517,6 +735,7 @@ class SubscriptionId:
     subscription_id_type: int = None
     subscription_id_data: str = None
 
+    # noinspection PyDataclass
     avp_def: dataclasses.InitVar[AvpGenType] = (
         AvpGenDef("subscription_id_type", AVP_SUBSCRIPTION_ID_TYPE, is_required=True),
         AvpGenDef("subscription_id_data", AVP_SUBSCRIPTION_ID_DATA, is_required=True),
@@ -529,6 +748,7 @@ class UserEquipmentInfo:
     user_equipment_info_type: int = None
     user_equipment_info_value: bytes = None
 
+    # noinspection PyDataclass
     avp_def: dataclasses.InitVar[AvpGenType] = (
         AvpGenDef("user_equipment_info_type", AVP_USER_EQUIPMENT_INFO_TYPE, is_required=True),
         AvpGenDef("user_equipment_info_value", AVP_USER_EQUIPMENT_INFO_VALUE, is_required=True)
@@ -544,6 +764,7 @@ class UserEquipmentInfoExtension:
     user_equipment_info_modifiedeui64: bytes = None
     user_equipment_info_imei: bytes = None
 
+    # noinspection PyDataclass
     avp_def: dataclasses.InitVar[AvpGenType] = (
         AvpGenDef("user_equipment_info_imeisv", AVP_USER_EQUIPMENT_INFO_IMEISV),
         AvpGenDef("user_equipment_info_mac", AVP_USER_EQUIPMENT_INFO_MAC),
@@ -559,6 +780,7 @@ class ProxyInfo:
     proxy_host: bytes = None
     proxy_state: bytes = None
 
+    # noinspection PyDataclass
     avp_def: dataclasses.InitVar[AvpGenType] = (
         AvpGenDef("proxy_host", AVP_PROXY_HOST, is_required=True),
         AvpGenDef("proxy_state", AVP_PROXY_STATE, is_required=True)
@@ -572,6 +794,7 @@ class CostInformation:
     currency_code: int = None
     cost_unit: str = None
 
+    # noinspection PyDataclass
     avp_def: dataclasses.InitVar[AvpGenType] = (
         AvpGenDef("unit_value", AVP_UNIT_VALUE, is_required=True, type_class=UnitValue),
         AvpGenDef("currency_code", AVP_CURRENCY_CODE, is_required=True),
@@ -579,26 +802,43 @@ class CostInformation:
     )
 
 
+
 @dataclasses.dataclass
-class QosFinalUnitIndication:
-    """A data container that represents the "QoS-Final-Unit-Indication" grouped AVP.
+class RedirectServerExtension:
+    """A data container that represents the "Redirect-Server-Extension" grouped AVP.
 
-    !!! Note
-
-        This grouped AVP currently lacks the "Redirect-Server-Extension"
-        grouped AVP. If the AVP is needed, it must be constructed by hand and
-        appended to the `additional_avps` attribute.
+    !!! warning
+        Even though this data class permits adding more than one AVP in the
+        `additional_avps` custom AVP list, the rfc8506 specification *forbids*
+        adding more than one AVP.
 
     """
+    redirect_address_ipaddress: str = None
+    redirect_address_url: str = None
+    redirect_address_sip_url: str = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("redirect_address_ipaddress", AVP_REDIRECT_ADDRESS_IPADDRESS),
+        AvpGenDef("redirect_address_url", AVP_REDIRECT_ADDRESS_URL),
+        AvpGenDef("redirect_address_sip_url", AVP_REDIRECT_ADDRESS_SIP_URI)
+    )
+
+
+@dataclasses.dataclass
+class QosFinalUnitIndication:
+    """A data container that represents the "QoS-Final-Unit-Indication" grouped AVP."""
     final_unit_action: int = None
     filter_rule: list[FilterRule] = dataclasses.field(default_factory=list)
     filter_id: list[str] = dataclasses.field(default_factory=list)
-    # this is missing in the wireshark dictionary used to generate AVPs
-    # redirect_server_extension: RedirectServerExtension = None
+    redirect_server_extension: RedirectServerExtension = None
     additional_avps: list[Avp] = dataclasses.field(default_factory=list)
 
+    # noinspection PyDataclass
     avp_def: dataclasses.InitVar[AvpGenType] = (
         AvpGenDef("final_unit_action", AVP_FINAL_UNIT_ACTION, is_required=True),
         AvpGenDef("filter_rule", AVP_FILTER_RULE, type_class=FilterRule),
+        AvpGenDef("redirect_server_extension", AVP_REDIRECT_SERVER_EXTENSION, type_class=RedirectServerExtension),
         AvpGenDef("filter_id", AVP_FILTER_ID),
     )

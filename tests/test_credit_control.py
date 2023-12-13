@@ -34,7 +34,7 @@ def test_ccr_create_new():
         constants.E_SUBSCRIPTION_ID_TYPE_END_USER_E164, "485089163847")
     ccr.add_subscription_id(
         constants.E_SUBSCRIPTION_ID_TYPE_END_USER_IMSI, "260036619905065")
-    ccr.add_mscc(
+    ccr.add_multiple_services_credit_control(
         requested_service_unit=RequestedServiceUnit(cc_total_octets=0),
         used_service_unit=UsedServiceUnit(cc_total_octets=998415321),
         avp=[Avp.new(
@@ -110,7 +110,7 @@ def test_cca_create_new():
 
     # A tricky MSCC that contains both vendor-specific AVPs and one entirely
     # unknown one
-    cca.add_mscc(
+    cca.add_multiple_services_credit_control(
         granted_service_unit=GrantedServiceUnit(cc_total_octets=174076000),
         rating_group=8000,
         validity_time=3600,

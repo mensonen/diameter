@@ -60,7 +60,7 @@ ccr.requested_action = E_REQUESTED_ACTION_DIRECT_DEBITING
 ccr.add_subscription_id(
     subscription_id_type=E_SUBSCRIPTION_ID_TYPE_END_USER_E164,
     subscription_id_data="41784800005")
-ccr.add_mscc(
+ccr.add_multiple_services_credit_control(
     requested_service_unit=RequestedServiceUnit(cc_service_specific_units=1),
     service_identifier=1)
 

@@ -70,7 +70,7 @@ AVPs documented in `rfc8506`, `rfc5777` and `rfc6733`.
         - "!^avp_def"
 
 
-::: diameter.message.commands.credit_control.Mscc
+::: diameter.message.commands.credit_control.MultipleServicesCreditControl
     options:
       show_root_heading: true
       show_root_full_path: false

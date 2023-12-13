@@ -126,11 +126,10 @@ class CreditControlAnswer(CreditControl):
     origin_state_id: int
     event_timestamp: datetime.datetime
     granted_service_unit: GrantedServiceUnit
-    multiple_services_credit_control: list[Mscc]
+    multiple_services_credit_control: list[MultipleServicesCreditControl]
     cost_information: CostInformation
     final_unit_indication: FinalUnitIndication
-    # this is missing in the Wireshark dictionary used to generate AVPs
-    # qos_final_unit_indication: QosFinalUnitIndication
+    qos_final_unit_indication: QosFinalUnitIndication
     check_balance_result: int
     credit_control_failure_handling: int
     direct_debiting_failure_handling: int
@@ -157,9 +156,10 @@ class CreditControlAnswer(CreditControl):
         AvpGenDef("origin_state_id", AVP_ORIGIN_STATE_ID),
         AvpGenDef("event_timestamp", AVP_EVENT_TIMESTAMP),
         AvpGenDef("granted_service_unit", AVP_GRANTED_SERVICE_UNIT, type_class=GrantedServiceUnit),
-        AvpGenDef("multiple_services_credit_control", AVP_MULTIPLE_SERVICES_CREDIT_CONTROL, type_class=Mscc),
+        AvpGenDef("multiple_services_credit_control", AVP_MULTIPLE_SERVICES_CREDIT_CONTROL, type_class=MultipleServicesCreditControl),
         AvpGenDef("cost_information", AVP_COST_INFORMATION, type_class=CostInformation),
         AvpGenDef("final_unit_indication", AVP_FINAL_UNIT_INDICATION, type_class=FinalUnitIndication),
+        AvpGenDef("qos_final_unit_indication", AVP_QOS_FINAL_UNIT_INDICATION, type_class=QosFinalUnitIndication),
         AvpGenDef("check_balance_result", AVP_CHECK_BALANCE_RESULT),
         AvpGenDef("credit_control_failure_handling", AVP_CREDIT_CONTROL_FAILURE_HANDLING),
         AvpGenDef("credit_control_failure_handling", AVP_CREDIT_CONTROL_FAILURE_HANDLING),
@@ -187,18 +187,26 @@ class CreditControlAnswer(CreditControl):
         assign_attr_from_defs(self, self._avps)
         self._avps = []
 
-    def add_mscc(self, granted_service_unit: GrantedServiceUnit = None,
-                 requested_service_unit: RequestedServiceUnit = None,
-                 used_service_unit: list[UsedServiceUnit] | UsedServiceUnit = None,
-                 tariff_change_usage: int = None,
-                 service_identifier: list[int] | int = None,
-                 rating_group: int = None,
-                 g_s_u_pool_reference: list[GsuPoolReference] = None,
-                 validity_time: int = None,
-                 result_code: int = None,
-                 final_unit_indication: FinalUnitIndication = None,
-                 avp: list[Avp] = None):
+    def add_multiple_services_credit_control(
+            self, granted_service_unit: GrantedServiceUnit = None,
+            requested_service_unit: RequestedServiceUnit = None,
+            used_service_unit: list[UsedServiceUnit] | UsedServiceUnit = None,
+            tariff_change_usage: int = None,
+            service_identifier: list[int] | int = None,
+            rating_group: int = None,
+            g_s_u_pool_reference: list[GsuPoolReference] = None,
+            validity_time: int = None,
+            result_code: int = None,
+            final_unit_indication: FinalUnitIndication = None,
+            avp: list[Avp] = None):
         """Add a multiple services credit control instance to the answer.
+
+        This is identical to doing:
+
+            >>> ccr = CreditControlAnswer()
+            >>> ccr.multiple_services_credit_control.append(
+            >>>     MultipleServicesCreditControl()
+            >>> )
 
         Args:
             granted_service_unit: Optional granted service units
@@ -220,7 +228,7 @@ class CreditControlAnswer(CreditControl):
         if service_identifier is not None and not isinstance(service_identifier, list):
             service_identifier = [service_identifier]
 
-        self.multiple_services_credit_control.append(Mscc(
+        self.multiple_services_credit_control.append(MultipleServicesCreditControl(
             granted_service_unit=granted_service_unit,
             requested_service_unit=requested_service_unit,
             used_service_unit=used_service_unit,
@@ -260,7 +268,7 @@ class CreditControlRequest(CreditControl):
     requested_action: int
     used_service_unit: list[UsedServiceUnit]
     multiple_services_indicator: int
-    multiple_services_credit_control: list[Mscc]
+    multiple_services_credit_control: list[MultipleServicesCreditControl]
     service_parameter_info: list[ServiceParameterInfo]
     cc_correlation_id: bytes
     user_equipment_info: UserEquipmentInfo
@@ -290,7 +298,7 @@ class CreditControlRequest(CreditControl):
         AvpGenDef("requested_action", AVP_REQUESTED_ACTION),
         AvpGenDef("used_service_unit", AVP_USED_SERVICE_UNIT, type_class=UsedServiceUnit),
         AvpGenDef("multiple_services_indicator", AVP_MULTIPLE_SERVICES_INDICATOR),
-        AvpGenDef("multiple_services_credit_control", AVP_MULTIPLE_SERVICES_CREDIT_CONTROL, type_class=Mscc),
+        AvpGenDef("multiple_services_credit_control", AVP_MULTIPLE_SERVICES_CREDIT_CONTROL, type_class=MultipleServicesCreditControl),
         AvpGenDef("service_parameter_info", AVP_SERVICE_PARAMETER_INFO, type_class=ServiceParameterInfo),
         AvpGenDef("cc_correlation_id", AVP_CC_CORRELATION_ID),
         AvpGenDef("user_equipment_info", AVP_USER_EQUIPMENT_INFO, type_class=UserEquipmentInfo),
@@ -327,18 +335,26 @@ class CreditControlRequest(CreditControl):
         self.subscription_id.append(SubscriptionId(
             subscription_id_type, subscription_id_data))
 
-    def add_mscc(self, granted_service_unit: GrantedServiceUnit = None,
-                 requested_service_unit: RequestedServiceUnit = None,
-                 used_service_unit: list[UsedServiceUnit] | UsedServiceUnit = None,
-                 tariff_change_usage: int = None,
-                 service_identifier: list[int] | int = None,
-                 rating_group: int = None,
-                 g_s_u_pool_reference: list[GsuPoolReference] = None,
-                 validity_time: int = None,
-                 result_code: int = None,
-                 final_unit_indication: FinalUnitIndication = None,
-                 avp: list[Avp] = None):
+    def add_multiple_services_credit_control(
+            self, granted_service_unit: GrantedServiceUnit = None,
+            requested_service_unit: RequestedServiceUnit = None,
+            used_service_unit: list[UsedServiceUnit] | UsedServiceUnit = None,
+            tariff_change_usage: int = None,
+            service_identifier: list[int] | int = None,
+            rating_group: int = None,
+            g_s_u_pool_reference: list[GsuPoolReference] = None,
+            validity_time: int = None,
+            result_code: int = None,
+            final_unit_indication: FinalUnitIndication = None,
+            avp: list[Avp] = None):
         """Add a multiple services credit control instance to the request.
+
+        This is identical to doing:
+
+            >>> ccr = CreditControlRequest()
+            >>> ccr.multiple_services_credit_control.append(
+            >>>     MultipleServicesCreditControl()
+            >>> )
 
         Args:
             granted_service_unit: Optional granted service units
@@ -360,7 +376,7 @@ class CreditControlRequest(CreditControl):
         if service_identifier is not None and not isinstance(service_identifier, list):
             service_identifier = [service_identifier]
 
-        self.multiple_services_credit_control.append(Mscc(
+        self.multiple_services_credit_control.append(MultipleServicesCreditControl(
             granted_service_unit=granted_service_unit,
             requested_service_unit=requested_service_unit,
             used_service_unit=used_service_unit,

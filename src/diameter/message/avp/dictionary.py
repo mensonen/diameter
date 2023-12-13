@@ -1,5 +1,3 @@
-# Automatically generated from a dictionary.xml file
-
 from . import (AvpAddress, AvpEnumerated, AvpFloat32, AvpFloat64, AvpGrouped,
                AvpInteger32, AvpInteger64, AvpUnsigned32, AvpUnsigned64,
                AvpOctetString, AvpTime, AvpUtf8String)
@@ -382,6 +380,11 @@ AVP_DICTIONARY = {
     AVP_USER_EQUIPMENT_INFO_TYPE: {"name": "User-Equipment-Info-Type", "type": AvpEnumerated, "mandatory": True},
     AVP_USER_EQUIPMENT_INFO_VALUE: {"name": "User-Equipment-Info-Value", "type": AvpOctetString, "mandatory": True},
     AVP_SERVICE_CONTEXT_ID: {"name": "Service-Context-Id", "type": AvpUtf8String, "mandatory": True},
+    AVP_REDIRECT_SERVER_EXTENSION: {"name": "Redirect-Server-Extension", "type": AvpGrouped, "mandatory": False},
+    AVP_REDIRECT_ADDRESS_IPADDRESS: {"name": "Redirect-Address-IPAddress", "type": AvpAddress, "mandatory": False},
+    AVP_REDIRECT_ADDRESS_URL: {"name": "Redirect-Address-URL", "type": AvpUtf8String, "mandatory": False},
+    AVP_REDIRECT_ADDRESS_SIP_URI: {"name": "Redirect-Address-SIP-URI", "type": AvpUtf8String, "mandatory": False},
+    AVP_QOS_FINAL_UNIT_INDICATION: {"name": "QoS-Final-Unit-Indication", "type": AvpGrouped, "mandatory": False},
     AVP_SIP_ACCOUNTING_INFORMATION: {"name": "SIP-Accounting-Information", "type": AvpGrouped, "mandatory": True},
     AVP_SIP_ACCOUNTING_SERVER_URI: {"name": "SIP-Accounting-Server-URI", "type": AvpUtf8String, "mandatory": True},
     AVP_SIP_CREDIT_CONTROL_SERVER_URI: {"name": "SIP-Credit-Control-Server-URI", "type": AvpUtf8String, "mandatory": True},
@@ -427,20 +430,14 @@ AVP_DICTIONARY = {
 
 # vendor specific
 AVP_VENDOR_DICTIONARY = {}
-AVP_VENDOR_DICTIONARY[0] = {
-    }
-AVP_VENDOR_DICTIONARY[61] = {
-    }
-AVP_VENDOR_DICTIONARY[429] = {
-    }
-AVP_VENDOR_DICTIONARY[1751] = {
-    }
-AVP_VENDOR_DICTIONARY[2937] = {
-    }
-AVP_VENDOR_DICTIONARY[3830] = {
-    }
-AVP_VENDOR_DICTIONARY[5806] = {
-    }
+AVP_VENDOR_DICTIONARY[0] = {}
+AVP_VENDOR_DICTIONARY[61] = {}
+AVP_VENDOR_DICTIONARY[429] = {}
+AVP_VENDOR_DICTIONARY[1751] = {}
+AVP_VENDOR_DICTIONARY[2937] = {}
+AVP_VENDOR_DICTIONARY[3830] = {}
+AVP_VENDOR_DICTIONARY[5806] = {}
+
 AVP_VENDOR_DICTIONARY[10415] = {
     AVP_TGPP_GBA_USERSECSETTINGS: {"name": "GBA-UserSecSettings", "type": AvpOctetString, "vendor": 10415},
     AVP_TGPP_TRANSACTION_IDENTIFIER: {"name": "Transaction-Identifier", "type": AvpOctetString, "vendor": 10415},
@@ -1429,7 +1426,7 @@ AVP_VENDOR_DICTIONARY[10415] = {
     AVP_TGPP_MONITORING_EVENT_INFORMATION: {"name": "Monitoring-Event-Information", "type": AvpGrouped, "mandatory": True, "vendor": 10415},
     AVP_TGPP_MONITORING_EVENT_FUNCTIONALITY: {"name": "Monitoring-Event-Functionality", "type": AvpInteger32, "mandatory": True, "vendor": 10415},
     AVP_TGPP_MONITORING_EVENT_REPORT_NUMBER: {"name": "Monitoring-Event-Report-Number", "type": AvpUnsigned32, "mandatory": True, "vendor": 10415},
-    AVP_TGPP_CELLULAR_NETWORK_INFORMATION_: {"name": "Cellular-Network-Information ", "type": AvpOctetString, "mandatory": True, "vendor": 10415},
+    AVP_TGPP_CELLULAR_NETWORK_INFORMATION: {"name": "Cellular-Network-Information ", "type": AvpOctetString, "mandatory": True, "vendor": 10415},
     AVP_TGPP_RELATED_CHANGE_CONDITION_INFORMATION: {"name": "Related-Change-Condition-Information", "type": AvpGrouped, "mandatory": True, "vendor": 10415},
     AVP_TGPP_CP_CIOT_EPS_OPTIMISATION_INDICATOR: {"name": "CP-CIoT-EPS-Optimisation-Indicator", "type": AvpEnumerated, "mandatory": True, "vendor": 10415},
     AVP_TGPP_SGI_PTP_TUNNELLING_METHOD: {"name": "SGi-PtP-Tunnelling-Method", "type": AvpEnumerated, "mandatory": True, "vendor": 10415},
@@ -1783,6 +1780,7 @@ AVP_VENDOR_DICTIONARY[10415] = {
     AVP_TGPP_IDLE_STATUS_TIMESTAMP: {"name": "Idle-Status-Timestamp", "type": AvpTime, "mandatory": True, "vendor": 10415},
     AVP_TGPP_ACTIVE_TIME: {"name": "Active-Time", "type": AvpUnsigned32, "mandatory": True, "vendor": 10415},
     AVP_TGPP_REACHABILITY_CAUSE: {"name": "Reachability-Cause", "type": AvpUnsigned32, "mandatory": True, "vendor": 10415}}
+
 AVP_VENDOR_DICTIONARY[13019] = {
     AVP_ETSI_ETSI_EXPERIMENTAL_RESULT_CODE: {"name": "ETSI-Experimental-Result-Code", "type": AvpEnumerated, "mandatory": True, "vendor": 13019},
     AVP_ETSI_GLOBALLY_UNIQUE_ADDRESS: {"name": "Globally-Unique-Address", "type": AvpGrouped, "mandatory": True, "vendor": 13019},
@@ -1843,16 +1841,16 @@ AVP_VENDOR_DICTIONARY[13019] = {
     AVP_ETSI_ETSI_DIGEST_ENTITY_BODY_HASH: {"name": "ETSI-Digest-Entity-Body-Hash", "type": AvpUtf8String, "mandatory": True, "vendor": 13019},
     AVP_ETSI_ETSI_DIGEST_NEXTNONCE: {"name": "ETSI-Digest-Nextnonce", "type": AvpUtf8String, "mandatory": True, "vendor": 13019},
     AVP_ETSI_ETSI_DIGEST_RESPONSE_AUTH: {"name": "ETSI-Digest-Response-Auth", "type": AvpUtf8String, "mandatory": True, "vendor": 13019}}
-AVP_VENDOR_DICTIONARY[13421] = {
-    }
-AVP_VENDOR_DICTIONARY[81000] = {
-    }
-AVP_VENDOR_DICTIONARY[16777216] = {
-    }
+
+AVP_VENDOR_DICTIONARY[13421] = {}
+AVP_VENDOR_DICTIONARY[81000] = {}
+AVP_VENDOR_DICTIONARY[16777216] = {}
+
 AVP_VENDOR_DICTIONARY[42] = {
     AVP_SUN_PING_TIMESTAMP_SECS: {"name": "Ping-Timestamp-Secs", "type": AvpUnsigned32, "mandatory": True, "vendor": 42},
     AVP_SUN_PING_TIMESTAMP_USECS: {"name": "Ping-Timestamp-Usecs", "type": AvpUnsigned32, "mandatory": True, "vendor": 42},
     AVP_SUN_PING_TIMESTAMP: {"name": "Ping-Timestamp", "type": AvpGrouped, "mandatory": True, "vendor": 42}}
+
 AVP_VENDOR_DICTIONARY[5535] = {
     AVP_TGPP2_ACCESS_NETWORK_PHYSICAL_ACCESS_ID_REALM: {"name": "Access-Network-Physical-Access-ID-Realm", "type": AvpOctetString, "vendor": 5535},
     AVP_TGPP2_ACCESS_NETWORK_PHYSICAL_ACCESS_ID_VALUE: {"name": "Access-Network-Physical-Access-ID-Value", "type": AvpOctetString, "vendor": 5535},
@@ -1874,6 +1872,7 @@ AVP_VENDOR_DICTIONARY[5535] = {
     AVP_TGPP2_RULE_REASON_CODE: {"name": "Rule-Reason-Code", "type": AvpEnumerated, "vendor": 5535},
     AVP_TGPP2_AGW_MCC_MNC: {"name": "AGW-MCC-MNC", "type": AvpUtf8String, "mandatory": True, "vendor": 5535},
     AVP_TGPP2_3GPP2_BSID: {"name": "3GPP2-BSID", "type": AvpUtf8String, "mandatory": True, "vendor": 5535}}
+
 AVP_VENDOR_DICTIONARY[193] = {
     AVP_ERICSSON_ACC_SERVICE_TYPE: {"name": "Acc-Service-Type", "type": AvpEnumerated, "mandatory": True, "vendor": 193},
     AVP_ERICSSON_SSO_STATUS: {"name": "SSO-Status", "type": AvpEnumerated, "mandatory": True, "vendor": 193},
@@ -1965,6 +1964,7 @@ AVP_VENDOR_DICTIONARY[193] = {
     AVP_ERICSSON_UHTZ_OFFSET: {"name": "UHTZ-Offset", "type": AvpUtf8String, "mandatory": True, "vendor": 193},
     AVP_ERICSSON_AS_TYPE: {"name": "AS-Type", "type": AvpEnumerated, "mandatory": True, "vendor": 193},
     AVP_ERICSSON_TRANSACTION_SIP_MESSAGE: {"name": "Transaction-SIP-Message", "type": AvpUtf8String, "mandatory": True, "vendor": 193}}
+
 AVP_VENDOR_DICTIONARY[5771] = {
     AVP_CISCO_CISCO_FLOW_DESCRIPTION_507: {"name": "Cisco-Flow-Description-507", "type": AvpOctetString, "mandatory": True, "vendor": 5771},
     AVP_CISCO_CISCO_CHARGING_RULE_DEFINITION: {"name": "Cisco-Charging-Rule-Definition", "type": AvpGrouped, "mandatory": True, "vendor": 5771},
@@ -2161,6 +2161,7 @@ AVP_VENDOR_DICTIONARY[5771] = {
     AVP_CISCO_SERVICE_IDENTIFIER_LO: {"name": "Service-Identifier-Lo", "type": AvpUnsigned32, "mandatory": True, "vendor": 5771},
     AVP_CISCO_SERVICE_IDENTIFIER_HI: {"name": "Service-Identifier-Hi", "type": AvpUnsigned32, "mandatory": True, "vendor": 5771},
     AVP_CISCO_SERVICE_IDENTIFIER_RANGE: {"name": "Service-Identifier-Range", "type": AvpGrouped, "mandatory": True, "vendor": 5771}}
+
 AVP_VENDOR_DICTIONARY[8164] = {
     AVP_STARENT_ACCESS_NETWORK_CHARGING_PHYSICAL_ACCESS_ID: {"name": "Access-Network-Charging-Physical-Access-Id", "type": AvpGrouped, "mandatory": True, "vendor": 8164},
     AVP_STARENT_ACCESS_NETWORK_CHARGING_PHYSICAL_ACCESS_ID_REALM: {"name": "Access-Network-Charging-Physical-Access-Id-Realm", "type": AvpOctetString, "mandatory": True, "vendor": 8164},
@@ -2456,6 +2457,7 @@ AVP_VENDOR_DICTIONARY[8164] = {
     AVP_STARENT_SN_WIMAX_AUTH_ONLY: {"name": "SN-WiMAX-Auth-Only", "type": AvpUnsigned32, "mandatory": True, "vendor": 8164},
     AVP_STARENT_SN_WLAN_AP_IDENTIFIER: {"name": "SN-WLAN-AP-Identifier", "type": AvpOctetString, "mandatory": True, "vendor": 8164},
     AVP_STARENT_SN_WLAN_UE_IDENTIFIER: {"name": "SN-WLAN-UE-Identifier", "type": AvpOctetString, "mandatory": True, "vendor": 8164}}
+
 AVP_VENDOR_DICTIONARY[12645] = {
     AVP_VODAFONE_CONTEXT_TYPE: {"name": "Context-Type", "type": AvpEnumerated, "mandatory": True, "vendor": 12645},
     AVP_VODAFONE_VODAFONE_QUOTA_CONSUMPTION_TIME: {"name": "Vodafone-Quota-Consumption-Time", "type": AvpUnsigned32, "mandatory": True, "vendor": 12645},
@@ -2470,6 +2472,7 @@ AVP_VENDOR_DICTIONARY[12645] = {
     AVP_VODAFONE_VODAFONE_TRIGGER_TYPE: {"name": "Vodafone-Trigger-Type", "type": AvpEnumerated, "mandatory": True, "vendor": 12645},
     AVP_VODAFONE_USER_LOCATION_INFORMATION: {"name": "User-Location-Information", "type": AvpOctetString, "mandatory": True, "vendor": 12645},
     AVP_VODAFONE_VODAFONE_VOLUME_QUOTA_THRESHOLD: {"name": "Vodafone-Volume-Quota-Threshold", "type": AvpUnsigned32, "mandatory": True, "vendor": 12645}}
+
 AVP_VENDOR_DICTIONARY[637] = {
     AVP_ALU_DETAILED_RESULT: {"name": "Detailed-Result", "type": AvpGrouped, "mandatory": True, "vendor": 637},
     AVP_ALU_DETAILED_RESULT_CAUSE: {"name": "Detailed-Result-Cause", "type": AvpUtf8String, "mandatory": True, "vendor": 637},
@@ -2480,6 +2483,7 @@ AVP_VENDOR_DICTIONARY[637] = {
     AVP_ALU_POLICY_COUNTER_ID: {"name": "Policy-Counter-Id", "type": AvpOctetString, "mandatory": True, "vendor": 637},
     AVP_ALU_POLICY_COUNTER_VALUE: {"name": "Policy-Counter-Value", "type": AvpUnsigned32, "mandatory": True, "vendor": 637},
     AVP_ALU_SUBSCRIBER_USER_ID: {"name": "Subscriber-User-Id", "type": AvpUtf8String, "mandatory": True, "vendor": 637}}
+
 AVP_VENDOR_DICTIONARY[94] = {
     AVP_NOKIA_NOKIA_IMS_MEDIA_COMPONENT_ID: {"name": "Nokia-IMS-Media-Component-Id", "type": AvpUnsigned32, "vendor": 94},
     AVP_NOKIA_NOKIA_TIME_OF_FIRST_USAGE: {"name": "Nokia-Time-Of-First-Usage", "type": AvpTime, "vendor": 94},
@@ -2491,6 +2495,7 @@ AVP_VENDOR_DICTIONARY[94] = {
     AVP_NOKIA_DEFAULT_QUOTA: {"name": "Default-Quota", "type": AvpGrouped, "vendor": 94},
     AVP_NOKIA_NOKIA_URI: {"name": "Nokia-URI", "type": AvpUtf8String, "vendor": 94},
     AVP_NOKIA_NSN_TOKEN_VALUE: {"name": "NSN-Token-Value", "type": AvpOctetString, "vendor": 94}}
+
 AVP_VENDOR_DICTIONARY[28458] = {
     AVP_NOKIASOLUTIONSANDNETWORKS_USER_AGENT_TYPE: {"name": "User-Agent-Type", "type": AvpEnumerated, "mandatory": True, "vendor": 28458},
     AVP_NOKIASOLUTIONSANDNETWORKS_NSN_IN_INFORMATION: {"name": "NSN-IN-Information", "type": AvpGrouped, "mandatory": True, "vendor": 28458},
@@ -2505,6 +2510,7 @@ AVP_VENDOR_DICTIONARY[28458] = {
     AVP_NOKIASOLUTIONSANDNETWORKS_BILLING_ACCOUNT_NUMBER: {"name": "Billing-Account-Number", "type": AvpInteger32, "mandatory": True, "vendor": 28458},
     AVP_NOKIASOLUTIONSANDNETWORKS_ACCOUNT_TYPE: {"name": "Account-Type", "type": AvpUtf8String, "mandatory": True, "vendor": 28458},
     AVP_NOKIASOLUTIONSANDNETWORKS_ACCOUNT_SUBTYPE: {"name": "Account-Subtype", "type": AvpUtf8String, "mandatory": True, "vendor": 28458}}
+
 AVP_VENDOR_DICTIONARY[11] = {
     AVP_HP_PEER_STATE: {"name": "Peer-State", "type": AvpEnumerated, "mandatory": True, "vendor": 11},
     AVP_HP_PEER_NAME: {"name": "Peer-Name", "type": AvpOctetString, "mandatory": True, "vendor": 11},
@@ -2512,11 +2518,13 @@ AVP_VENDOR_DICTIONARY[11] = {
     AVP_HP_PEER_STATE_CHANGE: {"name": "Peer-State-Change", "type": AvpGrouped, "mandatory": True, "vendor": 11},
     AVP_HP_MORE_PEERS: {"name": "More-Peers", "type": AvpGrouped, "mandatory": True, "vendor": 11},
     AVP_HP_PEER_TYPE: {"name": "Peer-Type", "type": AvpEnumerated, "mandatory": True, "vendor": 11}}
+
 AVP_VENDOR_DICTIONARY[323] = {
     AVP_ORACLETEKELEC_DSR_APPLICATIONINVOKED: {"name": "DSR-ApplicationInvoked", "type": AvpEnumerated, "vendor": 323},
     AVP_ORACLETEKELEC_PDRA_EARLY_BINDING: {"name": "PDRA-Early-Binding", "type": AvpOctetString, "vendor": 323},
     AVP_ORACLETEKELEC_SESSION_RELEASE_REASON: {"name": "Session-Release-Reason", "type": AvpOctetString, "vendor": 323},
     AVP_ORACLETEKELEC_MSGCOPYANSWER: {"name": "MsgCopyAnswer", "type": AvpGrouped, "vendor": 323}}
+
 AVP_VENDOR_DICTIONARY[9] = {
     AVP_CISCOSYSTEMS_DSCP: {"name": "DSCP", "type": AvpUnsigned32, "vendor": 9},
     AVP_CISCOSYSTEMS_RATE_LIMIT_ACTION: {"name": "Rate-Limit-Action", "type": AvpUnsigned32, "vendor": 9},
@@ -2558,6 +2566,7 @@ AVP_VENDOR_DICTIONARY[9] = {
     AVP_CISCOSYSTEMS_OVERRIDE_NEXTHOP_ADDRESS: {"name": "Override-Nexthop-Address", "type": AvpAddress, "vendor": 9},
     AVP_CISCOSYSTEMS_OVERRIDE_CONTROL_PENDING_QUEUE_ACTION: {"name": "Override-Control-Pending-Queue-Action", "type": AvpEnumerated, "vendor": 9},
     AVP_CISCOSYSTEMS_OVERRIDE_CONTROL_MERGE_WILDCARD: {"name": "Override-Control-Merge-Wildcard", "type": AvpEnumerated, "vendor": 9}}
+
 AVP_VENDOR_DICTIONARY[2636] = {
     AVP_JUNIPER_TDF_APPLICATION_INSTANCE_IDENTIFIER_BASE: {"name": "TDF-Application-Instance-Identifier-Base", "type": AvpUtf8String, "vendor": 2636},
     AVP_JUNIPER_SERVICE_CHAINING_INFORMATION: {"name": "Service-Chaining-Information", "type": AvpUtf8String, "vendor": 2636},
@@ -2571,6 +2580,7 @@ AVP_VENDOR_DICTIONARY[2636] = {
     AVP_JUNIPER_STEERING_UPLINK_VRF: {"name": "Steering-Uplink-VRF", "type": AvpUtf8String, "vendor": 2636},
     AVP_JUNIPER_STEERING_DOWNLINK_VRF: {"name": "Steering-Downlink-VRF", "type": AvpUtf8String, "vendor": 2636},
     AVP_JUNIPER_STEERING_IP_ADDRESS: {"name": "Steering-IP-Address", "type": AvpAddress, "vendor": 2636}}
+
 AVP_VENDOR_DICTIONARY[41897] = {
     AVP_INOVAR_INOVAR_FORWARD_TO_PARTY: {"name": "Inovar-Forward-To-Party", "type": AvpUtf8String, "mandatory": True, "vendor": 41897},
     AVP_INOVAR_INOVAR_APP_CODE: {"name": "Inovar-App-Code", "type": AvpEnumerated, "mandatory": True, "vendor": 41897},
@@ -2583,6 +2593,7 @@ AVP_VENDOR_DICTIONARY[41897] = {
     AVP_INOVAR_INOVAR_PS_REGISTRATION_STATUS: {"name": "Inovar-PS-Registration-Status", "type": AvpEnumerated, "mandatory": True, "vendor": 41897},
     AVP_INOVAR_INOVAR_SERVICE_RESULT: {"name": "Inovar-Service-Result", "type": AvpEnumerated, "mandatory": True, "vendor": 41897},
     AVP_INOVAR_INOVAR_CALLING_PARTY_INFO: {"name": "Inovar-Calling-Party-Info", "type": AvpGrouped, "mandatory": True, "vendor": 41897}}
+
 AVP_VENDOR_DICTIONARY[2011] = {
     AVP_HUAWEI_P2PSMS_INFORMATION: {"name": "P2PSMS-Information", "type": AvpGrouped, "mandatory": True, "vendor": 2011},
     AVP_HUAWEI_SMSC_ADDRESS_HUAWEI: {"name": "SMSC-Address-Huawei", "type": AvpUtf8String, "mandatory": True, "vendor": 2011},
@@ -2598,6 +2609,7 @@ AVP_VENDOR_DICTIONARY[2011] = {
     AVP_HUAWEI_SEND_RESULT: {"name": "Send-Result", "type": AvpEnumerated, "mandatory": True, "vendor": 2011},
     AVP_HUAWEI_OPERATION_RESULT: {"name": "Operation-Result", "type": AvpEnumerated, "mandatory": True, "vendor": 2011},
     AVP_HUAWEI_NOTIFY_MODE: {"name": "Notify-Mode", "type": AvpEnumerated, "mandatory": True, "vendor": 2011}}
+
 AVP_VENDOR_DICTIONARY[12951] = {
     AVP_VERIZONWIRELESS_IDLE_TO_CONNECTED_TRANSITION_COUNT: {"name": "Idle-To-Connected-Transition-Count", "type": AvpInteger32, "mandatory": True, "vendor": 12951},
     AVP_VERIZONWIRELESS_CONNECTED_DURATION: {"name": "Connected-Duration", "type": AvpUnsigned32, "mandatory": True, "vendor": 12951},
@@ -2616,6 +2628,7 @@ AVP_VENDOR_DICTIONARY[12951] = {
     AVP_VERIZONWIRELESS_ORIGINATION_TIMESTAMP: {"name": "Origination-Timestamp", "type": AvpUnsigned64, "vendor": 12951},
     AVP_VERIZONWIRELESS_MAX_WAIT_TIME: {"name": "Max-Wait-Time", "type": AvpUnsigned32, "vendor": 12951},
     AVP_VERIZONWIRELESS_ONLINE_RESPONSE_REQUIRED: {"name": "Online-Response-Required", "type": AvpEnumerated, "vendor": 12951}}
+
 AVP_VENDOR_DICTIONARY[27640] = {
     AVP_TELEFONICA_MOVILES_ESPA_S_A__CS_ADDITIONAL_CALLING_PARTY_NUMBER: {"name": "CS-Additional-Calling-Party-Number", "type": AvpOctetString, "mandatory": True, "vendor": 27640},
     AVP_TELEFONICA_MOVILES_ESPA_S_A__CS_ANNOUNCEMENT: {"name": "CS-Announcement", "type": AvpGrouped, "mandatory": True, "vendor": 27640},
@@ -2673,10 +2686,12 @@ AVP_VENDOR_DICTIONARY[27640] = {
     AVP_TELEFONICA_MOVILES_ESPA_S_A__CS_NETWORK_TYPE: {"name": "CS-Network-Type", "type": AvpUnsigned32, "mandatory": True, "vendor": 27640},
     AVP_TELEFONICA_MOVILES_ESPA_S_A__CS_SERVICE_ID: {"name": "CS-Service-Id", "type": AvpUnsigned32, "mandatory": True, "vendor": 27640},
     AVP_TELEFONICA_MOVILES_ESPA_S_A__OCS_ACCOUNT_MANAGEMENT_OP: {"name": "OCS-Account-Management-Op", "type": AvpUtf8String, "mandatory": True, "vendor": 27640}}
+
 AVP_VENDOR_DICTIONARY[4329] = {
     AVP_SIEMENS_AG_SIEMENS_IMSI: {"name": "Siemens-IMSI", "type": AvpUtf8String, "mandatory": True, "vendor": 4329},
     AVP_SIEMENS_AG_SIEMENS_MSIDN: {"name": "Siemens-MSIDN", "type": AvpUtf8String, "mandatory": True, "vendor": 4329},
     AVP_SIEMENS_AG_SIEMENS_SERVER_NAME: {"name": "Siemens-Server-Name", "type": AvpUtf8String, "mandatory": True, "vendor": 4329}}
+
 AVP_VENDOR_DICTIONARY[311] = {
     AVP_MICROSOFT_MS_CHAP_RESPONSE: {"name": "MS-CHAP-Response", "type": AvpOctetString, "vendor": 311},
     AVP_MICROSOFT_MS_CHAP_ERROR: {"name": "MS-CHAP-Error", "type": AvpUtf8String, "vendor": 311},
@@ -2686,6 +2701,7 @@ AVP_VENDOR_DICTIONARY[311] = {
     AVP_MICROSOFT_MS_CHAP2_RESPONSE: {"name": "MS-CHAP2-Response", "type": AvpOctetString, "vendor": 311},
     AVP_MICROSOFT_MS_CHAP2_SUCCESS: {"name": "MS-CHAP2-Success", "type": AvpOctetString, "vendor": 311},
     AVP_MICROSOFT_MS_CHAP2_CPW: {"name": "MS-CHAP2-CPW", "type": AvpOctetString, "vendor": 311}}
+
 AVP_VENDOR_DICTIONARY[19444] = {
     AVP_METASWITCH_METASWITCH_INFORMATION: {"name": "Metaswitch-Information", "type": AvpGrouped, "mandatory": True, "vendor": 19444},
     AVP_METASWITCH_ADJACENCY_NAME: {"name": "Adjacency-Name", "type": AvpGrouped, "mandatory": True, "vendor": 19444},
