@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import dataclasses
 import errno
 import json
 import logging
@@ -462,7 +461,7 @@ class Node:
         for app, peers in self._peer_routes[self.realm_name].items():
             for peer in peers:
                 if peer.connection == conn:
-                    app._is_ready.set()
+                    app.is_ready.set()
                     break
 
     def _generate_answer(self, conn: PeerConnection, msg: _AnyMessageType) -> _AnyAnswerType:
@@ -1140,7 +1139,7 @@ class Node:
                 self.logger.warning(
                     f"{conn} was last available peer connection for {app}, "
                     f"flagging app as not ready")
-                app._is_ready.clear()
+                app.is_ready.clear()
 
         self.logger.debug(f"{conn} removed")
 

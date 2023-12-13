@@ -165,7 +165,6 @@ class GenericSpec:
 # specific order that variables must be declared in.
 
 
-
 @dataclasses.dataclass
 class FailedAvp:
     """A data container that represents the "Failed-AVP" grouped AVP.
@@ -568,7 +567,6 @@ class VlanIdRange:
     )
 
 
-
 @dataclasses.dataclass
 class EthOption:
     """A data container that represents the ETH-Option AVP."""
@@ -800,7 +798,6 @@ class CostInformation:
         AvpGenDef("currency_code", AVP_CURRENCY_CODE, is_required=True),
         AvpGenDef("cost_unit", AVP_COST_UNIT)
     )
-
 
 
 @dataclasses.dataclass

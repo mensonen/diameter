@@ -55,7 +55,7 @@ class Application:
         self.name = constants.APPLICATIONS.get(
             self.application_id, "Unknown Application")
 
-        self._is_ready: threading.Event = threading.Event()
+        self.is_ready: threading.Event = threading.Event()
         self._node: Node | None = None
         self._answer_waiting: dict[int, WaitingMessage] = {}
 
@@ -250,7 +250,7 @@ class Application:
             ApplicationError: If no peer becomes available before timeout
 
         """
-        if self._is_ready.wait(timeout) is not True:
+        if self.is_ready.wait(timeout) is not True:
             raise ApplicationError("No connection available within timeout")
         logger.info(f"{self} at least one peer has become available")
 
