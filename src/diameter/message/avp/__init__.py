@@ -459,7 +459,7 @@ class AvpFloat64(Avp):
     @property
     def value(self) -> float:
         """AVP value as a python float. When setting the value, it must be a
-        64-bit integer. Larger intergers will raise an `AvpEncodeError`."""
+        64-bit integer. Larger numbers will raise an `AvpEncodeError`."""
         try:
             return struct.unpack("!d", self.payload)[0]
         except struct.error as e:
@@ -545,7 +545,7 @@ class AvpInteger32(Avp):
         the value, it must be a 32-bit integer. Larger integers will raise
         an `AvpEncodeError`."""
         try:
-            return struct.unpack("!I", self.payload)[0]
+            return struct.unpack("!i", self.payload)[0]
         except struct.error as e:
             raise AvpDecodeError(
                 f"{self.name} value {self.payload} is not a valid 32-bit "
@@ -554,7 +554,7 @@ class AvpInteger32(Avp):
     @value.setter
     def value(self, new_value: int):
         try:
-            self.payload = struct.pack("!I", new_value)
+            self.payload = struct.pack("!i", new_value)
         except struct.error as e:
             raise AvpEncodeError(
                 f"{self.name} value {new_value} is not a valid 32-bit "
@@ -572,7 +572,7 @@ class AvpInteger64(Avp):
         the value, it must be a 64-bit integer. Larger integers will raise
         an `AvpEncodeError`."""
         try:
-            return struct.unpack("!Q", self.payload)[0]
+            return struct.unpack("!q", self.payload)[0]
         except struct.error as e:
             raise AvpDecodeError(
                 f"{self.name} value {self.payload} is not a valid 64-bit "
@@ -581,7 +581,7 @@ class AvpInteger64(Avp):
     @value.setter
     def value(self, new_value: int):
         try:
-            self.payload = struct.pack("!Q", new_value)
+            self.payload = struct.pack("!q", new_value)
         except struct.error as e:
             raise AvpEncodeError(
                 f"{self.name} value {new_value} is not a valid 64-bit "
@@ -605,6 +605,60 @@ class AvpOctetString(Avp):
         if not isinstance(new_value, bytes):
             raise AvpEncodeError(f"{self.name} value {new_value} is not bytes")
         self.payload = new_value
+
+
+class AvpUnsigned32(Avp):
+    """An AVP type that implements the "Unsigned32" type.
+
+    The "Unsigned32" type has a 32-bit unsigned value.
+    """
+    @property
+    def value(self) -> int:
+        """Sets or retrieves the AVP value as a python integer. When setting
+        the value, it must be a 32-bit unsigned integer. Larger and signed
+        integers will raise an `AvpEncodeError`."""
+        try:
+            return struct.unpack("!I", self.payload)[0]
+        except struct.error as e:
+            raise AvpDecodeError(
+                f"{self.name} value {self.payload} is not a valid 32-bit "
+                f"unsigned integer: {e}") from None
+
+    @value.setter
+    def value(self, new_value: int):
+        try:
+            self.payload = struct.pack("!I", new_value)
+        except struct.error as e:
+            raise AvpEncodeError(
+                f"{self.name} value {new_value} is not a valid 32-bit "
+                f"unsigned integer: {e}") from None
+
+
+class AvpUnsigned64(Avp):
+    """An AVP type that implements the "Unsigned64" type.
+
+    The "Unsigned64" type has a 64-bit unsigned value.
+    """
+    @property
+    def value(self) -> int:
+        """Sets or retrieves the AVP value as a python integer. When setting
+        the value, it must be a 64-bit unsigned integer. Larger and signed
+        integers will raise an `AvpEncodeError`."""
+        try:
+            return struct.unpack("!Q", self.payload)[0]
+        except struct.error as e:
+            raise AvpDecodeError(
+                f"{self.name} value {self.payload} is not a valid 64-bit "
+                f"integer: {e}") from None
+
+    @value.setter
+    def value(self, new_value: int):
+        try:
+            self.payload = struct.pack("!Q", new_value)
+        except struct.error as e:
+            raise AvpEncodeError(
+                f"{self.name} value {new_value} is not a valid 64-bit "
+                f"integer: {e}") from None
 
 
 class AvpUtf8String(Avp):
@@ -685,16 +739,6 @@ AvpEnumerated = AvpInteger32
 
 As enumeration is a list of valid integer values, is an alias for 
 [AvpInteger32][diameter.message.avp.AvpInteger32]
-"""
-AvpUnsigned32 = AvpInteger32
-"""An AVP type that implements the "Unsigned32". type.
-
-This is an alias for [AvpInteger32][diameter.message.avp.AvpInteger32]
-"""
-AvpUnsigned64 = AvpInteger64
-"""An AVP type that implements the "Unsigned64". type.
-
-This is an alias for [AvpInteger64][diameter.message.avp.AvpInteger64]
 """
 
 _AnyAvpType = TypeVar("_AnyAvpType", bound=Avp)

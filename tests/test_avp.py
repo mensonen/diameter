@@ -108,7 +108,7 @@ def test_create_float_type():
     assert a.payload == b"@`\x14\xcc\xcc\xcc\xcc\xcd"
 
 
-def test_create_int_type():
+def test_create_signed_int_type():
     # create "Integer32" AVP. This is also the same as an "Enumerated" AVP
     a = avp.AvpInteger32(constants.AVP_ACCT_INPUT_PACKETS)
     a.value = 294967
@@ -116,8 +116,34 @@ def test_create_int_type():
     assert a.value == 294967
     assert a.payload == b"\x00\x04\x807"
 
+    a = avp.AvpInteger32(constants.AVP_TGPP_CAUSE_CODE)
+    a.value = -1
+
+    assert a.value == -1
+    assert a.payload == b"\xff\xff\xff\xff"
+
+    # create by passing the payload in cosntructor
+    a = avp.AvpInteger32(constants.AVP_TGPP_CAUSE_CODE, payload=b"\xff\xff\xff\xff")
+    assert a.value == -1
+
     # create "Integer64" AVP
     a = avp.AvpInteger64(constants.AVP_VALUE_DIGITS)
+    a.value = 9223372036854775800
+
+    assert a.value == 9223372036854775800
+    assert a.payload == b"\x7f\xff\xff\xff\xff\xff\xff\xf8"
+
+
+def test_create_unsigned_int_type():
+    # create "Unsigned32" AVP
+    a = avp.AvpUnsigned32(constants.AVP_NAS_PORT)
+    a.value = 294967
+
+    assert a.value == 294967
+    assert a.payload == b"\x00\x04\x807"
+
+    # create "Unsigned64" AVP
+    a = avp.AvpUnsigned64(constants.AVP_FRAMED_INTERFACE_ID)
     a.value = 17347878958773879024
 
     assert a.value == 17347878958773879024
@@ -182,7 +208,7 @@ def test_create_grouped_type():
 def test_error_avp_vendor_mismatch():
     # cannot create an AVP where the AVP code does not belong to the vendor
     with pytest.raises(ValueError):
-        a = avp.Avp.new(constants.AVP_ORIGIN_HOST, constants.VENDOR_CISCO)
+        _ = avp.Avp.new(constants.AVP_ORIGIN_HOST, constants.VENDOR_CISCO)
 
 
 def test_error_address_type():
@@ -233,6 +259,23 @@ def test_error_int_type():
     # wrong type, is not an integer
     with pytest.raises(avp.AvpEncodeError):
         a.value = "some string"
+
+    a = avp.AvpUnsigned32(constants.AVP_NAS_PORT)
+
+    # only unsigned integers are permitted
+    with pytest.raises(avp.AvpEncodeError):
+        a.value = -1
+
+    a = avp.AvpUnsigned64(constants.AVP_FRAMED_INTERFACE_ID)
+
+    # only unsigned integers are permitted
+    with pytest.raises(avp.AvpEncodeError):
+        a.value = -17347878958773879024
+
+    # creating an unsigned AVP with a signed value
+    avp.AvpUnsigned32(constants.AVP_NAS_PORT, payload=b"\xff\xff\xff\xff")
+    with pytest.raises(avp.AvpDecodeError):
+        _ = a.value
 
 
 def test_error_octetstring_type():
