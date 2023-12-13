@@ -1,3 +1,6 @@
+---
+shallow_toc: 4
+---
 API reference for `diameter.message.commands.device_watchdog`.
 
 This module contains Device Watchdog Request and Answer messages, implementing

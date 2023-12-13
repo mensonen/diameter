@@ -1,3 +1,6 @@
+---
+shallow_toc: 4
+---
 API reference for `diameter.message.commands.capabilities_exchange`.
 
 This module contains Capabilities-Exchange Request and Answer messages, 

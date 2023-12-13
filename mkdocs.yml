@@ -19,16 +19,17 @@ theme:
         name: Switch to light mode
   features:
     - navigation.indexes
-    - toc.follow
     - toc.integrate
+  custom_dir: overrides
 nav:
   - Home: index.md
   - Installation: setup.md
   - User Guide:
     - Working with AVPs: guide/avp.md
     - Working with messages: guide/message.md
-    - Creating nodes and connecting to peers: guide/node.md
-    - Writing diameter applications: guide/application.md
+    - Connecting to peers: guide/node.md
+    - Application basics: guide/application.md
+    - Sample application: guide/sample_application.md
   - API Refrence:
     - AVP: api/message_avp.md
     - Message: api/message.md

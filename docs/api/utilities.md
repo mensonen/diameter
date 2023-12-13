@@ -1,3 +1,6 @@
+---
+shallow_toc: 3
+---
 API reference for various utilities in `diameter.node`.
 
 ::: diameter.node.SequenceGenerator

@@ -1,3 +1,6 @@
+---
+shallow_toc: 4
+---
 API reference for `diameter.message.commands`.
 
 ::: diameter.message.commands

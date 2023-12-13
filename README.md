@@ -5,11 +5,10 @@ AVPs, to communicate with diameter peers using the diameter base protocol and
 to write diameter applications, as defined in `rfc6733`, `rfc8506` and 
 `rfc5777`. 
 
-The module contains an extensive AVP dictionary, based on the current Wireshark
-Diameter dictionary.xml (and kept up to date frequently) and allows constructing
+The package contains an extensive AVP dictionary and allows constructing
 AVPs and Diameter messages either manually, or by parsing network-received 
 bytes. For messages described in the Diameter Base and Diameter Credit Control
-RFCs, additional Message types are provided, which permit reading and updating
+RFCs, additional python types are provided, which permit reading and updating
 message AVPs as python instance properties.
 
 The `diameter` package provides tools for:

@@ -1,3 +1,6 @@
+---
+shallow_toc: 4
+---
 API reference for `diameter.message.commands.credit_control`.
 
 Diameter Credit Control Application

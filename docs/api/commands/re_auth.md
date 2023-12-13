@@ -1,3 +1,6 @@
+---
+shallow_toc: 4
+---
 API reference for `diameter.message.commands.re_auth`.
 
 This module contains Re-Auth Request and Answer messages, implementing

@@ -8,10 +8,15 @@ A diameter application is the highest level of abstraction provided by the
  * Routing requests to any suitable peers, including load balancing
  * Constructing answers from received request messages
 
-An "application" is any instance or a subclass of a 
+An "application" is any instance of a subclass of 
 [`Application`][diameter.node.application.Application]. An application is 
 handed over to a configured node and the node will route every received request
-and answer message to the application, when necessary.
+and answer message to the application, when necessary. Protocol-level message
+exchanges, i.e. CER, DWR and DPR never reach any application, but every other
+message is expected to be handled by at least one application.
+
+If a node receives a message that no application has been configured to handle,
+it will reject the message with a `DIAMETER_APPLICATION_UNSUPPORTED` error.
 
 An example of the most basic client application:
 

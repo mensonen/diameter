@@ -1,3 +1,6 @@
+---
+shallow_toc: 4
+---
 API reference for `diameter.message.commands.disconnect_peer`.
 
 This module contains Disconnect-PeerConnection Request and Answer messages, implementing

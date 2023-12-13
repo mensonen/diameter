@@ -2,14 +2,24 @@
 
 The `diameter` package contains an extensive dictionary, with ~2700 AVPs, 
 ~140 Applications, ~100 command codes, ~30 Vendors and ~2400 ENUM values 
-defined. These can be imported as `from diameter.message.constants import *` 
-and have a format of `"APP_"`, `"VENDOR_"`. `"CMD_"`, `"VENDOR_"` and `"E_"`.
+defined. These can be imported as:
 
-The dictionary is originally based on a modern Wireshark dictionary.xml file 
-and augmented where necessary.
+```python
+from diameter.message.constants import *
+```
+
+This imports following constants:
+
+ * `APP_`, application identifiers, e.g. `APP_3GPP_GX`
+ * `VENDOR_`, vendor codes, e.g. `VENDOR_NOKIA`
+ * `CMD_`, diameter command codes, e.g. `CMD_ACCOUNTING`
+ * `AVP_`, diameter AVPs. These are either labeled `AVP_<name>`, for the
+    diameter base protocol (e.g. `AVP_SERVICE_TYPE`), or `AVP_<vendor>_<name>`,
+    for the vendor-specific AVPs (e.g. `AVP_TGPP_GGSN_ADDRESS`)
+ * `E_`, for all the enumerations, e.g. `E_DISCONNECT_CAUSE_BUSY`
 
 The package does support also creating and parsing AVPs that are not included
-in the dictionary.
+in the dictionary, as long as the AVP code and its type is known.
 
 
 ## Reading an AVP
@@ -112,3 +122,40 @@ Each individual AVP type has their specific type of python value, and
 attempting to set a value that has an invalid type will raise an exception. 
 Refer to [AVP API reference](../api/message_avp.md) for details for each AVP 
 type.
+
+
+## Using the AVP dictionary
+
+The package contains a large dictionary that holds a definition for each AVP, 
+with which AVPs can be constructed. This dictionary is automatically consulted
+when creating AVPs using `Avp.new` and `Avp.from_bytes`, however it permits 
+also direct access:
+
+```python
+from diameter.message.avp import AvpEnumerated
+from diameter.message.avp.dictionary import AVP_DICTIONARY
+from diameter.message.constants import *
+
+avp_def =  AVP_DICTIONARY[AVP_SERVICE_TYPE]
+
+assert avp_def["name"] == "Service-Type"
+assert avp_def["type"] == AvpEnumerated
+assert avp_def["mandatory"] is True
+```
+
+Vendor-specific AVPs are stored in individual dictionaries, separate for each 
+vendor:
+
+```python
+from diameter.message.avp import AvpUtf8String
+from diameter.message.avp.dictionary import AVP_VENDOR_DICTIONARY
+from diameter.message.constants import *
+
+avp_def =  AVP_VENDOR_DICTIONARY[VENDOR_TGPP][AVP_TGPP_CONTENT_TYPE]
+
+assert avp_def["name"] == "Content-Type"
+assert avp_def["type"] == AvpUtf8String
+assert avp_def["mandatory"] is True
+assert avp_def["vendor"] == 10415
+assert avp_def["vendor"] == VENDOR_TGPP
+```

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block extrahead %}
+    {# When used with the following page meta variable:
+        ---
+        shallow_toc: X
+        ---
+        hides TOC entries from level X downwards.
+    #}
+
+    {% if page and page.meta and page.meta.shallow_toc %}
+        <style>
+            .md-sidebar {{ ".md-nav__list " * page.meta.shallow_toc }} .md-nav { display: none }
+        </style>
+    {% endif %}
+{% endblock %}

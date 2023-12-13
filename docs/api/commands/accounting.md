@@ -1,3 +1,6 @@
+---
+shallow_toc: 4
+---
 API reference for `diameter.message.commands.accounting`.
 
 This module contains Accounting Request and Answer messages, implementing

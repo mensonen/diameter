@@ -59,7 +59,7 @@ ccr.requested_action = E_REQUESTED_ACTION_DIRECT_DEBITING
 
 ccr.add_subscription_id(
     subscription_id_type=E_SUBSCRIPTION_ID_TYPE_END_USER_E164,
-    subscription_id_data="41784800005")
+    subscription_id_data="41780000001")
 ccr.add_multiple_services_credit_control(
     requested_service_unit=RequestedServiceUnit(cc_service_specific_units=1),
     service_identifier=1)
@@ -86,7 +86,7 @@ ccr.append_avp(
             Avp.new(AVP_TGPP_RECIPIENT_INFO, VENDOR_TGPP, value=[
                 Avp.new(AVP_TGPP_RECIPIENT_ADDRESS, VENDOR_TGPP, value=[
                     Avp.new(AVP_TGPP_ADDRESS_TYPE, VENDOR_TGPP, value=E_ADDRESS_TYPE_MSISDN),
-                    Avp.new(AVP_TGPP_ADDRESS_DATA, VENDOR_TGPP, value="41780000001")
+                    Avp.new(AVP_TGPP_ADDRESS_DATA, VENDOR_TGPP, value="41780000002")
                 ]),
             ]),
         ])
@@ -95,7 +95,7 @@ ccr.append_avp(
 
 # Wait for CER/CEA to complete
 client.wait_for_ready()
-cca = client.send_request(ccr)
+cca = client.send_request(ccr, timeout=5)
 
 # Should print 2001, if all goes well
 print(cca.result_code)

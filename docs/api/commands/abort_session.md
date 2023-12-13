@@ -1,3 +1,6 @@
+---
+shallow_toc: 4
+---
 API reference for `diameter.message.commands.abort_session`.
 
 This module contains Abort Session Request and Answer messages, implementing

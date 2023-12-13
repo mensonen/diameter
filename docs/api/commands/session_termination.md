@@ -1,3 +1,6 @@
+---
+shallow_toc: 4
+---
 API reference for `diameter.message.commands.session_termination`.
 
 This module contains Session-Termination Request and Answer messages,

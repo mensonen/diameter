@@ -1,3 +1,6 @@
+---
+shallow_toc: 2
+---
 API reference for `diameter.node`.
 
 ::: diameter.node

@@ -1,3 +1,6 @@
+---
+shallow_toc: 3
+---
 API reference for `diameter.message`.
 
 ::: diameter.message
