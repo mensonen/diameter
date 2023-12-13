@@ -9,7 +9,7 @@
       
       
       
-        <link rel="prev" href="../../guide/application/">
+        <link rel="prev" href="../../guide/sample_application/">
       
       
         <link rel="next" href="../message/">
@@ -55,6 +55,14 @@
     
     
     
+    
+
+    
+        <style>
+            .md-sidebar .md-nav__list .md-nav__list .md-nav__list  .md-nav { display: none }
+        </style>
+    
+
   </head>
   
   
@@ -305,6 +313,8 @@
       
         
       
+        
+      
     
     
     
@@ -388,7 +398,7 @@
         
   
   <span class="md-ellipsis">
-    Creating nodes and connecting to peers
+    Connecting to peers
   </span>
   
 
@@ -409,7 +419,28 @@
         
   
   <span class="md-ellipsis">
-    Writing diameter applications
+    Application basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guide/sample_application/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Sample application
   </span>
   
 
@@ -533,24 +564,6 @@
   <a href="#diameter.message.avp.AvpEnumerated" class="md-nav__link">
     <span class="md-ellipsis">
       AvpEnumerated
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#diameter.message.avp.AvpUnsigned32" class="md-nav__link">
-    <span class="md-ellipsis">
-      AvpUnsigned32
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#diameter.message.avp.AvpUnsigned64" class="md-nav__link">
-    <span class="md-ellipsis">
-      AvpUnsigned64
     </span>
   </a>
   
@@ -913,6 +926,54 @@
         
           <li class="md-nav__item">
   <a href="#diameter.message.avp.AvpTime.value" class="md-nav__link">
+    <span class="md-ellipsis">
+      value
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#diameter.message.avp.AvpUnsigned32" class="md-nav__link">
+    <span class="md-ellipsis">
+      AvpUnsigned32
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AvpUnsigned32">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diameter.message.avp.AvpUnsigned32.value" class="md-nav__link">
+    <span class="md-ellipsis">
+      value
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#diameter.message.avp.AvpUnsigned64" class="md-nav__link">
+    <span class="md-ellipsis">
+      AvpUnsigned64
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AvpUnsigned64">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diameter.message.avp.AvpUnsigned64.value" class="md-nav__link">
     <span class="md-ellipsis">
       value
     </span>
@@ -1386,56 +1447,6 @@
       <p>An AVP type that implements the "Enumerated". type.</p>
 <p>As enumeration is a list of valid integer values, is an alias for 
 <a class="autorefs autorefs-internal" href="#diameter.message.avp.AvpInteger32">AvpInteger32</a></p>
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-attribute">
-
-
-
-
-<h2 id="diameter.message.avp.AvpUnsigned32" class="doc doc-heading">
-          <span class="doc doc-object-name doc-attribute-name">AvpUnsigned32</span>
-
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
-  </span>
-
-<a href="#diameter.message.avp.AvpUnsigned32" class="headerlink" title="Permanent link">&para;</a></h2>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">AvpUnsigned32</span> <span class="o">=</span> <span class="n">AvpInteger32</span>
-</span></code></pre></div>
-
-  <div class="doc doc-contents ">
-  
-      <p>An AVP type that implements the "Unsigned32". type.</p>
-<p>This is an alias for <a class="autorefs autorefs-internal" href="#diameter.message.avp.AvpInteger32">AvpInteger32</a></p>
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-attribute">
-
-
-
-
-<h2 id="diameter.message.avp.AvpUnsigned64" class="doc doc-heading">
-          <span class="doc doc-object-name doc-attribute-name">AvpUnsigned64</span>
-
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
-  </span>
-
-<a href="#diameter.message.avp.AvpUnsigned64" class="headerlink" title="Permanent link">&para;</a></h2>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">AvpUnsigned64</span> <span class="o">=</span> <span class="n">AvpInteger64</span>
-</span></code></pre></div>
-
-  <div class="doc doc-contents ">
-  
-      <p>An AVP type that implements the "Unsigned64". type.</p>
-<p>This is an alias for <a class="autorefs autorefs-internal" href="#diameter.message.avp.AvpInteger64">AvpInteger64</a></p>
   </div>
 
 </div>
@@ -2805,7 +2816,7 @@ be a properly encoded value that matches the type of AVP.</p>
   <div class="doc doc-contents ">
   
       <p>AVP value as a python float. When setting the value, it must be a
-64-bit integer. Larger intergers will raise an <code>AvpEncodeError</code>.</p>
+64-bit integer. Larger numbers will raise an <code>AvpEncodeError</code>.</p>
   </div>
 
 </div>
@@ -3582,6 +3593,302 @@ will raise an <code>AvpEncodeError</code>.</p>
 
 
 
+<h2 id="diameter.message.avp.AvpUnsigned32" class="doc doc-heading">
+          <span class="doc doc-object-name doc-class-name">AvpUnsigned32</span>
+
+
+<a href="#diameter.message.avp.AvpUnsigned32" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">AvpUnsigned32</span><span class="p">(</span>
+</span><span id="__span-0-2">    <span class="n">code</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+</span><span id="__span-0-3">    <span class="n">vendor_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+</span><span id="__span-0-4">    <span class="n">payload</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+</span><span id="__span-0-5">    <span class="n">flags</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+</span><span id="__span-0-6"><span class="p">)</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="diameter.message.avp.Avp" href="#diameter.message.avp.Avp">Avp</a></code></p>
+
+  
+      <p>An AVP type that implements the "Unsigned32" type.</p>
+<p>The "Unsigned32" type has a 32-bit unsigned value.</p>
+  
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>code</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>An AVP code, does not need to be a known code</p>
+            </div>
+          </td>
+          <td>
+                <code>0</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>vendor_id</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>A vendor ID, or zero if no vendor is set</p>
+            </div>
+          </td>
+          <td>
+                <code>0</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>payload</code></td>
+          <td>
+                <code>bytes</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>An optional AVP payload to initialise the AVP with. Must
+be a properly encoded value that matches the type of AVP.</p>
+            </div>
+          </td>
+          <td>
+                <code>b&#39;&#39;</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>flags</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>An optional integer value for the AVP flags</p>
+            </div>
+          </td>
+          <td>
+                <code>0</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="diameter.message.avp.AvpUnsigned32.value" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">value</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+  </span>
+
+<a href="#diameter.message.avp.AvpUnsigned32.value" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">value</span><span class="p">:</span> <span class="nb">int</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Sets or retrieves the AVP value as a python integer. When setting
+the value, it must be a 32-bit unsigned integer. Larger and signed
+integers will raise an <code>AvpEncodeError</code>.</p>
+  </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="diameter.message.avp.AvpUnsigned64" class="doc doc-heading">
+          <span class="doc doc-object-name doc-class-name">AvpUnsigned64</span>
+
+
+<a href="#diameter.message.avp.AvpUnsigned64" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">AvpUnsigned64</span><span class="p">(</span>
+</span><span id="__span-0-2">    <span class="n">code</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+</span><span id="__span-0-3">    <span class="n">vendor_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+</span><span id="__span-0-4">    <span class="n">payload</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+</span><span id="__span-0-5">    <span class="n">flags</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+</span><span id="__span-0-6"><span class="p">)</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="diameter.message.avp.Avp" href="#diameter.message.avp.Avp">Avp</a></code></p>
+
+  
+      <p>An AVP type that implements the "Unsigned64" type.</p>
+<p>The "Unsigned64" type has a 64-bit unsigned value.</p>
+  
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>code</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>An AVP code, does not need to be a known code</p>
+            </div>
+          </td>
+          <td>
+                <code>0</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>vendor_id</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>A vendor ID, or zero if no vendor is set</p>
+            </div>
+          </td>
+          <td>
+                <code>0</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>payload</code></td>
+          <td>
+                <code>bytes</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>An optional AVP payload to initialise the AVP with. Must
+be a properly encoded value that matches the type of AVP.</p>
+            </div>
+          </td>
+          <td>
+                <code>b&#39;&#39;</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>flags</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>An optional integer value for the AVP flags</p>
+            </div>
+          </td>
+          <td>
+                <code>0</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="diameter.message.avp.AvpUnsigned64.value" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">value</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+  </span>
+
+<a href="#diameter.message.avp.AvpUnsigned64.value" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">value</span><span class="p">:</span> <span class="nb">int</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Sets or retrieves the AVP value as a python integer. When setting
+the value, it must be a 64-bit unsigned integer. Larger and signed
+integers will raise an <code>AvpEncodeError</code>.</p>
+  </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+
 <h2 id="diameter.message.avp.AvpUtf8String" class="doc doc-heading">
           <span class="doc doc-object-name doc-class-name">AvpUtf8String</span>
 
@@ -3745,6 +4052,9 @@ data type, or strings that will not encode as utf-8, will raise an
 
 
 
+  
+  
+
 
 
 
@@ -3784,7 +4094,7 @@ data type, or strings that will not encode as utf-8, will raise an
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "toc.follow", "toc.integrate"], "search": "../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "toc.integrate"], "search": "../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="../../assets/javascripts/bundle.d7c377c4.min.js"></script>

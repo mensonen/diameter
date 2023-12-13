@@ -55,6 +55,14 @@
     
     
     
+    
+
+    
+        <style>
+            .md-sidebar .md-nav__list .md-nav__list .md-nav__list .md-nav__list  .md-nav { display: none }
+        </style>
+    
+
   </head>
   
   
@@ -305,6 +313,8 @@
       
         
       
+        
+      
     
     
     
@@ -388,7 +398,7 @@
         
   
   <span class="md-ellipsis">
-    Creating nodes and connecting to peers
+    Connecting to peers
   </span>
   
 
@@ -409,7 +419,28 @@
         
   
   <span class="md-ellipsis">
-    Writing diameter applications
+    Application basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guide/sample_application/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Sample application
   </span>
   
 
@@ -908,6 +939,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#diameter.message.commands.credit_control.CreditControlAnswer.qos_final_unit_indication" class="md-nav__link">
+    <span class="md-ellipsis">
+      qos_final_unit_indication
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#diameter.message.commands.credit_control.CreditControlAnswer.redirect_host" class="md-nav__link">
     <span class="md-ellipsis">
       redirect_host
@@ -980,9 +1020,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#diameter.message.commands.credit_control.CreditControlAnswer.add_mscc" class="md-nav__link">
+  <a href="#diameter.message.commands.credit_control.CreditControlAnswer.add_multiple_services_credit_control" class="md-nav__link">
     <span class="md-ellipsis">
-      add_mscc()
+      add_multiple_services_credit_control()
     </span>
   </a>
   
@@ -1256,9 +1296,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#diameter.message.commands.credit_control.CreditControlRequest.add_mscc" class="md-nav__link">
+  <a href="#diameter.message.commands.credit_control.CreditControlRequest.add_multiple_services_credit_control" class="md-nav__link">
     <span class="md-ellipsis">
-      add_mscc()
+      add_multiple_services_credit_control()
     </span>
   </a>
   
@@ -1483,17 +1523,17 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#diameter.message.commands.credit_control.Mscc" class="md-nav__link">
+  <a href="#diameter.message.commands.credit_control.MultipleServicesCreditControl" class="md-nav__link">
     <span class="md-ellipsis">
-      Mscc
+      MultipleServicesCreditControl
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Mscc">
+    <nav class="md-nav" aria-label="MultipleServicesCreditControl">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#diameter.message.commands.credit_control.Mscc.additional_avps" class="md-nav__link">
+  <a href="#diameter.message.commands.credit_control.MultipleServicesCreditControl.additional_avps" class="md-nav__link">
     <span class="md-ellipsis">
       additional_avps
     </span>
@@ -1502,7 +1542,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#diameter.message.commands.credit_control.Mscc.final_unit_indication" class="md-nav__link">
+  <a href="#diameter.message.commands.credit_control.MultipleServicesCreditControl.final_unit_indication" class="md-nav__link">
     <span class="md-ellipsis">
       final_unit_indication
     </span>
@@ -1511,7 +1551,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#diameter.message.commands.credit_control.Mscc.g_s_u_pool_reference" class="md-nav__link">
+  <a href="#diameter.message.commands.credit_control.MultipleServicesCreditControl.g_s_u_pool_reference" class="md-nav__link">
     <span class="md-ellipsis">
       g_s_u_pool_reference
     </span>
@@ -1520,7 +1560,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#diameter.message.commands.credit_control.Mscc.granted_service_unit" class="md-nav__link">
+  <a href="#diameter.message.commands.credit_control.MultipleServicesCreditControl.granted_service_unit" class="md-nav__link">
     <span class="md-ellipsis">
       granted_service_unit
     </span>
@@ -1529,7 +1569,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#diameter.message.commands.credit_control.Mscc.rating_group" class="md-nav__link">
+  <a href="#diameter.message.commands.credit_control.MultipleServicesCreditControl.rating_group" class="md-nav__link">
     <span class="md-ellipsis">
       rating_group
     </span>
@@ -1538,7 +1578,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#diameter.message.commands.credit_control.Mscc.requested_service_unit" class="md-nav__link">
+  <a href="#diameter.message.commands.credit_control.MultipleServicesCreditControl.requested_service_unit" class="md-nav__link">
     <span class="md-ellipsis">
       requested_service_unit
     </span>
@@ -1547,7 +1587,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#diameter.message.commands.credit_control.Mscc.result_code" class="md-nav__link">
+  <a href="#diameter.message.commands.credit_control.MultipleServicesCreditControl.result_code" class="md-nav__link">
     <span class="md-ellipsis">
       result_code
     </span>
@@ -1556,7 +1596,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#diameter.message.commands.credit_control.Mscc.service_identifier" class="md-nav__link">
+  <a href="#diameter.message.commands.credit_control.MultipleServicesCreditControl.service_identifier" class="md-nav__link">
     <span class="md-ellipsis">
       service_identifier
     </span>
@@ -1565,7 +1605,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#diameter.message.commands.credit_control.Mscc.tariff_change_usage" class="md-nav__link">
+  <a href="#diameter.message.commands.credit_control.MultipleServicesCreditControl.tariff_change_usage" class="md-nav__link">
     <span class="md-ellipsis">
       tariff_change_usage
     </span>
@@ -1574,7 +1614,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#diameter.message.commands.credit_control.Mscc.used_service_unit" class="md-nav__link">
+  <a href="#diameter.message.commands.credit_control.MultipleServicesCreditControl.used_service_unit" class="md-nav__link">
     <span class="md-ellipsis">
       used_service_unit
     </span>
@@ -1583,7 +1623,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#diameter.message.commands.credit_control.Mscc.validity_time" class="md-nav__link">
+  <a href="#diameter.message.commands.credit_control.MultipleServicesCreditControl.validity_time" class="md-nav__link">
     <span class="md-ellipsis">
       validity_time
     </span>
@@ -2611,7 +2651,7 @@ hand and appended to the <code>additional_avps</code> attribute.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlAnswer.multiple_services_credit_control" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">multiple_services_credit_control</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Mscc</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">multiple_services_credit_control</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">MultipleServicesCreditControl</span><span class="p">]</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2700,6 +2740,28 @@ hand and appended to the <code>additional_avps</code> attribute.</p>
 
 <a href="#diameter.message.commands.credit_control.CreditControlAnswer.proxy_info" class="headerlink" title="Permanent link">&para;</a></h3>
 <div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">proxy_info</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ProxyInfo</span><span class="p">]</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="diameter.message.commands.credit_control.CreditControlAnswer.qos_final_unit_indication" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">qos_final_unit_indication</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#diameter.message.commands.credit_control.CreditControlAnswer.qos_final_unit_indication" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">qos_final_unit_indication</span><span class="p">:</span> <span class="n">QosFinalUnitIndication</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2891,12 +2953,12 @@ hand and appended to the <code>additional_avps</code> attribute.</p>
 
 
 
-<h3 id="diameter.message.commands.credit_control.CreditControlAnswer.add_mscc" class="doc doc-heading">
-          <span class="doc doc-object-name doc-function-name">add_mscc</span>
+<h3 id="diameter.message.commands.credit_control.CreditControlAnswer.add_multiple_services_credit_control" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">add_multiple_services_credit_control</span>
 
 
-<a href="#diameter.message.commands.credit_control.CreditControlAnswer.add_mscc" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">add_mscc</span><span class="p">(</span>
+<a href="#diameter.message.commands.credit_control.CreditControlAnswer.add_multiple_services_credit_control" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">add_multiple_services_credit_control</span><span class="p">(</span>
 </span><span id="__span-0-2">    <span class="n">granted_service_unit</span><span class="p">:</span> <span class="n">GrantedServiceUnit</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 </span><span id="__span-0-3">    <span class="n">requested_service_unit</span><span class="p">:</span> <span class="n">RequestedServiceUnit</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 </span><span id="__span-0-4">    <span class="n">used_service_unit</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">UsedServiceUnit</span><span class="p">]</span> <span class="o">|</span> <span class="n">UsedServiceUnit</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -2914,6 +2976,12 @@ hand and appended to the <code>additional_avps</code> attribute.</p>
   <div class="doc doc-contents ">
   
       <p>Add a multiple services credit control instance to the answer.</p>
+<p>This is identical to doing:</p>
+<div class="highlight"><pre><span></span><code>&gt;&gt;&gt; ccr = CreditControlAnswer()
+&gt;&gt;&gt; ccr.multiple_services_credit_control.append(
+&gt;&gt;&gt;     MultipleServicesCreditControl()
+&gt;&gt;&gt; )
+</code></pre></div>
 
 
 
@@ -3345,7 +3413,7 @@ the subsequent requests, based on the CCR-I answer.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlRequest.multiple_services_credit_control" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">multiple_services_credit_control</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Mscc</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">multiple_services_credit_control</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">MultipleServicesCreditControl</span><span class="p">]</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -3757,12 +3825,12 @@ the subsequent requests, based on the CCR-I answer.</p>
 
 
 
-<h3 id="diameter.message.commands.credit_control.CreditControlRequest.add_mscc" class="doc doc-heading">
-          <span class="doc doc-object-name doc-function-name">add_mscc</span>
+<h3 id="diameter.message.commands.credit_control.CreditControlRequest.add_multiple_services_credit_control" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">add_multiple_services_credit_control</span>
 
 
-<a href="#diameter.message.commands.credit_control.CreditControlRequest.add_mscc" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">add_mscc</span><span class="p">(</span>
+<a href="#diameter.message.commands.credit_control.CreditControlRequest.add_multiple_services_credit_control" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">add_multiple_services_credit_control</span><span class="p">(</span>
 </span><span id="__span-0-2">    <span class="n">granted_service_unit</span><span class="p">:</span> <span class="n">GrantedServiceUnit</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 </span><span id="__span-0-3">    <span class="n">requested_service_unit</span><span class="p">:</span> <span class="n">RequestedServiceUnit</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 </span><span id="__span-0-4">    <span class="n">used_service_unit</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">UsedServiceUnit</span><span class="p">]</span> <span class="o">|</span> <span class="n">UsedServiceUnit</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -3780,6 +3848,12 @@ the subsequent requests, based on the CCR-I answer.</p>
   <div class="doc doc-contents ">
   
       <p>Add a multiple services credit control instance to the request.</p>
+<p>This is identical to doing:</p>
+<div class="highlight"><pre><span></span><code>&gt;&gt;&gt; ccr = CreditControlRequest()
+&gt;&gt;&gt; ccr.multiple_services_credit_control.append(
+&gt;&gt;&gt;     MultipleServicesCreditControl()
+&gt;&gt;&gt; )
+</code></pre></div>
 
 
 
@@ -4578,15 +4652,15 @@ doesn't actually permit it.</p>
 
 
 
-<h2 id="diameter.message.commands.credit_control.Mscc" class="doc doc-heading">
-          <span class="doc doc-object-name doc-class-name">Mscc</span>
+<h2 id="diameter.message.commands.credit_control.MultipleServicesCreditControl" class="doc doc-heading">
+          <span class="doc doc-object-name doc-class-name">MultipleServicesCreditControl</span>
 
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
   </span>
 
-<a href="#diameter.message.commands.credit_control.Mscc" class="headerlink" title="Permanent link">&para;</a></h2>
+<a href="#diameter.message.commands.credit_control.MultipleServicesCreditControl" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
   <div class="doc doc-contents first">
@@ -4610,7 +4684,7 @@ doesn't actually permit it.</p>
 
 
 
-<h3 id="diameter.message.commands.credit_control.Mscc.additional_avps" class="doc doc-heading">
+<h3 id="diameter.message.commands.credit_control.MultipleServicesCreditControl.additional_avps" class="doc doc-heading">
           <span class="doc doc-object-name doc-attribute-name">additional_avps</span>
 
   
@@ -4619,7 +4693,7 @@ doesn't actually permit it.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-<a href="#diameter.message.commands.credit_control.Mscc.additional_avps" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#diameter.message.commands.credit_control.MultipleServicesCreditControl.additional_avps" class="headerlink" title="Permanent link">&para;</a></h3>
 <div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">additional_avps</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Avp</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
 </span></code></pre></div>
 
@@ -4633,7 +4707,7 @@ doesn't actually permit it.</p>
 
 
 
-<h3 id="diameter.message.commands.credit_control.Mscc.final_unit_indication" class="doc doc-heading">
+<h3 id="diameter.message.commands.credit_control.MultipleServicesCreditControl.final_unit_indication" class="doc doc-heading">
           <span class="doc doc-object-name doc-attribute-name">final_unit_indication</span>
 
   
@@ -4642,7 +4716,7 @@ doesn't actually permit it.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-<a href="#diameter.message.commands.credit_control.Mscc.final_unit_indication" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#diameter.message.commands.credit_control.MultipleServicesCreditControl.final_unit_indication" class="headerlink" title="Permanent link">&para;</a></h3>
 <div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">final_unit_indication</span><span class="p">:</span> <span class="n">FinalUnitIndication</span> <span class="o">=</span> <span class="kc">None</span>
 </span></code></pre></div>
 
@@ -4656,7 +4730,7 @@ doesn't actually permit it.</p>
 
 
 
-<h3 id="diameter.message.commands.credit_control.Mscc.g_s_u_pool_reference" class="doc doc-heading">
+<h3 id="diameter.message.commands.credit_control.MultipleServicesCreditControl.g_s_u_pool_reference" class="doc doc-heading">
           <span class="doc doc-object-name doc-attribute-name">g_s_u_pool_reference</span>
 
   
@@ -4665,7 +4739,7 @@ doesn't actually permit it.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-<a href="#diameter.message.commands.credit_control.Mscc.g_s_u_pool_reference" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#diameter.message.commands.credit_control.MultipleServicesCreditControl.g_s_u_pool_reference" class="headerlink" title="Permanent link">&para;</a></h3>
 <div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">g_s_u_pool_reference</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">GsuPoolReference</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">field</span><span class="p">(</span>
 </span><span id="__span-0-2">    <span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span>
 </span><span id="__span-0-3"><span class="p">)</span>
@@ -4681,7 +4755,7 @@ doesn't actually permit it.</p>
 
 
 
-<h3 id="diameter.message.commands.credit_control.Mscc.granted_service_unit" class="doc doc-heading">
+<h3 id="diameter.message.commands.credit_control.MultipleServicesCreditControl.granted_service_unit" class="doc doc-heading">
           <span class="doc doc-object-name doc-attribute-name">granted_service_unit</span>
 
   
@@ -4690,7 +4764,7 @@ doesn't actually permit it.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-<a href="#diameter.message.commands.credit_control.Mscc.granted_service_unit" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#diameter.message.commands.credit_control.MultipleServicesCreditControl.granted_service_unit" class="headerlink" title="Permanent link">&para;</a></h3>
 <div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">granted_service_unit</span><span class="p">:</span> <span class="n">GrantedServiceUnit</span> <span class="o">=</span> <span class="kc">None</span>
 </span></code></pre></div>
 
@@ -4704,7 +4778,7 @@ doesn't actually permit it.</p>
 
 
 
-<h3 id="diameter.message.commands.credit_control.Mscc.rating_group" class="doc doc-heading">
+<h3 id="diameter.message.commands.credit_control.MultipleServicesCreditControl.rating_group" class="doc doc-heading">
           <span class="doc doc-object-name doc-attribute-name">rating_group</span>
 
   
@@ -4713,7 +4787,7 @@ doesn't actually permit it.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-<a href="#diameter.message.commands.credit_control.Mscc.rating_group" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#diameter.message.commands.credit_control.MultipleServicesCreditControl.rating_group" class="headerlink" title="Permanent link">&para;</a></h3>
 <div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">rating_group</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span>
 </span></code></pre></div>
 
@@ -4727,7 +4801,7 @@ doesn't actually permit it.</p>
 
 
 
-<h3 id="diameter.message.commands.credit_control.Mscc.requested_service_unit" class="doc doc-heading">
+<h3 id="diameter.message.commands.credit_control.MultipleServicesCreditControl.requested_service_unit" class="doc doc-heading">
           <span class="doc doc-object-name doc-attribute-name">requested_service_unit</span>
 
   
@@ -4736,7 +4810,7 @@ doesn't actually permit it.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-<a href="#diameter.message.commands.credit_control.Mscc.requested_service_unit" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#diameter.message.commands.credit_control.MultipleServicesCreditControl.requested_service_unit" class="headerlink" title="Permanent link">&para;</a></h3>
 <div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">requested_service_unit</span><span class="p">:</span> <span class="n">RequestedServiceUnit</span> <span class="o">=</span> <span class="kc">None</span>
 </span></code></pre></div>
 
@@ -4750,7 +4824,7 @@ doesn't actually permit it.</p>
 
 
 
-<h3 id="diameter.message.commands.credit_control.Mscc.result_code" class="doc doc-heading">
+<h3 id="diameter.message.commands.credit_control.MultipleServicesCreditControl.result_code" class="doc doc-heading">
           <span class="doc doc-object-name doc-attribute-name">result_code</span>
 
   
@@ -4759,7 +4833,7 @@ doesn't actually permit it.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-<a href="#diameter.message.commands.credit_control.Mscc.result_code" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#diameter.message.commands.credit_control.MultipleServicesCreditControl.result_code" class="headerlink" title="Permanent link">&para;</a></h3>
 <div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">result_code</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span>
 </span></code></pre></div>
 
@@ -4773,7 +4847,7 @@ doesn't actually permit it.</p>
 
 
 
-<h3 id="diameter.message.commands.credit_control.Mscc.service_identifier" class="doc doc-heading">
+<h3 id="diameter.message.commands.credit_control.MultipleServicesCreditControl.service_identifier" class="doc doc-heading">
           <span class="doc doc-object-name doc-attribute-name">service_identifier</span>
 
   
@@ -4782,7 +4856,7 @@ doesn't actually permit it.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-<a href="#diameter.message.commands.credit_control.Mscc.service_identifier" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#diameter.message.commands.credit_control.MultipleServicesCreditControl.service_identifier" class="headerlink" title="Permanent link">&para;</a></h3>
 <div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">service_identifier</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">field</span><span class="p">(</span>
 </span><span id="__span-0-2">    <span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span>
 </span><span id="__span-0-3"><span class="p">)</span>
@@ -4798,7 +4872,7 @@ doesn't actually permit it.</p>
 
 
 
-<h3 id="diameter.message.commands.credit_control.Mscc.tariff_change_usage" class="doc doc-heading">
+<h3 id="diameter.message.commands.credit_control.MultipleServicesCreditControl.tariff_change_usage" class="doc doc-heading">
           <span class="doc doc-object-name doc-attribute-name">tariff_change_usage</span>
 
   
@@ -4807,7 +4881,7 @@ doesn't actually permit it.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-<a href="#diameter.message.commands.credit_control.Mscc.tariff_change_usage" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#diameter.message.commands.credit_control.MultipleServicesCreditControl.tariff_change_usage" class="headerlink" title="Permanent link">&para;</a></h3>
 <div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">tariff_change_usage</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span>
 </span></code></pre></div>
 
@@ -4821,7 +4895,7 @@ doesn't actually permit it.</p>
 
 
 
-<h3 id="diameter.message.commands.credit_control.Mscc.used_service_unit" class="doc doc-heading">
+<h3 id="diameter.message.commands.credit_control.MultipleServicesCreditControl.used_service_unit" class="doc doc-heading">
           <span class="doc doc-object-name doc-attribute-name">used_service_unit</span>
 
   
@@ -4830,7 +4904,7 @@ doesn't actually permit it.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-<a href="#diameter.message.commands.credit_control.Mscc.used_service_unit" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#diameter.message.commands.credit_control.MultipleServicesCreditControl.used_service_unit" class="headerlink" title="Permanent link">&para;</a></h3>
 <div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">used_service_unit</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">UsedServiceUnit</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">field</span><span class="p">(</span>
 </span><span id="__span-0-2">    <span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span>
 </span><span id="__span-0-3"><span class="p">)</span>
@@ -4846,7 +4920,7 @@ doesn't actually permit it.</p>
 
 
 
-<h3 id="diameter.message.commands.credit_control.Mscc.validity_time" class="doc doc-heading">
+<h3 id="diameter.message.commands.credit_control.MultipleServicesCreditControl.validity_time" class="doc doc-heading">
           <span class="doc doc-object-name doc-attribute-name">validity_time</span>
 
   
@@ -4855,7 +4929,7 @@ doesn't actually permit it.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-<a href="#diameter.message.commands.credit_control.Mscc.validity_time" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#diameter.message.commands.credit_control.MultipleServicesCreditControl.validity_time" class="headerlink" title="Permanent link">&para;</a></h3>
 <div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">validity_time</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span>
 </span></code></pre></div>
 
@@ -5618,6 +5692,9 @@ identical.</p>
 
 
 
+  
+  
+
 
 
 
@@ -5657,7 +5734,7 @@ identical.</p>
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.indexes", "toc.follow", "toc.integrate"], "search": "../../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.indexes", "toc.integrate"], "search": "../../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="../../../assets/javascripts/bundle.d7c377c4.min.js"></script>

@@ -55,6 +55,10 @@
     
     
     
+    
+
+    
+
   </head>
   
   
@@ -307,6 +311,8 @@
       
         
       
+        
+      
     
     
     
@@ -407,6 +413,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#using-the-avp-dictionary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using the AVP dictionary
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -448,7 +463,7 @@
         
   
   <span class="md-ellipsis">
-    Creating nodes and connecting to peers
+    Connecting to peers
   </span>
   
 
@@ -469,7 +484,28 @@
         
   
   <span class="md-ellipsis">
-    Writing diameter applications
+    Application basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sample_application/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Sample application
   </span>
   
 
@@ -947,12 +983,21 @@
 <h1 id="parsing-and-writing-avps">Parsing and writing AVPs<a class="headerlink" href="#parsing-and-writing-avps" title="Permanent link">&para;</a></h1>
 <p>The <code>diameter</code> package contains an extensive dictionary, with ~2700 AVPs, 
 ~140 Applications, ~100 command codes, ~30 Vendors and ~2400 ENUM values 
-defined. These can be imported as <code>from diameter.message.constants import *</code> 
-and have a format of <code>"APP_"</code>, <code>"VENDOR_"</code>. <code>"CMD_"</code>, <code>"VENDOR_"</code> and <code>"E_"</code>.</p>
-<p>The dictionary is originally based on a modern Wireshark dictionary.xml file 
-and augmented where necessary.</p>
+defined. These can be imported as:</p>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><span class="kn">from</span> <span class="nn">diameter.message.constants</span> <span class="kn">import</span> <span class="o">*</span>
+</span></code></pre></div>
+<p>This imports following constants:</p>
+<ul>
+<li><code>APP_</code>, application identifiers, e.g. <code>APP_3GPP_GX</code></li>
+<li><code>VENDOR_</code>, vendor codes, e.g. <code>VENDOR_NOKIA</code></li>
+<li><code>CMD_</code>, diameter command codes, e.g. <code>CMD_ACCOUNTING</code></li>
+<li><code>AVP_</code>, diameter AVPs. These are either labeled <code>AVP_&lt;name&gt;</code>, for the
+    diameter base protocol (e.g. <code>AVP_SERVICE_TYPE</code>), or <code>AVP_&lt;vendor&gt;_&lt;name&gt;</code>,
+    for the vendor-specific AVPs (e.g. <code>AVP_TGPP_GGSN_ADDRESS</code>)</li>
+<li><code>E_</code>, for all the enumerations, e.g. <code>E_DISCONNECT_CAUSE_BUSY</code></li>
+</ul>
 <p>The package does support also creating and parsing AVPs that are not included
-in the dictionary.</p>
+in the dictionary, as long as the AVP code and its type is known.</p>
 <h2 id="reading-an-avp">Reading an AVP<a class="headerlink" href="#reading-an-avp" title="Permanent link">&para;</a></h2>
 <p>Each AVP is an instance of <a class="autorefs autorefs-internal" href="../../api/message_avp/#diameter.message.avp.Avp"><code>Avp</code></a> and consists of 
 attributes <code>code</code>, <code>is_mandatory</code>, <code>is_private</code>, <code>is_vendor</code>, <code>length</code>, 
@@ -960,19 +1005,19 @@ attributes <code>code</code>, <code>is_mandatory</code>, <code>is_private</code>
 <p>Most commonly, AVPs are received as bytes from the network and can be converted
 into their Python types by using 
 <a class="autorefs autorefs-internal" href="../../api/message_avp/#diameter.message.avp.Avp.from_bytes"><code>Avp.from_bytes</code></a>.</p>
-<div class="highlight"><pre><span></span><code><span id="__span-0-1"><span class="kn">from</span> <span class="nn">diameter.message</span> <span class="kn">import</span> <span class="n">Avp</span>
-</span><span id="__span-0-2"><span class="kn">from</span> <span class="nn">diameter.message.constants</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span id="__span-0-3">
-</span><span id="__span-0-4"><span class="n">avp_bytes</span> <span class="o">=</span> <span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="s2">&quot;000001cd40000016333232353140336770702e6f72670000&quot;</span><span class="p">)</span>
-</span><span id="__span-0-5"><span class="n">a</span> <span class="o">=</span> <span class="n">Avp</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">avp_bytes</span><span class="p">)</span>
-</span><span id="__span-0-6">
-</span><span id="__span-0-7"><span class="k">assert</span> <span class="n">a</span><span class="o">.</span><span class="n">code</span> <span class="o">==</span> <span class="mi">461</span>
-</span><span id="__span-0-8"><span class="k">assert</span> <span class="n">a</span><span class="o">.</span><span class="n">code</span> <span class="o">==</span> <span class="n">AVP_SERVICE_CONTEXT_ID</span>
-</span><span id="__span-0-9"><span class="k">assert</span> <span class="n">a</span><span class="o">.</span><span class="n">is_mandatory</span> <span class="ow">is</span> <span class="kc">True</span>
-</span><span id="__span-0-10"><span class="k">assert</span> <span class="n">a</span><span class="o">.</span><span class="n">is_private</span> <span class="ow">is</span> <span class="kc">False</span>
-</span><span id="__span-0-11"><span class="k">assert</span> <span class="n">a</span><span class="o">.</span><span class="n">is_vendor</span> <span class="ow">is</span> <span class="kc">False</span>
-</span><span id="__span-0-12"><span class="k">assert</span> <span class="n">a</span><span class="o">.</span><span class="n">length</span> <span class="o">==</span> <span class="mi">22</span>
-</span><span id="__span-0-13"><span class="k">assert</span> <span class="n">a</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;32251@3gpp.org&quot;</span>
+<div class="highlight"><pre><span></span><code><span id="__span-1-1"><span class="kn">from</span> <span class="nn">diameter.message</span> <span class="kn">import</span> <span class="n">Avp</span>
+</span><span id="__span-1-2"><span class="kn">from</span> <span class="nn">diameter.message.constants</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="__span-1-3">
+</span><span id="__span-1-4"><span class="n">avp_bytes</span> <span class="o">=</span> <span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="s2">&quot;000001cd40000016333232353140336770702e6f72670000&quot;</span><span class="p">)</span>
+</span><span id="__span-1-5"><span class="n">a</span> <span class="o">=</span> <span class="n">Avp</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">avp_bytes</span><span class="p">)</span>
+</span><span id="__span-1-6">
+</span><span id="__span-1-7"><span class="k">assert</span> <span class="n">a</span><span class="o">.</span><span class="n">code</span> <span class="o">==</span> <span class="mi">461</span>
+</span><span id="__span-1-8"><span class="k">assert</span> <span class="n">a</span><span class="o">.</span><span class="n">code</span> <span class="o">==</span> <span class="n">AVP_SERVICE_CONTEXT_ID</span>
+</span><span id="__span-1-9"><span class="k">assert</span> <span class="n">a</span><span class="o">.</span><span class="n">is_mandatory</span> <span class="ow">is</span> <span class="kc">True</span>
+</span><span id="__span-1-10"><span class="k">assert</span> <span class="n">a</span><span class="o">.</span><span class="n">is_private</span> <span class="ow">is</span> <span class="kc">False</span>
+</span><span id="__span-1-11"><span class="k">assert</span> <span class="n">a</span><span class="o">.</span><span class="n">is_vendor</span> <span class="ow">is</span> <span class="kc">False</span>
+</span><span id="__span-1-12"><span class="k">assert</span> <span class="n">a</span><span class="o">.</span><span class="n">length</span> <span class="o">==</span> <span class="mi">22</span>
+</span><span id="__span-1-13"><span class="k">assert</span> <span class="n">a</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;32251@3gpp.org&quot;</span>
 </span></code></pre></div>
 <p>When parsing, as long as the AVP is of a known type, an instance of a subclass 
 of <a class="autorefs autorefs-internal" href="../../api/message_avp/#diameter.message.avp.Avp"><code>Avp</code></a> is returned. Each subclass represents a specific
@@ -981,14 +1026,14 @@ AVP type; e.g. an "Integer32" AVP is represented by
 <a class="autorefs autorefs-internal" href="../../api/message_avp/#diameter.message.avp.AvpGrouped"><code>AvpGrouped</code></a>, etc.</p>
 <p>The AVPs hold two attributes, <code>payload</code> and <code>value</code>. The payload is the actual
 encoded byte string, while value is the Python value that can be set and read.</p>
-<div class="highlight"><pre><span></span><code><span id="__span-1-1"><span class="kn">from</span> <span class="nn">diameter.message.avp</span> <span class="kn">import</span> <span class="n">AvpInteger32</span>
-</span><span id="__span-1-2"><span class="kn">from</span> <span class="nn">diameter.message.constants</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span id="__span-1-3">
-</span><span id="__span-1-4"><span class="n">a</span> <span class="o">=</span> <span class="n">AvpInteger32</span><span class="p">(</span><span class="n">AVP_ACCT_INPUT_PACKETS</span><span class="p">)</span>
-</span><span id="__span-1-5"><span class="n">a</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">294967</span>
-</span><span id="__span-1-6">
-</span><span id="__span-1-7"><span class="k">assert</span> <span class="n">a</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="mi">294967</span>  <span class="c1"># Python value</span>
-</span><span id="__span-1-8"><span class="k">assert</span> <span class="n">a</span><span class="o">.</span><span class="n">payload</span> <span class="o">==</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x00\x04\x80</span><span class="s2">7&quot;</span>  <span class="c1"># Network bytes representation</span>
+<div class="highlight"><pre><span></span><code><span id="__span-2-1"><span class="kn">from</span> <span class="nn">diameter.message.avp</span> <span class="kn">import</span> <span class="n">AvpInteger32</span>
+</span><span id="__span-2-2"><span class="kn">from</span> <span class="nn">diameter.message.constants</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="__span-2-3">
+</span><span id="__span-2-4"><span class="n">a</span> <span class="o">=</span> <span class="n">AvpInteger32</span><span class="p">(</span><span class="n">AVP_ACCT_INPUT_PACKETS</span><span class="p">)</span>
+</span><span id="__span-2-5"><span class="n">a</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">294967</span>
+</span><span id="__span-2-6">
+</span><span id="__span-2-7"><span class="k">assert</span> <span class="n">a</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="mi">294967</span>  <span class="c1"># Python value</span>
+</span><span id="__span-2-8"><span class="k">assert</span> <span class="n">a</span><span class="o">.</span><span class="n">payload</span> <span class="o">==</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x00\x04\x80</span><span class="s2">7&quot;</span>  <span class="c1"># Network bytes representation</span>
 </span></code></pre></div>
 <p>Each individual AVP type has their specific python value, refer to 
 <a href="../../api/message_avp/">AVP API reference</a> for details.</p>
@@ -998,40 +1043,69 @@ build new AVPs. It ensures that a correct type of AVP is returned,
 i.e "Float32", "OctetString" etc. AVPs encode and decode their content
 automatically according to the RFC, when their <code>value</code> attribute is altered.
 The actual, byte-encoded payload is stored in the <code>payload</code> attribute.</p>
-<div class="highlight"><pre><span></span><code><span id="__span-2-1"><span class="kn">from</span> <span class="nn">diameter.message</span> <span class="kn">import</span> <span class="n">Avp</span>
-</span><span id="__span-2-2"><span class="kn">from</span> <span class="nn">diameter.message.avp</span> <span class="kn">import</span> <span class="n">AvpUtf8String</span>
-</span><span id="__span-2-3"><span class="kn">from</span> <span class="nn">diameter.message.constants</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span id="__span-2-4">
-</span><span id="__span-2-5"><span class="n">a</span> <span class="o">=</span> <span class="n">Avp</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">AVP_USER_NAME</span><span class="p">)</span>
-</span><span id="__span-2-6"><span class="c1"># Has returned an instance of AvpUtf8String</span>
-</span><span id="__span-2-7"><span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">AvpUtf8String</span><span class="p">)</span>
-</span><span id="__span-2-8"><span class="n">a</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;汉语&quot;</span>
-</span><span id="__span-2-9">
-</span><span id="__span-2-10"><span class="c1"># `value` is human-readable, `payload` has the network bytes</span>
-</span><span id="__span-2-11"><span class="k">assert</span> <span class="n">a</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;汉语&quot;</span>
-</span><span id="__span-2-12"><span class="k">assert</span> <span class="n">a</span><span class="o">.</span><span class="n">payload</span> <span class="o">==</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\xe6\xb1\x89\xe8\xaf\xad</span><span class="s2">&quot;</span>
+<div class="highlight"><pre><span></span><code><span id="__span-3-1"><span class="kn">from</span> <span class="nn">diameter.message</span> <span class="kn">import</span> <span class="n">Avp</span>
+</span><span id="__span-3-2"><span class="kn">from</span> <span class="nn">diameter.message.avp</span> <span class="kn">import</span> <span class="n">AvpUtf8String</span>
+</span><span id="__span-3-3"><span class="kn">from</span> <span class="nn">diameter.message.constants</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="__span-3-4">
+</span><span id="__span-3-5"><span class="n">a</span> <span class="o">=</span> <span class="n">Avp</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">AVP_USER_NAME</span><span class="p">)</span>
+</span><span id="__span-3-6"><span class="c1"># Has returned an instance of AvpUtf8String</span>
+</span><span id="__span-3-7"><span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">AvpUtf8String</span><span class="p">)</span>
+</span><span id="__span-3-8"><span class="n">a</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;汉语&quot;</span>
+</span><span id="__span-3-9">
+</span><span id="__span-3-10"><span class="c1"># `value` is human-readable, `payload` has the network bytes</span>
+</span><span id="__span-3-11"><span class="k">assert</span> <span class="n">a</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;汉语&quot;</span>
+</span><span id="__span-3-12"><span class="k">assert</span> <span class="n">a</span><span class="o">.</span><span class="n">payload</span> <span class="o">==</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\xe6\xb1\x89\xe8\xaf\xad</span><span class="s2">&quot;</span>
 </span></code></pre></div>
 <p>When creating an AVP, its vendor must be specified, if the AVP does not belong
 to the Diameter Base RFCs:</p>
-<div class="highlight"><pre><span></span><code><span id="__span-3-1"><span class="kn">from</span> <span class="nn">diameter.message</span> <span class="kn">import</span> <span class="n">Avp</span>
-</span><span id="__span-3-2"><span class="kn">from</span> <span class="nn">diameter.message.constants</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span id="__span-3-3">
-</span><span id="__span-3-4"><span class="n">ua</span> <span class="o">=</span> <span class="n">Avp</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">AVP_CISCO_USER_AGENT</span><span class="p">,</span> <span class="n">VENDOR_CISCO</span><span class="p">)</span>
-</span></code></pre></div>
-<p>When creating an AVP, its flags and value can also be set during creation, 
-which can be practical especially for nested "Grouped" type AVPs:</p>
 <div class="highlight"><pre><span></span><code><span id="__span-4-1"><span class="kn">from</span> <span class="nn">diameter.message</span> <span class="kn">import</span> <span class="n">Avp</span>
 </span><span id="__span-4-2"><span class="kn">from</span> <span class="nn">diameter.message.constants</span> <span class="kn">import</span> <span class="o">*</span>
 </span><span id="__span-4-3">
-</span><span id="__span-4-4"><span class="n">ps_information</span> <span class="o">=</span> <span class="n">Avp</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">AVP_TGPP_PS_INFORMATION</span><span class="p">,</span> <span class="n">VENDOR_TGPP</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="p">[</span>
-</span><span id="__span-4-5">    <span class="n">Avp</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">AVP_TGPP_3GPP_PDP_TYPE</span><span class="p">,</span> <span class="n">VENDOR_TGPP</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
-</span><span id="__span-4-6">    <span class="n">Avp</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">AVP_TGPP_PDP_ADDRESS</span><span class="p">,</span> <span class="n">VENDOR_TGPP</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s2">&quot;10.40.93.32&quot;</span><span class="p">)</span>
-</span><span id="__span-4-7"><span class="p">])</span>
+</span><span id="__span-4-4"><span class="n">ua</span> <span class="o">=</span> <span class="n">Avp</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">AVP_CISCO_USER_AGENT</span><span class="p">,</span> <span class="n">VENDOR_CISCO</span><span class="p">)</span>
+</span></code></pre></div>
+<p>When creating an AVP, its flags and value can also be set during creation, 
+which can be practical especially for nested "Grouped" type AVPs:</p>
+<div class="highlight"><pre><span></span><code><span id="__span-5-1"><span class="kn">from</span> <span class="nn">diameter.message</span> <span class="kn">import</span> <span class="n">Avp</span>
+</span><span id="__span-5-2"><span class="kn">from</span> <span class="nn">diameter.message.constants</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="__span-5-3">
+</span><span id="__span-5-4"><span class="n">ps_information</span> <span class="o">=</span> <span class="n">Avp</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">AVP_TGPP_PS_INFORMATION</span><span class="p">,</span> <span class="n">VENDOR_TGPP</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="p">[</span>
+</span><span id="__span-5-5">    <span class="n">Avp</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">AVP_TGPP_3GPP_PDP_TYPE</span><span class="p">,</span> <span class="n">VENDOR_TGPP</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+</span><span id="__span-5-6">    <span class="n">Avp</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">AVP_TGPP_PDP_ADDRESS</span><span class="p">,</span> <span class="n">VENDOR_TGPP</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s2">&quot;10.40.93.32&quot;</span><span class="p">)</span>
+</span><span id="__span-5-7"><span class="p">])</span>
 </span></code></pre></div>
 <p>Each individual AVP type has their specific type of python value, and 
 attempting to set a value that has an invalid type will raise an exception. 
 Refer to <a href="../../api/message_avp/">AVP API reference</a> for details for each AVP 
 type.</p>
+<h2 id="using-the-avp-dictionary">Using the AVP dictionary<a class="headerlink" href="#using-the-avp-dictionary" title="Permanent link">&para;</a></h2>
+<p>The package contains a large dictionary that holds a definition for each AVP, 
+with which AVPs can be constructed. This dictionary is automatically consulted
+when creating AVPs using <code>Avp.new</code> and <code>Avp.from_bytes</code>, however it permits 
+also direct access:</p>
+<div class="highlight"><pre><span></span><code><span id="__span-6-1"><span class="kn">from</span> <span class="nn">diameter.message.avp</span> <span class="kn">import</span> <span class="n">AvpEnumerated</span>
+</span><span id="__span-6-2"><span class="kn">from</span> <span class="nn">diameter.message.avp.dictionary</span> <span class="kn">import</span> <span class="n">AVP_DICTIONARY</span>
+</span><span id="__span-6-3"><span class="kn">from</span> <span class="nn">diameter.message.constants</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="__span-6-4">
+</span><span id="__span-6-5"><span class="n">avp_def</span> <span class="o">=</span>  <span class="n">AVP_DICTIONARY</span><span class="p">[</span><span class="n">AVP_SERVICE_TYPE</span><span class="p">]</span>
+</span><span id="__span-6-6">
+</span><span id="__span-6-7"><span class="k">assert</span> <span class="n">avp_def</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Service-Type&quot;</span>
+</span><span id="__span-6-8"><span class="k">assert</span> <span class="n">avp_def</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">AvpEnumerated</span>
+</span><span id="__span-6-9"><span class="k">assert</span> <span class="n">avp_def</span><span class="p">[</span><span class="s2">&quot;mandatory&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">True</span>
+</span></code></pre></div>
+<p>Vendor-specific AVPs are stored in individual dictionaries, separate for each 
+vendor:</p>
+<div class="highlight"><pre><span></span><code><span id="__span-7-1"><span class="kn">from</span> <span class="nn">diameter.message.avp</span> <span class="kn">import</span> <span class="n">AvpUtf8String</span>
+</span><span id="__span-7-2"><span class="kn">from</span> <span class="nn">diameter.message.avp.dictionary</span> <span class="kn">import</span> <span class="n">AVP_VENDOR_DICTIONARY</span>
+</span><span id="__span-7-3"><span class="kn">from</span> <span class="nn">diameter.message.constants</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="__span-7-4">
+</span><span id="__span-7-5"><span class="n">avp_def</span> <span class="o">=</span>  <span class="n">AVP_VENDOR_DICTIONARY</span><span class="p">[</span><span class="n">VENDOR_TGPP</span><span class="p">][</span><span class="n">AVP_TGPP_CONTENT_TYPE</span><span class="p">]</span>
+</span><span id="__span-7-6">
+</span><span id="__span-7-7"><span class="k">assert</span> <span class="n">avp_def</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Content-Type&quot;</span>
+</span><span id="__span-7-8"><span class="k">assert</span> <span class="n">avp_def</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">AvpUtf8String</span>
+</span><span id="__span-7-9"><span class="k">assert</span> <span class="n">avp_def</span><span class="p">[</span><span class="s2">&quot;mandatory&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">True</span>
+</span><span id="__span-7-10"><span class="k">assert</span> <span class="n">avp_def</span><span class="p">[</span><span class="s2">&quot;vendor&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">10415</span>
+</span><span id="__span-7-11"><span class="k">assert</span> <span class="n">avp_def</span><span class="p">[</span><span class="s2">&quot;vendor&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">VENDOR_TGPP</span>
+</span></code></pre></div>
 
 
 
@@ -1078,7 +1152,7 @@ type.</p>
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "toc.follow", "toc.integrate"], "search": "../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "toc.integrate"], "search": "../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="../../assets/javascripts/bundle.d7c377c4.min.js"></script>
