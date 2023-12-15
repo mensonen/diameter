@@ -1046,6 +1046,7 @@ class Node:
         cer_auth_apps = set(message.auth_application_id)
         cer_acct_apps = set(message.acct_application_id)
 
+        is_relay = constants.APP_RELAY in cer_auth_apps or constants.APP_RELAY in cer_acct_apps
         for vendor_app in message.vendor_specific_application_id:
             if hasattr(vendor_app, "auth_application_id"):
                 cer_auth_apps.add(vendor_app.auth_application_id)
@@ -1055,11 +1056,15 @@ class Node:
         supported_auth_apps = list(self.auth_application_ids & cer_auth_apps)
         supported_acct_apps = list(self.acct_application_ids & cer_acct_apps)
 
-        if not supported_auth_apps and not supported_acct_apps:
-            self.logger.warning(f"no supported application IDs")
+        if not supported_auth_apps and not supported_acct_apps and not is_relay:
+            self.logger.warning(f"{conn} no supported application IDs")
             answer.result_code = constants.E_RESULT_CODE_DIAMETER_NO_COMMON_APPLICATION
             conn.add_out_msg(answer)
             return
+
+        elif not supported_auth_apps and not supported_acct_apps and is_relay:
+            self.logger.info(
+                f"{conn} peer is a relay agent with no supported applications")
 
         conn.auth_application_ids = supported_auth_apps
         conn.acct_application_ids = supported_acct_apps
