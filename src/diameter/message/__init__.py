@@ -4,7 +4,7 @@ Diameter base message implementation.
 This module contains the base functions for encoding and decoding diameter
 message headers and messages.
 """
-from ._base import Message, MessageHeader
+from ._base import Message, MessageHeader, DefinedMessage
 from .avp import Avp, AvpGrouped
 
 

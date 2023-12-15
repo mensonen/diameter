@@ -8,14 +8,14 @@ from __future__ import annotations
 
 from typing import Type
 
-from .._base import Message, MessageHeader, _AnyMessageType
+from .._base import Message, MessageHeader, DefinedMessage, _AnyMessageType
 from ._attributes import *
 
 
 __all__ = ["AbortSession", "AbortSessionAnswer", "AbortSessionRequest"]
 
 
-class AbortSession(Message):
+class AbortSession(DefinedMessage):
     """An Abort-Session base message.
 
     This message class lists message attributes based on the current
@@ -70,36 +70,13 @@ class AbortSession(Message):
 
     def __post_init__(self):
         self.header.command_code = self.code
-        self._additional_avps: list[Avp] = []
+        super().__post_init__()
 
     @classmethod
     def type_factory(cls, header: MessageHeader) -> Type[_AnyMessageType] | None:
         if header.is_request:
             return AbortSessionRequest
         return AbortSessionAnswer
-
-    @property
-    def avps(self) -> list[Avp]:
-        """Full list of all AVPs within the message.
-
-        If the message was generated from network-received bytes, the list of
-        AVPs may not be in the same order as originally received. The returned
-        list of AVPs contains first the AVPs defined by the base rfc6733 spec,
-        if set, and followed by any unknown AVPs.
-        """
-        if self._avps:
-            return self._avps
-        defined_avps = generate_avps_from_defs(self)
-        return defined_avps + self._additional_avps
-
-    @avps.setter
-    def avps(self, new_avps: list[Avp]):
-        """Overwrites the list of custom AVPs."""
-        self._additional_avps = new_avps
-
-    def append_avp(self, avp: Avp):
-        """Add an individual custom AVP."""
-        self._additional_avps.append(avp)
 
 
 class AbortSessionAnswer(AbortSession):

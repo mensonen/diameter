@@ -363,6 +363,41 @@ class MessageHeader:
             self.command_flags = (self.command_flags & ~self.command_flag_retransmit_bit)
 
 
+class DefinedMessage(Message):
+    """A base class for every diameter message that is defined in Python.
+
+    Every subclass of this class has AVPs defined as python instance
+    attributes, defined based on the diameter base protocol rfc.
+    """
+    avp_def: AvpGenType
+
+    def __post_init__(self):
+        self._additional_avps: list[Avp] = []
+
+    @property
+    def avps(self) -> list[Avp]:
+        """Full list of all AVPs within the message.
+
+        If the message was generated from network-received bytes, the list of
+        AVPs may not be in the same order as originally received. The returned
+        list of AVPs contains first the AVPs defined by the base rfc6733 spec,
+        if set, followed by any unknown AVPs.
+        """
+        if self._avps:
+            return self._avps
+        defined_avps = generate_avps_from_defs(self)
+        return defined_avps + self._additional_avps
+
+    @avps.setter
+    def avps(self, new_avps: list[Avp]):
+        """Overwrites the list of custom AVPs."""
+        self._additional_avps = new_avps
+
+    def append_avp(self, avp: Avp):
+        """Add an individual custom AVP."""
+        self._additional_avps.append(avp)
+
+
 _AnyMessageType = TypeVar("_AnyMessageType", bound=Message)
 
 
@@ -389,3 +424,4 @@ def _traverse_avp_tree(avps: list[Avp],
 
 
 from .commands import all_commands
+from .commands._attributes import AvpGenType, generate_avps_from_defs

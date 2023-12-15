@@ -4,7 +4,7 @@ python API for reading and setting AVPs.
 """
 from typing import Type
 
-from .._base import Message
+from .._base import Message, DefinedMessage
 
 # Message types that have "proper" implementations; Requests and Answers are
 # their own distinct classes and permit AVP values to be accessed as instance
@@ -475,3 +475,6 @@ class MIp6(Message):
 
 all_commands: dict[int, Type[Message]] = {
     m.code: m for m in Message.__subclasses__()}
+all_commands.update({
+    m.code: m for m in DefinedMessage.__subclasses__()
+})
