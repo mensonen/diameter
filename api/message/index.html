@@ -687,6 +687,39 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#diameter.message.DefinedMessage" class="md-nav__link">
+    <span class="md-ellipsis">
+      DefinedMessage
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DefinedMessage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diameter.message.DefinedMessage.avps" class="md-nav__link">
+    <span class="md-ellipsis">
+      avps
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diameter.message.DefinedMessage.append_avp" class="md-nav__link">
+    <span class="md-ellipsis">
+      append_avp()
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#diameter.message.dump" class="md-nav__link">
     <span class="md-ellipsis">
       dump()
@@ -1476,6 +1509,100 @@ for "Request" and "Answer" messages, based on the given header.</p>
 
 
 
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="diameter.message.DefinedMessage" class="doc doc-heading">
+          <span class="doc doc-object-name doc-class-name">DefinedMessage</span>
+
+
+<a href="#diameter.message.DefinedMessage" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">DefinedMessage</span><span class="p">(</span><span class="n">header</span><span class="p">:</span> <span class="n">MessageHeader</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">avps</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Avp</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="diameter.message._base.Message" href="#diameter.message.Message">Message</a></code></p>
+
+  
+      <p>A base class for every diameter message that is defined in Python.</p>
+<p>Every subclass of this class has AVPs defined as python instance
+attributes, defined based on the diameter base protocol rfc.</p>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="diameter.message.DefinedMessage.avps" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">avps</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+  </span>
+
+<a href="#diameter.message.DefinedMessage.avps" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">avps</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Avp</span><span class="p">]</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Full list of all AVPs within the message.</p>
+<p>If the message was generated from network-received bytes, the list of
+AVPs may not be in the same order as originally received. The returned
+list of AVPs contains first the AVPs defined by the base rfc6733 spec,
+if set, followed by any unknown AVPs.</p>
+  </div>
+
+</div>
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="diameter.message.DefinedMessage.append_avp" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">append_avp</span>
+
+
+<a href="#diameter.message.DefinedMessage.append_avp" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">append_avp</span><span class="p">(</span><span class="n">avp</span><span class="p">:</span> <span class="n">Avp</span><span class="p">)</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Add an individual custom AVP.</p>
+
+  </div>
+
+</div>
 
 
 
