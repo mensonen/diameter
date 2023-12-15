@@ -139,7 +139,7 @@ class Peer:
     within this timeframe, the connection to the peer is closed."""
     idle_timeout: int = None
     """Time spent idle before a DWR is triggered."""
-    reconnect_wait: int = 10
+    reconnect_wait: int = 30
     """Time waited before a reconnect is attempted for a persistent peer.
     The wait time is only applied in a scenario where the peer connection has
     failed least once and has the `persistent` attribute enabled. If the

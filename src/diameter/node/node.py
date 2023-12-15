@@ -191,10 +191,24 @@ class Node:
         """Default timeout waiting for a DWA after sending a DWR, in seconds. 
         Will be used if no specific timeout value has been configured for a 
         peer."""
-        self.idle_timeout: int = 20
+        self.idle_timeout: int = 30
         """Default time spent idle before a DWR is triggered, in seconds. 
         Will be used if no specific timeout value has been configured for a 
         peer."""
+        self.wakeup_interval: int = 6
+        """Time in seconds between forced wakeups while waiting for connection
+        sockets to become active. This timer value controls how often peer 
+        timers are checked, how often reconnects are attempted and how often 
+        statistics are dumped in the logfiles. 
+        
+        As this also defines the interval at which peer timers are checked, it 
+        is also the smallest possible value for a peer timer value. Setting 
+        this value very low will consume more CPU, setting it too high will 
+        make observing short timeouts impossible.
+        
+        This value also defines how long a node will continue to run, after 
+        `stop` with `force` argument set to `True` is called.
+        """
         self.end_to_end_seq = SequenceGenerator(self.state_id)
         """An end-to-end identifier generator. The next identifier can be 
         retrieved with `Node.end_to_end_seq.next_sequence()`."""
@@ -514,8 +528,8 @@ class Node:
                         (conn.state != PEER_CLOSED and len(conn.write_buffer) > 0)):
                     w_list.append(conn_socket)
 
-            # TODO: go higher with timeout when testing is done
-            ready_r, ready_w, _ = select.select(r_list, w_list, [], 2)
+            ready_r, ready_w, _ = select.select(
+                r_list, w_list, [], self.wakeup_interval)
 
             for rsock in ready_r:
                 if rsock == self.interrupt_read:
