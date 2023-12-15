@@ -92,7 +92,6 @@ class Application:
         if hasattr(message, "session_id"):
             answer_msg.session_id = message.session_id
 
-        # TODO: vendor-specific-application-id
         if self.is_auth_application:
             answer_msg.auth_application_id = self.application_id
         if self.is_acct_application:

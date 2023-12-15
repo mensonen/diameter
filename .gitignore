@@ -4,6 +4,7 @@ __pycache__
 *.egg-info/
 dist
 site
+build
 
 # IDEs etc
 .idea

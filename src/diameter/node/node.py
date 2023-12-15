@@ -24,12 +24,6 @@ from ._helpers import parse_diameter_uri, validate_message_avps
 from ._helpers import SequenceGenerator, SessionGenerator, StoppableThread
 from .peer import *
 
-# TODO: rfc6733, 5.5.4.  Failover and Failback Procedures, detect retransmission
-# T-bit and check for duplicates: https://infocenter.nokia.com/public/7750SR227R1A/index.jsp?topic=%2Fcom.nokia.Triple_Play_Service_Delivery_Architecture_Guide%2Fretransmission_-d3011e1241.html
-
-# TODO: rfc6733, 6.2 Any Proxy-Info AVPs in the request MUST be added to the answer
-#       message, in the same order they were present in the request.
-
 
 SOFT_SOCKET_FAILURES = (errno.EAGAIN, errno.EWOULDBLOCK, errno.ENOBUFS,
                         errno.ENOSR, errno.EINTR)
@@ -992,8 +986,6 @@ class Node:
         cer_origin_host = message.origin_host.decode().lower()
 
         if cer_origin_host not in self.peers:
-            # TODO: mechanism to accept incoming connections from unknown connections
-            # rfc6733 5.3
             self.logger.warning(
                 f"received a CER from an unknown peer {cer_origin_host}, "
                 f"closing this connection")
@@ -1042,7 +1034,6 @@ class Node:
         supported_auth_apps = list(self.auth_application_ids & cer_auth_apps)
         supported_acct_apps = list(self.acct_application_ids & cer_acct_apps)
 
-        # TODO: always accept relay and redirect agents
         if not supported_auth_apps and not supported_acct_apps:
             self.logger.warning(f"no supported application IDs")
             answer.result_code = constants.E_RESULT_CODE_DIAMETER_NO_COMMON_APPLICATION
@@ -1079,8 +1070,7 @@ class Node:
 
         self.logger.info(f"{conn} sending DPA")
         self.logger.debug(f"{conn} changing state to DISCONNECTING")
-        # TODO: for persistent connections, stop reconnecting until a new CER has
-        # been received
+
         conn.state = PEER_DISCONNECTING
         conn.add_out_msg(answer)
 
