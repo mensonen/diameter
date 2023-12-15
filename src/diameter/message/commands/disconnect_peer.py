@@ -57,11 +57,15 @@ class DisconnectPeer(DefinedMessage):
     be set as `None`, if they are not to be used.
 
     !!! Warning
-        Messages may not contain every attribute documented here; the
-        attributes are only set when part of the original, network-received
-        message, or when done so manually. Attempting to access AVPs that are
-        not part of the message will raise an `AttributeError` and their
-        presence should be validated with `hasattr` before accessing.
+        Every AVP documented for the subclasses of this command can be accessed
+        as an instance attribute, even if the original network-received message
+        did not contain that specific AVP. Such AVPs will be returned with the
+        value `None` when accessed.
+
+        Every other AVP not mentioned here, and not present in a
+        network-received message will raise an `AttributeError` when being
+        accessed; their presence should be validated with `hasattr` before
+        accessing.
 
     """
     code: int = 282

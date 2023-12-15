@@ -182,8 +182,11 @@ def test_error_command_unset_avp():
     msg = CapabilitiesExchangeAnswer.from_bytes(bytes.fromhex(cea))
 
     with pytest.raises(AttributeError):
-        # this is not present
-        _ = msg.failed_avp
+        # this is not defined for CapabilitiesExchangeAnswer
+        _ = msg.session_id
+
+    # this is defined but not set, should return None
+    assert msg.failed_avp is None
 
 
 def test_answer_from_request():

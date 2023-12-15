@@ -964,7 +964,14 @@ class Node:
 
         self.remove_peer_connection(conn)
 
-    def receive_cea(self, conn: PeerConnection, message: CapabilitiesExchangeRequest):
+    def receive_cea(self, conn: PeerConnection, message: CapabilitiesExchangeAnswer):
+        if message.result_code != constants.E_RESULT_CODE_DIAMETER_SUCCESS:
+            self.logger.warning(
+                f"{conn} CER rejected with {message.result_code} (message: "
+                f"{message.error_message}), closing connection")
+            self.close_connection_socket(conn)
+            return
+
         # TODO: for SCTP, compare configured IP addresses with advertised and
         # remove those that are not mentioned
         cer_auth_apps = set(message.auth_application_id)

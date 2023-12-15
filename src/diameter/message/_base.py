@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TypeVar, Type
+from typing import TypeVar, Type, Any
 
 from .avp import Avp, AvpGrouped
 from .packer import Packer, Unpacker
@@ -369,7 +369,13 @@ class DefinedMessage(Message):
     Every subclass of this class has AVPs defined as python instance
     attributes, defined based on the diameter base protocol rfc.
     """
-    avp_def: AvpGenType
+    avp_def: AvpGenType = ()
+
+    def __getattr__(self, name: str) -> Any:
+        for avp_def in self.avp_def:
+            if avp_def.attr_name == name:
+                return None
+        raise AttributeError()
 
     def __post_init__(self):
         self._additional_avps: list[Avp] = []

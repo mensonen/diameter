@@ -11,5 +11,6 @@ API reference for `diameter.message`.
       members:
         - Message
         - MessageHeader
+        - DefinedMessage
         - dump
       show_submodules: false
