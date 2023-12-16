@@ -1436,7 +1436,7 @@ class Node:
                 time.sleep(1)
 
         self._connection_thread.stop()
-        self._connection_thread.join(5)
+        self._connection_thread.join(self.wakeup_interval + 1)
 
         self.logger.debug("closing listening sockets")
         for tcp_socket in self.tcp_sockets:
