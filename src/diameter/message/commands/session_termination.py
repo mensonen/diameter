@@ -88,7 +88,6 @@ class SessionTerminationAnswer(SessionTermination):
     """An Abort-Session-Answer message.
 
     !!! Note
-
         The "Class" AVP can be accessed via `state_class` attribute, as
         "class" is a reserved keyword.
 
@@ -98,10 +97,11 @@ class SessionTerminationAnswer(SessionTermination):
     origin_host: bytes
     origin_realm: bytes
     user_name: str
-    state_class: list[bytes]  # this should be "class", but that's a reserved keyword
+    # this should be "class", but that's a reserved keyword
+    state_class: list[bytes]
     error_message: str
     error_reporting_host: bytes
-    failed_avp: int
+    failed_avp: FailedAvp
     origin_state_id: int
     redirect_host: list[str]
     redirect_host_usage: int
