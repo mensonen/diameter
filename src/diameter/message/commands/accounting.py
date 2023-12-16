@@ -85,6 +85,7 @@ class Accounting(DefinedMessage):
 
 class AccountingAnswer(Accounting):
     """An Accounting-Answer message."""
+    # AVPs from rfc6733 (Diameter base)
     session_id: str
     result_code: int
     origin_host: bytes
@@ -105,6 +106,19 @@ class AccountingAnswer(Accounting):
     origin_state_id: int
     event_timestamp: datetime.datetime
     proxy_info: list[ProxyInfo]
+
+    # Additional AVPs from rfc7155 (NAS Application)
+    origin_aaa_protocol: int
+    origin_state_id: int
+    nas_identifier: str
+    nas_ip_address: str
+    nas_ipv6_address: bytes
+    nas_port: int
+    nas_port_id: str
+    nas_port_type: int
+    service_type: int
+    termination_cause: bytes
+    state_class: list[bytes]
 
     avp_def: AvpGenType = (
         AvpGenDef("session_id", AVP_SESSION_ID, is_required=True),
@@ -127,6 +141,18 @@ class AccountingAnswer(Accounting):
         AvpGenDef("origin_state_id", AVP_ORIGIN_STATE_ID),
         AvpGenDef("event_timestamp", AVP_EVENT_TIMESTAMP),
         AvpGenDef("proxy_info", AVP_PROXY_INFO, type_class=ProxyInfo),
+
+        AvpGenDef("origin_aaa_protocol", AVP_ORIGIN_AAA_PROTOCOL),
+        AvpGenDef("origin_state_id", AVP_ORIGIN_STATE_ID),
+        AvpGenDef("nas_identifier", AVP_NAS_IDENTIFIER),
+        AvpGenDef("nas_ip_address", AVP_NAS_IP_ADDRESS),
+        AvpGenDef("nas_ipv6_address", AVP_NAS_IPV6_ADDRESS),
+        AvpGenDef("nas_port", AVP_NAS_PORT),
+        AvpGenDef("nas_port_id", AVP_NAS_PORT_ID),
+        AvpGenDef("nas_port_type", AVP_NAS_PORT_TYPE),
+        AvpGenDef("service_stype", AVP_SERVICE_TYPE),
+        AvpGenDef("termination_cause", AVP_TERMINATION_CAUSE),
+        AvpGenDef("state_class", AVP_CLASS),
     )
 
     def __post_init__(self):
@@ -135,6 +161,7 @@ class AccountingAnswer(Accounting):
         self.header.is_proxyable = True
 
         setattr(self, "proxy_info", [])
+        setattr(self, "state_class", [])
 
         assign_attr_from_defs(self, self._avps)
         self._avps = []
@@ -142,6 +169,7 @@ class AccountingAnswer(Accounting):
 
 class AccountingRequest(Accounting):
     """An Accounting-Request message."""
+    # AVPs from base rfc6733 (Diameter Base)
     session_id: str
     origin_host: bytes
     origin_realm: bytes
@@ -161,6 +189,66 @@ class AccountingRequest(Accounting):
     event_timestamp: datetime.datetime
     proxy_info: list[ProxyInfo]
     route_record: list[bytes]
+
+    # Additional AVPs from rfc7155 (NAS Application)
+    origin_aaa_protocol: int
+    origin_state_id: int
+    nas_identifier: str
+    nas_ip_address: str
+    nas_ipv6_address: bytes
+    nas_port: int
+    nas_port_id: str
+    nas_port_type: int
+    state_class: list[bytes]
+    service_type: int
+    termination_cause: bytes
+    accounting_input_octets: int
+    accounting_input_packets: int
+    accounting_output_octets: int
+    accounting_output_packets: int
+    acct_authentic: int
+    accounting_auth_method: int
+    acct_link_count: int
+    acct_session_time: int
+    acct_tunnel_connection: bytes
+    acct_tunnel_packets_lost: int
+    callback_id: str
+    callback_number: str
+    called_station_id: str
+    calling_station_id: str
+    connection_info: list[str]
+    originating_line_info: bytes
+    authorization_lifetime: int
+    session_timeout: int
+    idle_timeout: int
+    port_limit: int
+    filter_id: list[str]
+    nas_filter_rule: list[bytes]
+    qos_filter_rule: list[bytes]
+    framed_appletalk_link: int
+    framed_appletalk_network: list[int]
+    framed_appletalk_zone: bytes
+    framed_compression: list[int]
+    framed_interface_id: int
+    framed_ip_address: str
+    framed_ipv6_prefix: list[bytes]
+    framed_ipv6_pool: bytes
+    framed_ipv6_route: list[str]
+    framed_ipx_network: str
+    framed_mtu: int
+    framed_pool: bytes
+    framed_protocol: int
+    framed_route: list[str]
+    framed_routing: int
+    login_ip_host: list[str]
+    login_ipv6_host: list[bytes]
+    login_lat_group: bytes
+    login_lat_node: bytes
+    login_lat_port: str
+    login_lat_service: bytes
+    login_service: int
+    login_tcp_port: int
+    tunneling: list[Tunneling]
 
     avp_def: AvpGenType = (
         AvpGenDef("session_id", AVP_SESSION_ID, is_required=True),
@@ -182,6 +270,66 @@ class AccountingRequest(Accounting):
         AvpGenDef("event_timestamp", AVP_EVENT_TIMESTAMP),
         AvpGenDef("proxy_info", AVP_PROXY_INFO, type_class=ProxyInfo),
         AvpGenDef("route_record", AVP_ROUTE_RECORD),
+
+        AvpGenDef("origin_aaa_protocol", AVP_ORIGIN_AAA_PROTOCOL),
+        AvpGenDef("origin_state_id", AVP_ORIGIN_STATE_ID),
+        AvpGenDef("nas_identifier", AVP_NAS_IDENTIFIER),
+        AvpGenDef("nas_ip_address", AVP_NAS_IP_ADDRESS),
+        AvpGenDef("nas_ipv6_address", AVP_NAS_IPV6_ADDRESS),
+        AvpGenDef("nas_port", AVP_NAS_PORT),
+        AvpGenDef("nas_port_id", AVP_NAS_PORT_ID),
+        AvpGenDef("nas_port_type", AVP_NAS_PORT_TYPE),
+        AvpGenDef("state_class", AVP_CLASS),
+        AvpGenDef("service_stype", AVP_SERVICE_TYPE),
+        AvpGenDef("termination_cause", AVP_TERMINATION_CAUSE),
+        AvpGenDef("accounting_input_octets", AVP_ACCOUNTING_INPUT_OCTETS),
+        AvpGenDef("accounting_input_packets", AVP_ACCOUNTING_INPUT_PACKETS),
+        AvpGenDef("accounting_output_octets", AVP_ACCOUNTING_OUTPUT_OCTETS),
+        AvpGenDef("accounting_output_packets", AVP_ACCOUNTING_OUTPUT_PACKETS),
+        AvpGenDef("acct_authentic", AVP_ACCT_AUTHENTIC),
+        AvpGenDef("accounting_auth_method", AVP_ACCOUNTING_AUTH_METHOD),
+        AvpGenDef("acct_link_count", AVP_ACCT_LINK_COUNT),
+        AvpGenDef("acct_session_time", AVP_ACCT_SESSION_TIME),
+        AvpGenDef("acct_tunnel_connection", AVP_TUNNEL_CONNECTION_ID),
+        AvpGenDef("acct_tunnel_packets_lost", AVP_ACCT_TUNNEL_PACKETS_LOST),
+        AvpGenDef("callback_id", AVP_CALLBACK_ID),
+        AvpGenDef("callback_number", AVP_CALLBACK_NUMBER),
+        AvpGenDef("called_station_id", AVP_CALLED_STATION_ID),
+        AvpGenDef("calling_station_id", AVP_CALLING_STATION_ID),
+        # rfc7155 calls this "Connection-Info" but does not define it?
+        AvpGenDef("connection_info", AVP_CONNECT_INFO),
+        AvpGenDef("originating_line_info", AVP_ORIGINATING_LINE_INFO),
+        AvpGenDef("authorization_lifetime", AVP_AUTHORIZATION_LIFETIME),
+        AvpGenDef("session_timeout", AVP_SESSION_TIMEOUT),
+        AvpGenDef("idle_timeout", AVP_IDLE_TIMEOUT),
+        AvpGenDef("port_limit", AVP_PORT_LIMIT),
+        AvpGenDef("filter_id", AVP_FILTER_ID),
+        AvpGenDef("nas_filter_rule", AVP_NAS_FILTER_RULE),
+        AvpGenDef("qos_filter_rule", AVP_QOS_FILTER_RULE),
+        AvpGenDef("framed_appletalk_link", AVP_FRAMED_APPLETALK_LINK),
+        AvpGenDef("framed_appletalk_network", AVP_FRAMED_APPLETALK_NETWORK),
+        AvpGenDef("framed_appletalk_zone", AVP_FRAMED_APPLETALK_ZONE),
+        AvpGenDef("framed_compression", AVP_FRAMED_COMPRESSION),
+        AvpGenDef("framed_interface_id", AVP_FRAMED_INTERFACE_ID),
+        AvpGenDef("framed_ip_address", AVP_FRAMED_IP_ADDRESS),
+        AvpGenDef("framed_ipv6_prefix", AVP_FRAMED_IPV6_PREFIX),
+        AvpGenDef("framed_ipv6_pool", AVP_FRAMED_IPV6_POOL),
+        AvpGenDef("framed_ipv6_route", AVP_FRAMED_IPV6_ROUTE),
+        AvpGenDef("framed_ipx_network", AVP_FRAMED_IPX_NETWORK),
+        AvpGenDef("framed_mtu", AVP_FRAMED_MTU),
+        AvpGenDef("framed_pool", AVP_FRAMED_POOL),
+        AvpGenDef("framed_protocol", AVP_FRAMED_PROTOCOL),
+        AvpGenDef("framed_route", AVP_FRAMED_ROUTE),
+        AvpGenDef("framed_routing", AVP_FRAMED_ROUTING),
+        AvpGenDef("login_ip_host", AVP_LOGIN_IP_HOST),
+        AvpGenDef("login_ipv6_host", AVP_LOGIN_IPV6_HOST),
+        AvpGenDef("login_lat_group", AVP_LOGIN_LAT_GROUP),
+        AvpGenDef("login_lat_node", AVP_LOGIN_LAT_NODE),
+        AvpGenDef("login_lat_port", AVP_LOGIN_LAT_PORT),
+        AvpGenDef("login_lat_service", AVP_LOGIN_LAT_SERVICE),
+        AvpGenDef("login_service", AVP_LOGIN_SERVICE),
+        AvpGenDef("login_tcp_port", AVP_LOGIN_TCP_PORT),
+        AvpGenDef("tunneling", AVP_TUNNELING, type_class=Tunneling),
     )
 
     def __post_init__(self):
@@ -191,6 +339,8 @@ class AccountingRequest(Accounting):
 
         setattr(self, "proxy_info", [])
         setattr(self, "route_record", [])
+        setattr(self, "state_class", [])
+        setattr(self, "connection_info", [])
 
         assign_attr_from_defs(self, self._avps)
         self._avps = []
