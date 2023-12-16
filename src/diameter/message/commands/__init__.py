@@ -53,20 +53,6 @@ class HomeAgentMip(Message):
         self.header.command_code = self.code
 
 
-class Aa(Message):
-    """An AA message.
-
-    This message implementation provides no python subclasses for requests and
-    answers; AVPs must be created manually and added using the
-    [Aa.append_avp][diameter.message.Message.append_avp] method.
-    """
-    code: int = 265
-    name: str = "AA"
-
-    def __post_init__(self):
-        self.header.command_code = self.code
-
-
 class DiameterEap(Message):
     """A Diameter-EAP message.
 

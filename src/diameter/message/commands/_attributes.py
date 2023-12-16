@@ -839,3 +839,48 @@ class QosFinalUnitIndication:
         AvpGenDef("redirect_server_extension", AVP_REDIRECT_SERVER_EXTENSION, type_class=RedirectServerExtension),
         AvpGenDef("filter_id", AVP_FILTER_ID),
     )
+
+
+@dataclasses.dataclass
+class Tunneling:
+    """A data container that represents the "Tunneling" grouped AVP."""
+    tunnel_type: int = None
+    tunnel_medium_type: int = None
+    tunnel_client_endpoint: str = None
+    tunnel_server_endpoint: str = None
+    tunnel_preference: int = None
+    tunnel_client_auth_id: str = None
+    tunnel_server_auth_id: str = None
+    tunnel_assignment_id: bytes = None
+    tunnel_password: bytes = None
+    tunnel_private_group_id: bytes = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("tunnel_type", AVP_TUNNEL_TYPE, is_required=True),
+        AvpGenDef("tunnel_medium_type", AVP_TUNNEL_MEDIUM_TYPE, is_required=True),
+        AvpGenDef("tunnel_client_endpoint", AVP_TUNNEL_CLIENT_ENDPOINT, is_required=True),
+        AvpGenDef("tunnel_server_endpoint", AVP_TUNNEL_SERVER_ENDPOINT, is_required=True),
+        AvpGenDef("tunnel_preference", AVP_TUNNEL_PREFERENCE),
+        AvpGenDef("tunnel_client_auth_id", AVP_TUNNEL_CLIENT_AUTH_ID),
+        AvpGenDef("tunnel_server_auth_id", AVP_TUNNEL_SERVER_AUTH_ID),
+        AvpGenDef("tunnel_assignment_id", AVP_TUNNEL_ASSIGNMENT_ID),
+        AvpGenDef("tunnel_password", AVP_TUNNEL_PASSWORD),
+        AvpGenDef("tunnel_private_group_id", AVP_TUNNEL_PRIVATE_GROUP_ID),
+    )
+
+
+@dataclasses.dataclass
+class ChapAuth:
+    """A data container that represents the "Chap-Auth" grouped AVP."""
+    chap_algorithm: int = None
+    chap_ident: bytes = None
+    chap_response: bytes = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("chap_algorithm", AVP_CHAP_ALGORITHM, is_required=True),
+        AvpGenDef("chap_ident", AVP_CHAP_IDENT, is_required=True),
+        AvpGenDef("chap_response", AVP_CHAP_RESPONSE)
+    )

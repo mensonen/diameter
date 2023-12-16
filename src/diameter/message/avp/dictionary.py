@@ -183,6 +183,7 @@ AVP_DICTIONARY = {
     AVP_INBAND_SECURITY_ID: {"name": "Inband-Security-Id", "type": AvpEnumerated, "mandatory": True},
     AVP_E2E_SEQUENCE: {"name": "E2E-Sequence", "type": AvpGrouped, "mandatory": True},
     AVP_DRMP: {"name": "DRMP", "type": AvpEnumerated},
+    AVP_QOS_FILTER_RULE: {"name": "QoS-Filter-Rule", "type": AvpOctetString},
     AVP_ACCOUNTING_RECORD_TYPE: {"name": "Accounting-Record-Type", "type": AvpEnumerated, "mandatory": True},
     AVP_ACCOUNTING_REALTIME_REQUIRED: {"name": "Accounting-Realtime-Required", "type": AvpEnumerated, "mandatory": True},
     AVP_ACCOUNTING_RECORD_NUMBER: {"name": "Accounting-Record-Number", "type": AvpUnsigned32, "mandatory": True},
