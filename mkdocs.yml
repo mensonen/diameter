@@ -25,6 +25,7 @@ nav:
   - Home: index.md
   - Installation: setup.md
   - User Guide:
+    - guide/index.md
     - Working with AVPs: guide/avp.md
     - Working with messages: guide/message.md
     - Connecting to peers: guide/node.md

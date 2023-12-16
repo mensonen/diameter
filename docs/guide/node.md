@@ -1,8 +1,8 @@
 # Connecting to Diameter Peers
 
-The `diameter` module provides tools to connect to multiple diameter peers 
+The `diameter` package provides tools to connect to multiple diameter peers 
 within the same diameter realm, with automated CER/CEA, DWR/DWA and DPR/DPA 
-handling, and message routing to local applications.
+handling, as well as message routing to local applications.
 
 The diameter node implementation supports both TCP and SCTP transports. It does
 not support secure transports.
@@ -15,7 +15,7 @@ or a client, with the only difference being in the applications that want to
 receive requests (server) and applications that want to send requests (client)
 through the node.
 
-In both cases, the diameter node is the same and it will handle messages 
+In both cases, the diameter node is the same, and it will handle messages 
 flowing in both directions.
 
 
@@ -56,7 +56,7 @@ node.add_peer("aaa://ocs2.gy;transport=sctp", "realm.net",
 ```
 
 Adding a peer as `persistent` will result in the node establishing an outgoing 
-connection at startup and ensuring that the connection remains up, by 
+connection at startup and ensuring that the connection remains up, by means of
 reconnecting after connection loss, if necessary. A peer that is not set as 
 persistent will never be automatically connected to. 
 
@@ -69,16 +69,19 @@ Peers must be added using a "DiameterURI" syntax, consisting of a scheme, peer
 FQDN, a connection port and transport protocol. Valid URIs are for instance:
 
  * aaa://node1.gy;3868;transport=tcp
- * aaa://node1.gy;9009;transport=sctp
+ * aaa://node1.gy.realm.net;9009;transport=sctp
 
-If not specified, a peer defaults `tcp` over  port `3868`. The FQDN of the peer
-should not contain the realm name.
+If not specified, a peer defaults `tcp` over  port `3868`. Whether the
+realm FQDN should contain also the realm name or not, depends on how the peer
+on the receiving side of the connection is configured.
 
 After one or more peers have been configured, it must be started with 
 [`start`][diameter.node.Node.start] and stopped with 
-[`stop`][diameter.node.Node.start]. When started, the node will establish an 
+[`stop`][diameter.node.Node.stop]. When started, the node will establish an 
 outgoing connection with every connected peer and perform a CER/CEA message 
-exchange. When stopped, the node sends a DPR towards every connected peer.
+exchange. When asked to stop, the node sends a DPR (Disconnect-Peer-Request) 
+towards every connected peer and ends its operations as soon as a 
+DPA (Disconnect-Peer-Answer) has been received from every peer.
 
 ```python
 from diameter.node import Node
@@ -86,8 +89,14 @@ from diameter.node import Node
 node = Node("peername.gy", "realm.net")
 node.start()
 # wait
-node.stop()
+node.stop(wait_timeout=120, force=False)
 ```
+
+The stop command has optional timeout and force arguments; the timeout argument
+controls how long the node should wait for DPAs to arrive and for the peer 
+connections to empty their outgoing message buffers before giving up and 
+exiting. The force argument will just close all connections without even 
+sending out DPRs first.
 
 For sending diameter messages through the node, see 
 [writing diameter applications](application.md).
@@ -96,7 +105,7 @@ For sending diameter messages through the node, see
 ### Starting a server
 
 Operating a node as a server is near-identical to starting a node as a client.
-The main difference is, that a server will be listening for incoming 
+The only difference is, that a server will be listening for incoming 
 connections on local socket(s):
 
 ```python
@@ -151,6 +160,20 @@ A node has several attributes that can be used or altered after its creation:
 :   Default time of peer inactivity, in seconds that the node will accept 
     before a DWR will be sent. This can also be set individually for each peer.
 
+`wakeup_interval`
+:   Time in seconds between forced wakeups while waiting for connection
+    sockets to become active. This timer value controls how often peer 
+    timers are checked, how often reconnects are attempted and how often 
+    statistics are dumped in the logfiles. 
+    
+    As this also defines the interval at which peer timers are checked, it 
+    is also the smallest possible value for a peer timer value. Setting 
+    this value very low will consume more CPU, setting it too high will 
+    make observing short timeouts impossible.
+    
+    This value also defines how long a node will continue to run, after 
+    `stop` with `force` argument set to `True` is called.
+
 `end_to_end_seq`
 :   The end-to-end identifier generator. This must be used every time a new 
     request message is to be sent through the node:
@@ -189,9 +212,9 @@ A node has several attributes that can be used or altered after its creation:
 ## Diameter peer
 
 An instance of [`Peer`][diameter.node.peer.Peer] represents a single diameter
-peer, other than the local peer. The local diameter node collects one instance
-of `Peer` for each connection that it either makes, receives, will connect to
-or will accept a connection from.
+peer in the realm, other than the local node. The local diameter node collects 
+one instance of `Peer` for each connection that it either makes, receives, will 
+connect to, or will accept a connection from.
 
 An instance of a peer is returned every time 
 [`Node.add_peer`][diameter.node.Node.add_peer] is called:
@@ -319,7 +342,7 @@ peer = node.add_peer("aaa://ocs2.gy;transport=sctp", "realm.net",
                      is_persistent=True)
 node.start()
 
-# ideally wait until connection becomes available; the READY state is not 
+# ideally should wait until connection becomes available; the READY state is not 
 # achieved until CER/CEA has completed, which is likely to take a few seconds
 if peer.connection and peer.connection.state in PEER_READY_STATES:
     rar = ReAuthRequest()

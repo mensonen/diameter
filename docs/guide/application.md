@@ -12,8 +12,9 @@ An "application" is any instance of a subclass of
 [`Application`][diameter.node.application.Application]. An application is 
 handed over to a configured node and the node will route every received request
 and answer message to the application, when necessary. Protocol-level message
-exchanges, i.e. CER, DWR and DPR never reach any application, but every other
-message is expected to be handled by at least one application.
+exchanges, i.e. CER (Capabilities-Exchange), DWR (Device-Watchdog) and DPR
+(Disconnect-Peer) never reach any application, but every other message is 
+expected to be handled by at least one application.
 
 If a node receives a message that no application has been configured to handle,
 it will reject the message with a `DIAMETER_APPLICATION_UNSUPPORTED` error.
@@ -59,9 +60,9 @@ The `diameter` package offers three different application implementations:
 [`Application`][diameter.node.application.Application]
 :   The most basic form of an application. Must be subclassed and contains two 
     methods, `handle_request`, which must be overridden, and `handle_answer`,
-    which may be overriden, but is usually not necessary. 
+    which *may* be overriden, but is usually not necessary. 
 
-    The `Application` class simply calls eachs `handle_request` for each 
+    The `Application` class calls internally `handle_request` for each 
     received diameter request in the main thread. It calls `handle_answer` for
     each answer that comes unexpected, i.e. without a request waiting for it.
 
@@ -83,20 +84,23 @@ The `diameter` package offers three different application implementations:
     node.add_application(my_app, [peer])
     ```
 
+    !!! Warning
+        The request and answer are called in the main `Node` work thread and 
+        they will block the node from processing any other messages. When this
+        class is used, the implementing party is expected to build a queue and/or
+        threading based solution on top, which would not block the main thread.
+
+
 [`ThreadingApplication`][diameter.node.application.ThreadingApplication]
 :   A variation of application, which spawns a new thread for each incoming 
-    request, up to an optional maximum amount of threads. Must be subclassed 
-    and contains two methods, `handle_request`, which must be overridden, 
-    and `handle_answer`, which may be overriden, but is usually not necessary. 
-
-    The `Application` class simply calls eachs `handle_request` for each 
-    received diameter request in the main thread. It calls `handle_answer` for
-    each answer that comes unexpected, i.e. without a request waiting for it.
+    request, up to an optional maximum amount of threads. Must be subclassed.
+    Also contains two methods, `handle_request`, which must be overridden, 
+    and `handle_answer`, which *may* be overriden, but is usually not necessary.
 
     Unlike in the base `Application` class, the threading application expects
-    that the `handle_request` returns a valid diameter message. Failing to do
-    so results in an automatic generation of a DIAMETER_UNABLE_TO_COMPLY error
-    message.
+    that the overridden `handle_request` returns a valid diameter message as an
+    answer to the received request. Failing to do so results in an automatic 
+    generation of a `DIAMETER_UNABLE_TO_COMPLY` error message.
     
     ```python
     from diameter.message import Message
@@ -127,7 +131,7 @@ The `diameter` package offers three different application implementations:
     In order to receive requests, the `SimpleThreadingApplication` accepts a 
     callback method in its constructor and calls it in a separate spawned 
     thread. Similar to the threading application, the callback function *must*
-    return a valid answer, otherwise a DIAMETER_UNABLE_TO_COMPLY error is 
+    return a valid answer, otherwise a `DIAMETER_UNABLE_TO_COMPLY` error is 
     sent back to the network.
 
     If no callback is provided, the `SimpleThreadingApplication` acts as a 
@@ -154,5 +158,3 @@ The `diameter` package offers three different application implementations:
     peer = node.add_peer("aaa://ocs2.gy;transport=sctp", "realm.net")
     node.add_application(my_app, [peer])
     ```
-
-
