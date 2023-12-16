@@ -9,10 +9,10 @@
       
       
       
-        <link rel="prev" href="..">
+        <link rel="prev" href="../setup/">
       
       
-        <link rel="next" href="../guide/">
+        <link rel="next" href="avp/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -20,7 +20,7 @@
     
     
       
-        <title>Installation - Python Diameter Stack</title>
+        <title>Using the diameter stack - Python Diameter Stack</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#system-requirements" class="md-skip">
+        <a href="#using-the-diameter-stack" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Installation
+              Using the diameter stack
             
           </span>
         </div>
@@ -276,28 +276,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Installation
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../setup/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -306,42 +288,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#system-requirements" class="md-nav__link">
-    <span class="md-ellipsis">
-      System requirements
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#sctp" class="md-nav__link">
-    <span class="md-ellipsis">
-      SCTP
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -350,6 +296,8 @@
       
   
   
+    
+  
   
   
     
@@ -373,17 +321,17 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../guide/" class="md-nav__link ">
+            <a href="./" class="md-nav__link md-nav__link--active">
               
   
   <span class="md-ellipsis">
@@ -394,13 +342,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+              <label class="md-nav__link md-nav__link--active" for="__nav_3" id="__nav_3_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             User Guide
@@ -416,7 +364,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../guide/avp/" class="md-nav__link">
+      <a href="avp/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -437,7 +385,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../guide/message/" class="md-nav__link">
+      <a href="message/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -458,7 +406,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../guide/node/" class="md-nav__link">
+      <a href="node/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -479,7 +427,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../guide/application/" class="md-nav__link">
+      <a href="application/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -500,7 +448,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../guide/sample_application/" class="md-nav__link">
+      <a href="sample_application/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -979,26 +927,57 @@
   
 
 
-  <h1>Installation</h1>
-
-<h2 id="system-requirements">System requirements<a class="headerlink" href="#system-requirements" title="Permanent link">&para;</a></h2>
-<p>The <code>diameter</code> package can be installed from PyPI:</p>
-<div class="highlight"><pre><span></span><code><span id="__span-0-1">~#<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>python-diameter
+<h1 id="using-the-diameter-stack">Using the diameter stack<a class="headerlink" href="#using-the-diameter-stack" title="Permanent link">&para;</a></h1>
+<p>The <code>diameter</code> package offers tools for parsing and creating AVPs, parsing and
+creating diameter messages, connecting to diameter peers and writing diameter
+applications.</p>
+<h2 id="modules">Modules<a class="headerlink" href="#modules" title="Permanent link">&para;</a></h2>
+<p>The entire package can be imported as <code>diameter</code>. It provides following 
+importable modules:</p>
+<ul>
+<li><code>diameter.message</code><ul>
+<li><code>diameter.message.avp</code></li>
+<li><code>diameter.message.commands</code></li>
+<li><code>diameter.message.constants</code></li>
+</ul>
+</li>
+<li><code>diameter.node</code><ul>
+<li><code>diameter.node.application</code></li>
+<li><code>diameter.node.peer</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="avp-and-message-modules">AVP and message modules<a class="headerlink" href="#avp-and-message-modules" title="Permanent link">&para;</a></h3>
+<p>The AVP and message handling modules are part of <code>diameter.message</code>.</p>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><span class="c1"># base class for parsing and creating AVPs</span>
+</span><span id="__span-0-2"><span class="kn">from</span> <span class="nn">diameter.message</span> <span class="kn">import</span> <span class="n">Avp</span>
+</span><span id="__span-0-3">
+</span><span id="__span-0-4"><span class="c1"># subclasses of AVPs are in the `avp` module</span>
+</span><span id="__span-0-5"><span class="kn">from</span> <span class="nn">diameter.message.avp</span> <span class="kn">import</span> <span class="n">AvpTime</span><span class="p">,</span> <span class="n">AvpOctetString</span>
+</span><span id="__span-0-6">
+</span><span id="__span-0-7"><span class="c1"># all package constants for AVPs, applications, vendors, enums etc</span>
+</span><span id="__span-0-8"><span class="kn">from</span> <span class="nn">diameter.message.constants</span> <span class="kn">import</span> <span class="o">*</span>
 </span></code></pre></div>
-<p>The minimum required Python version is 3.11, a fairly recent Linux kernel is
-recommended. There is no Windows or Mac compatibility.</p>
-<h2 id="sctp">SCTP<a class="headerlink" href="#sctp" title="Permanent link">&para;</a></h2>
-<p>The <code>diameter</code> stack can operate in both TCP and SCTP modes. For connectivity
-over the SCTP transport, an optional dependency for 
-<a href="https://pypi.org/project/pysctp/">pysctp</a> must be installed separately:</p>
-<div class="highlight"><pre><span></span><code><span id="__span-1-1">~#<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>pysctp
+<p>See <a href="avp/">working with AVPs</a> for a guide on AVPs.</p>
+<div class="highlight"><pre><span></span><code><span id="__span-1-1"><span class="c1"># base class for parsing and creating messages</span>
+</span><span id="__span-1-2"><span class="kn">from</span> <span class="nn">diameter.message</span> <span class="kn">import</span> <span class="n">Message</span>
+</span><span id="__span-1-3">
+</span><span id="__span-1-4"><span class="c1"># subclasses of messages ae in the `commands` module</span>
+</span><span id="__span-1-5"><span class="kn">from</span> <span class="nn">diameter.message.commands</span> <span class="kn">import</span> <span class="n">AbortSessionRequest</span><span class="p">,</span> <span class="n">ReAuthRequest</span>
 </span></code></pre></div>
-<p>Note that installing the <code>pysctp</code> package requires at least an SCTP-aware kernel
-and possibly additional OS packages installed prior installation. Refer to 
-pysctp installation documentation for further instructions.</p>
-<p>There is no need to make <code>diameter</code> package SCTP-aware. If pysctp is available,
-it will be used automatically for any peer configured to use the SCTP 
-transport protocol.</p>
+<p>See <a href="message/">working with messages</a> for a guide on diameter messages.</p>
+<h3 id="node-application-and-peer-modules">Node, application and peer modules<a class="headerlink" href="#node-application-and-peer-modules" title="Permanent link">&para;</a></h3>
+<p>The diameter connectivity and application support are part of <code>diameter.node</code>.</p>
+<div class="highlight"><pre><span></span><code><span id="__span-2-1"><span class="c1"># Nodes and peers</span>
+</span><span id="__span-2-2"><span class="kn">from</span> <span class="nn">diameter.node</span> <span class="kn">import</span> <span class="n">Node</span>
+</span><span id="__span-2-3"><span class="kn">from</span> <span class="nn">diameter.node.peer</span> <span class="kn">import</span> <span class="n">Peer</span><span class="p">,</span> <span class="n">PeerConnection</span>
+</span></code></pre></div>
+<p>See <a href="node/">connecting to peers</a> for a guide on node and peer connectivity.</p>
+<div class="highlight"><pre><span></span><code><span id="__span-3-1"><span class="c1"># application base classes</span>
+</span><span id="__span-3-2"><span class="kn">from</span> <span class="nn">diameter.node.application</span> <span class="kn">import</span> <span class="n">Application</span><span class="p">,</span> <span class="n">SimpleThreadingApplication</span>
+</span></code></pre></div>
+<p>See <a href="application/">application basics</a> and <a href="sample_application/">sample application</a>
+for guides on writing applications.</p>
 
 
 

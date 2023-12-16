@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.1">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.2">
     
     
       
@@ -24,7 +24,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.45e1311d.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.50c56a3b.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
@@ -304,6 +304,10 @@
     
       
         
+          
+        
+      
+        
       
         
       
@@ -325,16 +329,24 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     User Guide
   </span>
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
@@ -342,6 +354,8 @@
             User Guide
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -936,8 +950,9 @@
 <a class="autorefs autorefs-internal" href="../../api/application/#diameter.node.application.Application"><code>Application</code></a>. An application is 
 handed over to a configured node and the node will route every received request
 and answer message to the application, when necessary. Protocol-level message
-exchanges, i.e. CER, DWR and DPR never reach any application, but every other
-message is expected to be handled by at least one application.</p>
+exchanges, i.e. CER (Capabilities-Exchange), DWR (Device-Watchdog) and DPR
+(Disconnect-Peer) never reach any application, but every other message is 
+expected to be handled by at least one application.</p>
 <p>If a node receives a message that no application has been configured to handle,
 it will reject the message with a <code>DIAMETER_APPLICATION_UNSUPPORTED</code> error.</p>
 <p>An example of the most basic client application:</p>
@@ -976,8 +991,8 @@ received, and then returns the message, synchronously.</p>
 <dd>
 <p>The most basic form of an application. Must be subclassed and contains two 
 methods, <code>handle_request</code>, which must be overridden, and <code>handle_answer</code>,
-which may be overriden, but is usually not necessary. </p>
-<p>The <code>Application</code> class simply calls eachs <code>handle_request</code> for each 
+which <em>may</em> be overriden, but is usually not necessary. </p>
+<p>The <code>Application</code> class calls internally <code>handle_request</code> for each 
 received diameter request in the main thread. It calls <code>handle_answer</code> for
 each answer that comes unexpected, i.e. without a request waiting for it.</p>
 <div class="highlight"><pre><span></span><code><span id="__span-1-1"><span class="kn">from</span> <span class="nn">diameter.message</span> <span class="kn">import</span> <span class="n">Message</span>
@@ -996,20 +1011,24 @@ each answer that comes unexpected, i.e. without a request waiting for it.</p>
 </span><span id="__span-1-14"><span class="n">peer</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">add_peer</span><span class="p">(</span><span class="s2">&quot;aaa://ocs2.gy;transport=sctp&quot;</span><span class="p">,</span> <span class="s2">&quot;realm.net&quot;</span><span class="p">)</span>
 </span><span id="__span-1-15"><span class="n">node</span><span class="o">.</span><span class="n">add_application</span><span class="p">(</span><span class="n">my_app</span><span class="p">,</span> <span class="p">[</span><span class="n">peer</span><span class="p">])</span>
 </span></code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The request and answer are called in the main <code>Node</code> work thread and 
+they will block the node from processing any other messages. When this
+class is used, the implementing party is expected to build a queue and/or
+threading based solution on top, which would not block the main thread.</p>
+</div>
 </dd>
 <dt><a class="autorefs autorefs-internal" href="../../api/application/#diameter.node.application.ThreadingApplication"><code>ThreadingApplication</code></a></dt>
 <dd>
 <p>A variation of application, which spawns a new thread for each incoming 
-request, up to an optional maximum amount of threads. Must be subclassed 
-and contains two methods, <code>handle_request</code>, which must be overridden, 
-and <code>handle_answer</code>, which may be overriden, but is usually not necessary. </p>
-<p>The <code>Application</code> class simply calls eachs <code>handle_request</code> for each 
-received diameter request in the main thread. It calls <code>handle_answer</code> for
-each answer that comes unexpected, i.e. without a request waiting for it.</p>
+request, up to an optional maximum amount of threads. Must be subclassed.
+Also contains two methods, <code>handle_request</code>, which must be overridden, 
+and <code>handle_answer</code>, which <em>may</em> be overriden, but is usually not necessary.</p>
 <p>Unlike in the base <code>Application</code> class, the threading application expects
-that the <code>handle_request</code> returns a valid diameter message. Failing to do
-so results in an automatic generation of a DIAMETER_UNABLE_TO_COMPLY error
-message.</p>
+that the overridden <code>handle_request</code> returns a valid diameter message as an
+answer to the received request. Failing to do so results in an automatic 
+generation of a <code>DIAMETER_UNABLE_TO_COMPLY</code> error message.</p>
 <div class="highlight"><pre><span></span><code><span id="__span-2-1"><span class="kn">from</span> <span class="nn">diameter.message</span> <span class="kn">import</span> <span class="n">Message</span>
 </span><span id="__span-2-2"><span class="kn">from</span> <span class="nn">diameter.message.constants</span> <span class="kn">import</span> <span class="o">*</span>
 </span><span id="__span-2-3"><span class="kn">from</span> <span class="nn">diameter.node</span> <span class="kn">import</span> <span class="n">Node</span>
@@ -1038,7 +1057,7 @@ each incoming request, up to an optional maximum amount of threads. </p>
 <p>In order to receive requests, the <code>SimpleThreadingApplication</code> accepts a 
 callback method in its constructor and calls it in a separate spawned 
 thread. Similar to the threading application, the callback function <em>must</em>
-return a valid answer, otherwise a DIAMETER_UNABLE_TO_COMPLY error is 
+return a valid answer, otherwise a <code>DIAMETER_UNABLE_TO_COMPLY</code> error is 
 sent back to the network.</p>
 <p>If no callback is provided, the <code>SimpleThreadingApplication</code> acts as a 
 client only and accepts no incoming requests.</p>

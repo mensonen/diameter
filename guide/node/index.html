@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.1">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.2">
     
     
       
@@ -24,7 +24,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.45e1311d.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.50c56a3b.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
@@ -304,6 +304,10 @@
     
       
         
+          
+        
+      
+        
       
         
       
@@ -325,16 +329,24 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     User Guide
   </span>
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
@@ -342,6 +354,8 @@
             User Guide
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -1038,9 +1052,9 @@
 
 
 <h1 id="connecting-to-diameter-peers">Connecting to Diameter Peers<a class="headerlink" href="#connecting-to-diameter-peers" title="Permanent link">&para;</a></h1>
-<p>The <code>diameter</code> module provides tools to connect to multiple diameter peers 
+<p>The <code>diameter</code> package provides tools to connect to multiple diameter peers 
 within the same diameter realm, with automated CER/CEA, DWR/DWA and DPR/DPA 
-handling, and message routing to local applications.</p>
+handling, as well as message routing to local applications.</p>
 <p>The diameter node implementation supports both TCP and SCTP transports. It does
 not support secure transports.</p>
 <h2 id="diameter-node">Diameter Node<a class="headerlink" href="#diameter-node" title="Permanent link">&para;</a></h2>
@@ -1048,7 +1062,7 @@ not support secure transports.</p>
 or a client, with the only difference being in the applications that want to 
 receive requests (server) and applications that want to send requests (client)
 through the node.</p>
-<p>In both cases, the diameter node is the same and it will handle messages 
+<p>In both cases, the diameter node is the same, and it will handle messages 
 flowing in both directions.</p>
 <h3 id="basic-client-usage">Basic client usage<a class="headerlink" href="#basic-client-usage" title="Permanent link">&para;</a></h3>
 <p>A basic node that acts as a client is constructed with <a class="autorefs autorefs-internal" href="../../api/node/#diameter.node.Node"><code>Node</code></a>.</p>
@@ -1077,7 +1091,7 @@ be added individually:</p>
 </span><span id="__span-2-7">              <span class="n">ip_addresses</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;10.16.0.8&quot;</span><span class="p">,</span> <span class="s2">&quot;10.16.5.8&quot;</span><span class="p">],</span> <span class="n">is_persistent</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </span></code></pre></div>
 <p>Adding a peer as <code>persistent</code> will result in the node establishing an outgoing 
-connection at startup and ensuring that the connection remains up, by 
+connection at startup and ensuring that the connection remains up, by means of
 reconnecting after connection loss, if necessary. A peer that is not set as 
 persistent will never be automatically connected to. </p>
 <p>Adding a peer without specifying its ip addresses will only make the peer 
@@ -1088,27 +1102,35 @@ must be made by the peer themselves, towards our node (for this the node must
 FQDN, a connection port and transport protocol. Valid URIs are for instance:</p>
 <ul>
 <li>aaa://node1.gy;3868;transport=tcp</li>
-<li>aaa://node1.gy;9009;transport=sctp</li>
+<li>aaa://node1.gy.realm.net;9009;transport=sctp</li>
 </ul>
-<p>If not specified, a peer defaults <code>tcp</code> over  port <code>3868</code>. The FQDN of the peer
-should not contain the realm name.</p>
+<p>If not specified, a peer defaults <code>tcp</code> over  port <code>3868</code>. Whether the
+realm FQDN should contain also the realm name or not, depends on how the peer
+on the receiving side of the connection is configured.</p>
 <p>After one or more peers have been configured, it must be started with 
 <a class="autorefs autorefs-internal" href="../../api/node/#diameter.node.Node.start"><code>start</code></a> and stopped with 
-<a class="autorefs autorefs-internal" href="../../api/node/#diameter.node.Node.start"><code>stop</code></a>. When started, the node will establish an 
+<a class="autorefs autorefs-internal" href="../../api/node/#diameter.node.Node.stop"><code>stop</code></a>. When started, the node will establish an 
 outgoing connection with every connected peer and perform a CER/CEA message 
-exchange. When stopped, the node sends a DPR towards every connected peer.</p>
+exchange. When asked to stop, the node sends a DPR (Disconnect-Peer-Request) 
+towards every connected peer and ends its operations as soon as a 
+DPA (Disconnect-Peer-Answer) has been received from every peer.</p>
 <div class="highlight"><pre><span></span><code><span id="__span-3-1"><span class="kn">from</span> <span class="nn">diameter.node</span> <span class="kn">import</span> <span class="n">Node</span>
 </span><span id="__span-3-2">
 </span><span id="__span-3-3"><span class="n">node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;peername.gy&quot;</span><span class="p">,</span> <span class="s2">&quot;realm.net&quot;</span><span class="p">)</span>
 </span><span id="__span-3-4"><span class="n">node</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 </span><span id="__span-3-5"><span class="c1"># wait</span>
-</span><span id="__span-3-6"><span class="n">node</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+</span><span id="__span-3-6"><span class="n">node</span><span class="o">.</span><span class="n">stop</span><span class="p">(</span><span class="n">wait_timeout</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </span></code></pre></div>
+<p>The stop command has optional timeout and force arguments; the timeout argument
+controls how long the node should wait for DPAs to arrive and for the peer 
+connections to empty their outgoing message buffers before giving up and 
+exiting. The force argument will just close all connections without even 
+sending out DPRs first.</p>
 <p>For sending diameter messages through the node, see 
 <a href="../application/">writing diameter applications</a>.</p>
 <h3 id="starting-a-server">Starting a server<a class="headerlink" href="#starting-a-server" title="Permanent link">&para;</a></h3>
 <p>Operating a node as a server is near-identical to starting a node as a client.
-The main difference is, that a server will be listening for incoming 
+The only difference is, that a server will be listening for incoming 
 connections on local socket(s):</p>
 <div class="highlight"><pre><span></span><code><span id="__span-4-1"><span class="kn">from</span> <span class="nn">diameter.message.constants</span> <span class="kn">import</span> <span class="o">*</span>
 </span><span id="__span-4-2"><span class="kn">from</span> <span class="nn">diameter.node</span> <span class="kn">import</span> <span class="n">Node</span>
@@ -1150,6 +1172,19 @@ a DWR has been sent. This can also be set individually for each peer.</dd>
 <dt><code>idle_timeout</code></dt>
 <dd>Default time of peer inactivity, in seconds that the node will accept 
 before a DWR will be sent. This can also be set individually for each peer.</dd>
+<dt><code>wakeup_interval</code></dt>
+<dd>
+<p>Time in seconds between forced wakeups while waiting for connection
+sockets to become active. This timer value controls how often peer 
+timers are checked, how often reconnects are attempted and how often 
+statistics are dumped in the logfiles. </p>
+<p>As this also defines the interval at which peer timers are checked, it 
+is also the smallest possible value for a peer timer value. Setting 
+this value very low will consume more CPU, setting it too high will 
+make observing short timeouts impossible.</p>
+<p>This value also defines how long a node will continue to run, after 
+<code>stop</code> with <code>force</code> argument set to <code>True</code> is called.</p>
+</dd>
 <dt><code>end_to_end_seq</code></dt>
 <dd>
 <p>The end-to-end identifier generator. This must be used every time a new 
@@ -1183,9 +1218,9 @@ instances of <a class="autorefs autorefs-internal" href="../../api/peer/#diamete
 </dl>
 <h2 id="diameter-peer">Diameter peer<a class="headerlink" href="#diameter-peer" title="Permanent link">&para;</a></h2>
 <p>An instance of <a class="autorefs autorefs-internal" href="../../api/peer/#diameter.node.peer.Peer"><code>Peer</code></a> represents a single diameter
-peer, other than the local peer. The local diameter node collects one instance
-of <code>Peer</code> for each connection that it either makes, receives, will connect to
-or will accept a connection from.</p>
+peer in the realm, other than the local node. The local diameter node collects 
+one instance of <code>Peer</code> for each connection that it either makes, receives, will 
+connect to, or will accept a connection from.</p>
 <p>An instance of a peer is returned every time 
 <a class="autorefs autorefs-internal" href="../../api/node/#diameter.node.Node.add_peer"><code>Node.add_peer</code></a> is called:</p>
 <div class="highlight"><pre><span></span><code><span id="__span-7-1"><span class="kn">from</span> <span class="nn">diameter.node</span> <span class="kn">import</span> <span class="n">Node</span>
@@ -1288,7 +1323,7 @@ through any connected peer:</p>
 </span><span id="__span-9-8">                     <span class="n">is_persistent</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </span><span id="__span-9-9"><span class="n">node</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 </span><span id="__span-9-10">
-</span><span id="__span-9-11"><span class="c1"># ideally wait until connection becomes available; the READY state is not </span>
+</span><span id="__span-9-11"><span class="c1"># ideally should wait until connection becomes available; the READY state is not </span>
 </span><span id="__span-9-12"><span class="c1"># achieved until CER/CEA has completed, which is likely to take a few seconds</span>
 </span><span id="__span-9-13"><span class="k">if</span> <span class="n">peer</span><span class="o">.</span><span class="n">connection</span> <span class="ow">and</span> <span class="n">peer</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">state</span> <span class="ow">in</span> <span class="n">PEER_READY_STATES</span><span class="p">:</span>
 </span><span id="__span-9-14">    <span class="n">rar</span> <span class="o">=</span> <span class="n">ReAuthRequest</span><span class="p">()</span>
