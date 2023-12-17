@@ -35,11 +35,14 @@ nav:
     - AVP: api/message_avp.md
     - Message: api/message.md
     - Commands:
+      - AA: api/commands/aa.md
+      - AA Mobile Node: api/commands/aa_mobile_node.md
       - Abort Session: api/commands/abort_session.md
       - Accounting: api/commands/accounting.md
       - Capabilities Exchange: api/commands/capabilities_exchange.md
       - Credit Control: api/commands/credit_control.md
       - Device Watchdog: api/commands/device_watchdog.md
+      - Diameter EAP: api/commands/diameter_eap.md
       - Disconnect Peer: api/commands/disconnect_peer.md
       - Re Auth: api/commands/re_auth.md
       - Session Termination: api/commands/session_termination.md

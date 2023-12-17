@@ -28,12 +28,15 @@ while an answer would return an instance of
 Python implementations with direct attribute access are currently provided for 
 the following Diameter Commands:
 
+ * AA
+ * AA-Mobile-Node
  * Abort-Session
  * Accounting
  * Capabilities-Exchange
  * Credit-Control
  * Device-Watchdog
  * Disconnect-PeerConnection
+ * Home-Agent-MIP
  * Re-Auth
  * Session-Termination
 
