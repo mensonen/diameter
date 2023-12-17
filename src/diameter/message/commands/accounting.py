@@ -110,7 +110,7 @@ class AccountingAnswer(Accounting):
     # Additional AVPs from rfc7155 (NAS Application)
     origin_aaa_protocol: int
     nas_identifier: str
-    nas_ip_address: str
+    nas_ip_address: bytes
     nas_ipv6_address: bytes
     nas_port: int
     nas_port_id: str
@@ -192,7 +192,7 @@ class AccountingRequest(Accounting):
     origin_aaa_protocol: int
     origin_state_id: int
     nas_identifier: str
-    nas_ip_address: str
+    nas_ip_address: bytes
     nas_ipv6_address: bytes
     nas_port: int
     nas_port_id: str
@@ -228,11 +228,11 @@ class AccountingRequest(Accounting):
     framed_appletalk_zone: bytes
     framed_compression: list[int]
     framed_interface_id: int
-    framed_ip_address: str
+    framed_ip_address: bytes
     framed_ipv6_prefix: list[bytes]
     framed_ipv6_pool: bytes
     framed_ipv6_route: list[str]
-    framed_ipx_network: str
+    framed_ipx_network: int
     framed_mtu: int
     framed_pool: bytes
     framed_protocol: int

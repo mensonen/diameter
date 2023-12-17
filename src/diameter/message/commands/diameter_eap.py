@@ -1,8 +1,8 @@
 """
-Diameter NAS Application
+Diameter Base Protocol
 
-This module contains AA Request and Answer messages, implementing AVPs
-documented in rfc7155.
+This module contains Diameter EAP Request and Answer messages, implementing
+AVPs documented in `rfc4072`.
 """
 from __future__ import annotations
 
@@ -12,46 +12,48 @@ from .._base import Message, MessageHeader, DefinedMessage, _AnyMessageType
 from ._attributes import *
 
 
-__all__ = ["Aa", "AaAnswer", "AaRequest"]
+__all__ = ["DiameterEap", "DiameterEapAnswer", "DiameterEapRequest"]
 
 
-class Aa(DefinedMessage):
-    """An AA message.
+class DiameterEap(DefinedMessage):
+    """A Diameter-EAP base message.
 
     This message class lists message attributes based on the current
-    [rfc7155](https://datatracker.ietf.org/doc/html/rfc7155) as python
-    properties, acessible as instance attributes. AVPs not listed in the RFC
-    can be retrieved using the [Aa.find_avps][diameter.message.Message.find_avps]
-    search method.
+    [rfc4072](https://datatracker.ietf.org/doc/html/rfc4072) as python
+    properties, acessible as instance attributes. AVPs not listed in the base
+    protocol can be retrieved using the
+    [DiameterEap.find_avps][diameter.message.Message.find_avps] search
+    method.
 
     Examples:
         AVPs accessible either as instance attributes or by searching:
 
         >>> msg = Message.from_bytes(b"...")
-        >>> msg.origin_realm
-        b'mvno.net'
-        >>> msg.find_avps((AVP_ORIGIN_REALM, 0))
-        [b'mvno.net']
+        >>> msg.session_id
+        dra1.mvno.net;2323;546
+        >>> msg.find_avps((AVP_SESSION_ID, 0))
+        ['dra1.mvno.net;2323;546']
 
-        When a diameter message is decoded using
+        When diameter message is decoded using
         [Message.from_bytes][diameter.message.Message.from_bytes], it returns
-        either an instance of `AaRequest` or `AaAnswer` automatically:
+        either an instance of `DiameterEapRequest` or `DiameterEapAnswer`
+        automatically:
 
         >>> msg = Message.from_bytes(b"...")
         >>> assert msg.header.is_request is True
-        >>> assert isinstance(msg, AaRequest)
+        >>> assert isinstance(msg, DiameterEapRequest)
 
-        When creating a new message by hand, the `AaRequest` or `AaAnswer`
-        class should be instantiated directly, and values for AVPs set as
-        class attributes:
+        When creating a new message, the `DiameterEapRequest` or
+        `DiameterEapAnswer` class should be instantiated directly, and values
+        for AVPs set as class attributes:
 
-        >>> msg = AaRequest()
-        >>> msg.origin_realm = b"mvno.net"
+        >>> msg = DiameterEapRequest()
+        >>> msg.session_id = "dra1.mvno.net;2323;546"
 
     Other, custom AVPs can be appended to the message using the
-    [Aa.append_avp][diameter.message.Message.append_avp] method, or by
-    overwriting the `avp` attribute entirely. Regardless of the custom AVPs
-    set, the mandatory values listed in rfc7155 must be set, however they can
+    [DiameterEap.append_avp][diameter.message.Message.append_avp] method, or
+    by overwriting the `avp` attribute entirely. Regardless of the custom AVPs
+    set, the mandatory values listed in RFC6733 must be set, however they can
     be set as `None`, if they are not to be used.
 
     !!! Warning
@@ -66,8 +68,8 @@ class Aa(DefinedMessage):
         accessing.
 
     """
-    code: int = 265
-    name: str = "AA"
+    code: int = 268
+    name: str = "Diameter-EAP"
     avp_def: AvpGenType
 
     def __post_init__(self):
@@ -77,12 +79,12 @@ class Aa(DefinedMessage):
     @classmethod
     def type_factory(cls, header: MessageHeader) -> Type[_AnyMessageType] | None:
         if header.is_request:
-            return AaRequest
-        return AaAnswer
+            return DiameterEapRequest
+        return DiameterEapAnswer
 
 
-class AaAnswer(Aa):
-    """An AA-Answer message.
+class DiameterEapAnswer(DiameterEap):
+    """A Diameter-EAP-Answer message.
 
     !!! Note
         The "Class" AVP can be accessed via `state_class` attribute, as
@@ -91,10 +93,17 @@ class AaAnswer(Aa):
     """
     session_id: str
     auth_application_id: int
+    auth_request_type: int
     result_code: int
     origin_host: bytes
     origin_realm: bytes
     user_name: str
+    eap_payload: bytes
+    eap_reissued_payload: bytes
+    eap_master_session_key: bytes
+    eap_key_name: bytes
+    multi_round_time_out: int
+    accounting_eap_auth_method: int
     service_type: int
     # this should be "class", but that's a reserved keyword
     state_class: list[bytes]
@@ -106,22 +115,14 @@ class AaAnswer(Aa):
     idle_timeout: int
     authorization_lifetime: int
     auth_grace_period: int
+    auth_session_state: int
     re_auth_request_type: int
-    multi_round_time_out: int
     session_timeout: int
     state: bytes
     reply_message: list[str]
-    origin_aaa_protocol: int
     origin_state_id: int
     filter_id: list[str]
-    password_retry: int
     port_limit: int
-    prompt: int
-    arap_challenge_response: bytes
-    arap_features: bytes
-    arap_security: int
-    arap_security_data: list[bytes]
-    arap_zone_access: int
     callback_id: str
     callback_number: str
     framed_appletalk_link: int
@@ -140,14 +141,6 @@ class AaAnswer(Aa):
     framed_mtu: int
     framed_protocol: int
     framed_routing: int
-    login_ip_host: list[str]
-    login_ipv6_host: list[bytes]
-    login_lat_group: bytes
-    login_lat_node: bytes
-    login_lat_port: str
-    login_lat_service: bytes
-    login_service: int
-    login_tcp_port: int
     nas_filter_rule: list[bytes]
     qos_filter_rule: list[bytes]
     tunneling: list[Tunneling]
@@ -159,10 +152,18 @@ class AaAnswer(Aa):
     avp_def: AvpGenType = (
         AvpGenDef("session_id", AVP_SESSION_ID, is_required=True),
         AvpGenDef("auth_application_id", AVP_AUTH_APPLICATION_ID, is_required=True),
+        AvpGenDef("auth_request_type", AVP_AUTH_REQUEST_TYPE, is_required=True),
         AvpGenDef("result_code", AVP_RESULT_CODE, is_required=True),
         AvpGenDef("origin_host", AVP_ORIGIN_HOST, is_required=True),
         AvpGenDef("origin_realm", AVP_ORIGIN_REALM, is_required=True),
         AvpGenDef("user_name", AVP_USER_NAME),
+        AvpGenDef("eap_payload", AVP_EAP_PAYLOAD),
+        AvpGenDef("eap_reissued_payload", AVP_EAP_REISSUED_PAYLOAD),
+        AvpGenDef("eap_master_session_key", AVP_EAP_MASTER_SESSION_KEY),
+        AvpGenDef("eap_key_name", AVP_EAP_KEY_NAME),
+        AvpGenDef("multi_round_time_out", AVP_MULTI_ROUND_TIME_OUT),
+        AvpGenDef("accounting_eap_auth_method", AVP_ACCOUNTING_EAP_AUTH_METHOD),
+        AvpGenDef("service_stype", AVP_SERVICE_TYPE),
         AvpGenDef("state_class", AVP_CLASS),
         AvpGenDef("configuration_token", AVP_CONFIGURATION_TOKEN),
         AvpGenDef("acct_interim_interval", AVP_ACCT_INTERIM_INTERVAL),
@@ -172,22 +173,14 @@ class AaAnswer(Aa):
         AvpGenDef("idle_timeout", AVP_IDLE_TIMEOUT),
         AvpGenDef("authorization_lifetime", AVP_AUTHORIZATION_LIFETIME),
         AvpGenDef("auth_grace_period", AVP_AUTH_GRACE_PERIOD),
+        AvpGenDef("auth_session_state", AVP_AUTH_SESSION_STATE),
         AvpGenDef("re_auth_request_type", AVP_RE_AUTH_REQUEST_TYPE),
-        AvpGenDef("multi_round_time_out", AVP_MULTI_ROUND_TIME_OUT),
         AvpGenDef("session_timeout", AVP_SESSION_TIMEOUT),
         AvpGenDef("state", AVP_STATE),
         AvpGenDef("reply_message", AVP_REPLY_MESSAGE),
-        AvpGenDef("origin_aaa_protocol", AVP_ORIGIN_AAA_PROTOCOL),
         AvpGenDef("origin_state_id", AVP_ORIGIN_STATE_ID),
         AvpGenDef("filter_id", AVP_FILTER_ID),
-        AvpGenDef("password_retry", AVP_PASSWORD_RETRY),
         AvpGenDef("port_limit", AVP_PORT_LIMIT),
-        AvpGenDef("prompt", AVP_PROMPT),
-        AvpGenDef("arap_challenge_response", AVP_ARAP_CHALLENGE_RESPONSE),
-        AvpGenDef("arap_features", AVP_ARAP_FEATURES),
-        AvpGenDef("arap_security", AVP_ARAP_SECURITY),
-        AvpGenDef("arap_security_data", AVP_ARAP_SECURITY_DATA),
-        AvpGenDef("arap_zone_access", AVP_ARAP_ZONE_ACCESS),
         AvpGenDef("callback_id", AVP_CALLBACK_ID),
         AvpGenDef("callback_number", AVP_CALLBACK_NUMBER),
         AvpGenDef("framed_appletalk_link", AVP_FRAMED_APPLETALK_LINK),
@@ -206,14 +199,6 @@ class AaAnswer(Aa):
         AvpGenDef("framed_mtu", AVP_FRAMED_MTU),
         AvpGenDef("framed_protocol", AVP_FRAMED_PROTOCOL),
         AvpGenDef("framed_routing", AVP_FRAMED_ROUTING),
-        AvpGenDef("login_ip_host", AVP_LOGIN_IP_HOST),
-        AvpGenDef("login_ipv6_host", AVP_LOGIN_IPV6_HOST),
-        AvpGenDef("login_lat_group", AVP_LOGIN_LAT_GROUP),
-        AvpGenDef("login_lat_node", AVP_LOGIN_LAT_NODE),
-        AvpGenDef("login_lat_port", AVP_LOGIN_LAT_PORT),
-        AvpGenDef("login_lat_service", AVP_LOGIN_LAT_SERVICE),
-        AvpGenDef("login_service", AVP_LOGIN_SERVICE),
-        AvpGenDef("login_tcp_port", AVP_LOGIN_TCP_PORT),
         AvpGenDef("nas_filter_rule", AVP_NAS_FILTER_RULE),
         AvpGenDef("qos_filter_rule", AVP_QOS_FILTER_RULE),
         AvpGenDef("tunneling", AVP_TUNNELING, type_class=Tunneling),
@@ -221,7 +206,6 @@ class AaAnswer(Aa):
         AvpGenDef("redirect_host_usage", AVP_REDIRECT_HOST_USAGE),
         AvpGenDef("redirect_max_cache_time", AVP_REDIRECT_MAX_CACHE_TIME),
         AvpGenDef("proxy_info", AVP_PROXY_INFO, type_class=ProxyInfo),
-
     )
 
     def __post_init__(self):
@@ -229,19 +213,16 @@ class AaAnswer(Aa):
         self.header.is_request = False
         self.header.is_proxyable = True
 
+        setattr(self, "auth_application_id", 5)
         setattr(self, "state_class", [])
         setattr(self, "configuration_token", [])
         setattr(self, "failed_avp", [])
-        setattr(self, "reply_message", [])
         setattr(self, "filter_id", [])
-        setattr(self, "arap_security_data", [])
         setattr(self, "framed_appletalk_network", [])
         setattr(self, "framed_compression", [])
         setattr(self, "framed_ipv6_prefix", [])
         setattr(self, "framed_ipv6_route", [])
         setattr(self, "framed_route", [])
-        setattr(self, "login_ip_host", [])
-        setattr(self, "login_ipv6_host", [])
         setattr(self, "nas_filter_rule", [])
         setattr(self, "qos_filter_rule", [])
         setattr(self, "tunneling", [])
@@ -252,8 +233,8 @@ class AaAnswer(Aa):
         self._avps = []
 
 
-class AaRequest(Aa):
-    """An AA-Request message."""
+class DiameterEapRequest(DiameterEap):
+    """A Diameter-EAP-Request message."""
     session_id: str
     auth_application_id: int
     origin_host: bytes
@@ -267,11 +248,11 @@ class AaRequest(Aa):
     nas_port: int
     nas_port_id: str
     nas_port_type: int
-    origin_aaa_protocol: int
     origin_state_id: int
     port_limit: int
     user_name: str
-    user_password: bytes
+    eap_payload: bytes
+    eap_key_name: bytes
     service_type: int
     state: bytes
     authorization_lifetime: int
@@ -282,8 +263,6 @@ class AaRequest(Aa):
     calling_station_id: str
     originating_line_info: bytes
     connect_info: str
-    chap_auth: ChapAuth
-    chap_challenge: bytes
     framed_compression: list[int]
     framed_interface_id: int
     framed_ip_address: bytes
@@ -291,15 +270,6 @@ class AaRequest(Aa):
     framed_ip_netmask: bytes
     framed_mtu: int
     framed_protocol: int
-    arap_password: bytes
-    arap_security: int
-    arap_security_data: list[bytes]
-    login_ip_host: list[str]
-    login_ipv6_host: list[bytes]
-    login_lat_group: bytes
-    login_lat_node: bytes
-    login_lat_port: str
-    login_lat_service: bytes
     tunneling: list[Tunneling]
     proxy_info: list[ProxyInfo]
     route_record: list[bytes]
@@ -311,18 +281,18 @@ class AaRequest(Aa):
         AvpGenDef("origin_realm", AVP_ORIGIN_REALM, is_required=True),
         AvpGenDef("destination_realm", AVP_DESTINATION_REALM, is_required=True),
         AvpGenDef("auth_request_type", AVP_AUTH_REQUEST_TYPE, is_required=True),
-        AvpGenDef("destination_host", AVP_DESTINATION_HOST),
+        AvpGenDef("destination_host", AVP_DESTINATION_HOST, is_mandatory=False),
         AvpGenDef("nas_identifier", AVP_NAS_IDENTIFIER),
         AvpGenDef("nas_ip_address", AVP_NAS_IP_ADDRESS),
         AvpGenDef("nas_ipv6_address", AVP_NAS_IPV6_ADDRESS),
         AvpGenDef("nas_port", AVP_NAS_PORT),
         AvpGenDef("nas_port_id", AVP_NAS_PORT_ID),
         AvpGenDef("nas_port_type", AVP_NAS_PORT_TYPE),
-        AvpGenDef("origin_aaa_protocol", AVP_ORIGIN_AAA_PROTOCOL),
         AvpGenDef("origin_state_id", AVP_ORIGIN_STATE_ID),
         AvpGenDef("port_limit", AVP_PORT_LIMIT),
         AvpGenDef("user_name", AVP_USER_NAME),
-        AvpGenDef("user_password", AVP_USER_PASSWORD),
+        AvpGenDef("eap_payload", AVP_EAP_PAYLOAD),
+        AvpGenDef("eap_key_name", AVP_EAP_KEY_NAME),
         AvpGenDef("service_stype", AVP_SERVICE_TYPE),
         AvpGenDef("state", AVP_STATE),
         AvpGenDef("authorization_lifetime", AVP_AUTHORIZATION_LIFETIME),
@@ -333,8 +303,6 @@ class AaRequest(Aa):
         AvpGenDef("calling_station_id", AVP_CALLING_STATION_ID),
         AvpGenDef("originating_line_info", AVP_ORIGINATING_LINE_INFO),
         AvpGenDef("connect_info", AVP_CONNECT_INFO),
-        AvpGenDef("chap_auth", AVP_CHAP_AUTH, type_class=ChapAuth),
-        AvpGenDef("chap_challenge", AVP_CHAP_CHALLENGE),
         AvpGenDef("framed_compression", AVP_FRAMED_COMPRESSION),
         AvpGenDef("framed_interface_id", AVP_FRAMED_INTERFACE_ID),
         AvpGenDef("framed_ip_address", AVP_FRAMED_IP_ADDRESS),
@@ -342,15 +310,6 @@ class AaRequest(Aa):
         AvpGenDef("framed_ip_netmask", AVP_FRAMED_IP_NETMASK),
         AvpGenDef("framed_mtu", AVP_FRAMED_MTU),
         AvpGenDef("framed_protocol", AVP_FRAMED_PROTOCOL),
-        AvpGenDef("arap_password", AVP_ARAP_PASSWORD),
-        AvpGenDef("arap_security", AVP_ARAP_SECURITY),
-        AvpGenDef("arap_security_data", AVP_ARAP_SECURITY_DATA),
-        AvpGenDef("login_ip_host", AVP_LOGIN_IP_HOST),
-        AvpGenDef("login_ipv6_host", AVP_LOGIN_IPV6_HOST),
-        AvpGenDef("login_lat_group", AVP_LOGIN_LAT_GROUP),
-        AvpGenDef("login_lat_node", AVP_LOGIN_LAT_NODE),
-        AvpGenDef("login_lat_port", AVP_LOGIN_LAT_PORT),
-        AvpGenDef("login_lat_service", AVP_LOGIN_LAT_SERVICE),
         AvpGenDef("tunneling", AVP_TUNNELING, type_class=Tunneling),
         AvpGenDef("proxy_info", AVP_PROXY_INFO, type_class=ProxyInfo),
         AvpGenDef("route_record", AVP_ROUTE_RECORD),
@@ -361,13 +320,10 @@ class AaRequest(Aa):
         self.header.is_request = True
         self.header.is_proxyable = True
 
+        setattr(self, "auth_application_id", 5)
         setattr(self, "framed_compression", [])
         setattr(self, "framed_ipv6_prefix", [])
-        setattr(self, "arap_security_data", [])
-        setattr(self, "login_ip_host", [])
-        setattr(self, "login_ipv6_host", [])
         setattr(self, "tunneling", [])
-        setattr(self, "redirect_host", [])
         setattr(self, "proxy_info", [])
         setattr(self, "route_record", [])
 

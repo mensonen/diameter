@@ -84,15 +84,7 @@ class CreditControl(DefinedMessage):
 
 
 class CreditControlAnswer(CreditControl):
-    """A Credit-Control-Answer message.
-
-    !!! Note
-
-        This message class lacks the "QoS-Final-Unit-Indication" AVP as a
-        class attribute. If the AVP is required, it must be constructed by
-        hand and appended to the `additional_avps` attribute.
-
-    """
+    """A Credit-Control-Answer message."""
     session_id: str
     result_code: int
     origin_host: bytes

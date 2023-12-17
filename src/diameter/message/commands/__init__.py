@@ -9,11 +9,13 @@ from .._base import Message, DefinedMessage
 # Message types that have "proper" implementations; Requests and Answers are
 # their own distinct classes and permit AVP values to be accessed as instance
 # attributes
+from .aa import *
 from .abort_session import *
 from .accounting import *
 from .capabilities_exchange import *
 from .credit_control import *
 from .device_watchdog import *
+from .diameter_eap import *
 from .disconnect_peer import *
 from .re_auth import *
 from .session_termination import *
@@ -48,20 +50,6 @@ class HomeAgentMip(Message):
     """
     code: int = 262
     name: str = "Home-Agent-MIP"
-
-    def __post_init__(self):
-        self.header.command_code = self.code
-
-
-class DiameterEap(Message):
-    """A Diameter-EAP message.
-
-    This message implementation provides no python subclasses for requests and
-    answers; AVPs must be created manually and added using the
-    [DiameterEap.append_avp][diameter.message.Message.append_avp] method.
-    """
-    code: int = 268
-    name: str = "Diameter-EAP"
 
     def __post_init__(self):
         self.header.command_code = self.code

@@ -153,13 +153,13 @@ class AbortSessionRequest(AbortSession):
     # Extension AVPs from rfc7155 (NAS Application)
     origin_aaa_protocol: int
     nas_identifier: str
-    nas_ip_address: str
+    nas_ip_address: bytes
     nas_ipv6_address: bytes
     nas_port: int
     nas_port_id: str
     nas_port_type: int
     service_type: int
-    framed_ip_address: str
+    framed_ip_address: bytes
     framed_ipv6_prefix: list[bytes]
     framed_interface_id: int
     called_station_id: str
