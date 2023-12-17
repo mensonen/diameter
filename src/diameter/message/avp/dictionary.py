@@ -307,6 +307,7 @@ AVP_DICTIONARY = {
     AVP_MIP_REG_REPLY: {"name": "MIP-Reg-Reply", "type": AvpOctetString, "mandatory": True},
     AVP_MIP_MN_AAA_AUTH: {"name": "MIP-MN-AAA-Auth", "type": AvpGrouped, "mandatory": True},
     AVP_MIP_HA_TO_FA_SPI: {"name": "MIP-HA-to-FA-SPI", "type": AvpUnsigned32, "mandatory": True},
+    AVP_MIP_MN_TO_FA_SPI: {"name": "MIP-MN-to-FA-SPI", "type": AvpUnsigned32, "mandatory": True},
     AVP_MIP_MN_TO_FA_MSA: {"name": "MIP-MN-to-FA-MSA", "type": AvpGrouped, "mandatory": True},
     AVP_MIP_FA_TO_MN_MSA: {"name": "MIP-FA-to-MN-MSA", "type": AvpGrouped, "mandatory": True},
     AVP_MIP_FA_TO_HA_MSA: {"name": "MIP-FA-to-HA-MSA", "type": AvpGrouped, "mandatory": True},

@@ -167,7 +167,7 @@ class GenericSpec:
 
 @dataclasses.dataclass
 class FailedAvp:
-    """A data container that represents the "Failed-AVP" grouped AVP.
+    """A data container that represents the "Failed-AVP" (279) grouped AVP.
 
     `rfc6733`, defines this as just a list of arbitrary AVPs; the actual failed
     AVPs should be copied into the `additional_avps` attribute.
@@ -179,7 +179,7 @@ class FailedAvp:
 
 @dataclasses.dataclass
 class VendorSpecificApplicationId:
-    """A data container that represents the "Vendor-Specific-Application-ID" grouped AVP."""
+    """A data container that represents the "Vendor-Specific-Application-ID" (260) grouped AVP."""
     vendor_id: int = None
     auth_application_id: int = None
     acct_application_id: int = None
@@ -189,6 +189,165 @@ class VendorSpecificApplicationId:
         AvpGenDef("vendor_id", AVP_VENDOR_ID, is_required=True),
         AvpGenDef("auth_application_id", AVP_AUTH_APPLICATION_ID),
         AvpGenDef("acct_application_id", AVP_ACCT_APPLICATION_ID),
+    )
+
+
+@dataclasses.dataclass
+class MipMnAaaAuth:
+    """A data container that represents the "MIP-MN-AAA-Auth" (322) grouped AVP."""
+    mip_mn_aaa_spi: int = None
+    mip_auth_input_data_length: int = None
+    mip_authenticator_length: int = None
+    mip_authenticator_offset: int = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("mip_mn_aaa_spi", AVP_MIP_MN_AAA_SPI, is_required=True),
+        AvpGenDef("mip_auth_input_data_length", AVP_MIP_AUTH_INPUT_DATA_LENGTH, is_required=True),
+        AvpGenDef("mip_authenticator_length", AVP_MIP_AUTHENTICATOR_LENGTH, is_required=True),
+        AvpGenDef("mip_authenticator_offset", AVP_MIP_AUTHENTICATOR_OFFSET, is_required=True),
+    )
+
+
+@dataclasses.dataclass
+class MipMnToFaMsa:
+    """A data container that represents the "MIP-MN-to-FA-MSA" (325) grouped AVP.
+
+    !!! Warning
+        The rfc4004 fails to define the "MIP-MN-to-FA-SPI" AVP. This
+        implementation assumes that it is the unclaimed AVP code 324.
+
+    """
+    mip_mn_to_fa_spi: int = None
+    mip_algorithm_type: int = None
+    mip_nonce: bytes = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("mip_mn_to_fa_spi", AVP_MIP_MN_TO_FA_SPI, is_required=True),
+        AvpGenDef("mip_algorithm_type", AVP_MIP_ALGORITHM_TYPE, is_required=True),
+        AvpGenDef("mip_nonce", AVP_MIP_NONCE, is_required=True),
+    )
+
+
+@dataclasses.dataclass
+class MipFaToMnMsa:
+    """A data container that represents the "MIP-FA-to-MN-MSA" (326) grouped AVP."""
+    mip_fa_to_mn_spi: int = None
+    mip_algorithm_type: int = None
+    mip_session_key: bytes = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("mip_fa_to_mn_spi", AVP_MIP_FA_TO_MN_SPI, is_required=True),
+        AvpGenDef("mip_algorithm_type", AVP_MIP_ALGORITHM_TYPE, is_required=True),
+        AvpGenDef("mip_session_key", AVP_MIP_SESSION_KEY, is_required=True),
+    )
+
+
+@dataclasses.dataclass
+class MipFaToHaMsa:
+    """A data container that represents the "MIP-FA-to-HA-MSA" (328) grouped AVP."""
+    mip_fa_to_ha_spi: int = None
+    mip_algorithm_type: int = None
+    mip_session_key: bytes = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("mip_fa_to_ha_spi", AVP_MIP_FA_TO_HA_SPI, is_required=True),
+        AvpGenDef("mip_algorithm_type", AVP_MIP_ALGORITHM_TYPE, is_required=True),
+        AvpGenDef("mip_session_key", AVP_MIP_SESSION_KEY, is_required=True),
+    )
+
+
+@dataclasses.dataclass
+class MipHaToFaMsa:
+    """A data container that represents the "MIP-HA-to-FA-MSA" (329) grouped AVP."""
+    mip_ha_to_fa_spi: int = None
+    mip_algorithm_type: int = None
+    mip_session_key: bytes = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("mip_ha_to_fa_spi", AVP_MIP_HA_TO_FA_SPI, is_required=True),
+        AvpGenDef("mip_algorithm_type", AVP_MIP_ALGORITHM_TYPE, is_required=True),
+        AvpGenDef("mip_session_key", AVP_MIP_SESSION_KEY, is_required=True),
+    )
+
+
+@dataclasses.dataclass
+class MipMnToHaMsa:
+    """A data container that represents the "MIP-MN-to-HA-MSA" (331) grouped AVP."""
+    mip_mn_ha_spi: int = None
+    mip_algorithm_type: int = None
+    mip_replay_mode: int = None
+    mip_nonce: bytes = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("mip_mn_ha_spi", AVP_MIP_MN_HA_SPI, is_required=True),
+        AvpGenDef("mip_algorithm_type", AVP_MIP_ALGORITHM_TYPE, is_required=True),
+        AvpGenDef("mip_replay_mode", AVP_MIP_REPLAY_MODE, is_required=True),
+        AvpGenDef("mip_nonce", AVP_MIP_NONCE, is_required=True),
+    )
+
+
+@dataclasses.dataclass
+class MipHaToMnMsa:
+    """A data container that represents the "MIP-HA-to-MN-MSA" (332) grouped AVP.
+
+    !!! Warning
+        The rfc4004 fails to define the "MIP-HA-to-MN-SPI" AVP. This
+        implementation uses the definition of the "MIP-HA-to-FA-SPI" AVP (323)
+        in its place, as they're technically identocal.
+
+    """
+    mip_ha_to_mn_spi: int = None
+    mip_algorithm_type: int = None
+    mip_replay_mode: int = None
+    mip_session_key: bytes = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("mip_ha_to_mn_spi", AVP_MIP_HA_TO_FA_SPI, is_required=True),
+        AvpGenDef("mip_algorithm_type", AVP_MIP_ALGORITHM_TYPE, is_required=True),
+        AvpGenDef("mip_replay_mode", AVP_MIP_REPLAY_MODE, is_required=True),
+        AvpGenDef("mip_session_key", AVP_MIP_SESSION_KEY, is_required=True),
+    )
+
+
+@dataclasses.dataclass
+class MipOriginatingForeignAaa:
+    """A data container that represents the "MIP-Originating-Foreign-AAA" (347) grouped AVP."""
+    origin_realm: bytes = None
+    origin_host: bytes = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("origin_realm", AVP_ORIGIN_REALM, is_required=True),
+        AvpGenDef("origin_host", AVP_ORIGIN_HOST, is_required=True),
+    )
+
+
+@dataclasses.dataclass
+class MipHomeAgentHost:
+    """A data container that represents the "MIP-Home-Agent-Host" (348) grouped AVP."""
+    origin_realm: bytes = None
+    origin_host: bytes = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("origin_realm", AVP_ORIGIN_REALM, is_required=True),
+        AvpGenDef("origin_host", AVP_ORIGIN_HOST, is_required=True),
     )
 
 

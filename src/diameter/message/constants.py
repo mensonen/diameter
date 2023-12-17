@@ -3636,6 +3636,9 @@ AVP_MIP_REG_REQUEST = 320
 AVP_MIP_REG_REPLY = 321
 AVP_MIP_MN_AAA_AUTH = 322
 AVP_MIP_HA_TO_FA_SPI = 323
+# This might not actually exist. rfc4004 does not define it, but there's a hole
+# in the defined AVP codes that might have been for this one.
+AVP_MIP_MN_TO_FA_SPI = 324
 AVP_MIP_MN_TO_FA_MSA = 325
 AVP_MIP_FA_TO_MN_MSA = 326
 AVP_MIP_FA_TO_HA_MSA = 328

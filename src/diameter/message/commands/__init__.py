@@ -10,6 +10,7 @@ from .._base import Message, DefinedMessage
 # their own distinct classes and permit AVP values to be accessed as instance
 # attributes
 from .aa import *
+from .aa_mobile_node import *
 from .abort_session import *
 from .accounting import *
 from .capabilities_exchange import *
@@ -17,6 +18,7 @@ from .credit_control import *
 from .device_watchdog import *
 from .diameter_eap import *
 from .disconnect_peer import *
+from .home_agent_mip import *
 from .re_auth import *
 from .session_termination import *
 
@@ -25,34 +27,6 @@ from .session_termination import *
 # they are vendor specific extensions documented outside the RFCs, or because
 # they are less common in day-to-day usage. They can be used but there is no
 # attribute-based AVP access.
-
-
-class AaMobileNode(Message):
-    """An AA-Mobile-Node message.
-
-    This message implementation provides no python subclasses for requests and
-    answers; AVPs must be created manually and added using the
-    [AaMobileNode.append_avp][diameter.message.Message.append_avp] method.
-    """
-    code: int = 260
-    name: str = "AA-Mobile-Node"
-
-    def __post_init__(self):
-        self.header.command_code = self.code
-
-
-class HomeAgentMip(Message):
-    """A Home-Agent-MIP message.
-
-    This message implementation provides no python subclasses for requests and
-    answers; AVPs must be created manually and added using the
-    [AaMobileNode.append_avp][diameter.message.Message.append_avp] method.
-    """
-    code: int = 262
-    name: str = "Home-Agent-MIP"
-
-    def __post_init__(self):
-        self.header.command_code = self.code
 
 
 class SipUserAuthorization(Message):
