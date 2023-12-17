@@ -92,6 +92,7 @@ class SessionTerminationAnswer(SessionTermination):
         "class" is a reserved keyword.
 
     """
+    # AVPs from rfc6733 (Diameter Base)
     session_id: str
     result_code: int
     origin_host: bytes
@@ -108,6 +109,9 @@ class SessionTerminationAnswer(SessionTermination):
     redirect_max_cache_time: int
     proxy_info: list[ProxyInfo]
 
+    # Extension AVPs from rfc7155 (NAS Application)
+    origin_aaa_protocol: int
+
     avp_def: AvpGenType = (
         AvpGenDef("session_id", AVP_SESSION_ID, is_required=True),
         AvpGenDef("result_code", AVP_RESULT_CODE, is_required=True),
@@ -123,6 +127,8 @@ class SessionTerminationAnswer(SessionTermination):
         AvpGenDef("redirect_host_usage", AVP_REDIRECT_HOST_USAGE),
         AvpGenDef("redirect_max_cache_time", AVP_REDIRECT_MAX_CACHE_TIME),
         AvpGenDef("proxy_info", AVP_PROXY_INFO, type_class=ProxyInfo),
+
+        AvpGenDef("origin_aaa_protocol", AVP_ORIGIN_AAA_PROTOCOL),
     )
 
     def __post_init__(self):
@@ -140,6 +146,7 @@ class SessionTerminationAnswer(SessionTermination):
 
 class SessionTerminationRequest(SessionTermination):
     """An Abort-Session-Request message."""
+    # AVPs from rfc6733 (Diameter Base)
     session_id: str
     origin_host: bytes
     origin_realm: bytes
@@ -152,6 +159,9 @@ class SessionTerminationRequest(SessionTermination):
     origin_state_id: int
     proxy_info: list[ProxyInfo]
     route_record: list[bytes]
+
+    # Extension AVPs from rfc7155 (NAS Application)
+    origin_aaa_protocol: int
 
     avp_def: AvpGenType = (
         AvpGenDef("session_id", AVP_SESSION_ID, is_required=True),
@@ -166,6 +176,8 @@ class SessionTerminationRequest(SessionTermination):
         AvpGenDef("origin_state_id", AVP_ORIGIN_STATE_ID),
         AvpGenDef("proxy_info", AVP_PROXY_INFO, type_class=ProxyInfo),
         AvpGenDef("route_record", AVP_ROUTE_RECORD),
+
+        AvpGenDef("origin_aaa_protocol", AVP_ORIGIN_AAA_PROTOCOL),
     )
 
     def __post_init__(self):

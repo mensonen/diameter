@@ -83,6 +83,7 @@ class ReAuth(DefinedMessage):
 
 class ReAuthAnswer(ReAuth):
     """A Re-Auth-Answer message."""
+    # AVPs from rfc6733 (Diameter Base)
     session_id: str
     result_code: int
     origin_host: bytes
@@ -97,6 +98,20 @@ class ReAuthAnswer(ReAuth):
     redirect_max_cache_time: int
     proxy_info: list[ProxyInfo]
     route_record: list[bytes]
+
+    # Extension AVPs from rfc7155 (NAS Application)
+    origin_aaa_protocol: int
+    service_type: int
+    configuration_token: list[bytes]
+    idle_timeout: int
+    authorization_lifetime: int
+    auth_grace_period: int
+    re_auth_request_type: int
+    state: bytes
+    # this should be "class", but that's a reserved keyword
+    state_class: list[bytes]
+    reply_message: list[str]
+    prompt: int
 
     avp_def: AvpGenType = (
         AvpGenDef("session_id", AVP_SESSION_ID, is_required=True),
@@ -113,6 +128,18 @@ class ReAuthAnswer(ReAuth):
         AvpGenDef("redirect_max_cache_time", AVP_REDIRECT_MAX_CACHE_TIME),
         AvpGenDef("proxy_info", AVP_PROXY_INFO, type_class=ProxyInfo),
         AvpGenDef("route_record", AVP_ROUTE_RECORD),
+
+        AvpGenDef("origin_aaa_protocol", AVP_ORIGIN_AAA_PROTOCOL),
+        AvpGenDef("service_stype", AVP_SERVICE_TYPE),
+        AvpGenDef("configuration_token", AVP_CONFIGURATION_TOKEN),
+        AvpGenDef("idle_timeout", AVP_IDLE_TIMEOUT),
+        AvpGenDef("authorization_lifetime", AVP_AUTHORIZATION_LIFETIME),
+        AvpGenDef("auth_grace_period", AVP_AUTH_GRACE_PERIOD),
+        AvpGenDef("re_auth_request_type", AVP_RE_AUTH_REQUEST_TYPE),
+        AvpGenDef("state", AVP_STATE),
+        AvpGenDef("state_class", AVP_CLASS),
+        AvpGenDef("reply_message", AVP_REPLY_MESSAGE),
+        AvpGenDef("prompt", AVP_PROMPT),
     )
 
     def __post_init__(self):
@@ -123,6 +150,9 @@ class ReAuthAnswer(ReAuth):
         setattr(self, "redirect_host", [])
         setattr(self, "proxy_info", [])
         setattr(self, "route_record", [])
+        setattr(self, "configuration_token", [])
+        setattr(self, "state_class", [])
+        setattr(self, "reply_message", [])
 
         assign_attr_from_defs(self, self._avps)
         self._avps = []
@@ -130,6 +160,7 @@ class ReAuthAnswer(ReAuth):
 
 class ReAuthRequest(ReAuth):
     """A Re-Auth-Request message."""
+    # AVPs from rfc6733 (Diameter Base)
     session_id: str
     origin_host: bytes
     origin_realm: bytes
@@ -141,6 +172,27 @@ class ReAuthRequest(ReAuth):
     origin_state_id: int
     proxy_info: list[ProxyInfo]
     route_record: list[bytes]
+
+    # Extension AVPs from rfc7155 (NAS Application)
+    origin_aaa_protocol: int
+    nas_identifier: str
+    nas_ip_address: str
+    nas_ipv6_address: bytes
+    nas_port: int
+    nas_port_id: str
+    nas_port_type: int
+    service_type: int
+    framed_ip_address: str
+    framed_ipv6_prefix: list[bytes]
+    framed_interface_id: int
+    called_station_id: str
+    calling_station_id: str
+    originating_line_info: bytes
+    acct_session_id: bytes
+    acct_multi_session_id: str
+    state: bytes
+    state_class: list[bytes]
+    reply_message: list[str]
 
     avp_def: AvpGenType = (
         AvpGenDef("session_id", AVP_SESSION_ID, is_required=True),
@@ -154,6 +206,26 @@ class ReAuthRequest(ReAuth):
         AvpGenDef("origin_state_id", AVP_ORIGIN_STATE_ID),
         AvpGenDef("proxy_info", AVP_PROXY_INFO, type_class=ProxyInfo),
         AvpGenDef("route_record", AVP_ROUTE_RECORD),
+
+        AvpGenDef("origin_aaa_protocol", AVP_ORIGIN_AAA_PROTOCOL),
+        AvpGenDef("nas_identifier", AVP_NAS_IDENTIFIER),
+        AvpGenDef("nas_ip_address", AVP_NAS_IP_ADDRESS),
+        AvpGenDef("nas_ipv6_address", AVP_NAS_IPV6_ADDRESS),
+        AvpGenDef("nas_port", AVP_NAS_PORT),
+        AvpGenDef("nas_port_id", AVP_NAS_PORT_ID),
+        AvpGenDef("nas_port_type", AVP_NAS_PORT_TYPE),
+        AvpGenDef("service_stype", AVP_SERVICE_TYPE),
+        AvpGenDef("framed_ip_address", AVP_FRAMED_IP_ADDRESS),
+        AvpGenDef("framed_ipv6_prefix", AVP_FRAMED_IPV6_PREFIX),
+        AvpGenDef("framed_interface_id", AVP_FRAMED_INTERFACE_ID),
+        AvpGenDef("called_station_id", AVP_CALLED_STATION_ID),
+        AvpGenDef("calling_station_id", AVP_CALLING_STATION_ID),
+        AvpGenDef("originating_line_info", AVP_ORIGINATING_LINE_INFO),
+        AvpGenDef("acct_session_id", AVP_ACCT_SESSION_ID),
+        AvpGenDef("acct_multi_session_id", AVP_ACCOUNTING_MULTI_SESSION_ID),
+        AvpGenDef("state", AVP_STATE),
+        AvpGenDef("state_class", AVP_CLASS),
+        AvpGenDef("reply_message", AVP_REPLY_MESSAGE),
     )
 
     def __post_init__(self):
@@ -164,6 +236,8 @@ class ReAuthRequest(ReAuth):
         setattr(self, "auth_application_id", 0)
         setattr(self, "proxy_info", [])
         setattr(self, "route_record", [])
+        setattr(self, "framed_ipv6_prefix", [])
+        setattr(self, "reply_message", [])
 
         assign_attr_from_defs(self, self._avps)
         self._avps = []

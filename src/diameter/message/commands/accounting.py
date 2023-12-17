@@ -109,7 +109,6 @@ class AccountingAnswer(Accounting):
 
     # Additional AVPs from rfc7155 (NAS Application)
     origin_aaa_protocol: int
-    origin_state_id: int
     nas_identifier: str
     nas_ip_address: str
     nas_ipv6_address: bytes
@@ -143,7 +142,6 @@ class AccountingAnswer(Accounting):
         AvpGenDef("proxy_info", AVP_PROXY_INFO, type_class=ProxyInfo),
 
         AvpGenDef("origin_aaa_protocol", AVP_ORIGIN_AAA_PROTOCOL),
-        AvpGenDef("origin_state_id", AVP_ORIGIN_STATE_ID),
         AvpGenDef("nas_identifier", AVP_NAS_IDENTIFIER),
         AvpGenDef("nas_ip_address", AVP_NAS_IP_ADDRESS),
         AvpGenDef("nas_ipv6_address", AVP_NAS_IPV6_ADDRESS),

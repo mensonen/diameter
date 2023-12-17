@@ -85,6 +85,7 @@ class AbortSession(DefinedMessage):
 
 class AbortSessionAnswer(AbortSession):
     """An Abort-Session-Answer message."""
+    # AVPs from rfc6733 (Diameter Base)
     session_id: str
     result_code: int
     origin_host: bytes
@@ -99,6 +100,9 @@ class AbortSessionAnswer(AbortSession):
     redirect_max_cache_time: int
     proxy_info: list[ProxyInfo]
     route_record: list[bytes]
+
+    # Extension AVPs from rfc7155 (NAS Application)
+    origin_aaa_protocol: int
 
     avp_def: AvpGenType = (
         AvpGenDef("session_id", AVP_SESSION_ID, is_required=True),
@@ -115,6 +119,8 @@ class AbortSessionAnswer(AbortSession):
         AvpGenDef("redirect_max_cache_time", AVP_REDIRECT_MAX_CACHE_TIME),
         AvpGenDef("proxy_info", AVP_PROXY_INFO, type_class=ProxyInfo),
         AvpGenDef("route_record", AVP_ROUTE_RECORD),
+
+        AvpGenDef("origin_aaa_protocol", AVP_ORIGIN_AAA_PROTOCOL),
     )
 
     def __post_init__(self):
@@ -132,6 +138,7 @@ class AbortSessionAnswer(AbortSession):
 
 class AbortSessionRequest(AbortSession):
     """An Abort-Session-Request message."""
+    # AVPs from rfc6733 (Diameter Base)
     session_id: str
     origin_host: bytes
     origin_realm: bytes
@@ -142,6 +149,27 @@ class AbortSessionRequest(AbortSession):
     origin_state_id: int
     proxy_info: list[ProxyInfo]
     route_record: list[bytes]
+
+    # Extension AVPs from rfc7155 (NAS Application)
+    origin_aaa_protocol: int
+    nas_identifier: str
+    nas_ip_address: str
+    nas_ipv6_address: bytes
+    nas_port: int
+    nas_port_id: str
+    nas_port_type: int
+    service_type: int
+    framed_ip_address: str
+    framed_ipv6_prefix: list[bytes]
+    framed_interface_id: int
+    called_station_id: str
+    calling_station_id: str
+    originating_line_info: bytes
+    acct_session_id: bytes
+    acct_multi_session_id: str
+    state: bytes
+    state_class: list[bytes]
+    reply_message: list[str]
 
     avp_def: AvpGenType = (
         AvpGenDef("session_id", AVP_SESSION_ID, is_required=True),
@@ -154,6 +182,26 @@ class AbortSessionRequest(AbortSession):
         AvpGenDef("origin_state_id", AVP_ORIGIN_STATE_ID),
         AvpGenDef("proxy_info", AVP_PROXY_INFO, type_class=ProxyInfo),
         AvpGenDef("route_record", AVP_ROUTE_RECORD),
+
+        AvpGenDef("origin_aaa_protocol", AVP_ORIGIN_AAA_PROTOCOL),
+        AvpGenDef("nas_identifier", AVP_NAS_IDENTIFIER),
+        AvpGenDef("nas_ip_address", AVP_NAS_IP_ADDRESS),
+        AvpGenDef("nas_ipv6_address", AVP_NAS_IPV6_ADDRESS),
+        AvpGenDef("nas_port", AVP_NAS_PORT),
+        AvpGenDef("nas_port_id", AVP_NAS_PORT_ID),
+        AvpGenDef("nas_port_type", AVP_NAS_PORT_TYPE),
+        AvpGenDef("service_stype", AVP_SERVICE_TYPE),
+        AvpGenDef("framed_ip_address", AVP_FRAMED_IP_ADDRESS),
+        AvpGenDef("framed_ipv6_prefix", AVP_FRAMED_IPV6_PREFIX),
+        AvpGenDef("framed_interface_id", AVP_FRAMED_INTERFACE_ID),
+        AvpGenDef("called_station_id", AVP_CALLED_STATION_ID),
+        AvpGenDef("calling_station_id", AVP_CALLING_STATION_ID),
+        AvpGenDef("originating_line_info", AVP_ORIGINATING_LINE_INFO),
+        AvpGenDef("acct_session_id", AVP_ACCT_SESSION_ID),
+        AvpGenDef("acct_multi_session_id", AVP_ACCOUNTING_MULTI_SESSION_ID),
+        AvpGenDef("state", AVP_STATE),
+        AvpGenDef("state_class", AVP_CLASS),
+        AvpGenDef("reply_message", AVP_REPLY_MESSAGE),
     )
 
     def __post_init__(self):
@@ -164,6 +212,9 @@ class AbortSessionRequest(AbortSession):
         setattr(self, "auth_application_id", 0)
         setattr(self, "proxy_info", [])
         setattr(self, "route_record", [])
+        setattr(self, "framed_ipv6_prefix", [])
+        setattr(self, "state_class", [])
+        setattr(self, "reply_message", [])
 
         assign_attr_from_defs(self, self._avps)
         self._avps = []
