@@ -266,6 +266,17 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="." class="md-nav__link md-nav__link--active">
         
   
@@ -275,6 +286,43 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#functional-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Functional overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#supported-diameter-application-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      Supported diameter application commands
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -597,6 +645,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     
@@ -626,6 +680,48 @@
             Commands
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api/commands/aa/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AA
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api/commands/aa_mobile_node/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AA Mobile Node
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
             
               
                 
@@ -723,6 +819,27 @@
   
   <span class="md-ellipsis">
     Device Watchdog
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api/commands/diameter_eap/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Diameter EAP
   </span>
   
 
@@ -934,15 +1051,18 @@
 
 
 <h1 id="python-diameter-stack">Python Diameter Stack<a class="headerlink" href="#python-diameter-stack" title="Permanent link">&para;</a></h1>
-<p>This Python package provides tools to create and parse Diameter Messags and 
+<p>This Python package provides tools to create and parse Diameter Messages and 
 AVPs, to communicate with diameter peers using the diameter base protocol and 
-to write diameter applications, as defined in <code>rfc6733</code>, <code>rfc8506</code> and 
-<code>rfc5777</code>. </p>
+to write diameter applications, as defined in the Diameter Base <code>rfc6733</code>.</p>
+<p>The diameter stack supports transports over both <em>TCP</em> and <em>SCTP</em>, with 
+SCTP support provided by an optional depency on <a href="https://pypi.org/project/pysctp/">pysctp</a>.</p>
+<p>The provided Application and Node implementations handle the majority of the 
+basic protocol-level operations automatically, such as managing peer tables, 
+sending CER/CEA, DWR/DEA and disconnecting with DPR/DPA. </p>
+<h2 id="functional-overview">Functional overview<a class="headerlink" href="#functional-overview" title="Permanent link">&para;</a></h2>
 <p>The package contains an extensive AVP dictionary and allows constructing
 AVPs and Diameter messages either manually, or by parsing network-received 
-bytes. For messages described in the Diameter Base and Diameter Credit Control
-RFCs, additional python types are provided, which permit reading and updating
-message AVPs as python instance properties.</p>
+bytes. Message AVPs can be accessed directly as instance attributes.</p>
 <p>The <code>diameter</code> package provides tools for:</p>
 <ul>
 <li><a href="guide/avp/">Parsing and writing AVPs</a></li>
@@ -950,12 +1070,53 @@ message AVPs as python instance properties.</p>
 <li><a href="guide/node/">Creating diameter nodes and connecting to other peers</a></li>
 <li><a href="guide/application/">Writing diameter applications</a></li>
 </ul>
-<p>In terms of diameter connectivity, the diameter stack supports both <em>TCP</em> and
-<em>SCTP</em>, with SCTP support provided by an optional depency on 
-<a href="https://pypi.org/project/pysctp/">pysctp</a>.</p>
-<p>The diameter Application and Node implementations handle the majority of the 
-basic protocol-level operations automatically, such as managing peer tables, 
-sending CER/CEA, DWR/DEA and disconnecting with DPR/DPA. </p>
+<h2 id="supported-diameter-application-commands">Supported diameter application commands<a class="headerlink" href="#supported-diameter-application-commands" title="Permanent link">&para;</a></h2>
+<p>The diameter stack provides a Python command class for the following 
+application message types:</p>
+<dl>
+<dt><em>Diameter Base Protocol</em> <code>rfc3588</code>, <code>rfc6733</code></dt>
+<dd>
+<ul>
+<li>Abort-Session</li>
+<li>Accounting</li>
+<li>Capabilities-Exchange</li>
+<li>Device-Watchdog</li>
+<li>Disconnect-PeerConnection</li>
+<li>Re-Auth</li>
+<li>Session-Termination</li>
+</ul>
+</dd>
+<dt><em>Diameter Mobile IPv4</em> <code>rfc4004</code></dt>
+<dd>
+<ul>
+<li>AA-Mobile-Node</li>
+<li>Home-Agent-MIP</li>
+</ul>
+</dd>
+<dt><em>Diameter Network Access Server</em> <code>rfc4005</code>, <code>rfc7155</code></dt>
+<dd>
+<ul>
+<li>AA</li>
+<li>Abort-Session</li>
+<li>Accounting</li>
+<li>Re-Auth</li>
+<li>Session-Termination</li>
+</ul>
+</dd>
+<dt><em>Diameter Credit Control</em> <code>rf4006</code>, <code>rfc6733</code></dt>
+<dd>
+<ul>
+<li>Credit-Control</li>
+</ul>
+</dd>
+<dt><em>Diameter Extensible Authentication Protocol (EAP)</em> <code>rfc4072</code></dt>
+<dd>
+<ul>
+<li>Diameter-EAP</li>
+</ul>
+</dd>
+</dl>
+<p>The stack includes also a generic fallback Python class for every other message.</p>
 
 
 

@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#diameter.message.commands.Aa" class="md-skip">
+        <a href="#diameter.message.commands.AuthenticationInformation" class="md-skip">
           Skip to content
         </a>
       
@@ -597,6 +597,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     
@@ -626,6 +632,48 @@
             Commands
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../aa/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AA
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../aa_mobile_node/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AA Mobile Node
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
             
               
                 
@@ -723,6 +771,27 @@
   
   <span class="md-ellipsis">
     Device Watchdog
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../diameter_eap/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Diameter EAP
   </span>
   
 
@@ -844,24 +913,6 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#diameter.message.commands.Aa" class="md-nav__link">
-    <span class="md-ellipsis">
-      Aa
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#diameter.message.commands.AaMobileNode" class="md-nav__link">
-    <span class="md-ellipsis">
-      AaMobileNode
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#diameter.message.commands.AuthenticationInformation" class="md-nav__link">
     <span class="md-ellipsis">
       AuthenticationInformation
@@ -892,24 +943,6 @@
   <a href="#diameter.message.commands.DeleteSubscriberData" class="md-nav__link">
     <span class="md-ellipsis">
       DeleteSubscriberData
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#diameter.message.commands.DiameterEap" class="md-nav__link">
-    <span class="md-ellipsis">
-      DiameterEap
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#diameter.message.commands.HomeAgentMip" class="md-nav__link">
-    <span class="md-ellipsis">
-      HomeAgentMip
     </span>
   </a>
   
@@ -1288,94 +1321,6 @@ python API for reading and setting AVPs.</p>
 
 
 
-<h2 id="diameter.message.commands.Aa" class="doc doc-heading">
-          <span class="doc doc-object-name doc-class-name">Aa</span>
-
-
-<a href="#diameter.message.commands.Aa" class="headerlink" title="Permanent link">&para;</a></h2>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">Aa</span><span class="p">(</span><span class="n">header</span><span class="p">:</span> <span class="n">MessageHeader</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">avps</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Avp</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
-</span></code></pre></div>
-
-  <div class="doc doc-contents ">
-          <p class="doc doc-class-bases">
-            Bases: <code><a class="autorefs autorefs-internal" title="diameter.message._base.Message" href="../../message/#diameter.message.Message">Message</a></code></p>
-
-  
-      <p>An AA message.</p>
-<p>This message implementation provides no python subclasses for requests and
-answers; AVPs must be created manually and added using the
-<a class="autorefs autorefs-internal" href="../../message/#diameter.message.Message.append_avp">Aa.append_avp</a> method.</p>
-
-
-  
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-
-
-
-
-  </div>
-
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-class">
-
-
-
-
-<h2 id="diameter.message.commands.AaMobileNode" class="doc doc-heading">
-          <span class="doc doc-object-name doc-class-name">AaMobileNode</span>
-
-
-<a href="#diameter.message.commands.AaMobileNode" class="headerlink" title="Permanent link">&para;</a></h2>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">AaMobileNode</span><span class="p">(</span><span class="n">header</span><span class="p">:</span> <span class="n">MessageHeader</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">avps</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Avp</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
-</span></code></pre></div>
-
-  <div class="doc doc-contents ">
-          <p class="doc doc-class-bases">
-            Bases: <code><a class="autorefs autorefs-internal" title="diameter.message._base.Message" href="../../message/#diameter.message.Message">Message</a></code></p>
-
-  
-      <p>An AA-Mobile-Node message.</p>
-<p>This message implementation provides no python subclasses for requests and
-answers; AVPs must be created manually and added using the
-<a class="autorefs autorefs-internal" href="../../message/#diameter.message.Message.append_avp">AaMobileNode.append_avp</a> method.</p>
-
-
-  
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-
-
-
-
-  </div>
-
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-class">
-
-
-
-
 <h2 id="diameter.message.commands.AuthenticationInformation" class="doc doc-heading">
           <span class="doc doc-object-name doc-class-name">AuthenticationInformation</span>
 
@@ -1525,94 +1470,6 @@ answers; AVPs must be created manually and added using the
 <p>This message implementation provides no python subclasses for requests and
 answers; AVPs must be created manually and added using the
 <a class="autorefs autorefs-internal" href="../../message/#diameter.message.Message.append_avp">DeleteSubscriberData.append_avp</a> method.</p>
-
-
-  
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-
-
-
-
-  </div>
-
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-class">
-
-
-
-
-<h2 id="diameter.message.commands.DiameterEap" class="doc doc-heading">
-          <span class="doc doc-object-name doc-class-name">DiameterEap</span>
-
-
-<a href="#diameter.message.commands.DiameterEap" class="headerlink" title="Permanent link">&para;</a></h2>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">DiameterEap</span><span class="p">(</span><span class="n">header</span><span class="p">:</span> <span class="n">MessageHeader</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">avps</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Avp</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
-</span></code></pre></div>
-
-  <div class="doc doc-contents ">
-          <p class="doc doc-class-bases">
-            Bases: <code><a class="autorefs autorefs-internal" title="diameter.message._base.Message" href="../../message/#diameter.message.Message">Message</a></code></p>
-
-  
-      <p>A Diameter-EAP message.</p>
-<p>This message implementation provides no python subclasses for requests and
-answers; AVPs must be created manually and added using the
-<a class="autorefs autorefs-internal" href="../../message/#diameter.message.Message.append_avp">DiameterEap.append_avp</a> method.</p>
-
-
-  
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-
-
-
-
-  </div>
-
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-class">
-
-
-
-
-<h2 id="diameter.message.commands.HomeAgentMip" class="doc doc-heading">
-          <span class="doc doc-object-name doc-class-name">HomeAgentMip</span>
-
-
-<a href="#diameter.message.commands.HomeAgentMip" class="headerlink" title="Permanent link">&para;</a></h2>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">HomeAgentMip</span><span class="p">(</span><span class="n">header</span><span class="p">:</span> <span class="n">MessageHeader</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">avps</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Avp</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
-</span></code></pre></div>
-
-  <div class="doc doc-contents ">
-          <p class="doc doc-class-bases">
-            Bases: <code><a class="autorefs autorefs-internal" title="diameter.message._base.Message" href="../../message/#diameter.message.Message">Message</a></code></p>
-
-  
-      <p>A Home-Agent-MIP message.</p>
-<p>This message implementation provides no python subclasses for requests and
-answers; AVPs must be created manually and added using the
-<a class="autorefs autorefs-internal" href="../../message/#diameter.message.Message.append_avp">AaMobileNode.append_avp</a> method.</p>
 
 
   
