@@ -146,6 +146,15 @@ class Unpacker:
         return self.__pos >= len(self.__buf)
 
     @raise_conversion_error
+    def unpack_char(self) -> int:
+        i = self.__pos
+        self.__pos = j = i+1
+        data = self.__buf[i:j]
+        if len(data) < 1:
+            raise EOFError("Not enough bytes left to unpack")
+        return struct.unpack(">B", data)[0]
+
+    @raise_conversion_error
     def unpack_uint(self) -> int:
         i = self.__pos
         self.__pos = j = i+4
