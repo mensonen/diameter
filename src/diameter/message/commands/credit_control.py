@@ -114,6 +114,13 @@ class CreditControlAnswer(CreditControl):
     route_record: list[bytes]
     failed_avp: list[FailedAvp]
 
+    # 3GPP extensions: ETSI 132.299
+    low_balance_indication: int
+    remaining_balance: RemainingBalance
+    oc_supported_features: OcSupportedFeatures
+    oc_olr: OcOlr
+    service_information: ServiceInformation
+
     avp_def: AvpGenType = (
         AvpGenDef("session_id", AVP_SESSION_ID, is_required=True),
         AvpGenDef("result_code", AVP_RESULT_CODE, is_required=True),
@@ -143,6 +150,11 @@ class CreditControlAnswer(CreditControl):
         AvpGenDef("proxy_info", AVP_PROXY_INFO, type_class=ProxyInfo),
         AvpGenDef("route_record", AVP_ROUTE_RECORD),
         AvpGenDef("failed_avp", AVP_FAILED_AVP, type_class=FailedAvp),
+        AvpGenDef("low_balance_indication", AVP_TGPP_LOW_BALANCE_INDICATION, VENDOR_TGPP),
+        AvpGenDef("remaining_balance", AVP_TGPP_REMAINING_BALANCE, VENDOR_TGPP, type_class=RemainingBalance),
+        AvpGenDef("oc_supported_features", AVP_OC_SUPPORTED_FEATURES, type_class=OcSupportedFeatures),
+        AvpGenDef("oc_olr", AVP_OC_OLR, VENDOR_TGPP, type_class=OcOlr),
+        AvpGenDef("service_information", AVP_TGPP_SERVICE_INFORMATION, VENDOR_TGPP, type_class=ServiceInformation),
     )
 
     def __post_init__(self):
@@ -249,6 +261,11 @@ class CreditControlRequest(CreditControl):
     proxy_info: list[ProxyInfo]
     route_record: list[bytes]
 
+    # 3GPP extensions: ETSI 132.299
+    aoc_request_type: int
+    oc_supported_features: OcSupportedFeatures
+    service_information: ServiceInformation
+
     avp_def: AvpGenType = (
         AvpGenDef("session_id", AVP_SESSION_ID, is_required=True),
         AvpGenDef("origin_host", AVP_ORIGIN_HOST, is_required=True, is_mandatory=False),
@@ -278,6 +295,9 @@ class CreditControlRequest(CreditControl):
         AvpGenDef("user_equipment_info_extension", AVP_USER_EQUIPMENT_INFO_EXTENSION, type_class=UserEquipmentInfoExtension),
         AvpGenDef("proxy_info", AVP_PROXY_INFO, type_class=ProxyInfo),
         AvpGenDef("route_record", AVP_ROUTE_RECORD),
+        AvpGenDef("aoc_request_type", AVP_TGPP_AOC_REQUEST_TYPE, VENDOR_TGPP),
+        AvpGenDef("oc_supported_features", AVP_OC_SUPPORTED_FEATURES, type_class=OcSupportedFeatures),
+        AvpGenDef("service_information", AVP_TGPP_SERVICE_INFORMATION, VENDOR_TGPP, type_class=ServiceInformation),
     )
 
     def __post_init__(self):
