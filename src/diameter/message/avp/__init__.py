@@ -205,7 +205,9 @@ class Avp:
             avp_vendor_id = unpacker.unpack_uint()
             avp_length -= 4
 
-        avp_payload = unpacker.unpack_fopaque(avp_length)
+        avp_payload = b""
+        if avp_length > 0:
+            avp_payload = unpacker.unpack_fopaque(avp_length)
         avp_name = None
 
         if avp_code in AVP_DICTIONARY and not avp_vendor_id:
@@ -278,6 +280,9 @@ class Avp:
                     # return value of `AvpAddress.value` back to another
                     # `AvpAddress` and they have not deconstructed the tuple.
                     avp.value = value[1]
+                elif isinstance(avp, AvpGrouped) and not isinstance(value, list):
+                    # Also be nice in this case
+                    avp.value = [value]
                 else:
                     avp.value = value
         except Exception as e:
