@@ -271,14 +271,19 @@ class Avp:
         avp = avp_type(avp_code, vendor_id=vendor_id)
         avp.name = entry["name"]
 
-        if value is not None:
-            if isinstance(avp, AvpAddress) and isinstance(value, tuple):
-                # Be nice and do this automatically in case someone passes the
-                # return value of `AvpAddress.value` back to another
-                # `AvpAddress` and they have not deconstructed the tuple.
-                avp.value = value[1]
-            else:
-                avp.value = value
+        try:
+            if value is not None:
+                if isinstance(avp, AvpAddress) and isinstance(value, tuple):
+                    # Be nice and do this automatically in case someone passes the
+                    # return value of `AvpAddress.value` back to another
+                    # `AvpAddress` and they have not deconstructed the tuple.
+                    avp.value = value[1]
+                else:
+                    avp.value = value
+        except Exception as e:
+            raise AvpEncodeError(
+                f"Failed to set initial value for AVP {avp.name} ({avp_code}) "
+                f"as {value}: {e}") from None
         if is_mandatory is not None:
             avp.is_mandatory = is_mandatory
         if is_private is not None:
