@@ -8,11 +8,14 @@ import pytest
 from diameter.message import Message, constants
 from diameter.message.avp import Avp, AvpOctetString
 from diameter.message.commands import CreditControlRequest, CreditControlAnswer
+from diameter.message.commands._attributes import SubscriptionId
 from diameter.message.commands.credit_control import GrantedServiceUnit
 from diameter.message.commands.credit_control import RequestedServiceUnit
 from diameter.message.commands.credit_control import UsedServiceUnit
-from diameter.message.commands.credit_control import UserEquipmentInfo
 from diameter.message.commands.credit_control import FinalUnitIndication
+from diameter.message.commands.credit_control import UserEquipmentInfo
+from diameter.message.commands.credit_control import OcSupportedFeatures
+from diameter.message.commands.credit_control import ServiceInformation
 
 
 def test_ccr_create_new():
@@ -47,6 +50,9 @@ def test_ccr_create_new():
     )
     ccr.route_record = [b"sctp-saegwc-poz01.lte.orange.pl",
                         b"dsrkat01.mnc003.mcc260.3gppnetwork.org"]
+
+    # Demonstrates creation of custom AVPs, even though these are now supported
+    # as instance attributes as well
     service_information = Avp.new(
         constants.AVP_TGPP_SERVICE_INFORMATION, constants.VENDOR_TGPP)
     ps_information = Avp.new(
@@ -141,3 +147,33 @@ def test_ccr_to_cca():
 
     assert isinstance(ans, CreditControlAnswer)
     assert ans.header.is_request is False
+
+
+def test_ccr_3gpp_base_avps():
+    # Test 3GPP extension AVPs added directly under Credit-Control-Request
+    ccr = CreditControlRequest()
+    ccr.session_id = "sctp-saegwc-poz01.lte.orange.pl;221424325;287370797;65574b0c-2d02"
+    ccr.origin_host = b"dra2.gy.mno.net"
+    ccr.origin_realm = b"mno.net"
+    ccr.destination_realm = b"mvno.net"
+    ccr.service_context_id = constants.SERVICE_CONTEXT_PS_CHARGING
+    ccr.cc_request_type = constants.E_CC_REQUEST_TYPE_UPDATE_REQUEST
+    ccr.cc_request_number = 952
+
+    ccr.aoc_request_type = constants.E_AOC_REQUEST_TYPE_AOC_NOT_REQUESTED
+    ccr.oc_supported_features = OcSupportedFeatures(
+        oc_feature_vector=1
+    )
+    ccr.service_information = ServiceInformation(
+        subscription_id=[
+            SubscriptionId(
+                subscription_id_type=constants.E_SUBSCRIPTION_ID_TYPE_END_USER_E164,
+                subscription_id_data="41780000000"
+            )
+        ]
+    )
+
+    # Everything OK as long as it builds
+    msg = ccr.as_bytes()
+
+    assert ccr.header.length == len(msg)
