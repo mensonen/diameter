@@ -194,6 +194,11 @@ class ReAuthRequest(ReAuth):
     state_class: list[bytes]
     reply_message: list[str]
 
+    # 3GPP extensions: ETSI 132.299
+    g_s_u_pool_identifier: int
+    service_identifier: int
+    rating_group: int
+
     avp_def: AvpGenType = (
         AvpGenDef("session_id", AVP_SESSION_ID, is_required=True),
         AvpGenDef("origin_host", AVP_ORIGIN_HOST, is_required=True),
@@ -226,6 +231,10 @@ class ReAuthRequest(ReAuth):
         AvpGenDef("state", AVP_STATE),
         AvpGenDef("state_class", AVP_CLASS),
         AvpGenDef("reply_message", AVP_REPLY_MESSAGE),
+
+        AvpGenDef("g_s_u_pool_identifier", AVP_G_S_U_POOL_IDENTIFIER),
+        AvpGenDef("service_identifier", AVP_SERVICE_IDENTIFIER),
+        AvpGenDef("rating_group", AVP_RATING_GROUP),
     )
 
     def __post_init__(self):
