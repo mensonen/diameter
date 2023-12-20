@@ -1501,6 +1501,37 @@ class UserCsgInformation:
 
 
 @dataclasses.dataclass
+class ServingNode:
+    """A data container that represents the "Serving-Node" (2401) grouped AVP.
+
+    3GPP TS 29.173 version 14.0.0
+    """
+    sgsn_number: bytes = None
+    sgsn_name: bytes = None
+    sgsn_realm: bytes = None
+    mme_name: bytes = None
+    mme_realm: bytes = None
+    msc_number: bytes = None
+    tgpp_aaa_server_name: bytes = None
+    lcs_capabilities_sets: int = None
+    gmlc_address: str = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("sgsn_number", AVP_TGPP_SGSN_NUMBER, VENDOR_TGPP),
+        AvpGenDef("sgsn_name", AVP_TGPP_SGSN_NAME, VENDOR_TGPP),
+        AvpGenDef("sgsn_realm", AVP_TGPP_SGSN_REALM, VENDOR_TGPP),
+        AvpGenDef("mme_name", AVP_TGPP_MME_NAME, VENDOR_TGPP),
+        AvpGenDef("mme_realm", AVP_TGPP_MME_REALM, VENDOR_TGPP),
+        AvpGenDef("msc_number", AVP_TGPP_MSC_NUMBER, VENDOR_TGPP),
+        AvpGenDef("tgpp_aaa_server_name", AVP_TGPP_3GPP_AAA_SERVER_NAME, VENDOR_TGPP),
+        AvpGenDef("lcs_capabilities_sets", AVP_TGPP_LCS_CAPABILITIES_SETS, VENDOR_TGPP),
+        AvpGenDef("gmlc_address", AVP_TGPP_GMLC_ADDRESS, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
 class TwanUserLocationInfo:
     """A data container that represents the "TWAN-User-Location-Info" (2714) grouped AVP.
 
@@ -1549,8 +1580,8 @@ class SmDeviceTriggerInformation:
     """
     mtc_iwf_address: str = None
     reference_number: int = None
-    serving_node: int = None
-    validity_time: datetime.datetime = None
+    serving_node: ServingNode = None
+    validity_time: int = None
     priority_indication: int = None
     application_port_identifier: int = None
 
@@ -1558,7 +1589,7 @@ class SmDeviceTriggerInformation:
     avp_def: dataclasses.InitVar[AvpGenType] = (
         AvpGenDef("mtc_iwf_address", AVP_TGPP_MTC_IWF_ADDRESS, VENDOR_TGPP),
         AvpGenDef("reference_number", AVP_TGPP_REFERENCE_NUMBER, VENDOR_TGPP),
-        AvpGenDef("serving_node", AVP_TGPP_SERVING_NODE, VENDOR_TGPP),
+        AvpGenDef("serving_node", AVP_TGPP_SERVING_NODE, VENDOR_TGPP, type_class=ServingNode),
         AvpGenDef("validity_time", AVP_VALIDITY_TIME),
         AvpGenDef("priority_indication", AVP_TGPP_PRIORITY_INDICATION, VENDOR_TGPP),
         AvpGenDef("application_port_identifier", AVP_TGPP_APPLICATION_PORT_IDENTIFIER, VENDOR_TGPP),
@@ -2031,7 +2062,7 @@ class OfflineCharging:
         AvpGenDef("quota_consumption_time", AVP_TGPP_QUOTA_CONSUMPTION_TIME, VENDOR_TGPP),
         AvpGenDef("time_quota_mechanism", AVP_TGPP_TIME_QUOTA_MECHANISM, VENDOR_TGPP, type_class=TimeQuotaMechanism),
         AvpGenDef("envelope_reporting", AVP_TGPP_ENVELOPE_REPORTING, VENDOR_TGPP),
-        AvpGenDef("multiple_services_credit_control", AVP_REDIRECT_SERVER_EXTENSION, type_class=MultipleServicesCreditControl),
+        AvpGenDef("multiple_services_credit_control", AVP_MULTIPLE_SERVICES_CREDIT_CONTROL, type_class=MultipleServicesCreditControl),
     )
 
 
@@ -2101,7 +2132,7 @@ class PsInformation:
     local_access_id: bytes = None
     physical_access_id: str = None
     fixed_user_location_info: FixedUserLocationInfo = None
-    # cn_operator_selection_entity: bytes = None
+    cn_operator_selection_entity: int = None
     enhanced_diagnostics: EnhancedDiagnostics = None
     sgi_ptp_tunneling_method: int = None
     cp_ciot_eps_optimisation_indicator: int = None
@@ -2177,7 +2208,7 @@ class PsInformation:
         AvpGenDef("local_access_id", AVP_ETSI_LOGICAL_ACCESS_ID, VENDOR_ETSI),
         AvpGenDef("physical_access_id", AVP_ETSI_PHYSICAL_ACCESS_ID, VENDOR_ETSI),
         AvpGenDef("fixed_user_location_info", AVP_TGPP_FIXED_USER_LOCATION_INFO, VENDOR_TGPP, type_class=FixedUserLocationInfo),
-        # AvpGenDef("cn_operator_selection_entity", AVP_CN_OPERATOR_SELECTION_ENTTITY, VENDOR_TGPP),
+        AvpGenDef("cn_operator_selection_entity", AVP_TGPP_CN_OPERATOR_SELECTION_ENTITY, VENDOR_TGPP),
         AvpGenDef("enhanced_diagnostics", AVP_TGPP_ENHANCED_DIAGNOSTICS, VENDOR_TGPP, type_class=EnhancedDiagnostics),
         AvpGenDef("sgi_ptp_tunneling_method", AVP_TGPP_SGI_PTP_TUNNELLING_METHOD, VENDOR_TGPP),
         AvpGenDef("cp_ciot_eps_optimisation_indicator", AVP_TGPP_CP_CIOT_EPS_OPTIMISATION_INDICATOR, VENDOR_TGPP),
@@ -2457,7 +2488,7 @@ class AocInformation:
     avp_def: dataclasses.InitVar[AvpGenType] = (
         AvpGenDef("aoc_cost_information", AVP_TGPP_AOC_COST_INFORMATION, VENDOR_TGPP, type_class=AocCostInformation),
         AvpGenDef("tariff_information", AVP_TGPP_TARIFF_INFORMATION, VENDOR_TGPP, type_class=TariffInformation),
-        AvpGenDef("aoc_subscription_information", AVP_TGPP_AOC_SUBSCRIPTION_INFORMATION, type_class=AocSubscriptionInformation)
+        AvpGenDef("aoc_subscription_information", AVP_TGPP_AOC_SUBSCRIPTION_INFORMATION, VENDOR_TGPP, type_class=AocSubscriptionInformation)
     )
 
 
