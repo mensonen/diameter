@@ -350,7 +350,7 @@ if peer.connection and peer.connection.state in PEER_READY_STATES:
     rar.header.hop_by_hop_identifier = peer.connection.hop_by_hop_seq.next_sequence()
     rar.session_id = node.session_generator.next_id()
     # set all other required attributes
-    peer.connection.add_out_msg(rar)
+    node.send_message(peer.connection, rar)
 
 ```
 
