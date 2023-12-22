@@ -15,6 +15,7 @@ try:
 except ImportError:
     sctp = None
 
+from collections import deque
 from typing import TypeVar
 
 from ..message import constants
@@ -164,6 +165,15 @@ class Node:
         # answer message. The dictionary contains host identities as keys, with
         # dictionaries of hop-by-hop ids and request sent timestamps as values.
         self._peer_waiting_answer: dict[str, dict[int, float]] = {}
+        # An internal list that keeps track of which origin-host is expecting
+        # which answer. The list is a dictionary with message identifiers as
+        # keys and origin-hosts as answers. This is mostly required for keeping
+        # track of which requests have also received an answer, and for
+        # retransmission checks.
+        self._origin_waiting_answer: dict[str, str] = {}
+        # A temporary list of sent end-by-end IDs, stored individually for each
+        # origin-host, for retransmission check.
+        self._sent_answers: dict[str, deque[int]] = {}
 
         self.vendor_ids: set[int] = set(
             vendor_ids or [i for i in constants.VENDORS.keys() if i > 0])
@@ -209,6 +219,15 @@ class Node:
         This value also defines how long a node will continue to run, after 
         `stop` with `force` argument set to `True` is called.
         """
+        self.retransmit_queue_size: int = 10240
+        """The amount of request end-to-end identifiers to "remember" after 
+        sending an answer. The list of remembered identifiers is checked every 
+        time a request with the "T" flag is received. The request will be 
+        rejected if a matching end-to-end identifier is still present in the 
+        queue. The size of this should match roughly with the amount of 
+        requests that are expected to arrive within a time period that
+        retransmits may arrive. There is no noticeable performance loss when
+        setting this higher than the default value of `10240`."""
         self.end_to_end_seq = SequenceGenerator(self.state_id)
         """An end-to-end identifier generator. The next identifier can be 
         retrieved with `Node.end_to_end_seq.next_sequence()`."""
@@ -682,6 +701,13 @@ class Node:
             self._reconnect_peers()
 
     def _receive_message(self, conn: PeerConnection, msg: _AnyMessageType):
+        if hasattr(msg, "origin_host"):
+            # Record who originally sent a request, as this information is lost
+            # by the time an answer will go out
+            message_id = (f"{msg.header.hop_by_hop_identifier}:"
+                          f"{msg.header.end_to_end_identifier}")
+            self._origin_waiting_answer[message_id] = msg.origin_host
+
         if msg.header.is_request:
             failed_avp = validate_message_avps(msg)
             if failed_avp:
@@ -690,8 +716,23 @@ class Node:
                 err.result_code = constants.E_RESULT_CODE_DIAMETER_MISSING_AVP
                 err.error_message = "Mandatory AVPs missing"
                 err.failed_avp = FailedAvp(additional_avps=failed_avp)
-                conn.add_out_msg(err)
+                self.send_message(conn, err)
                 return
+
+        # rfc6733, 5.5.4, check for T flag and reject if already processed
+        if (hasattr(msg, "origin_host") and msg.header.is_request and
+                msg.header.is_retransmit and
+                msg.origin_host in self._sent_answers and
+                msg.header.end_to_end_identifier in self._sent_answers[msg.origin_host]):
+            self.logger.warning(
+                f"{conn} message is a retransmission of an already handled "
+                f"request, rejecting it")
+            err = self._generate_answer(conn, msg)
+            # Spec doesn't say what error code to use?
+            err.result_code = constants.E_RESULT_CODE_DIAMETER_UNABLE_TO_COMPLY
+            err.error_messge = "Duplicate request detected"
+            self.send_message(conn, err)
+            return
 
         try:
             match (msg.header.is_request, msg.header.command_code):
@@ -726,7 +767,7 @@ class Node:
             err = self._generate_answer(conn, msg)
             err.result_code = constants.E_RESULT_CODE_DIAMETER_UNABLE_TO_COMPLY
             err.error_message = "Message handling error"
-            conn.add_out_msg(err)
+            self.send_message(conn, err)
 
     def _receive_app_request(self, conn: PeerConnection, message: _AnyMessageType):
         """Forward a received request message to an application.
@@ -743,7 +784,7 @@ class Node:
 
             err = self._generate_answer(conn, message)
             err.result_code = constants.E_RESULT_CODE_DIAMETER_APPLICATION_UNSUPPORTED
-            conn.add_out_msg(err)
+            self.send_message(conn, err)
             return
 
         realm_name = message.destination_realm.decode()
@@ -754,7 +795,7 @@ class Node:
 
             err = self._generate_answer(conn, message)
             err.result_code = constants.E_RESULT_CODE_DIAMETER_REALM_NOT_SERVED
-            conn.add_out_msg(err)
+            self.send_message(conn, err)
             return
 
         receiving_app: Application | None = None
@@ -792,7 +833,7 @@ class Node:
 
         err = self._generate_answer(conn, message)
         err.result_code = constants.E_RESULT_CODE_DIAMETER_APPLICATION_UNSUPPORTED
-        conn.add_out_msg(err)
+        self.send_message(conn, err)
 
     def _receive_app_answer(self, conn: PeerConnection, message: Message):
         """Forward a received answer message to an application.
@@ -843,6 +884,22 @@ class Node:
             except Exception as e:
                 self.logger.warning(
                     f"failed to reconnect to {peer.node_name}: {e}")
+
+    def _record_answer(self, message: Message):
+        """Notes the end-to-end identifier of an answer, for retransmit checks."""
+        message_id = (f"{message.header.hop_by_hop_identifier}:"
+                      f"{message.header.end_to_end_identifier}")
+        if message_id not in self._origin_waiting_answer:
+            return
+        origin_host = self._origin_waiting_answer[message_id]
+
+        if origin_host not in self._sent_answers:
+            self._sent_answers[origin_host] = deque(
+                maxlen=self.retransmit_queue_size)
+        print("recording", message.header.end_to_end_identifier, "for", origin_host)
+        self._sent_answers[origin_host].append(message.header.end_to_end_identifier)
+
+        del self._origin_waiting_answer[message_id]
 
     def _update_peer_counters(self, conn: PeerConnection,
                               cer: int = 0, cea: int = 0, dwr: int = 0,
@@ -1012,7 +1069,7 @@ class Node:
                 f"closing this connection")
             answer.result_code = constants.E_RESULT_CODE_DIAMETER_UNKNOWN_PEER
             conn.state = PEER_CLOSING
-            conn.add_out_msg(answer)
+            self.send_message(conn, answer)
             return
 
         elif not conn.node_name:
@@ -1040,7 +1097,7 @@ class Node:
                     f"{conn} CER election lost, closing this connection")
                 answer.result_code = constants.E_RESULT_CODE_DIAMETER_ELECTION_LOST
                 conn.state = PEER_CLOSING
-                conn.add_out_msg(answer)
+                self.send_message(conn, answer)
                 return
 
         cer_auth_apps = set(message.auth_application_id)
@@ -1059,7 +1116,7 @@ class Node:
         if not supported_auth_apps and not supported_acct_apps and not is_relay:
             self.logger.warning(f"{conn} no supported application IDs")
             answer.result_code = constants.E_RESULT_CODE_DIAMETER_NO_COMMON_APPLICATION
-            conn.add_out_msg(answer)
+            self.send_message(conn, answer)
             return
 
         elif not supported_auth_apps and not supported_acct_apps and is_relay:
@@ -1080,7 +1137,7 @@ class Node:
             f"{supported_acct_apps}")
 
         answer.result_code = constants.E_RESULT_CODE_DIAMETER_SUCCESS
-        conn.add_out_msg(answer)
+        self.send_message(conn, answer)
 
     def receive_dpa(self, conn: PeerConnection, message: DisconnectPeerAnswer):
         self.logger.info(f"{conn} got DPA")
@@ -1098,7 +1155,7 @@ class Node:
         self.logger.debug(f"{conn} changing state to DISCONNECTING")
 
         conn.state = PEER_DISCONNECTING
-        conn.add_out_msg(answer)
+        self.send_message(conn, answer)
 
     def receive_dwa(self, conn: PeerConnection, message: DeviceWatchdogAnswer):
         self.logger.info(f"{conn} got DWA")
@@ -1110,7 +1167,7 @@ class Node:
         answer.origin_state_id = self.state_id
 
         self.logger.info(f"{conn} sending DWA")
-        conn.add_out_msg(answer)
+        self.send_message(conn, answer)
 
     def remove_peer_connection(self, conn: PeerConnection):
         """Removes a peer connection that is no longer connected.
@@ -1174,20 +1231,20 @@ class Node:
         msg.auth_application_id = list(self.auth_application_ids)
         msg.acct_application_id = list(self.acct_application_ids)
 
-        conn.add_out_msg(msg)
+        self.send_message(conn, msg)
 
-    def send_dwr(self, peer: PeerConnection):
-        self.logger.info(f"{peer} sending DWR")
+    def send_dwr(self, conn: PeerConnection):
+        self.logger.info(f"{conn} sending DWR")
 
         msg = DeviceWatchdogRequest()
-        msg.header.hop_by_hop_identifier = peer.hop_by_hop_seq.next_sequence()
+        msg.header.hop_by_hop_identifier = conn.hop_by_hop_seq.next_sequence()
         msg.header.end_to_end_identifier = self.end_to_end_seq.next_sequence()
         msg.origin_host = self.origin_host.encode()
         msg.origin_realm = self.realm_name.encode()
         msg.origin_state_id = self.state_id
-        peer.add_out_msg(msg)
+        self.send_message(conn, msg)
 
-        peer.reset_last_dwr()
+        conn.reset_last_dwr()
 
     def send_dpr(self, conn: PeerConnection):
         self.logger.info(f"{conn} sending DPR")
@@ -1200,7 +1257,7 @@ class Node:
         msg.disconnect_cause = constants.E_DISCONNECT_CAUSE_REBOOTING
         self.logger.debug(f"{conn} changing state to DISCONNECTING")
         conn.state = PEER_DISCONNECTING
-        conn.add_out_msg(msg)
+        self.send_message(conn, msg)
 
     def route_answer(self, message: Message) -> tuple[PeerConnection, Message]:
         """Determine which peer should be used for sending an answer message.
@@ -1332,9 +1389,11 @@ class Node:
         permits manually sending messages towards known connections.
 
         Args:
-            conn: An instance of a peer to send the message to. The peer must
-                be in `PEER_READY` or `PEER_READY_WAITING_DWA` state
-            message: A valid diameter message instance to send
+            conn: An instance of a peer connection to send the message to. The
+                connection must be in `PEER_READY` or `PEER_READY_WAITING_DWA`
+                state
+            message: A valid diameter message instance to send, can be either a
+                request or an answer.
 
         """
         message_id = message.header.hop_by_hop_identifier
@@ -1345,6 +1404,8 @@ class Node:
             # using _route_answer
             del self._peer_waiting_answer[conn.host_identity][message_id]
         conn.add_out_msg(message)
+        if not message.header.is_request:
+            self._record_answer(message)
 
     def start(self):
         """Start the node.
