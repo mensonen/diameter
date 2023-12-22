@@ -12,6 +12,7 @@ authors = [
     {name = "Mikko Mensonen"}
 ]
 classifiers = [
+    "License :: OSI Approved :: MIT License",
     "Development Status :: 3 - Alpha",
     "Programming Language :: Python :: 3.11",
     "Topic :: Communications :: Telephony"
