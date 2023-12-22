@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.2">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.1">
     
     
       
@@ -24,7 +24,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.50c56a3b.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.45e1311d.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
@@ -1040,6 +1040,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#diameter.node.Node.retransmit_queue_size" class="md-nav__link">
+    <span class="md-ellipsis">
+      retransmit_queue_size
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#diameter.node.Node.session_generator" class="md-nav__link">
     <span class="md-ellipsis">
       session_generator
@@ -1291,7 +1300,14 @@
 
 
 <a href="#diameter.node.Node" class="headerlink" title="Permanent link">&para;</a></h2>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">Node</span><span class="p">(</span><span class="n">origin_host</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">realm_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ip_addresses</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">tcp_port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sctp_port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">vendor_ids</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">Node</span><span class="p">(</span>
+</span><span id="__span-0-2">    <span class="n">origin_host</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-0-3">    <span class="n">realm_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-0-4">    <span class="n">ip_addresses</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-5">    <span class="n">tcp_port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-6">    <span class="n">sctp_port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-7">    <span class="n">vendor_ids</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-8"><span class="p">)</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1708,6 +1724,37 @@ keys and instances of <code>Peer</code> as values..</p>
 
 
 
+<h3 id="diameter.node.Node.retransmit_queue_size" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">retransmit_queue_size</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#diameter.node.Node.retransmit_queue_size" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">retransmit_queue_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10240</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>The amount of request end-to-end identifiers to "remember" after 
+sending an answer. The list of remembered identifiers is checked every 
+time a request with the "T" flag is received. The request will be 
+rejected if a matching end-to-end identifier is still present in the 
+queue. The size of this should match roughly with the amount of 
+requests that are expected to arrive within a time period that
+retransmits may arrive. There is no noticeable performance loss when
+setting this higher than the default value of <code>10240</code>.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
 <h3 id="diameter.node.Node.session_generator" class="doc doc-heading">
           <span class="doc doc-object-name doc-attribute-name">session_generator</span>
 
@@ -1897,7 +1944,13 @@ routed</p>
 
 
 <a href="#diameter.node.Node.add_peer" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">add_peer</span><span class="p">(</span><span class="n">peer_uri</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">realm_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ip_addresses</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">is_persistent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">is_default</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Peer</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">add_peer</span><span class="p">(</span>
+</span><span id="__span-0-2">    <span class="n">peer_uri</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-0-3">    <span class="n">realm_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-4">    <span class="n">ip_addresses</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-5">    <span class="n">is_persistent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-0-6">    <span class="n">is_default</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-0-7"><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Peer</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2269,7 +2322,9 @@ time</p>
 
 
 <a href="#diameter.node.Node.route_request" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">route_request</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">Application</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">Message</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">PeerConnection</span><span class="p">,</span> <span class="n">Message</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">route_request</span><span class="p">(</span>
+</span><span id="__span-0-2">    <span class="n">app</span><span class="p">:</span> <span class="n">Application</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">Message</span>
+</span><span id="__span-0-3"><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">PeerConnection</span><span class="p">,</span> <span class="n">Message</span><span class="p">]</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2422,8 +2477,9 @@ permits manually sending messages towards known connections.</p>
           </td>
           <td>
             <div class="doc-md-description">
-              <p>An instance of a peer to send the message to. The peer must
-be in <code>PEER_READY</code> or <code>PEER_READY_WAITING_DWA</code> state</p>
+              <p>An instance of a peer connection to send the message to. The
+connection must be in <code>PEER_READY</code> or <code>PEER_READY_WAITING_DWA</code>
+state</p>
             </div>
           </td>
           <td>
@@ -2437,7 +2493,8 @@ be in <code>PEER_READY</code> or <code>PEER_READY_WAITING_DWA</code> state</p>
           </td>
           <td>
             <div class="doc-md-description">
-              <p>A valid diameter message instance to send</p>
+              <p>A valid diameter message instance to send, can be either a
+request or an answer.</p>
             </div>
           </td>
           <td>
