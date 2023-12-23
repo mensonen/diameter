@@ -980,10 +980,15 @@ class Node:
             return self.peers[uri.fqdn]
 
         transport = uri.params.get("transport", "tcp").lower()
+        transport = PEER_TRANSPORT_SCTP if transport == "sctp" else PEER_TRANSPORT_TCP
+
+        if transport == PEER_TRANSPORT_SCTP and sctp is None:
+            raise RuntimeError("Peer is set to use SCTP, but pysctp is "
+                               "not installed")
         peer = Peer(
             node_name=uri.fqdn,
             realm_name=realm_name or self.realm_name,
-            transport=PEER_TRANSPORT_SCTP if transport == "sctp" else PEER_TRANSPORT_TCP,
+            transport=transport,
             port=uri.port,
             ip_addresses=ip_addresses or [],
             persistent=is_persistent)
