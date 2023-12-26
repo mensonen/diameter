@@ -91,6 +91,8 @@ class Application:
 
         if hasattr(message, "session_id"):
             answer_msg.session_id = message.session_id
+        if hasattr(message, "proxy_info"):
+            answer_msg.proxy_info = message.proxy_info
 
         if self.is_auth_application:
             answer_msg.auth_application_id = self.application_id

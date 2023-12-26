@@ -498,6 +498,8 @@ class Node:
 
         if hasattr(msg, "session_id"):
             answer_msg.session_id = msg.session_id
+        if hasattr(msg, "proxy_info"):
+            answer_msg.proxy_info = msg.proxy_info
 
         if isinstance(answer_msg, CapabilitiesExchangeAnswer):
             answer_msg.host_ip_address = self.ip_addresses
