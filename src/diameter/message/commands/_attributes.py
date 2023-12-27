@@ -1111,6 +1111,25 @@ class CalleeInformation:
 
 
 @dataclasses.dataclass
+class ServerCapabilities:
+    """A data container that represents the "Server-Capabilities" (603) grouped AVP.
+
+    3GPP TS 29.229 version 11.3.0
+    """
+    mandatory_capability: list[int] = dataclasses.field(default_factory=list)
+    optional_capability: list[int] = dataclasses.field(default_factory=list)
+    server_name: list[str] = dataclasses.field(default_factory=list)
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("mandatory_capability", AVP_TGPP_MANDATORY_CAPABILITY, VENDOR_TGPP),
+        AvpGenDef("optional_capability", AVP_TGPP_OPTIONAL_CAPABILITY, VENDOR_TGPP),
+        AvpGenDef("server_name", AVP_TGPP_SERVER_NAME, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
 class SupportedFeatures:
     """A data container that represents the "Supported-Features" (628) grouped AVP.
 
@@ -1130,6 +1149,126 @@ class SupportedFeatures:
 
 
 @dataclasses.dataclass
+class EventType:
+    """A data container that represents the "Event-Type" (823) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    sip_method: str = None
+    event: str = None
+    expires: int = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("sip_method", AVP_SIP_METHOD),
+        AvpGenDef("event", AVP_TGPP_EVENT, VENDOR_TGPP),
+        AvpGenDef("expires", AVP_TGPP_EXPIRES, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
+class TimeStamps:
+    """A data container that represents the "Time-Stamps" (833) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    sip_request_timestamp: datetime.datetime = None
+    sip_response_timestamp: datetime.datetime = None
+    sip_request_timestamp_fraction: int = None
+    sip_response_timestamp_fraction: int = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("sip_request_timestamp", AVP_TGPP_SIP_REQUEST_TIMESTAMP, VENDOR_TGPP),
+        AvpGenDef("sip_response_timestamp", AVP_TGPP_SIP_RESPONSE_TIMESTAMP, VENDOR_TGPP),
+        AvpGenDef("sip_request_timestamp_fraction", AVP_TGPP_SIP_REQUEST_TIMESTAMP_FRACTION, VENDOR_TGPP),
+        AvpGenDef("sip_response_timestamp_fraction", AVP_TGPP_SIP_RESPONSE_TIMESTAMP_FRACTION, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
+class InterOperatorIdentifier:
+    """A data container that represents the "Inter-Operator-Identifier" (838) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    originating_ioi: str = None
+    terminating_ioi: str = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("originating_ioi", AVP_TGPP_ORIGINATING_IOI, VENDOR_TGPP),
+        AvpGenDef("terminating_ioi", AVP_TGPP_TERMINATING_IOI, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
+class SdpMediaComponent:
+    """A data container that represents the "SDP-Media-Component" (843) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    sdp_media_name: str = None
+    sdp_media_description: list[str] = dataclasses.field(default_factory=list)
+    local_gw_inserted_indication: int = None
+    ip_realm_default_indication: int = None
+    transcoder_inserted_indication: int = None
+    media_initiator_flag: int = None
+    media_initiator_party: str = None
+    tgpp_charging_id: bytes = None
+    access_network_charging_identifier_value: bytes = None
+    sdp_type: int = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("sdp_media_name", AVP_TGPP_SDP_MEDIA_NAME, VENDOR_TGPP),
+        AvpGenDef("sdp_media_description", AVP_TGPP_SDP_MEDIA_DESCRIPTION, VENDOR_TGPP),
+        AvpGenDef("local_gw_inserted_indication", AVP_TGPP_LOCAL_GW_INSERTED_INDICATOR, VENDOR_TGPP),
+        AvpGenDef("ip_realm_default_indication", AVP_TGPP_IP_REALM_DEFAULT_INDICATOR, VENDOR_TGPP),
+        AvpGenDef("transcoder_inserted_indication", AVP_TGPP_TRANSCODER_INSERTED_INDICATOR, VENDOR_TGPP),
+        AvpGenDef("media_initiator_flag", AVP_TGPP_MEDIA_INITIATOR_FLAG, VENDOR_TGPP),
+        AvpGenDef("media_initiator_party", AVP_TGPP_MEDIA_INITIATOR_PARTY, VENDOR_TGPP),
+        AvpGenDef("tgpp_charging_id", AVP_TGPP_3GPP_CHARGING_ID, VENDOR_TGPP),
+        AvpGenDef("access_network_charging_identifier_value", AVP_TGPP_ACCESS_NETWORK_CHARGING_IDENTIFIER_VALUE, VENDOR_TGPP),
+        AvpGenDef("sdp_type", AVP_TGPP_SDP_TYPE, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
+class ApplicationServerInformation:
+    """A data container that represents the "Application-Server-Information" (850) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    application_server: str = None
+    application_provided_called_party_address: list[str] = dataclasses.field(default_factory=list)
+    status_as_code: int = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("application_server", AVP_TGPP_APPLICATION_SERVER, VENDOR_TGPP),
+        AvpGenDef("application_provided_called_party_address", AVP_TGPP_APPLICATION_PROVIDED_CALLED_PARTY_ADDRESS, VENDOR_TGPP),
+        AvpGenDef("status_as_code", AVP_TGPP_STATUS_AS_CODE, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
+class TrunkGroupId:
+    """A data container that represents the "Application-Server-Information" (850) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    incoming_trunk_group_id: str = None
+    outgoing_trunk_group_id: str = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("incoming_trunk_group_id", AVP_TGPP_INCOMING_TRUNK_GROUP_ID, VENDOR_TGPP),
+        AvpGenDef("outgoing_trunk_group_id", AVP_TGPP_OUTGOING_TRUNK_GROUP_ID, VENDOR_TGPP)
+    )
+
+
+@dataclasses.dataclass
 class PsFurnishChargingInformation:
     """A data container that represents the "PS-Furnish-Charging-Information" (865) grouped AVP.
 
@@ -1144,6 +1283,26 @@ class PsFurnishChargingInformation:
         AvpGenDef("tgpp_charging_id", AVP_TGPP_3GPP_CHARGING_ID, is_required=True),
         AvpGenDef("ps_free_format_data", AVP_TGPP_PS_FREE_FORMAT_DATA, VENDOR_TGPP, is_required=True),
         AvpGenDef("ps_append_free_format_data", AVP_TGPP_PS_APPEND_FREE_FORMAT_DATA, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
+class MessageBody:
+    """A data container that represents the "Message-Body" (889) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    content_type: str = None
+    content_length: int = None
+    content_disposition: str = None
+    originator: int = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("content_type", AVP_TGPP_CONTENT_TYPE, VENDOR_TGPP, is_required=True),
+        AvpGenDef("content_length", AVP_TGPP_CONTENT_LENGTH, VENDOR_TGPP, is_required=True),
+        AvpGenDef("content_disposition", AVP_TGPP_CONTENT_DISPOSITION, VENDOR_TGPP),
+        AvpGenDef("originator", AVP_TGPP_ORIGINATOR, VENDOR_TGPP),
     )
 
 
@@ -1274,6 +1433,40 @@ class TimeQuotaMechanism:
     avp_def: dataclasses.InitVar[AvpGenType] = (
         AvpGenDef("time_quota_type", AVP_TGPP_TIME_QUOTA_TYPE, VENDOR_TGPP, is_required=True),
         AvpGenDef("base_time_interval", AVP_TGPP_BASE_TIME_INTERVAL, VENDOR_TGPP, is_required=True),
+    )
+
+
+@dataclasses.dataclass
+class SdpTimestamps:
+    """A data container that represents the "SDP-Timestamps" (1273) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    sdp_offer_timestamp: datetime.datetime = None
+    sdp_answer_timestamp: datetime.datetime = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("sdp_offer_timestamp", AVP_TGPP_SDP_OFFER_TIMESTAMP, VENDOR_TGPP),
+        AvpGenDef("sdp_answer_timestamp", AVP_TGPP_SDP_ANSWER_TIMESTAMP, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
+class EarlyMediaDescription:
+    """A data container that represents the "Early-Media-Description" (1272) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    sdp_timestamps: SdpTimestamps = None
+    sdp_media_component: list[SdpMediaComponent] = dataclasses.field(default_factory=list)
+    sdp_session_description: list[str] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("sdp_timestamps", AVP_TGPP_SDP_TIMESTAMPS, VENDOR_TGPP, type_class=SdpTimestamps),
+        AvpGenDef("sdp_media_component", AVP_TGPP_SDP_MEDIA_COMPONENT, VENDOR_TGPP, type_class=SdpMediaComponent),
+        AvpGenDef("sdp_session_description", AVP_TGPP_SDP_SESSION_DESCRIPTION, VENDOR_TGPP),
     )
 
 
@@ -1532,6 +1725,56 @@ class ServingNode:
 
 
 @dataclasses.dataclass
+class NniInformation:
+    """A data container that represents the "NNI-Information" (2703) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    session_direction: int = None
+    nni_type: int = None
+    relationship_mode: int = None
+    neighbour_node_address: str = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("session_direction", AVP_TGPP_SESSION_DIRECTION, VENDOR_TGPP),
+        AvpGenDef("nni_type", AVP_TGPP_NNI_TYPE, VENDOR_TGPP),
+        AvpGenDef("relationship_mode", AVP_TGPP_RELATIONSHIP_MODE, VENDOR_TGPP),
+        AvpGenDef("neighbour_node_address", AVP_TGPP_NEIGHBOUR_NODE_ADDRESS, VENDOR_TGPP)
+    )
+
+
+@dataclasses.dataclass
+class AccessTransferInformation:
+    """A data container that represents the "Access-Transfer-Information" (2709) grouped AVP.
+
+    33GPP TS 32.299 version 16.2.0
+    """
+    access_transfer_type: int = None
+    access_network_information: list[str] = dataclasses.field(default_factory=list)
+    cellular_network_information: bytes = None
+    inter_ue_transfer: int = None
+    user_equipment_info: UserEquipmentInfo = None
+    instance_id: str = None
+    related_ims_charging_identifier: str = None
+    related_ims_charging_identifier_node: str = None
+    change_time: datetime.datetime = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("access_transfer_type", AVP_TGPP_ACCESS_TRANSFER_TYPE, VENDOR_TGPP),
+        AvpGenDef("access_network_information", AVP_TGPP_ACCESS_NETWORK_INFORMATION, VENDOR_TGPP),
+        AvpGenDef("cellular_network_information", AVP_TGPP_CELLULAR_NETWORK_INFORMATION, VENDOR_TGPP),
+        AvpGenDef("inter_ue_transfer", AVP_TGPP_INTER_UE_TRANSFER, VENDOR_TGPP),
+        AvpGenDef("user_equipment_info", AVP_USER_EQUIPMENT_INFO, type_class=UserEquipmentInfo),
+        AvpGenDef("instance_id", AVP_TGPP_INSTANCE_ID, VENDOR_TGPP),
+        AvpGenDef("related_ims_charging_identifier", AVP_TGPP_RELATED_IMS_CHARGING_IDENTIFIER, VENDOR_TGPP),
+        AvpGenDef("related_ims_charging_identifier_node", AVP_TGPP_RELATED_IMS_CHARGING_IDENTIFIER_NODE, VENDOR_TGPP),
+        AvpGenDef("change_time", AVP_TGPP_CHANGE_TIME, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
 class TwanUserLocationInfo:
     """A data container that represents the "TWAN-User-Location-Info" (2714) grouped AVP.
 
@@ -1657,6 +1900,22 @@ class AnnouncementInformation:
 
 
 @dataclasses.dataclass
+class CalledIdentityChange:
+    """A data container that represents the "Called-Identity-Change" (3917) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    called_identity: str = None
+    change_time: datetime.datetime = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("called_identity", AVP_TGPP_CALLED_IDENTITY, VENDOR_TGPP),
+        AvpGenDef("change_time", AVP_TGPP_CHANGE_TIME, VENDOR_TGPP)
+    )
+
+
+@dataclasses.dataclass
 class UwanUserLocationInfo:
     """A data container that represents the "UWAN-User-Location-Info" (3918) grouped AVP.
 
@@ -1776,6 +2035,24 @@ class ServingPlmnRateControl:
     avp_def: dataclasses.InitVar[AvpGenType] = (
         AvpGenDef("uplink_rate_limit", AVP_TGPP_UPLINK_RATE_LIMIT, VENDOR_TGPP),
         AvpGenDef("downlink_rate_limit", AVP_TGPP_DOWNLINK_RATE_LIMIT, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
+class AccessNetworkInfoChange:
+    """A data container that represents the "Access-Network-Info-Change" (4401) grouped AVP.
+
+    33GPP TS 32.299 version 16.2.0
+    """
+    access_network_information: list[str] = dataclasses.field(default_factory=list)
+    cellular_network_information: bytes = None
+    change_time: datetime.datetime = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("access_network_information", AVP_TGPP_ACCESS_NETWORK_INFORMATION, VENDOR_TGPP),
+        AvpGenDef("cellular_network_information", AVP_TGPP_CELLULAR_NETWORK_INFORMATION, VENDOR_TGPP),
+        AvpGenDef("change_time", AVP_TGPP_CHANGE_TIME, VENDOR_TGPP),
     )
 
 
@@ -2441,6 +2718,22 @@ class TariffInformation:
 
 
 @dataclasses.dataclass
+class RealTimeTariffInformation:
+    """A data container that represents the "Real-Time-Tariff-Information" (2305) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    tariff_information: TariffInformation = None
+    tariff_xml: str = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("tariff_information", AVP_TGPP_TARIFF_INFORMATION, VENDOR_TGPP, type_class=TariffInformation),
+        AvpGenDef("tariff_xml", AVP_TGPP_TARIFF_XML, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
 class AocService:
     """A data container that represents the "AoC-Service" (2311) grouped AVP.
 
@@ -2493,6 +2786,124 @@ class AocInformation:
 
 
 @dataclasses.dataclass
+class ImsInformation:
+    """A data container that represents the "IMS-Information" (876) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    event_type: EventType = None
+    role_of_node: int = None
+    node_functionality: int = None
+    user_session_id: str = None
+    outgoing_session_id: str = None
+    session_priority: int = None
+    calling_party_address: list[str] = dataclasses.field(default_factory=list)
+    called_party_address: str = None
+    called_asserted_identity: list[str] = dataclasses.field(default_factory=list)
+    called_identity_change: CalledIdentityChange = None
+    number_portability_routing_information: str = None
+    carrier_select_routing_information: str = None
+    alternate_charged_party_address: str = None
+    requested_party_address: list[str] = dataclasses.field(default_factory=list)
+    associated_uri: list[str] = dataclasses.field(default_factory=list)
+    time_stamps: TimeStamps = None
+    application_server_information: list[ApplicationServerInformation] = dataclasses.field(default_factory=list)
+    inter_operator_identifier: list[InterOperatorIdentifier] = dataclasses.field(default_factory=list)
+    transit_ioi_list: list[str] = dataclasses.field(default_factory=list)
+    ims_charging_identifier: str = None
+    sdp_session_description: list[str] = dataclasses.field(default_factory=list)
+    sdp_media_component: list[SdpMediaComponent] = dataclasses.field(default_factory=list)
+    served_party_ip_address: str = None
+    server_capabilities: ServerCapabilities = None
+    trunk_group_id: TrunkGroupId = None
+    bearer_service: bytes = None
+    service_id: str = None
+    service_specific_info: list[ServiceSpecificInfo] = dataclasses.field(default_factory=list)
+    message_body: list[MessageBody] = dataclasses.field(default_factory=list)
+    cause_code: int = None
+    reason_header: list[str] = dataclasses.field(default_factory=list)
+    access_network_information: list[str] = dataclasses.field(default_factory=list)
+    cellular_network_information: bytes = None
+    early_media_description: list[EarlyMediaDescription] = dataclasses.field(default_factory=list)
+    ims_communication_service_identifier: str = None
+    ims_application_reference_identifier: str = None
+    online_charging_flag: int = None
+    real_time_tariff_information: RealTimeTariffInformation = None
+    account_expiration: datetime.datetime = None
+    initial_ims_charging_identifier: str = None
+    nni_information: list[NniInformation] = dataclasses.field(default_factory=list)
+    from_address: str = None
+    ims_emergency_indicator: int = None
+    ims_visited_network_identifier: str = None
+    access_network_info_change: list[AccessNetworkInfoChange] = dataclasses.field(default_factory=list)
+    access_transfer_information: list[AccessTransferInformation] = dataclasses.field(default_factory=list)
+    related_ims_charging_identifier: str = None
+    related_ims_charging_identifier_node: str = None
+    route_header_received: str = None
+    route_header_transmitted: str = None
+    instance_id: str = None
+    tad_identifier: int = None
+    fe_identifier_list: str = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("event_type", AVP_TGPP_EVENT_TYPE, VENDOR_TGPP, type_class=EventType),
+        AvpGenDef("role_of_node", AVP_TGPP_ROLE_OF_NODE, VENDOR_TGPP),
+        AvpGenDef("node_functionality", AVP_TGPP_NODE_FUNCTIONALITY, VENDOR_TGPP, is_required=True),
+        AvpGenDef("user_session_id", AVP_TGPP_USER_SESSION_ID, VENDOR_TGPP),
+        AvpGenDef("outgoing_session_id", AVP_TGPP_OUTGOING_SESSION_ID, VENDOR_TGPP),
+        AvpGenDef("session_priority", AVP_TGPP_SESSION_PRIORITY, VENDOR_TGPP),
+        AvpGenDef("calling_party_address", AVP_TGPP_CALLING_PARTY_ADDRESS, VENDOR_TGPP),
+        AvpGenDef("called_party_address", AVP_TGPP_CALLED_PARTY_ADDRESS, VENDOR_TGPP),
+        AvpGenDef("called_asserted_identity", AVP_TGPP_CALLED_ASSERTED_IDENTITY, VENDOR_TGPP),
+        AvpGenDef("called_identity_change", AVP_TGPP_CALLED_IDENTITY_CHANGE, VENDOR_TGPP, type_class=CalledIdentityChange),
+        AvpGenDef("number_portability_routing_information", AVP_TGPP_NUMBER_PORTABILITY_ROUTING_INFORMATION, VENDOR_TGPP),
+        AvpGenDef("carrier_select_routing_information", AVP_TGPP_CARRIER_SELECT_ROUTING_INFORMATION, VENDOR_TGPP),
+        AvpGenDef("alternate_charged_party_address", AVP_TGPP_ALTERNATE_CHARGED_PARTY_ADDRESS, VENDOR_TGPP),
+        AvpGenDef("requested_party_address", AVP_TGPP_REQUESTED_PARTY_ADDRESS, VENDOR_TGPP),
+        AvpGenDef("associated_uri", AVP_TGPP_ASSOCIATED_URI, VENDOR_TGPP),
+        AvpGenDef("time_stamps", AVP_TGPP_TIME_STAMPS, VENDOR_TGPP, type_class=TimeStamps),
+        AvpGenDef("application_server_information", AVP_TGPP_APPLICATION_SERVER_INFORMATION, VENDOR_TGPP, type_class=ApplicationServerInformation),
+        AvpGenDef("inter_operator_identifier", AVP_TGPP_INTER_OPERATOR_IDENTIFIER, VENDOR_TGPP, type_class=InterOperatorIdentifier),
+        AvpGenDef("transit_ioi_list", AVP_TGPP_TRANSIT_IOI_LIST, VENDOR_TGPP),
+        AvpGenDef("ims_charging_identifier", AVP_TGPP_IMS_CHARGING_IDENTIFIER, VENDOR_TGPP),
+        AvpGenDef("sdp_session_description", AVP_TGPP_SDP_SESSION_DESCRIPTION, VENDOR_TGPP),
+        AvpGenDef("sdp_media_component", AVP_TGPP_SDP_MEDIA_COMPONENT, VENDOR_TGPP, type_class=SdpMediaComponent),
+        AvpGenDef("served_party_ip_address", AVP_TGPP_SERVED_PARTY_IP_ADDRESS, VENDOR_TGPP),
+        AvpGenDef("server_capabilities", AVP_TGPP_SERVER_CAPABILITIES, VENDOR_TGPP, type_class=ServerCapabilities),
+        AvpGenDef("trunk_group_id", AVP_TGPP_TRUNK_GROUP_ID, VENDOR_TGPP, type_class=TrunkGroupId),
+        AvpGenDef("bearer_service", AVP_TGPP_BEARER_SERVICE, VENDOR_TGPP),
+        AvpGenDef("service_id", AVP_TGPP_SERVICE_ID, VENDOR_TGPP),
+        AvpGenDef("service_specific_info", AVP_TGPP_SERVICE_SPECIFIC_INFO, VENDOR_TGPP, type_class=ServiceSpecificInfo),
+        AvpGenDef("message_body", AVP_TGPP_MESSAGE_BODY, VENDOR_TGPP, type_class=MessageBody),
+        AvpGenDef("cause_code", AVP_TGPP_CAUSE_CODE, VENDOR_TGPP),
+        AvpGenDef("reason_header", AVP_TGPP_REASON_HEADER, VENDOR_TGPP),
+        AvpGenDef("access_network_information", AVP_TGPP_ACCESS_NETWORK_INFORMATION, VENDOR_TGPP),
+        AvpGenDef("cellular_network_information", AVP_TGPP_CELLULAR_NETWORK_INFORMATION, VENDOR_TGPP),
+        AvpGenDef("early_media_description", AVP_TGPP_EARLY_MEDIA_DESCRIPTION, VENDOR_TGPP, type_class=EarlyMediaDescription),
+        AvpGenDef("ims_communication_service_identifier", AVP_TGPP_IMS_COMMUNICATION_SERVICE_IDENTIFIER, VENDOR_TGPP),
+        AvpGenDef("ims_application_reference_identifier", AVP_TGPP_IMS_APPLICATION_REFERENCE_IDENTIFIER, VENDOR_TGPP),
+        AvpGenDef("online_charging_flag", AVP_TGPP_ONLINE_CHARGING_FLAG, VENDOR_TGPP),
+        AvpGenDef("real_time_tariff_information", AVP_TGPP_REAL_TIME_TARIFF_INFORMATION, VENDOR_TGPP, type_class=RealTimeTariffInformation),
+        AvpGenDef("account_expiration", AVP_TGPP_ACCOUNT_EXPIRATION, VENDOR_TGPP),
+        AvpGenDef("initial_ims_charging_identifier", AVP_TGPP_INITIAL_IMS_CHARGING_IDENTIFIER, VENDOR_TGPP),
+        AvpGenDef("nni_information", AVP_TGPP_NNI_INFORMATION, VENDOR_TGPP, type_class=NniInformation),
+        AvpGenDef("from_address", AVP_TGPP_FROM_ADDRESS, VENDOR_TGPP),
+        AvpGenDef("ims_emergency_indicator", AVP_TGPP_IMS_EMERGENCY_INDICATOR, VENDOR_TGPP),
+        AvpGenDef("ims_visited_network_identifier", AVP_TGPP_IMS_VISITED_NETWORK_IDENTIFIER, VENDOR_TGPP),
+        AvpGenDef("access_network_info_change", AVP_TGPP_ACCESS_NETWORK_INFO_CHANGE, VENDOR_TGPP, type_class=AccessNetworkInfoChange),
+        AvpGenDef("access_transfer_information", AVP_TGPP_ACCESS_TRANSFER_INFORMATION, VENDOR_TGPP, type_class=AccessTransferInformation),
+        AvpGenDef("related_ims_charging_identifier", AVP_TGPP_RELATED_IMS_CHARGING_IDENTIFIER, VENDOR_TGPP),
+        AvpGenDef("related_ims_charging_identifier_node", AVP_TGPP_RELATED_IMS_CHARGING_IDENTIFIER_NODE, VENDOR_TGPP),
+        AvpGenDef("route_header_received", AVP_TGPP_ROUTE_HEADER_RECEIVED, VENDOR_TGPP),
+        AvpGenDef("route_header_transmitted", AVP_TGPP_ROUTE_HEADER_TRANSMITTED, VENDOR_TGPP),
+        AvpGenDef("instance_id", AVP_TGPP_INSTANCE_ID, VENDOR_TGPP),
+        AvpGenDef("tad_identifier", AVP_TGPP_TAD_IDENTIFIER, VENDOR_TGPP),
+        AvpGenDef("fe_identifier_list", AVP_TGPP_FE_IDENTIFIER_LIST, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
 class ServiceInformation:
     """A data container that represents the "Service-Information" (873) grouped AVP.
 
@@ -2502,8 +2913,9 @@ class ServiceInformation:
     aoc_information: AocInformation = None
     ps_information: PsInformation = None
     sms_information: SmsInformation = None
+    ims_information: ImsInformation = None
+
     # Awaiting future implementation
-    # ims_information: ImsInformation = None
     # mms_information: MmsInformation = None
     # lcs_information: LcsInformation = None
     # poc_information: PocInformation = None
@@ -2524,4 +2936,5 @@ class ServiceInformation:
         AvpGenDef("aoc_information", AVP_TGPP_AOC_INFORMATION, VENDOR_TGPP, type_class=AocInformation),
         AvpGenDef("ps_information", AVP_TGPP_PS_INFORMATION, VENDOR_TGPP, type_class=PsInformation),
         AvpGenDef("sms_information", AVP_TGPP_SMS_INFORMATION, VENDOR_TGPP, type_class=SmsInformation),
+        AvpGenDef("ims_information", AVP_TGPP_SMS_INFORMATION, VENDOR_TGPP, type_class=ImsInformation),
     )
