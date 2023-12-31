@@ -1323,6 +1323,24 @@ class AddressDomain:
 
 
 @dataclasses.dataclass
+class OriginatorAddress:
+    """A data container that represents the "Originator-Address" (886) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    address_type: int = None
+    address_data: str = None
+    address_domain: AddressDomain = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("address_type", AVP_TGPP_ADDRESS_TYPE, VENDOR_TGPP),
+        AvpGenDef("address_data", AVP_TGPP_ADDRESS_DATA, VENDOR_TGPP),
+        AvpGenDef("address_domain", AVP_TGPP_ADDRESS_DOMAIN, VENDOR_TGPP, type_class=AddressDomain),
+    )
+
+
+@dataclasses.dataclass
 class QosInformation:
     """A data container that represents the "QoS-Information" (1016) grouped AVP.
 
@@ -1363,6 +1381,60 @@ class RecipientAddress:
         AvpGenDef("address_data", AVP_TGPP_ADDRESS_DATA, VENDOR_TGPP),
         AvpGenDef("address_domain", AVP_TGPP_ADDRESS_DOMAIN, VENDOR_TGPP, type_class=AddressDomain),
         AvpGenDef("addressee_type", AVP_TGPP_ADDRESSEE_TYPE, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
+class AdditionalContentInformation:
+    """A data container that represents the "Additional-Content-Information" (1207) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    type_number: int = None
+    additional_type_information: str = None
+    content_size: int = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("type_number", AVP_TGPP_TYPE_NUMBER, VENDOR_TGPP),
+        AvpGenDef("additional_type_information", AVP_TGPP_ADDITIONAL_TYPE_INFORMATION, VENDOR_TGPP),
+        AvpGenDef("content_size", AVP_TGPP_CONTENT_SIZE, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
+class MmContentType:
+    """A data container that represents the "MM-Content-Type" (1203) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    type_number: int = None
+    additional_type_information: str = None
+    content_size: int = None
+    additional_content_information: list[AdditionalContentInformation] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("type_number", AVP_TGPP_TYPE_NUMBER, VENDOR_TGPP),
+        AvpGenDef("additional_type_information", AVP_TGPP_ADDITIONAL_TYPE_INFORMATION, VENDOR_TGPP),
+        AvpGenDef("content_size", AVP_TGPP_CONTENT_SIZE, VENDOR_TGPP),
+        AvpGenDef("additional_content_information", AVP_TGPP_ADDITIONAL_CONTENT_INFORMATION, VENDOR_TGPP, type_class=AdditionalContentInformation),
+    )
+
+
+@dataclasses.dataclass
+class MessageClass:
+    """A data container that represents the "Message-Class" (1213) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    class_identifier: int = None
+    token_text: str = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("class_identifier", AVP_TGPP_CLASS_IDENTIFIER, VENDOR_TGPP),
+        AvpGenDef("token_text", AVP_TGPP_TOKEN_TEXT, VENDOR_TGPP),
     )
 
 
@@ -2904,6 +2976,58 @@ class ImsInformation:
 
 
 @dataclasses.dataclass
+class MmsInformation:
+    """A data container that represents the "Service-Information" (877) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    originator_address: OriginatorAddress = None
+    recipient_address: list[RecipientAddress] = dataclasses.field(default_factory=list)
+    submission_time: datetime.datetime = None
+    mm_content_type: MmContentType = None
+    priority: int = None
+    message_id: str = None
+    message_type: int = None
+    message_size: int = None
+    message_class: MessageClass = None
+    delivery_report_requested: int = None
+    read_reply_report_requested: int = None
+    mmbox_storage_requested: int = None
+    applic_id: str = None
+    reply_applic_id: str = None
+    aux_applic_info: str = None
+    content_class: int = None
+    drm_content: int = None
+    adaptations: int = None
+    vasp_id: str = None
+    vas_id: str = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("originator_address", AVP_TGPP_ORIGINATOR_ADDRESS, VENDOR_TGPP, type_class=OriginatorAddress),
+        AvpGenDef("recipient_address", AVP_TGPP_RECIPIENT_ADDRESS, VENDOR_TGPP, type_class=RecipientAddress),
+        AvpGenDef("submission_time", AVP_TGPP_SUBMISSION_TIME, VENDOR_TGPP),
+        AvpGenDef("mm_content_type", AVP_TGPP_MM_CONTENT_TYPE, VENDOR_TGPP, type_class=MmContentType),
+        AvpGenDef("priority", AVP_TGPP_PRIORITY, VENDOR_TGPP),
+        AvpGenDef("message_id", AVP_TGPP_MESSAGE_ID, VENDOR_TGPP),
+        AvpGenDef("message_type", AVP_TGPP_MESSAGE_TYPE, VENDOR_TGPP),
+        AvpGenDef("message_size", AVP_TGPP_MESSAGE_SIZE, VENDOR_TGPP),
+        AvpGenDef("message_class", AVP_TGPP_MESSAGE_CLASS, VENDOR_TGPP, type_class=MessageClass),
+        AvpGenDef("delivery_report_requested", AVP_TGPP_DELIVERY_REPORT_REQUESTED, VENDOR_TGPP),
+        AvpGenDef("read_reply_report_requested", AVP_TGPP_READ_REPLY_REPORT_REQUESTED, VENDOR_TGPP),
+        AvpGenDef("mmbox_storage_requested", AVP_TGPP_MMBOX_STORAGE_REQUESTED, VENDOR_TGPP),
+        AvpGenDef("applic_id", AVP_TGPP_APPLIC_ID, VENDOR_TGPP),
+        AvpGenDef("reply_applic_id", AVP_TGPP_REPLY_APPLIC_ID, VENDOR_TGPP),
+        AvpGenDef("aux_applic_info", AVP_TGPP_AUX_APPLIC_INFO, VENDOR_TGPP),
+        AvpGenDef("content_class", AVP_TGPP_CONTENT_CLASS, VENDOR_TGPP),
+        AvpGenDef("drm_content", AVP_TGPP_DRM_CONTENT, VENDOR_TGPP),
+        AvpGenDef("adaptations", AVP_TGPP_ADAPTATIONS, VENDOR_TGPP),
+        AvpGenDef("vasp_id", AVP_TGPP_VASP_ID, VENDOR_TGPP),
+        AvpGenDef("vas_id", AVP_TGPP_VAS_ID, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
 class ServiceInformation:
     """A data container that represents the "Service-Information" (873) grouped AVP.
 
@@ -2914,6 +3038,7 @@ class ServiceInformation:
     ps_information: PsInformation = None
     sms_information: SmsInformation = None
     ims_information: ImsInformation = None
+    mms_information: MmsInformation = None
 
     # Awaiting future implementation
     # mms_information: MmsInformation = None
@@ -2936,5 +3061,6 @@ class ServiceInformation:
         AvpGenDef("aoc_information", AVP_TGPP_AOC_INFORMATION, VENDOR_TGPP, type_class=AocInformation),
         AvpGenDef("ps_information", AVP_TGPP_PS_INFORMATION, VENDOR_TGPP, type_class=PsInformation),
         AvpGenDef("sms_information", AVP_TGPP_SMS_INFORMATION, VENDOR_TGPP, type_class=SmsInformation),
-        AvpGenDef("ims_information", AVP_TGPP_SMS_INFORMATION, VENDOR_TGPP, type_class=ImsInformation),
+        AvpGenDef("ims_information", AVP_TGPP_IMS_INFORMATION, VENDOR_TGPP, type_class=ImsInformation),
+        AvpGenDef("mms_information", AVP_TGPP_MMS_INFORMATION, VENDOR_TGPP, type_class=MmsInformation),
     )
