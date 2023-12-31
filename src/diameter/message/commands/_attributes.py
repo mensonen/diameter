@@ -1280,9 +1280,107 @@ class PsFurnishChargingInformation:
 
     # noinspection PyDataclass
     avp_def: dataclasses.InitVar[AvpGenType] = (
-        AvpGenDef("tgpp_charging_id", AVP_TGPP_3GPP_CHARGING_ID, is_required=True),
+        AvpGenDef("tgpp_charging_id", AVP_TGPP_3GPP_CHARGING_ID, VENDOR_TGPP, is_required=True),
         AvpGenDef("ps_free_format_data", AVP_TGPP_PS_FREE_FORMAT_DATA, VENDOR_TGPP, is_required=True),
         AvpGenDef("ps_append_free_format_data", AVP_TGPP_PS_APPEND_FREE_FORMAT_DATA, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
+class LcsClientName:
+    """A data container that represents the "LCS-Client-Name" (1235) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    lcs_data_coding_scheme: str = None
+    lcs_name_string: str = None
+    lcs_format_indicator: int = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("lcs_data_coding_scheme", AVP_TGPP_LCS_DATA_CODING_SCHEME, VENDOR_TGPP),
+        AvpGenDef("lcs_name_string", AVP_TGPP_LCS_NAME_STRING, VENDOR_TGPP),
+        AvpGenDef("lcs_format_indicator", AVP_TGPP_LCS_FORMAT_INDICATOR, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
+class LcsRequestorId:
+    """A data container that represents the "LCS-Requestor-ID" (1239) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    lcs_data_coding_scheme: str = None
+    lcs_requestor_id_string: str = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("lcs_data_coding_scheme", AVP_TGPP_LCS_DATA_CODING_SCHEME, VENDOR_TGPP),
+        AvpGenDef("lcs_requestor_id_string", AVP_TGPP_LCS_REQUESTOR_ID_STRING, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
+class LcsClientId:
+    """A data container that represents the "LCS-Client-ID" (1232) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    lcs_client_type: int = None
+    lcs_client_external_id: str = None
+    lcs_client_dialed_by_ms: str = None
+    lcs_client_name: LcsClientName = None
+    lcs_apn: str = None
+    lcs_requestor_id: LcsRequestorId = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("lcs_client_type", AVP_TGPP_LCS_CLIENT_TYPE, VENDOR_TGPP),
+        AvpGenDef("lcs_client_external_id", AVP_TGPP_LCS_CLIENT_EXTERNAL_ID, VENDOR_TGPP),
+        AvpGenDef("lcs_client_dialed_by_ms", AVP_TGPP_LCS_CLIENT_DIALED_BY_MS, VENDOR_TGPP),
+        AvpGenDef("lcs_client_name", AVP_TGPP_LCS_CLIENT_NAME, VENDOR_TGPP, type_class=LcsClientName),
+        AvpGenDef("lcs_apn", AVP_TGPP_LCS_APN, VENDOR_TGPP),
+        AvpGenDef("lcs_requestor_id", AVP_TGPP_LCS_REQUESTOR_ID, VENDOR_TGPP, type_class=LcsRequestorId),
+    )
+
+
+@dataclasses.dataclass
+class LocationType:
+    """A data container that represents the "Location-Type" (1244) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    location_estimate_type: int = None
+    deferred_location_event_type: str = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("location_estimate_type", AVP_TGPP_LOCATION_ESTIMATE_TYPE, VENDOR_TGPP),
+        AvpGenDef("deferred_location_event_type", AVP_TGPP_DEFERRED_LOCATION_EVENT_TYPE, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
+class LcsInformation:
+    """A data container that represents the "LCS-Information" (878) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    lcs_client_id: LcsClientId = None
+    location_type: LocationType = None
+    location_estimate: bytes = None
+    positioning_data: str = None
+    tgpp_imsi: str = None
+    msisdn: bytes = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("lcs_client_id", AVP_TGPP_LCS_CLIENT_ID, VENDOR_TGPP, type_class=LcsClientId),
+        AvpGenDef("location_type", AVP_TGPP_LOCATION_TYPE, VENDOR_TGPP, type_class=LocationType),
+        AvpGenDef("location_estimate", AVP_TGPP_LOCATION_ESTIMATE, VENDOR_TGPP),
+        AvpGenDef("positioning_data", AVP_TGPP_POSITIONING_DATA, VENDOR_TGPP),
+        AvpGenDef("tgpp_imsi", AVP_TGPP_3GPP_IMSI, VENDOR_TGPP),
+        AvpGenDef("msisdn", AVP_TGPP_MSISDN, VENDOR_TGPP),
     )
 
 
@@ -3039,10 +3137,9 @@ class ServiceInformation:
     sms_information: SmsInformation = None
     ims_information: ImsInformation = None
     mms_information: MmsInformation = None
+    lcs_information: LcsInformation = None
 
     # Awaiting future implementation
-    # mms_information: MmsInformation = None
-    # lcs_information: LcsInformation = None
     # poc_information: PocInformation = None
     # mbms_information: MbmsInformation = None
     # vcs_information: VcsInformation = None
@@ -3063,4 +3160,5 @@ class ServiceInformation:
         AvpGenDef("sms_information", AVP_TGPP_SMS_INFORMATION, VENDOR_TGPP, type_class=SmsInformation),
         AvpGenDef("ims_information", AVP_TGPP_IMS_INFORMATION, VENDOR_TGPP, type_class=ImsInformation),
         AvpGenDef("mms_information", AVP_TGPP_MMS_INFORMATION, VENDOR_TGPP, type_class=MmsInformation),
+        AvpGenDef("lcs_information", AVP_TGPP_LCS_INFORMATION, VENDOR_TGPP, type_class=LcsInformation),
     )
