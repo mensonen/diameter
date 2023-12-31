@@ -1553,6 +1553,70 @@ class ServiceSpecificInfo:
 
 
 @dataclasses.dataclass
+class PocUserRole:
+    """A data container that represents the "PoC-User-Role" (1252) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    poc_user_role_ids: str = None
+    poc_user_role_info_units: int = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("poc_user_role_ids", AVP_TGPP_POC_USER_ROLE_IDS, VENDOR_TGPP),
+        AvpGenDef("poc_user_role_info_units", AVP_TGPP_POC_USER_ROLE_INFO_UNITS, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
+class TalkBurstExchange:
+    """A data container that represents the "Talk-Burst-Exchange" (1255) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    poc_change_time: datetime.datetime = None
+    number_of_talk_bursts: int = None
+    talk_burst_volume: int = None
+    talk_burst_time: int = None
+    number_of_received_talk_bursts: int = None
+    received_talk_burst_volume: int = None
+    received_talk_burst_time: int = None
+    number_of_participants: int = None
+    poc_change_condition: int = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("poc_change_time", AVP_TGPP_POC_CHANGE_TIME, VENDOR_TGPP, is_required=True),
+        AvpGenDef("number_of_talk_bursts", AVP_TGPP_NUMBER_OF_TALK_BURSTS, VENDOR_TGPP),
+        AvpGenDef("talk_burst_volume", AVP_TGPP_TALK_BURST_VOLUME, VENDOR_TGPP),
+        AvpGenDef("talk_burst_time", AVP_TGPP_TALK_BURST_TIME, VENDOR_TGPP),
+        AvpGenDef("number_of_received_talk_bursts", AVP_TGPP_NUMBER_OF_RECEIVED_TALK_BURSTS, VENDOR_TGPP),
+        AvpGenDef("received_talk_burst_volume", AVP_TGPP_RECEIVED_TALK_BURST_VOLUME, VENDOR_TGPP),
+        AvpGenDef("received_talk_burst_time", AVP_TGPP_RECEIVED_TALK_BURST_TIME, VENDOR_TGPP),
+        AvpGenDef("number_of_participants", AVP_TGPP_NUMBER_OF_PARTICIPANTS, VENDOR_TGPP),
+        AvpGenDef("poc_change_condition", AVP_TGPP_POC_CHANGE_CONDITION, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
+class ParticipantGroup:
+    """A data container that represents the "Participant-Group" (1260) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    called_party_address: str = None
+    participant_access_priority: int = None
+    user_participating_type: int = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("called_party_address", AVP_TGPP_CALLED_PARTY_ADDRESS, VENDOR_TGPP),
+        AvpGenDef("participant_access_priority", AVP_TGPP_PARTICIPANT_ACCESS_PRIORITY, VENDOR_TGPP),
+        AvpGenDef("user_participating_type", AVP_TGPP_USER_PARTICIPATING_TYPE, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
 class Trigger:
     """A data container that represents the "Trigger" (1264) grouped AVP.
 
@@ -3126,6 +3190,45 @@ class MmsInformation:
 
 
 @dataclasses.dataclass
+class PocInformation:
+    """A data container that represents the "PoC-Information" (879) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    poc_server_role: int = None
+    poc_session_type: int = None
+    poc_user_role: PocUserRole = None
+    poc_session_initiation_type: int = None
+    poc_event_type: int = None
+    number_of_participants: int = None
+    # this is present for backwards compatibility with 3GPP release 7
+    participants_involved: list[str] = dataclasses.field(default_factory=list)
+    participant_group: list[ParticipantGroup] = dataclasses.field(default_factory=list)
+    talk_burst_exchange: list[TalkBurstExchange] = dataclasses.field(default_factory=list)
+    poc_controlling_address: str = None
+    poc_group_name: str = None
+    poc_session_id: str = None
+    charged_party: str = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("poc_server_role", AVP_TGPP_POC_SERVER_ROLE, VENDOR_TGPP),
+        AvpGenDef("poc_session_type", AVP_TGPP_POC_SESSION_TYPE, VENDOR_TGPP),
+        AvpGenDef("poc_user_role", AVP_TGPP_POC_USER_ROLE, VENDOR_TGPP, type_class=PocUserRole),
+        AvpGenDef("poc_session_initiation_type", AVP_TGPP_POC_SESSION_INITIATION_TYPE, VENDOR_TGPP),
+        AvpGenDef("poc_event_type", AVP_TGPP_POC_EVENT_TYPE, VENDOR_TGPP),
+        AvpGenDef("number_of_participants", AVP_TGPP_NUMBER_OF_PARTICIPANTS, VENDOR_TGPP),
+        AvpGenDef("participants_involved", AVP_TGPP_PARTICIPANTS_INVOLVED, VENDOR_TGPP),
+        AvpGenDef("participant_group", AVP_TGPP_PARTICIPANT_GROUP, VENDOR_TGPP, type_class=ParticipantGroup),
+        AvpGenDef("talk_burst_exchange", AVP_TGPP_TALK_BURST_EXCHANGE, VENDOR_TGPP, type_class=TalkBurstExchange),
+        AvpGenDef("poc_controlling_address", AVP_TGPP_POC_CONTROLLING_ADDRESS, VENDOR_TGPP),
+        AvpGenDef("poc_group_name", AVP_TGPP_POC_GROUP_NAME, VENDOR_TGPP),
+        AvpGenDef("poc_session_id", AVP_TGPP_POC_SESSION_ID, VENDOR_TGPP),
+        AvpGenDef("charged_party", AVP_TGPP_CHARGED_PARTY, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
 class ServiceInformation:
     """A data container that represents the "Service-Information" (873) grouped AVP.
 
@@ -3138,9 +3241,9 @@ class ServiceInformation:
     ims_information: ImsInformation = None
     mms_information: MmsInformation = None
     lcs_information: LcsInformation = None
+    poc_information: PocInformation = None
 
     # Awaiting future implementation
-    # poc_information: PocInformation = None
     # mbms_information: MbmsInformation = None
     # vcs_information: VcsInformation = None
     # mmtel_information: MmtelInformation = None
@@ -3161,4 +3264,5 @@ class ServiceInformation:
         AvpGenDef("ims_information", AVP_TGPP_IMS_INFORMATION, VENDOR_TGPP, type_class=ImsInformation),
         AvpGenDef("mms_information", AVP_TGPP_MMS_INFORMATION, VENDOR_TGPP, type_class=MmsInformation),
         AvpGenDef("lcs_information", AVP_TGPP_LCS_INFORMATION, VENDOR_TGPP, type_class=LcsInformation),
+        AvpGenDef("poc_information", AVP_TGPP_POC_INFORMATION, VENDOR_TGPP, type_class=PocInformation),
     )
