@@ -3229,6 +3229,48 @@ class PocInformation:
 
 
 @dataclasses.dataclass
+class MbmsInformation:
+    """A data container that represents the "MBMS-Information" (880) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    tmgi: bytes = None
+    mbms_service_type: int = None
+    mbms_user_service_type: int = None
+    file_repair_supported: int = None
+    required_mbms_bearer_capabilities: str = None
+    mbms_2g_3g_indicator: int = None
+    rai: str = None
+    mbms_service_area: list[bytes] = dataclasses.field(default_factory=list)
+    mbms_session_identity: bytes = None
+    cn_ip_multicast_distribution: int = None
+    mbms_gw_address: str = None
+    mbms_charged_party: int = None
+    msisdn: list[bytes] = dataclasses.field(default_factory=list)
+    mbms_data_transfer_start: int = None
+    mbms_data_transfer_stop: int = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("tmgi", AVP_TGPP_TMGI, VENDOR_TGPP),
+        AvpGenDef("mbms_service_type", AVP_TGPP_MBMS_SERVICE_TYPE, VENDOR_TGPP),
+        AvpGenDef("mbms_user_service_type", AVP_TGPP_MBMS_USER_SERVICE_TYPE, VENDOR_TGPP),
+        AvpGenDef("file_repair_supported", AVP_TGPP_FILE_REPAIR_SUPPORTED, VENDOR_TGPP),
+        AvpGenDef("required_mbms_bearer_capabilities", AVP_TGPP_REQUIRED_MBMS_BEARER_CAPABILITIES, VENDOR_TGPP),
+        AvpGenDef("mbms_2g_3g_indicator", AVP_TGPP_MBMS_2G_3G_INDICATOR, VENDOR_TGPP),
+        AvpGenDef("rai", AVP_TGPP_RAI, VENDOR_TGPP),
+        AvpGenDef("mbms_service_area", AVP_TGPP_MBMS_SERVICE_AREA, VENDOR_TGPP),
+        AvpGenDef("mbms_session_identity", AVP_TGPP_MBMS_SESSION_IDENTITY, VENDOR_TGPP),
+        AvpGenDef("cn_ip_multicast_distribution", AVP_TGPP_CN_IP_MULTICAST_DISTRIBUTION, VENDOR_TGPP),
+        AvpGenDef("mbms_gw_address", AVP_TGPP_MBMS_GW_ADDRESS, VENDOR_TGPP),
+        AvpGenDef("mbms_charged_party", AVP_TGPP_MBMS_CHARGED_PARTY, VENDOR_TGPP),
+        AvpGenDef("msisdn", AVP_TGPP_MSISDN, VENDOR_TGPP),
+        AvpGenDef("mbms_data_transfer_start", AVP_TGPP_MBMS_DATA_TRANSFER_START, VENDOR_TGPP),
+        AvpGenDef("mbms_data_transfer_stop", AVP_TGPP_MBMS_DATA_TRANSFER_STOP, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
 class ServiceInformation:
     """A data container that represents the "Service-Information" (873) grouped AVP.
 
@@ -3242,9 +3284,9 @@ class ServiceInformation:
     mms_information: MmsInformation = None
     lcs_information: LcsInformation = None
     poc_information: PocInformation = None
+    mbms_information: MbmsInformation = None
 
     # Awaiting future implementation
-    # mbms_information: MbmsInformation = None
     # vcs_information: VcsInformation = None
     # mmtel_information: MmtelInformation = None
     # prose_information: ProseInformation = None
@@ -3265,4 +3307,5 @@ class ServiceInformation:
         AvpGenDef("mms_information", AVP_TGPP_MMS_INFORMATION, VENDOR_TGPP, type_class=MmsInformation),
         AvpGenDef("lcs_information", AVP_TGPP_LCS_INFORMATION, VENDOR_TGPP, type_class=LcsInformation),
         AvpGenDef("poc_information", AVP_TGPP_POC_INFORMATION, VENDOR_TGPP, type_class=PocInformation),
+        AvpGenDef("mbms_information", AVP_TGPP_POC_INFORMATION, VENDOR_TGPP, type_class=MbmsInformation),
     )

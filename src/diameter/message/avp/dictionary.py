@@ -483,6 +483,7 @@ AVP_VENDOR_DICTIONARY[10415] = {
     AVP_TGPP_TERMINATING_IOI: {"name": "Terminating-IOI", "type": AvpUtf8String, "mandatory": True, "vendor": 10415},
     AVP_TGPP_IMS_CHARGING_IDENTIFIER: {"name": "IMS-Charging-Identifier", "type": AvpUtf8String, "mandatory": True, "vendor": 10415},
     AVP_TGPP_IMS_EMERGENCY_INDICATOR: {"name": "IMS-Emergency-Indicator", "type": AvpEnumerated, "mandatory": True, "vendor": 10415},
+    AVP_TGPP_MBMS_CHARGED_PARTY: {"name": "MBMS-Charged-Party", "type": AvpEnumerated, "mandatory": True, "vendor": 10415},
     AVP_TGPP_SDP_SESSION_DESCRIPTION: {"name": "SDP-Session-Description", "type": AvpUtf8String, "mandatory": True, "vendor": 10415},
     AVP_TGPP_SDP_MEDIA_COMPONENT: {"name": "SDP-Media-Component", "type": AvpGrouped, "mandatory": True, "vendor": 10415},
     AVP_TGPP_SDP_MEDIA_NAME: {"name": "SDP-Media-Name", "type": AvpUtf8String, "mandatory": True, "vendor": 10415},
