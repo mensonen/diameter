@@ -3054,6 +3054,52 @@ class AocInformation:
 
 
 @dataclasses.dataclass
+class SupplementaryService:
+    """A data container that represents the "Supplementary-Service" (2048) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    mmtel_service_type: int = None
+    service_mode: int = None
+    number_of_diversions: int = None
+    associated_party_address: str = None
+    service_id: str = None
+    change_time: datetime.datetime = None
+    number_of_participants: int = None
+    participant_action_type: int = None
+    cug_information: bytes = None
+    aoc_information: AocInformation = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("mmtel_service_type", AVP_TGPP_MMTEL_SERVICE_TYPE, VENDOR_TGPP),
+        AvpGenDef("service_mode", AVP_TGPP_SERVICE_MODE, VENDOR_TGPP),
+        AvpGenDef("number_of_diversions", AVP_TGPP_NUMBER_OF_DIVERSIONS, VENDOR_TGPP),
+        AvpGenDef("associated_party_address", AVP_TGPP_ASSOCIATED_PARTY_ADDRESS, VENDOR_TGPP),
+        AvpGenDef("service_id", AVP_TGPP_SERVICE_ID, VENDOR_TGPP),
+        AvpGenDef("change_time", AVP_TGPP_CHANGE_TIME, VENDOR_TGPP),
+        AvpGenDef("number_of_participants", AVP_TGPP_NUMBER_OF_PARTICIPANTS, VENDOR_TGPP),
+        AvpGenDef("participant_action_type", AVP_TGPP_PARTICIPANT_ACTION_TYPE, VENDOR_TGPP),
+        AvpGenDef("cug_information", AVP_TGPP_CUG_INFORMATION, VENDOR_TGPP),
+        AvpGenDef("aoc_information", AVP_TGPP_AOC_SUBSCRIPTION_INFORMATION, VENDOR_TGPP, type_class=AocInformation)
+    )
+
+
+@dataclasses.dataclass
+class MmtelInformation:
+    """A data container that represents the "MMTel-Information" (2030) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    supplementary_service: list[SupplementaryService] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("supplementary_service", AVP_TGPP_SUPPLEMENTARY_SERVICE, VENDOR_TGPP, type_class=SupplementaryService),
+    )
+
+
+@dataclasses.dataclass
 class ImsInformation:
     """A data container that represents the "IMS-Information" (876) grouped AVP.
 
@@ -3356,9 +3402,9 @@ class ServiceInformation:
     poc_information: PocInformation = None
     mbms_information: MbmsInformation = None
     vcs_information: VcsInformation = None
+    mmtel_information: MmtelInformation = None
 
     # Awaiting future implementation
-    # mmtel_information: MmtelInformation = None
     # prose_information: ProseInformation = None
     # service_generic_information: ServiceGenericInformation = None
     # im_information: ImInformation = None
@@ -3379,4 +3425,5 @@ class ServiceInformation:
         AvpGenDef("poc_information", AVP_TGPP_POC_INFORMATION, VENDOR_TGPP, type_class=PocInformation),
         AvpGenDef("mbms_information", AVP_TGPP_POC_INFORMATION, VENDOR_TGPP, type_class=MbmsInformation),
         AvpGenDef("vcs_information", AVP_TGPP_POC_INFORMATION, VENDOR_TGPP, type_class=VcsInformation),
+        AvpGenDef("mmtel_information", AVP_TGPP_POC_INFORMATION, VENDOR_TGPP, type_class=MmtelInformation),
     )
