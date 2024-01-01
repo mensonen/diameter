@@ -2441,6 +2441,40 @@ class FixedUserLocationInfo:
 
 
 @dataclasses.dataclass
+class BasicServiceCode:
+    """A data container that represents the "Basic-Service-Code" (3411) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    bearer_service: bytes = None
+    teleservice: bytes = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("bearer_service", AVP_TGPP_BEARER_SERVICE, VENDOR_TGPP),
+        AvpGenDef("teleservice", AVP_TGPP_TELESERVICE, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
+class IsupCause:
+    """A data container that represents the "ISUP-Cause" (3416) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    isup_cause_location: int = None
+    isup_cause_value: int = None
+    isup_cause_diagnostics: bytes = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("isup_cause_location", AVP_TGPP_ISUP_CAUSE_LOCATION, VENDOR_TGPP),
+        AvpGenDef("isup_cause_value", AVP_TGPP_ISUP_CAUSE_VALUE, VENDOR_TGPP),
+        AvpGenDef("isup_cause_diagnostics", AVP_TGPP_ISUP_CAUSE_DIAGNOSTICS, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
 class RelatedTrigger:
     """A data container that represents the "Related-Trigger" (3926) grouped AVP.
 
@@ -3271,6 +3305,42 @@ class MbmsInformation:
 
 
 @dataclasses.dataclass
+class VcsInformation:
+    """A data container that represents the "VCS-Information" (3410) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    bearer_capability: bytes = None
+    network_call_reference_number: bytes = None
+    msc_address: bytes = None
+    basic_service_code: BasicServiceCode = None
+    isup_location_number: bytes = None
+    vlr_number: bytes = None
+    forwarding_pending: int = None
+    isup_cause: IsupCause = None
+    start_time: datetime.datetime = None
+    start_of_charging: datetime.datetime = None
+    stop_time: datetime.datetime = None
+    ps_free_format_data: bytes = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("bearer_capability", AVP_TGPP_BEARER_CAPABILITY, VENDOR_TGPP),
+        AvpGenDef("network_call_reference_number", AVP_TGPP_NETWORK_CALL_REFERENCE_NUMBER, VENDOR_TGPP),
+        AvpGenDef("msc_address", AVP_TGPP_MSC_ADDRESS, VENDOR_TGPP),
+        AvpGenDef("basic_service_code", AVP_TGPP_BASIC_SERVICE_CODE, VENDOR_TGPP, type_class=BasicServiceCode),
+        AvpGenDef("isup_location_number", AVP_TGPP_ISUP_LOCATION_NUMBER, VENDOR_TGPP),
+        AvpGenDef("vlr_number", AVP_TGPP_VLR_NUMBER, VENDOR_TGPP),
+        AvpGenDef("forwarding_pending", AVP_TGPP_FORWARDING_PENDING, VENDOR_TGPP),
+        AvpGenDef("isup_cause", AVP_TGPP_ISUP_CAUSE, VENDOR_TGPP, type_class=IsupCause),
+        AvpGenDef("start_time", AVP_TGPP_START_TIME, VENDOR_TGPP),
+        AvpGenDef("start_of_charging", AVP_TGPP_START_OF_CHARGING, VENDOR_TGPP),
+        AvpGenDef("stop_time", AVP_TGPP_STOP_TIME, VENDOR_TGPP),
+        AvpGenDef("ps_free_format_data", AVP_TGPP_PS_FREE_FORMAT_DATA, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
 class ServiceInformation:
     """A data container that represents the "Service-Information" (873) grouped AVP.
 
@@ -3285,9 +3355,9 @@ class ServiceInformation:
     lcs_information: LcsInformation = None
     poc_information: PocInformation = None
     mbms_information: MbmsInformation = None
+    vcs_information: VcsInformation = None
 
     # Awaiting future implementation
-    # vcs_information: VcsInformation = None
     # mmtel_information: MmtelInformation = None
     # prose_information: ProseInformation = None
     # service_generic_information: ServiceGenericInformation = None
@@ -3308,4 +3378,5 @@ class ServiceInformation:
         AvpGenDef("lcs_information", AVP_TGPP_LCS_INFORMATION, VENDOR_TGPP, type_class=LcsInformation),
         AvpGenDef("poc_information", AVP_TGPP_POC_INFORMATION, VENDOR_TGPP, type_class=PocInformation),
         AvpGenDef("mbms_information", AVP_TGPP_POC_INFORMATION, VENDOR_TGPP, type_class=MbmsInformation),
+        AvpGenDef("vcs_information", AVP_TGPP_POC_INFORMATION, VENDOR_TGPP, type_class=VcsInformation),
     )
