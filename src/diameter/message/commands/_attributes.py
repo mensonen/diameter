@@ -2475,6 +2475,136 @@ class IsupCause:
 
 
 @dataclasses.dataclass
+class ProSeDirectCommunicationTransmissionDataContainer:
+    """A data container that represents the "ProSe-Direct-Communication-Transmission-Data-Container" (3441) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    local_sequence_number: int = None
+    coverage_status: int = None
+    tgpp_user_location_info: bytes = None
+    accounting_output_octets: int = None
+    change_time: datetime.datetime = None
+    change_condition: int = None
+    visited_plmn_id: bytes = None
+    usage_information_report_sequence_number: int = None
+    radio_resources_indicator: int = None
+    radio_frequency: int = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("local_sequence_number", AVP_TGPP_LOCAL_SEQUENCE_NUMBER, VENDOR_TGPP),
+        AvpGenDef("coverage_status", AVP_TGPP_COVERAGE_STATUS, VENDOR_TGPP),
+        AvpGenDef("tgpp_user_location_info", AVP_TGPP_3GPP_USER_LOCATION_INFO, VENDOR_TGPP),
+        AvpGenDef("accounting_output_octets", AVP_ACCOUNTING_OUTPUT_OCTETS),
+        AvpGenDef("change_time", AVP_TGPP_CHANGE_TIME, VENDOR_TGPP),
+        AvpGenDef("change_condition", AVP_TGPP_CHANGE_CONDITION, VENDOR_TGPP),
+        AvpGenDef("visited_plmn_id", AVP_TGPP_VISITED_PLMN_ID, VENDOR_TGPP),
+        AvpGenDef("usage_information_report_sequence_number", AVP_TGPP_USAGE_INFORMATION_REPORT_SEQUENCE_NUMBER, VENDOR_TGPP),
+        AvpGenDef("radio_resources_indicator", AVP_TGPP_RADIO_RESOURCES_INDICATOR, VENDOR_TGPP),
+        AvpGenDef("radio_frequency", AVP_TGPP_RADIO_FREQUENCY, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
+class LocationInfo:
+    """A data container that represents the "Location-Info" (3460) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    tgpp_user_location_info: bytes = None
+    change_time: datetime.datetime = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("tgpp_user_location_info", AVP_TGPP_3GPP_USER_LOCATION_INFO, VENDOR_TGPP),
+        AvpGenDef("change_time", AVP_TGPP_CHANGE_TIME, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
+class CoverageInfo:
+    """A data container that represents the "Coverage-Info" (3459) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    coverage_status: int = None
+    change_time: datetime.datetime = None
+    lcoation_info: list[LocationInfo] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("coverage_status", AVP_TGPP_COVERAGE_STATUS, VENDOR_TGPP),
+        AvpGenDef("change_time", AVP_TGPP_CHANGE_TIME, VENDOR_TGPP),
+        AvpGenDef("lcoation_info", AVP_TGPP_LOCATION_INFO, VENDOR_TGPP, type_class=LocationInfo),
+    )
+
+
+@dataclasses.dataclass
+class ProSeDirectCommunicationReceptionDataContainer:
+    """A data container that represents the "ProSe-Direct-Communication-Reception-Data-Container" (3461) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    local_sequence_number: int = None
+    coverage_status: int = None
+    tgpp_user_location_info: bytes = None
+    accounting_input_octets: int = None
+    change_time: datetime.datetime = None
+    change_condition: int = None
+    visited_plmn_id: bytes = None
+    usage_information_report_sequence_number: int = None
+    radio_resources_indicator: int = None
+    radio_frequency: int = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("local_sequence_number", AVP_TGPP_LOCAL_SEQUENCE_NUMBER, VENDOR_TGPP),
+        AvpGenDef("coverage_status", AVP_TGPP_COVERAGE_STATUS, VENDOR_TGPP),
+        AvpGenDef("tgpp_user_location_info", AVP_TGPP_3GPP_USER_LOCATION_INFO, VENDOR_TGPP),
+        AvpGenDef("accounting_input_octets", AVP_ACCOUNTING_INPUT_OCTETS),
+        AvpGenDef("change_time", AVP_TGPP_CHANGE_TIME, VENDOR_TGPP),
+        AvpGenDef("change_condition", AVP_TGPP_CHANGE_CONDITION, VENDOR_TGPP),
+        AvpGenDef("visited_plmn_id", AVP_TGPP_VISITED_PLMN_ID, VENDOR_TGPP),
+        AvpGenDef("usage_information_report_sequence_number", AVP_TGPP_USAGE_INFORMATION_REPORT_SEQUENCE_NUMBER, VENDOR_TGPP),
+        AvpGenDef("radio_resources_indicator", AVP_TGPP_RADIO_RESOURCES_INDICATOR, VENDOR_TGPP),
+        AvpGenDef("radio_frequency", AVP_TGPP_RADIO_FREQUENCY, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
+class RadioParameterSetInfo:
+    """A data container that represents the "Radio-Parameter-Set-Values" (3463) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    radio_parameter_set_values: bytes = None
+    change_time: datetime.datetime = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("radio_parameter_set_values", AVP_TGPP_RADIO_PARAMETER_SET_VALUES, VENDOR_TGPP),
+        AvpGenDef("change_time", AVP_TGPP_CHANGE_TIME, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
+class TransmitterInfo:
+    """A data container that represents the "Transmitter-Info" (3468) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    prose_source_ip_address: str = None
+    prose_ue_id: bytes = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("prose_source_ip_address", AVP_TGPP_PROSE_SOURCE_IP_ADDRESS, VENDOR_TGPP),
+        AvpGenDef("prose_ue_id", AVP_TGPP_PROSE_UE_ID, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
 class RelatedTrigger:
     """A data container that represents the "Related-Trigger" (3926) grouped AVP.
 
@@ -3387,6 +3517,118 @@ class VcsInformation:
 
 
 @dataclasses.dataclass
+class ProseInformation:
+    """A data container that represents the "ProSe-Information" (3447) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    supported_features: list[SupportedFeatures] = dataclasses.field(default_factory=list)
+    announcing_ue_hplmn_identifier: str = None
+    announcing_ue_vplmn_identifier: str = None
+    monitoring_ue_hplmn_identifier: str = None
+    monitoring_ue_vplmn_identifier: str = None
+    monitored_hplmn_identifier: str = None
+    role_of_prose_function: int = None
+    prose_app_id: str = None
+    prose_3rd_party_application_id: str = None
+    application_specific_data: bytes = None
+    prose_event_type: int = None
+    prose_direct_discovery_model: int = None
+    prose_function_ip_address: str = None
+    prose_function_id: bytes = None
+    prose_validity_timer: int = None
+    prose_role_of_ue: int = None
+    prose_request_timestamp: datetime.datetime = None
+    pc3_control_protocol_cause: int = None
+    monitoring_ue_identifier: str = None
+    prose_function_plmn_identifier: str = None
+    requestor_plmn_identifier: str = None
+    origin_app_layer_user_id: str = None
+    wlan_link_layer_id: bytes = None
+    requesting_epuid: str = None
+    target_app_layer_user_id: str = None
+    requested_plmn_identifier: str = None
+    time_window: int = None
+    prose_range_class: int = None
+    proximity_alert_indication: int = None
+    proximity_alert_timestamp: datetime.datetime = None
+    proximity_cancellation_timestamp: datetime.datetime = None
+    prose_reason_for_cancellation: int = None
+    pc3_epc_control_protocol_cause: int = None
+    prose_ue_id: bytes = None
+    prose_source_ip_address: str = None
+    layer_2_group_id: bytes = None
+    prose_group_ip_multicast_address: str = None
+    coverage_info: list[CoverageInfo] = dataclasses.field(default_factory=list)
+    radio_parameter_set_info: list[RadioParameterSetInfo] = dataclasses.field(default_factory=list)
+    transmitter_info: list[TransmitterInfo] = dataclasses.field(default_factory=list)
+    time_first_transmission: datetime.datetime = None
+    time_first_reception: datetime.datetime = None
+    prose_direct_communication_transmission_data_container: list[ProSeDirectCommunicationTransmissionDataContainer] = dataclasses.field(default_factory=list)
+    prose_direct_communication_reception_data_container: list[ProSeDirectCommunicationReceptionDataContainer] = dataclasses.field(default_factory=list)
+    announcing_plmn_id: str = None
+    prose_target_layer_2_id: bytes = None
+    relay_ip_address: str = None
+    prose_ue_to_network_relay_ue_id: bytes = None
+    target_ip_address: str = None
+    pc5_radio_technology: int = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("supported_features", AVP_TGPP_SUPPORTED_FEATURES, VENDOR_TGPP, type_class=SupportedFeatures),
+        AvpGenDef("announcing_ue_hplmn_identifier", AVP_TGPP_ANNOUNCING_UE_HPLMN_IDENTIFIER, VENDOR_TGPP),
+        AvpGenDef("announcing_ue_vplmn_identifier", AVP_TGPP_ANNOUNCING_UE_VPLMN_IDENTIFIER, VENDOR_TGPP),
+        AvpGenDef("monitoring_ue_hplmn_identifier", AVP_TGPP_MONITORING_UE_HPLMN_IDENTIFIER, VENDOR_TGPP),
+        AvpGenDef("monitoring_ue_vplmn_identifier", AVP_TGPP_MONITORING_UE_VPLMN_IDENTIFIER, VENDOR_TGPP),
+        AvpGenDef("monitored_hplmn_identifier", AVP_TGPP_MONITORED_PLMN_IDENTIFIER, VENDOR_TGPP),
+        AvpGenDef("role_of_prose_function", AVP_TGPP_ROLE_OF_PROSE_FUNCTION, VENDOR_TGPP),
+        AvpGenDef("prose_app_id", AVP_TGPP_PROSE_APP_ID, VENDOR_TGPP),
+        AvpGenDef("prose_3rd_party_application_id", AVP_TGPP_PROSE_3RD_PARTY_APPLICATION_ID, VENDOR_TGPP),
+        AvpGenDef("application_specific_data", AVP_TGPP_APPLICATION_SPECIFIC_DATA, VENDOR_TGPP),
+        AvpGenDef("prose_event_type", AVP_TGPP_PROSE_EVENT_TYPE, VENDOR_TGPP),
+        AvpGenDef("prose_direct_discovery_model", AVP_TGPP_PROSE_DIRECT_DISCOVERY_MODEL, VENDOR_TGPP),
+        AvpGenDef("prose_function_ip_address", AVP_TGPP_PROSE_FUNCTION_IP_ADDRESS, VENDOR_TGPP),
+        AvpGenDef("prose_function_id", AVP_TGPP_PROSE_FUNCTION_ID, VENDOR_TGPP),
+        AvpGenDef("prose_validity_timer", AVP_TGPP_PROSE_VALIDITY_TIMER, VENDOR_TGPP),
+        AvpGenDef("prose_role_of_ue", AVP_TGPP_PROSE_ROLE_OF_UE, VENDOR_TGPP),
+        AvpGenDef("prose_request_timestamp", AVP_TGPP_PROSE_REQUEST_TIMESTAMP, VENDOR_TGPP),
+        AvpGenDef("pc3_control_protocol_cause", AVP_TGPP_PC3_CONTROL_PROTOCOL_CAUSE, VENDOR_TGPP),
+        AvpGenDef("monitoring_ue_identifier", AVP_TGPP_MONITORING_UE_IDENTIFIER, VENDOR_TGPP),
+        AvpGenDef("prose_function_plmn_identifier", AVP_TGPP_PROSE_FUNCTION_PLMN_IDENTIFIER, VENDOR_TGPP),
+        AvpGenDef("requestor_plmn_identifier", AVP_TGPP_REQUESTOR_PLMN_IDENTIFIER, VENDOR_TGPP),
+        AvpGenDef("origin_app_layer_user_id", AVP_TGPP_ORIGIN_APP_LAYER_USER_ID, VENDOR_TGPP),
+        AvpGenDef("wlan_link_layer_id", AVP_TGPP_WLAN_LINK_LAYER_ID, VENDOR_TGPP),
+        AvpGenDef("requesting_epuid", AVP_TGPP_REQUESTING_EPUID, VENDOR_TGPP),
+        AvpGenDef("target_app_layer_user_id", AVP_TGPP_TARGET_APP_LAYER_USER_ID, VENDOR_TGPP),
+        AvpGenDef("requested_plmn_identifier", AVP_TGPP_REQUESTED_PLMN_IDENTIFIER, VENDOR_TGPP),
+        AvpGenDef("time_window", AVP_TGPP_TIME_WINDOW, VENDOR_TGPP),
+        AvpGenDef("prose_range_class", AVP_TGPP_PROSE_RANGE_CLASS, VENDOR_TGPP),
+        AvpGenDef("proximity_alert_indication", AVP_TGPP_PROXIMITY_ALERT_INDICATION, VENDOR_TGPP),
+        AvpGenDef("proximity_alert_timestamp", AVP_TGPP_PROXIMITY_ALERT_TIMESTAMP, VENDOR_TGPP),
+        AvpGenDef("proximity_cancellation_timestamp", AVP_TGPP_PROXIMITY_CANCELLATION_TIMESTAMP, VENDOR_TGPP),
+        AvpGenDef("prose_reason_for_cancellation", AVP_TGPP_PROSE_REASON_FOR_CANCELLATION, VENDOR_TGPP),
+        AvpGenDef("pc3_epc_control_protocol_cause", AVP_TGPP_PC3_EPC_CONTROL_PROTOCOL_CAUSE, VENDOR_TGPP),
+        AvpGenDef("prose_ue_id", AVP_TGPP_PROSE_UE_ID, VENDOR_TGPP),
+        AvpGenDef("prose_source_ip_address", AVP_TGPP_PROSE_SOURCE_IP_ADDRESS, VENDOR_TGPP),
+        AvpGenDef("layer_2_group_id", AVP_TGPP_LAYER_2_GROUP_ID, VENDOR_TGPP),
+        AvpGenDef("prose_group_ip_multicast_address", AVP_TGPP_PROSE_GROUP_IP_MULTICAST_ADDRESS, VENDOR_TGPP),
+        AvpGenDef("coverage_info", AVP_TGPP_COVERAGE_INFO, VENDOR_TGPP, type_class=CoverageInfo),
+        AvpGenDef("radio_parameter_set_info", AVP_TGPP_RADIO_PARAMETER_SET_INFO, VENDOR_TGPP, type_class=RadioParameterSetInfo),
+        AvpGenDef("transmitter_info", AVP_TGPP_TRANSMITTER_INFO, VENDOR_TGPP, type_class=TransmitterInfo),
+        AvpGenDef("time_first_transmission", AVP_TGPP_TIME_FIRST_TRANSMISSION, VENDOR_TGPP),
+        AvpGenDef("time_first_reception", AVP_TGPP_TIME_FIRST_RECEPTION, VENDOR_TGPP),
+        AvpGenDef("prose_direct_communication_transmission_data_container", AVP_TGPP_PROSE_DIRECT_COMMUNICATION_TRANSMISSION_DATA_CONTAINER, VENDOR_TGPP, type_class=ProSeDirectCommunicationTransmissionDataContainer),
+        AvpGenDef("prose_direct_communication_reception_data_container", AVP_TGPP_PROSE_DIRECT_COMMUNICATION_RECEPTION_DATA_CONTAINER, VENDOR_TGPP, type_class=ProSeDirectCommunicationReceptionDataContainer),
+        AvpGenDef("announcing_plmn_id", AVP_TGPP_ANNOUNCING_PLMN_ID, VENDOR_TGPP),
+        AvpGenDef("prose_target_layer_2_id", AVP_TGPP_PROSE_TARGET_LAYER_2_ID, VENDOR_TGPP),
+        AvpGenDef("relay_ip_address", AVP_TGPP_RELAY_IP_ADDRESS, VENDOR_TGPP),
+        AvpGenDef("prose_ue_to_network_relay_ue_id", AVP_TGPP_PROSE_UE_TO_NETWORK_RELAY_UE_ID, VENDOR_TGPP),
+        AvpGenDef("target_ip_address", AVP_TGPP_TARGET_IP_ADDRESS, VENDOR_TGPP),
+        AvpGenDef("pc5_radio_technology", AVP_TGPP_PC5_RADIO_TECHNOLOGY, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
 class ServiceInformation:
     """A data container that represents the "Service-Information" (873) grouped AVP.
 
@@ -3403,9 +3645,9 @@ class ServiceInformation:
     mbms_information: MbmsInformation = None
     vcs_information: VcsInformation = None
     mmtel_information: MmtelInformation = None
+    prose_information: ProseInformation = None
 
     # Awaiting future implementation
-    # prose_information: ProseInformation = None
     # service_generic_information: ServiceGenericInformation = None
     # im_information: ImInformation = None
     # dcd_information: DcdInformation = None
@@ -3423,7 +3665,8 @@ class ServiceInformation:
         AvpGenDef("mms_information", AVP_TGPP_MMS_INFORMATION, VENDOR_TGPP, type_class=MmsInformation),
         AvpGenDef("lcs_information", AVP_TGPP_LCS_INFORMATION, VENDOR_TGPP, type_class=LcsInformation),
         AvpGenDef("poc_information", AVP_TGPP_POC_INFORMATION, VENDOR_TGPP, type_class=PocInformation),
-        AvpGenDef("mbms_information", AVP_TGPP_POC_INFORMATION, VENDOR_TGPP, type_class=MbmsInformation),
-        AvpGenDef("vcs_information", AVP_TGPP_POC_INFORMATION, VENDOR_TGPP, type_class=VcsInformation),
-        AvpGenDef("mmtel_information", AVP_TGPP_POC_INFORMATION, VENDOR_TGPP, type_class=MmtelInformation),
+        AvpGenDef("mbms_information", AVP_TGPP_MBMS_INFORMATION, VENDOR_TGPP, type_class=MbmsInformation),
+        AvpGenDef("vcs_information", AVP_TGPP_VCS_INFORMATION, VENDOR_TGPP, type_class=VcsInformation),
+        AvpGenDef("mmtel_information", AVP_TGPP_MMTEL_INFORMATION, VENDOR_TGPP, type_class=MmtelInformation),
+        AvpGenDef("prose_information", AVP_TGPP_PROSE_INFORMATION, VENDOR_TGPP, type_class=ProseInformation),
     )
