@@ -2624,6 +2624,29 @@ class RelatedTrigger:
 
 
 @dataclasses.dataclass
+class NiddSubmission:
+    """A data container that represents the "NIDD-Submission" (3928) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    # There exists no definition at all for this AVP
+    # submission_timestamp: bytes = None
+    event_timestamp: datetime.datetime = None
+    accounting_input_octets: int = None
+    accounting_output_octets: int = None
+    change_condition: int = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        # AvpGenDef("submission_timestamp", AVP_TGPP_SUBMISSION_TIMESTAMP, VENDOR_TGPP),
+        AvpGenDef("event_timestamp", AVP_EVENT_TIMESTAMP),
+        AvpGenDef("accounting_input_octets", AVP_ACCOUNTING_INPUT_OCTETS),
+        AvpGenDef("accounting_output_octets", AVP_ACCOUNTING_OUTPUT_OCTETS),
+        AvpGenDef("change_condition", AVP_TGPP_CHANGE_CONDITION, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
 class ScsAsAddress:
     """A data container that represents the "SCS-AS-Address" (3940) grouped AVP.
 
@@ -3751,6 +3774,28 @@ class ProseInformation:
 
 
 @dataclasses.dataclass
+class CpdtInformation:
+    """A data container that represents the "CPDT-Information" (3927) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    external_identifier: str = None
+    scef_id: bytes = None
+    serving_node_identity: bytes = None
+    sgw_change: int = None
+    nidd_submission: NiddSubmission = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("external_identifier", AVP_TGPP_EXTERNAL_IDENTIFIER, VENDOR_TGPP),
+        AvpGenDef("scef_id", AVP_TGPP_SCEF_ID, VENDOR_TGPP),
+        AvpGenDef("serving_node_identity", AVP_TGPP_SERVING_NODE_IDENTITY, VENDOR_TGPP),
+        AvpGenDef("sgw_change", AVP_TGPP_SGW_CHANGE, VENDOR_TGPP),
+        AvpGenDef("nidd_submission", AVP_TGPP_NIDD_SUBMISSION, VENDOR_TGPP, type_class=NiddSubmission),
+    )
+
+
+@dataclasses.dataclass
 class ServiceInformation:
     """A data container that represents the "Service-Information" (873) grouped AVP.
 
@@ -3772,7 +3817,7 @@ class ServiceInformation:
     im_information: ImInformation = None
     dcd_information: DcdInformation = None
     m2m_information: M2mInformation = None
-    # cpdt_information: CpdtInformation = None
+    cpdt_information: CpdtInformation = None
     additional_avps: list[Avp] = dataclasses.field(default_factory=list)
 
     # noinspection PyDataclass
@@ -3793,5 +3838,5 @@ class ServiceInformation:
         AvpGenDef("im_information", AVP_TGPP_IM_INFORMATION, VENDOR_TGPP, type_class=ImInformation),
         AvpGenDef("dcd_information", AVP_TGPP_DCD_INFORMATION, VENDOR_TGPP, type_class=DcdInformation),
         AvpGenDef("m2m_information", AVP_ONEM2M_M2M_INFORMATION, VENDOR_ONEM2M, type_class=M2mInformation),
-        # AvpGenDef("cpdt_information", AVP_TGPP_CPDT_INFORMATION, VENDOR_TGPP, type_class=CpdtInformation),
+        AvpGenDef("cpdt_information", AVP_TGPP_CPDT_INFORMATION, VENDOR_TGPP, type_class=CpdtInformation),
     )
