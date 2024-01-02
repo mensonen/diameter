@@ -9,6 +9,10 @@ import logging
 from diameter.message import Avp
 from diameter.message.commands.credit_control import CreditControlRequest
 from diameter.message.commands.credit_control import RequestedServiceUnit
+from diameter.message.commands.credit_control import ServiceInformation
+from diameter.message.commands.credit_control import SmsInformation
+from diameter.message.commands.credit_control import RecipientInfo
+from diameter.message.commands.credit_control import RecipientAddress
 from diameter.message.constants import *
 from diameter.node import Node
 from diameter.node.application import SimpleThreadingApplication
@@ -78,19 +82,20 @@ ccr.add_multiple_services_credit_control(
 #
 # Actual content wanted by the OCS on the receiving end may vary depending on
 # the vendor and their implementation.
-ccr.append_avp(
-    Avp.new(AVP_TGPP_SERVICE_INFORMATION, VENDOR_TGPP, value=[
-        Avp.new(AVP_TGPP_SMS_INFORMATION, VENDOR_TGPP, value=[
-            Avp.new(AVP_TGPP_DATA_CODING_SCHEME, VENDOR_TGPP, value=8),
-            Avp.new(AVP_TGPP_SM_MESSAGE_TYPE, VENDOR_TGPP, value=E_SM_MESSAGE_TYPE_SUBMISSION),
-            Avp.new(AVP_TGPP_RECIPIENT_INFO, VENDOR_TGPP, value=[
-                Avp.new(AVP_TGPP_RECIPIENT_ADDRESS, VENDOR_TGPP, value=[
-                    Avp.new(AVP_TGPP_ADDRESS_TYPE, VENDOR_TGPP, value=E_ADDRESS_TYPE_MSISDN),
-                    Avp.new(AVP_TGPP_ADDRESS_DATA, VENDOR_TGPP, value="41780000002")
-                ]),
-            ]),
-        ])
-    ])
+#
+# Note that `RecipientInfo` and `RecipientAddress` are wrapped in lists, as the
+# specification allows more than one recipient.
+ccr.service_information = ServiceInformation(
+    sms_information=SmsInformation(
+        data_coding_scheme=8,
+        sm_message_type=E_SM_MESSAGE_TYPE_SUBMISSION,
+        recipient_info=[RecipientInfo(
+            recipient_address=[RecipientAddress(
+                address_type=E_ADDRESS_TYPE_MSISDN,
+                address_data="41780000002"
+            )]
+        )]
+    )
 )
 
 # Wait for CER/CEA to complete

@@ -50,8 +50,8 @@ application message types:
     * Re-Auth
     * Session-Termination
 
-*Diameter Credit Control* `rf4006`, `rfc6733`, `3GPP TS 29.173`
-:   * Credit-Control, with partial 3GPP specification support
+*Diameter Credit Control* `rf4006`, `rfc6733`, `3GPP TS 32.299`
+:   * Credit-Control, with full 3GPP specification support
 
 *Diameter Extensible Authentication Protocol (EAP)* `rfc4072`
 :   * Diameter-EAP

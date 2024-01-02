@@ -6,7 +6,8 @@ API reference for `diameter.message.commands.credit_control`.
 Diameter Credit Control Application
 
 This module contains Credit Control Request and Answer messages, implementing
-AVPs documented in `rfc8506`, `rfc5777` and `rfc6733`.
+AVPs documented in `rfc8506`, `rfc5777` and `rfc6733`, as well as the 3GPP 
+diameter charging application specification, as documented in `3GPP TS 32.299`.
 
 ::: diameter.message.commands.credit_control.CreditControl
     options:
@@ -82,6 +83,15 @@ AVPs documented in `rfc8506`, `rfc5777` and `rfc6733`.
         - "!^avp_def"
 
 
+::: diameter.message.commands.credit_control.OcSupportedFeatures
+    options:
+      show_root_heading: true
+      show_root_full_path: false
+      show_if_no_docstring: true
+      filters:
+        - "!^avp_def"
+
+
 ::: diameter.message.commands.credit_control.ProxyInfo
     options:
       show_root_heading: true
@@ -91,7 +101,25 @@ AVPs documented in `rfc8506`, `rfc5777` and `rfc6733`.
         - "!^avp_def"
 
 
+::: diameter.message.commands.credit_control.RemainingBalance
+    options:
+      show_root_heading: true
+      show_root_full_path: false
+      show_if_no_docstring: true
+      filters:
+        - "!^avp_def"
+
+
 ::: diameter.message.commands.credit_control.RequestedServiceUnit
+    options:
+      show_root_heading: true
+      show_root_full_path: false
+      show_if_no_docstring: true
+      filters:
+        - "!^avp_def"
+
+
+::: diameter.message.commands.credit_control.ServiceInformation
     options:
       show_root_heading: true
       show_root_full_path: false
