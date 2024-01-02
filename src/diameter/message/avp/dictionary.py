@@ -2836,3 +2836,29 @@ AVP_VENDOR_DICTIONARY[19444] = {
     AVP_METASWITCH_EGRESS_OUTPUT_OCTETS: {"name": "Egress-Output-Octets", "type": AvpUnsigned32, "mandatory": True, "vendor": 19444},
     AVP_METASWITCH_DISCONNECT_DIRECTION: {"name": "Disconnect-Direction", "type": AvpEnumerated, "mandatory": True, "vendor": 19444},
     AVP_METASWITCH_MEDIA_DESCRIPTION: {"name": "Media-Description", "type": AvpUtf8String, "mandatory": True, "vendor": 19444}}
+
+AVP_VENDOR_DICTIONARY[45687] = {
+    AVP_ONEM2M_ACCESS_NETWORK_IDENTIFIER: {"name": "Access-Network-Identifier", "type": AvpUnsigned32, "mandatory": True, "vendor": 45687},
+    AVP_ONEM2M_APPLICATION_ENTITY_ID: {"name": "Application-Entity-ID", "type": AvpUtf8String, "mandatory": True, "vendor": 45687},
+    AVP_ONEM2M_CONTROL_MEMORY_SIZE: {"name": "Control-Memory-Size", "type": AvpUnsigned32, "mandatory": True, "vendor": 45687},
+    AVP_ONEM2M_CURRENT_NUMBER_MEMBERS: {"name": "Current-Number-Members", "type": AvpUnsigned32, "mandatory": True, "vendor": 45687},
+    AVP_ONEM2M_DATA_MEMORY_SIZE: {"name": "Data-Memory-Size", "type": AvpUnsigned32, "mandatory": True, "vendor": 45687},
+    AVP_ONEM2M_EXTERNAL_ID: {"name": "External-ID", "type": AvpUtf8String, "mandatory": True, "vendor": 45687},
+    AVP_ONEM2M_GROUP_NAME: {"name": "Group-Name", "type": AvpUtf8String, "mandatory": True, "vendor": 45687},
+    AVP_ONEM2M_HOSTING_CSE_ID: {"name": "Hosting-CSE-ID", "type": AvpUtf8String, "mandatory": True, "vendor": 45687},
+    AVP_ONEM2M_ORIGINATOR: {"name": "Originator", "type": AvpUtf8String, "mandatory": True, "vendor": 45687},
+    AVP_ONEM2M_MAXIMUM_NUMBER_MEMBERS: {"name": "Maximum-Number-Members", "type": AvpUnsigned32, "mandatory": True, "vendor": 45687},
+    AVP_ONEM2M_M2M_EVENT_RECORD_TIMESTAMP: {"name": "M2M-Event-Record-Timestamp", "type": AvpTime, "mandatory": True, "vendor": 45687},
+    AVP_ONEM2M_M2M_INFORMATION: {"name": "M2M-Information", "type": AvpGrouped, "mandatory": True, "vendor": 45687},
+    AVP_ONEM2M_OCCUPANCY: {"name": "Occupancy", "type": AvpUnsigned32, "mandatory": True, "vendor": 45687},
+    AVP_ONEM2M_PROTOCOL_TYPE: {"name": "Protocol-Type", "type": AvpEnumerated, "mandatory": True, "vendor": 45687},
+    AVP_ONEM2M_RECEIVER: {"name": "Receiver", "type": AvpUtf8String, "mandatory": True, "vendor": 45687},
+    AVP_ONEM2M_REQUEST_BODY_SIZE: {"name": "Request-Body-Size", "type": AvpUnsigned32, "mandatory": True, "vendor": 45687},
+    AVP_ONEM2M_REQUEST_HEADERS_SIZE: {"name": "Request-Headers-Size", "type": AvpUnsigned32, "mandatory": True, "vendor": 45687},
+    AVP_ONEM2M_REQUEST_OPERATION: {"name": "Request-Operation", "type": AvpEnumerated, "mandatory": True, "vendor": 45687},
+    AVP_ONEM2M_RESPONSE_BODY_SIZE: {"name": "Response-Body-Size", "type": AvpUnsigned32, "mandatory": True, "vendor": 45687},
+    AVP_ONEM2M_RESPONSE_HEADERS_SIZE: {"name": "Response-Headers-Size", "type": AvpUnsigned32, "mandatory": True, "vendor": 45687},
+    AVP_ONEM2M_RESPONSE_STATUS_CODE: {"name": "Response-Status-Code", "type": AvpEnumerated, "mandatory": True, "vendor": 45687},
+    AVP_ONEM2M_SUBGROUP_NAME: {"name": "Subgroup-Name", "type": AvpUtf8String, "mandatory": True, "vendor": 45687},
+    AVP_ONEM2M_TARGET_ID: {"name": "Target-ID", "type": AvpUtf8String, "mandatory": True, "vendor": 45687}
+}
