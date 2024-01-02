@@ -3486,6 +3486,67 @@ class MbmsInformation:
 
 
 @dataclasses.dataclass
+class M2mInformation:
+    """A data container that represents the "M2M-Information" (1011) grouped AVP.
+
+    oneM2M TS-0004 version 1.6.0 Release 1
+    """
+    application_entity_id: str = None
+    external_id: str = None
+    receiver: str = None
+    originator: str = None
+    hosting_cse_id: str = None
+    target_id: str = None
+    protocol_type: int = None
+    request_operation: int = None
+    request_headers_size: int = None
+    request_body_size: int = None
+    response_headers_size: int = None
+    response_body_size: int = None
+    response_status_code: int = None
+    rating_group: int = None
+    m2m_event_record_timestamp: datetime.datetime = None
+    control_memory_size: int = None
+    data_memory_size: int = None
+    access_network_identifier: int = None
+    occupancy: int = None
+    group_name: str = None
+    maximum_number_members: int = None
+    current_number_members: int = None
+    subgroup_name: str = None
+    node_id: str = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("application_entity_id", AVP_ONEM2M_APPLICATION_ENTITY_ID, VENDOR_ONEM2M),
+        AvpGenDef("external_id", AVP_ONEM2M_EXTERNAL_ID, VENDOR_ONEM2M),
+        AvpGenDef("receiver", AVP_ONEM2M_RECEIVER, VENDOR_ONEM2M),
+        AvpGenDef("originator", AVP_ONEM2M_ORIGINATOR, VENDOR_ONEM2M),
+        AvpGenDef("hosting_cse_id", AVP_ONEM2M_HOSTING_CSE_ID, VENDOR_ONEM2M),
+        AvpGenDef("target_id", AVP_ONEM2M_TARGET_ID, VENDOR_ONEM2M),
+        AvpGenDef("protocol_type", AVP_ONEM2M_PROTOCOL_TYPE, VENDOR_ONEM2M),
+        AvpGenDef("request_operation", AVP_ONEM2M_REQUEST_OPERATION, VENDOR_ONEM2M),
+        AvpGenDef("request_headers_size", AVP_ONEM2M_REQUEST_HEADERS_SIZE, VENDOR_ONEM2M),
+        AvpGenDef("request_body_size", AVP_ONEM2M_REQUEST_BODY_SIZE, VENDOR_ONEM2M),
+        AvpGenDef("response_headers_size", AVP_ONEM2M_RESPONSE_HEADERS_SIZE, VENDOR_ONEM2M),
+        AvpGenDef("response_body_size", AVP_ONEM2M_RESPONSE_BODY_SIZE, VENDOR_ONEM2M),
+        AvpGenDef("response_status_code", AVP_ONEM2M_RESPONSE_STATUS_CODE, VENDOR_ONEM2M),
+        AvpGenDef("rating_group", AVP_RATING_GROUP),
+        AvpGenDef("m2m_event_record_timestamp", AVP_ONEM2M_M2M_EVENT_RECORD_TIMESTAMP, VENDOR_ONEM2M),
+        AvpGenDef("control_memory_size", AVP_ONEM2M_CONTROL_MEMORY_SIZE, VENDOR_ONEM2M),
+        AvpGenDef("data_memory_size", AVP_ONEM2M_DATA_MEMORY_SIZE, VENDOR_ONEM2M),
+        AvpGenDef("access_network_identifier", AVP_ONEM2M_ACCESS_NETWORK_IDENTIFIER, VENDOR_ONEM2M),
+        AvpGenDef("occupancy", AVP_ONEM2M_OCCUPANCY, VENDOR_ONEM2M),
+        AvpGenDef("group_name", AVP_ONEM2M_GROUP_NAME, VENDOR_ONEM2M),
+        AvpGenDef("maximum_number_members", AVP_ONEM2M_MAXIMUM_NUMBER_MEMBERS, VENDOR_ONEM2M),
+        AvpGenDef("current_number_members", AVP_ONEM2M_CURRENT_NUMBER_MEMBERS, VENDOR_ONEM2M),
+        AvpGenDef("subgroup_name", AVP_ONEM2M_SUBGROUP_NAME, VENDOR_ONEM2M),
+        AvpGenDef("node_id", AVP_TGPP_NODE_ID, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
 class ServiceGenericInformation:
     """A data container that represents the "Service-Generic-Information" (1256) grouped AVP.
 
@@ -3710,7 +3771,7 @@ class ServiceInformation:
     service_generic_information: ServiceGenericInformation = None
     im_information: ImInformation = None
     dcd_information: DcdInformation = None
-    # m2m_information: M2mInformation = None
+    m2m_information: M2mInformation = None
     # cpdt_information: CpdtInformation = None
     additional_avps: list[Avp] = dataclasses.field(default_factory=list)
 
@@ -3731,6 +3792,6 @@ class ServiceInformation:
         AvpGenDef("service_generic_information", AVP_TGPP_SERVICE_GENERIC_INFORMATION, VENDOR_TGPP, type_class=ServiceGenericInformation),
         AvpGenDef("im_information", AVP_TGPP_IM_INFORMATION, VENDOR_TGPP, type_class=ImInformation),
         AvpGenDef("dcd_information", AVP_TGPP_DCD_INFORMATION, VENDOR_TGPP, type_class=DcdInformation),
-        # AvpGenDef("m2m_information", AVP_TGPP_M2M_INFORMATION, VENDOR_TGPP, type_class=M2mInformation),
+        AvpGenDef("m2m_information", AVP_ONEM2M_M2M_INFORMATION, VENDOR_ONEM2M, type_class=M2mInformation),
         # AvpGenDef("cpdt_information", AVP_TGPP_CPDT_INFORMATION, VENDOR_TGPP, type_class=CpdtInformation),
     )
