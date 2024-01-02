@@ -3486,6 +3486,26 @@ class MbmsInformation:
 
 
 @dataclasses.dataclass
+class ServiceGenericInformation:
+    """A data container that represents the "Service-Generic-Information" (1256) grouped AVP.
+
+    OMA-DDS-Charging_Data-V1_0-20110201-A
+    """
+    application_server_id: int = None
+    application_service_type: int = None
+    application_session_id: int = None
+    delivery_status: str = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("application_server_id", AVP_TGPP_APPLICATION_SERVER_ID, VENDOR_TGPP),
+        AvpGenDef("application_service_type", AVP_TGPP_APPLICATION_SERVICE_TYPE, VENDOR_TGPP),
+        AvpGenDef("application_session_id", AVP_TGPP_APPLICATION_SESSION_ID, VENDOR_TGPP),
+        AvpGenDef("delivery_status", AVP_TGPP_DELIVERY_STATUS, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
 class VcsInformation:
     """A data container that represents the "VCS-Information" (3410) grouped AVP.
 
@@ -3651,9 +3671,9 @@ class ServiceInformation:
     vcs_information: VcsInformation = None
     mmtel_information: MmtelInformation = None
     prose_information: ProseInformation = None
+    service_generic_information: ServiceGenericInformation = None
 
     # Awaiting future implementation
-    # service_generic_information: ServiceGenericInformation = None
     # im_information: ImInformation = None
     # dcd_information: DcdInformation = None
     # m2m_information: M2mInformation = None
@@ -3674,4 +3694,5 @@ class ServiceInformation:
         AvpGenDef("vcs_information", AVP_TGPP_VCS_INFORMATION, VENDOR_TGPP, type_class=VcsInformation),
         AvpGenDef("mmtel_information", AVP_TGPP_MMTEL_INFORMATION, VENDOR_TGPP, type_class=MmtelInformation),
         AvpGenDef("prose_information", AVP_TGPP_PROSE_INFORMATION, VENDOR_TGPP, type_class=ProseInformation),
+        AvpGenDef("service_generic_information", AVP_TGPP_SERVICE_GENERIC_INFORMATION, VENDOR_TGPP, type_class=ServiceGenericInformation),
     )
