@@ -10,7 +10,7 @@ import logging
 
 from typing import NamedTuple, Protocol
 
-from ..avp import Avp, AvpDecodeError
+from ..avp import Avp, AvpDecodeError, AvpEncodeError
 from ..constants import *
 
 
@@ -61,37 +61,42 @@ def generate_avps_from_defs(obj: AvpGenerator, strict: bool = False) -> list[Avp
             continue
         attr_value = getattr(obj, gen_def.attr_name)
 
-        if gen_def.type_class and isinstance(attr_value, list):
-            for value in attr_value:
-                if value is None:
-                    continue
+        try:
+            if gen_def.type_class and isinstance(attr_value, list):
+                for value in attr_value:
+                    if value is None:
+                        continue
+                    grouped_avp = Avp.new(gen_def.avp_code, gen_def.vendor_id,
+                                          is_mandatory=gen_def.is_mandatory)
+                    sub_avps = generate_avps_from_defs(value)
+                    grouped_avp.value = sub_avps
+                    avp_list.append(grouped_avp)
+
+            elif gen_def.type_class:
                 grouped_avp = Avp.new(gen_def.avp_code, gen_def.vendor_id,
                                       is_mandatory=gen_def.is_mandatory)
-                sub_avps = generate_avps_from_defs(value)
+                sub_avps = generate_avps_from_defs(attr_value)
                 grouped_avp.value = sub_avps
                 avp_list.append(grouped_avp)
 
-        elif gen_def.type_class:
-            grouped_avp = Avp.new(gen_def.avp_code, gen_def.vendor_id,
-                                  is_mandatory=gen_def.is_mandatory)
-            sub_avps = generate_avps_from_defs(attr_value)
-            grouped_avp.value = sub_avps
-            avp_list.append(grouped_avp)
+            elif isinstance(attr_value, list):
+                for value in attr_value:
+                    if value is None:
+                        continue
+                    single_avp = Avp.new(gen_def.avp_code, gen_def.vendor_id,
+                                         value=value,
+                                         is_mandatory=gen_def.is_mandatory)
+                    avp_list.append(single_avp)
 
-        elif isinstance(attr_value, list):
-            for value in attr_value:
-                if value is None:
-                    continue
+            else:
                 single_avp = Avp.new(gen_def.avp_code, gen_def.vendor_id,
-                                     value=value,
+                                     value=attr_value,
                                      is_mandatory=gen_def.is_mandatory)
                 avp_list.append(single_avp)
-
-        else:
-            single_avp = Avp.new(gen_def.avp_code, gen_def.vendor_id,
-                                 value=attr_value,
-                                 is_mandatory=gen_def.is_mandatory)
-            avp_list.append(single_avp)
+        except AvpEncodeError as e:
+            raise AvpEncodeError(
+                f"Failed to parse value for attribute `{gen_def.attr_name}`: "
+                f"{e}") from None
 
     if hasattr(obj, "additional_avps"):
         return avp_list + getattr(obj, "additional_avps")
@@ -2530,13 +2535,13 @@ class CoverageInfo:
     """
     coverage_status: int = None
     change_time: datetime.datetime = None
-    lcoation_info: list[LocationInfo] = dataclasses.field(default_factory=list)
+    location_info: list[LocationInfo] = dataclasses.field(default_factory=list)
 
     # noinspection PyDataclass
     avp_def: dataclasses.InitVar[AvpGenType] = (
         AvpGenDef("coverage_status", AVP_TGPP_COVERAGE_STATUS, VENDOR_TGPP),
         AvpGenDef("change_time", AVP_TGPP_CHANGE_TIME, VENDOR_TGPP),
-        AvpGenDef("lcoation_info", AVP_TGPP_LOCATION_INFO, VENDOR_TGPP, type_class=LocationInfo),
+        AvpGenDef("location_info", AVP_TGPP_LOCATION_INFO, VENDOR_TGPP, type_class=LocationInfo),
     )
 
 
