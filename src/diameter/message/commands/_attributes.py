@@ -3506,6 +3506,42 @@ class ServiceGenericInformation:
 
 
 @dataclasses.dataclass
+class ImInformation:
+    """A data container that represents the "IM-Information" (2110) grouped AVP.
+
+    OMA-DDS-Charging_Data-V1_0-20110201-A
+    """
+    total_number_of_messages_sent: int = None
+    total_number_of_messages_exploded: int = None
+    number_of_messages_successfully_sent: int = None
+    number_of_messages_successfully_exploded: int = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("total_number_of_messages_sent", AVP_TGPP_TOTAL_NUMBER_OF_MESSAGES_SENT, VENDOR_TGPP),
+        AvpGenDef("total_number_of_messages_exploded", AVP_TGPP_TOTAL_NUMBER_OF_MESSAGES_EXPLODED, VENDOR_TGPP),
+        AvpGenDef("number_of_messages_successfully_sent", AVP_TGPP_NUMBER_OF_MESSAGES_SUCCESSFULLY_SENT, VENDOR_TGPP),
+        AvpGenDef("number_of_messages_successfully_exploded", AVP_TGPP_NUMBER_OF_MESSAGES_SUCCESSFULLY_EXPLODED, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
+class DcdInformation:
+    """A data container that represents the "DCD-Information" (2115) grouped AVP.
+
+    OMA-DDS-Charging_Data-V1_0-20110201-A
+    """
+    content_id: str = None
+    content_provider_id: str = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("content_id", AVP_TGPP_CONTENT_ID, VENDOR_TGPP),
+        AvpGenDef("content_provider_id", AVP_TGPP_CONTENT_PROVIDER_ID, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
 class VcsInformation:
     """A data container that represents the "VCS-Information" (3410) grouped AVP.
 
@@ -3672,10 +3708,8 @@ class ServiceInformation:
     mmtel_information: MmtelInformation = None
     prose_information: ProseInformation = None
     service_generic_information: ServiceGenericInformation = None
-
-    # Awaiting future implementation
-    # im_information: ImInformation = None
-    # dcd_information: DcdInformation = None
+    im_information: ImInformation = None
+    dcd_information: DcdInformation = None
     # m2m_information: M2mInformation = None
     # cpdt_information: CpdtInformation = None
     additional_avps: list[Avp] = dataclasses.field(default_factory=list)
@@ -3695,4 +3729,8 @@ class ServiceInformation:
         AvpGenDef("mmtel_information", AVP_TGPP_MMTEL_INFORMATION, VENDOR_TGPP, type_class=MmtelInformation),
         AvpGenDef("prose_information", AVP_TGPP_PROSE_INFORMATION, VENDOR_TGPP, type_class=ProseInformation),
         AvpGenDef("service_generic_information", AVP_TGPP_SERVICE_GENERIC_INFORMATION, VENDOR_TGPP, type_class=ServiceGenericInformation),
+        AvpGenDef("im_information", AVP_TGPP_IM_INFORMATION, VENDOR_TGPP, type_class=ImInformation),
+        AvpGenDef("dcd_information", AVP_TGPP_DCD_INFORMATION, VENDOR_TGPP, type_class=DcdInformation),
+        # AvpGenDef("m2m_information", AVP_TGPP_M2M_INFORMATION, VENDOR_TGPP, type_class=M2mInformation),
+        # AvpGenDef("cpdt_information", AVP_TGPP_CPDT_INFORMATION, VENDOR_TGPP, type_class=CpdtInformation),
     )
