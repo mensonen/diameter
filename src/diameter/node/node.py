@@ -898,7 +898,7 @@ class Node:
         if origin_host not in self._sent_answers:
             self._sent_answers[origin_host] = deque(
                 maxlen=self.retransmit_queue_size)
-        print("recording", message.header.end_to_end_identifier, "for", origin_host)
+        
         self._sent_answers[origin_host].append(message.header.end_to_end_identifier)
 
         del self._origin_waiting_answer[message_id]
