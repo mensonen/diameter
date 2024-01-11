@@ -78,6 +78,22 @@ class StatsLogAdapter(logging.LoggerAdapter):
             peers.append(peer)
         self.debug(f"PEERS={json.dumps(peers)}")
 
+    def log_stats(self):
+        if not self.isEnabledFor(logging.DEBUG):
+            return
+        peers = []
+
+        for p in self.extra["node"].peers.values():
+            stats: PeerStats = p.statistics
+            peers.append({
+                "node_name": p.node_name,
+                "processed_req_per_second": stats.processed_req_per_second,
+                "processed_req_per_second_overall": stats.processed_req_per_second_overall,
+                "avg_response_time": stats.avg_response_time,
+                "avg_response_time_overall": stats.avg_response_time_overall})
+
+        self.debug(f"STATS={json.dumps(peers)}")
+
 
 class Node:
     """A diameter node.
@@ -170,7 +186,7 @@ class Node:
         # keys and origin-hosts as answers. This is mostly required for keeping
         # track of which requests have also received an answer, and for
         # retransmission checks.
-        self._origin_waiting_answer: dict[str, str] = {}
+        self._origin_waiting_answer: dict[str, tuple[str, float]] = {}
         # A temporary list of sent end-by-end IDs, stored individually for each
         # origin-host, for retransmission check.
         self._sent_answers: dict[str, deque[int]] = {}
@@ -521,6 +537,7 @@ class Node:
     def _handle_connections(self, _thread: StoppableThread):
         while True:
             self.stats_logger.log_peers()
+            self.stats_logger.log_stats()
 
             if _thread.is_stopped:
                 self.connection_logger.info(
@@ -708,7 +725,8 @@ class Node:
             # by the time an answer will go out
             message_id = (f"{msg.header.hop_by_hop_identifier}:"
                           f"{msg.header.end_to_end_identifier}")
-            self._origin_waiting_answer[message_id] = msg.origin_host
+            self._origin_waiting_answer[message_id] = (
+                msg.origin_host, time.time())
 
         if msg.header.is_request:
             failed_avp = validate_message_avps(msg)
@@ -887,13 +905,14 @@ class Node:
                 self.logger.warning(
                     f"failed to reconnect to {peer.node_name}: {e}")
 
-    def _record_answer(self, message: Message):
+    def _record_answer(self, conn: PeerConnection, message: Message):
         """Notes the end-to-end identifier of an answer, for retransmit checks."""
         message_id = (f"{message.header.hop_by_hop_identifier}:"
                       f"{message.header.end_to_end_identifier}")
         if message_id not in self._origin_waiting_answer:
             return
-        origin_host = self._origin_waiting_answer[message_id]
+        origin_host, recv_time = self._origin_waiting_answer[message_id]
+        process_time = time.time() - recv_time
 
         if origin_host not in self._sent_answers:
             self._sent_answers[origin_host] = deque(
@@ -902,6 +921,10 @@ class Node:
         self._sent_answers[origin_host].append(message.header.end_to_end_identifier)
 
         del self._origin_waiting_answer[message_id]
+
+        peer = self._find_connection_peer(conn)
+        if peer:
+            peer.statistics.add_processed_req_time(message.name, process_time)
 
     def _update_peer_counters(self, conn: PeerConnection,
                               cer: int = 0, cea: int = 0, dwr: int = 0,
@@ -1412,7 +1435,7 @@ class Node:
             del self._peer_waiting_answer[conn.host_identity][message_id]
         conn.add_out_msg(message)
         if not message.header.is_request:
-            self._record_answer(message)
+            self._record_answer(conn, message)
 
     def start(self):
         """Start the node.

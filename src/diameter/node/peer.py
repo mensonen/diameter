@@ -2,11 +2,13 @@ from __future__ import annotations
 
 import dataclasses
 import logging
+import math
 import os
 import queue
 import threading
 import time
 
+from collections import deque
 from typing import Callable, TypeVar
 
 from ..message import constants
@@ -18,7 +20,7 @@ __all__ = ["PEER_RECV", "PEER_SEND", "PEER_TRANSPORT_TCP",
            "PEER_TRANSPORT_SCTP", "PEER_CONNECTING", "PEER_CONNECTED",
            "PEER_READY", "PEER_READY_WAITING_DWA", "PEER_DISCONNECTING",
            "PEER_CLOSING", "PEER_CLOSED", "PEER_READY_STATES",
-           "Peer", "PeerConnection", "PeerCounters"]
+           "Peer", "PeerConnection", "PeerCounters", "PeerStats"]
 
 
 PEER_RECV = 0x01
@@ -100,6 +102,72 @@ class PeerCounters:
     answers: int = 0
 
 
+class PeerStats:
+    """Peer statistics."""
+    def __init__(self):
+        self._processed_req_time_total = deque(maxlen=1024)
+        self._processed_req_time: dict[str, deque] = {}
+
+    def add_processed_req_time(self, req_name: str, req_time: float):
+        self._processed_req_time_total.append(req_time)
+        if not self._processed_req_time.get(req_name):
+            self._processed_req_time[req_name] = deque(maxlen=1024)
+
+        self._processed_req_time[req_name].append(req_time)
+
+    @property
+    def processed_req_per_second(self) -> dict[str, float]:
+        """Amount of requests processed per second, split by message type.
+
+        Returns:
+            A dictionary with keys of diameter command names (e.g.
+                "Credit-Control", "Device-Watchdog") and values of requests
+                processed per second, derived from the total sum of work over
+                the past 1024 requests for each message type.
+
+        """
+        return {
+            name: len(req_times) / math.ceil(sum(req_times))
+            for name, req_times in self._processed_req_time.items()}
+
+    @property
+    def processed_req_per_second_overall(self) -> float:
+        """Amount of requests processed per second.
+
+        Derived from the total sum of work time over the past 1024 received
+        requests.
+        """
+        if not self._processed_req_time_total:
+            return 0
+        return len(self._processed_req_time_total) / math.ceil(sum(self._processed_req_time_total))
+
+    @property
+    def avg_response_time(self) -> dict[str, float]:
+        """Average response time, split by message type.
+
+        Returns:
+            A dictionary with keys of diameter command names (e.g.
+                "Credit-Control", "Device-Watchdog") and values of response
+                times in seconds, as an average over the last 1024 processed
+                answers.
+
+        """
+        return {
+            name: sum(req_times) / len(req_times)
+            for name, req_times in self._processed_req_time.items()}
+
+    @property
+    def avg_response_time_overall(self) -> float:
+        """Overall average response time.
+
+        Derived from the total sum of work time over the past 1024 processed
+        answers.
+        """
+        if not self._processed_req_time_total:
+            return 0
+        return sum(self._processed_req_time_total) / len(self._processed_req_time_total)
+
+
 @dataclasses.dataclass
 class Peer:
     """Single configured or known peer.
@@ -151,7 +219,9 @@ class Peer:
     last_disconnect: int = None
     """Unix timestamp of last disconnect."""
     counters: PeerCounters = dataclasses.field(default_factory=PeerCounters)
-    """Peer statistics."""
+    """Peer message counters."""
+    statistics: PeerStats = dataclasses.field(default_factory=PeerStats)
+    """Peer connection statistics."""
     connection: PeerConnection = None
     """The actual, current connection to the peer. If the peer is not 
     connected, the value will be `None`. Note that even if the peer may be 
