@@ -1,8 +1,10 @@
 from __future__ import annotations
 
+import dataclasses
 import errno
 import json
 import logging
+import math
 import os
 import select
 import socket
@@ -42,6 +44,25 @@ _AnyAnswerType = TypeVar("_AnyAnswerType", bound=Message)
 class NodeError(Exception):
     """Base error for all exceptions raised by `Node`."""
     pass
+
+
+@dataclasses.dataclass
+class NodeStats:
+    """Cumulated and averaged node statistics.
+
+    Represents a snapshot with cumulated and averaged statistical values for
+    all configured peers at the time of retrieval. The meaning of each
+    statistical value is identical to those of
+    [PeerStats][diameter.peer.PeerStats].
+    """
+    avg_response_time: dict[str, float]
+    """Average response time, split by message type."""
+    avg_response_time_overall: float
+    """Overall average response time."""
+    processed_req_per_second: dict[str, float]
+    """Amount of requests processed per second, split by message type."""
+    processed_req_per_second_overall: float
+    """Amount of requests processed per second."""
 
 
 class NotRoutable(NodeError):
@@ -941,6 +962,49 @@ class Node:
         peer.counters.dpa += dpa
         peer.counters.requests += cer + dwr + dpr + app_request
         peer.counters.answers += cea + dwa + dpa + app_answer
+
+    @property
+    def node_statistics(self) -> NodeStats:
+        """Calculated, cumulated and averaged statistics for the entire node."""
+        avg_res_total_time = 0
+        req_per_sec_total_time = 0
+        total_requests_count = 0
+        req_time = {}
+        req_count = {}
+
+        for peer in self.peers.values():
+            stats = peer.statistics
+            avg_res_total_time += sum(stats.processed_req_time_total)
+            req_per_sec_total_time += math.ceil(sum(stats.processed_req_time_total))
+            total_requests_count += len(stats.processed_req_time_total)
+
+            for cmd_name, times in stats.processed_req_time.items():
+                if cmd_name not in req_time:
+                    req_time[cmd_name] = 0
+                    req_count[cmd_name] = 0
+                req_time[cmd_name] += math.ceil(sum(times))
+                req_count[cmd_name] += len(times)
+
+        processed_req_per_second_overall = 0
+        avg_response_time_overall = 0
+        if total_requests_count > 0:
+            processed_req_per_second_overall = total_requests_count / req_per_sec_total_time
+            avg_response_time_overall = avg_res_total_time / total_requests_count
+
+        processed_req_per_second = {
+            name: req_count[name] / req_time[name]
+            for name in req_count.keys()}
+
+        avg_response_time = {
+            name: req_time[name] / req_count[name]
+            for name in req_count.keys()}
+
+        return NodeStats(
+            avg_response_time=avg_response_time,
+            avg_response_time_overall=avg_response_time_overall,
+            processed_req_per_second=processed_req_per_second,
+            processed_req_per_second_overall=processed_req_per_second_overall
+        )
 
     def add_application(self, app: Application, peers: list[Peer]):
         """Register an application with diameter node.

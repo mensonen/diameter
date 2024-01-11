@@ -105,15 +105,15 @@ class PeerCounters:
 class PeerStats:
     """Peer statistics."""
     def __init__(self):
-        self._processed_req_time_total = deque(maxlen=1024)
-        self._processed_req_time: dict[str, deque] = {}
+        self.processed_req_time_total = deque(maxlen=1024)
+        self.processed_req_time: dict[str, deque] = {}
 
     def add_processed_req_time(self, req_name: str, req_time: float):
-        self._processed_req_time_total.append(req_time)
-        if not self._processed_req_time.get(req_name):
-            self._processed_req_time[req_name] = deque(maxlen=1024)
+        self.processed_req_time_total.append(req_time)
+        if not self.processed_req_time.get(req_name):
+            self.processed_req_time[req_name] = deque(maxlen=1024)
 
-        self._processed_req_time[req_name].append(req_time)
+        self.processed_req_time[req_name].append(req_time)
 
     @property
     def processed_req_per_second(self) -> dict[str, float]:
@@ -128,7 +128,7 @@ class PeerStats:
         """
         return {
             name: len(req_times) / math.ceil(sum(req_times))
-            for name, req_times in self._processed_req_time.items()}
+            for name, req_times in self.processed_req_time.items()}
 
     @property
     def processed_req_per_second_overall(self) -> float:
@@ -137,9 +137,9 @@ class PeerStats:
         Derived from the total sum of work time over the past 1024 received
         requests.
         """
-        if not self._processed_req_time_total:
+        if not self.processed_req_time_total:
             return 0
-        return len(self._processed_req_time_total) / math.ceil(sum(self._processed_req_time_total))
+        return len(self.processed_req_time_total) / math.ceil(sum(self.processed_req_time_total))
 
     @property
     def avg_response_time(self) -> dict[str, float]:
@@ -154,7 +154,7 @@ class PeerStats:
         """
         return {
             name: sum(req_times) / len(req_times)
-            for name, req_times in self._processed_req_time.items()}
+            for name, req_times in self.processed_req_time.items()}
 
     @property
     def avg_response_time_overall(self) -> float:
@@ -163,9 +163,9 @@ class PeerStats:
         Derived from the total sum of work time over the past 1024 processed
         answers.
         """
-        if not self._processed_req_time_total:
+        if not self.processed_req_time_total:
             return 0
-        return sum(self._processed_req_time_total) / len(self._processed_req_time_total)
+        return sum(self.processed_req_time_total) / len(self.processed_req_time_total)
 
 
 @dataclasses.dataclass
