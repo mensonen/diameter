@@ -92,6 +92,94 @@ def validate_message_avps(msg: _AnyMessageType) -> list[Avp]:
     return failed_avp
 
 
+class SecondSlotCounter:
+    """An incrementing counter that keeps track of when it was incremented.
+
+    A counter that remembers, at a 1-second precision, the time that it was
+    incremented at, while also dropping counter values that are older than the
+    requested maximum age. Useful for situations where it is important to know
+    *when* a counter was incremented and only "the last X seconds of values"
+    are relevant.
+    """
+    def __init__(self, maxage: int):
+        """Create a new counter.
+
+        Args:
+            maxage: The maximum age at which the counter is capped at.
+                When the counter is incremented after the maximum age is
+                reached, the oldest counter values are "forgotten".
+
+        """
+        self._maxage = maxage
+        self._slots: dict[int, int] = {}
+
+    def add_count(self, count: int):
+        """Increment counter by the given amount.
+
+        The given amount is added to "now", at 1-second precision. Every new
+        second is initialised as zero.
+        """
+        slot = int(time.time())
+        self._slots.setdefault(slot, 0)
+        self._slots[slot] += count
+
+        cutoff = slot - self._maxage
+        oldest_slot = next(iter(self._slots))
+        while len(self._slots) > 0 and oldest_slot < cutoff:
+            self._slots.pop(oldest_slot)
+            if len(self._slots) > 0:
+                oldest_slot = next(iter(self._slots))
+
+    def get_count(self, since_seconds: int = None) -> int:
+        """Get current counter value.
+
+        Retrieves either the total counter value (up until the maximum counter
+        age), or the counter value for the last X seconds.
+
+        Args:
+            since_seconds: Seconds from now to count backwards to, or None to
+                return the total counter value
+
+        """
+        if since_seconds is None:
+            return sum(self._slots.values())
+        count = 0
+        cutoff = int(time.time()) - since_seconds
+        for slot, slot_count in reversed(self._slots.items()):
+            if slot < cutoff:
+                break
+            count += slot_count
+        return count
+
+    def get_counts(self, *since_seconds: int) -> list[int]:
+        """Get current counter values.
+
+        Retrieves multiple coutner values in one go.
+
+        Args:
+            since_seconds: A list of seconds to count backwards to, e.g.
+                [60, 120, 180]. If the list is not in ascending order, it will
+                be sorted first
+
+        Returns:
+            A list of counter values that correspond to the given since values,
+                in the same (sorted) order as given. E.g. if retrieving counters
+                for the last [10, 20, 30] seconds, the returend value would be
+                also a list with three integer values.
+
+        """
+        now = int(time.time())
+        cutoffs = [now - c for c in sorted(since_seconds)]
+        counts = [0] * len(cutoffs)
+        for slot, slot_count in reversed(self._slots.items()):
+            if slot < cutoffs[-1]:
+                break
+            for count_key, cutoff in enumerate(cutoffs):
+                if slot > cutoff:
+                    counts[count_key] += slot_count
+        return counts
+
+
 class SequenceGenerator:
     """A sequence generator base class.
 
