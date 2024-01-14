@@ -60,9 +60,16 @@ class NodeStats:
     avg_response_time_overall: float
     """Overall average response time."""
     processed_req_per_second: dict[str, float]
-    """Amount of requests processed per second, split by message type."""
+    """Rate of requests processed per second, split by message type."""
     processed_req_per_second_overall: float
-    """Amount of requests processed per second."""
+    """Rate of requests processed per second."""
+    received_req_counters: list[int]
+    """Exact amount of requests received in the last minute, last five minutes
+    and the last 15 minutes."""
+    sent_result_code_range_counters: dict[str, list[int]]
+    """Exact amount of answers sent in the last minute, last five minutes and 
+    the last 15 minutes, once for each diameter result code range. The result
+    code range is expressed as a string in form of "1xxx", "2xxx" etc."""
 
 
 class NotRoutable(NodeError):
@@ -111,7 +118,12 @@ class StatsLogAdapter(logging.LoggerAdapter):
                 "processed_req_per_second": stats.processed_req_per_second,
                 "processed_req_per_second_overall": stats.processed_req_per_second_overall,
                 "avg_response_time": stats.avg_response_time,
-                "avg_response_time_overall": stats.avg_response_time_overall})
+                "avg_response_time_overall": stats.avg_response_time_overall,
+                "received_req_counter": stats.received_req_counter.get_count(60),
+                "sent_result_code_range_counters": {
+                    r: c.get_count(60)
+                    for r, c in stats.sent_result_code_range_counters.items()
+                }})
 
         self.debug(f"STATS={json.dumps(peers)}")
 
@@ -749,6 +761,10 @@ class Node:
             self._origin_waiting_answer[message_id] = (
                 msg.origin_host, time.time())
 
+        peer = self._find_connection_peer(conn)
+        if peer:
+            peer.statistics.add_received_req()
+
         if msg.header.is_request:
             failed_avp = validate_message_avps(msg)
             if failed_avp:
@@ -946,6 +962,8 @@ class Node:
         peer = self._find_connection_peer(conn)
         if peer:
             peer.statistics.add_processed_req_time(message.name, process_time)
+            if hasattr(message, "result_code"):
+                peer.statistics.add_sent_result_code(message.result_code)
 
     def _update_peer_counters(self, conn: PeerConnection,
                               cer: int = 0, cea: int = 0, dwr: int = 0,
@@ -971,6 +989,8 @@ class Node:
         total_requests_count = 0
         req_time = {}
         req_count = {}
+        req_counters = [0, 0, 0]
+        sent_res_code_counters = {}
 
         for peer in self.peers.values():
             stats = peer.statistics
@@ -984,6 +1004,21 @@ class Node:
                     req_count[cmd_name] = 0
                 req_time[cmd_name] += math.ceil(sum(times))
                 req_count[cmd_name] += len(times)
+
+            req_counters = [
+                sum(c) for c in zip(
+                    req_counters,
+                    stats.received_req_counter.get_counts(60, 300, 900))
+            ]
+
+            for result_code_range, counter in stats.sent_result_code_range_counters.items():
+                sent_res_code_counters.setdefault(result_code_range, [0, 0, 0])
+                sent_res_code_counters[result_code_range] = [
+                    sum(c) for c in zip(
+                        sent_res_code_counters[result_code_range],
+                        counter.get_counts(60, 300, 900)
+                    )
+                ]
 
         processed_req_per_second_overall = 0
         avg_response_time_overall = 0
@@ -1003,7 +1038,9 @@ class Node:
             avg_response_time=avg_response_time,
             avg_response_time_overall=avg_response_time_overall,
             processed_req_per_second=processed_req_per_second,
-            processed_req_per_second_overall=processed_req_per_second_overall
+            processed_req_per_second_overall=processed_req_per_second_overall,
+            received_req_counters=req_counters,
+            sent_result_code_range_counters=sent_res_code_counters
         )
 
     def add_application(self, app: Application, peers: list[Peer]):

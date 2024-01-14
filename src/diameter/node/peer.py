@@ -13,7 +13,7 @@ from typing import Callable, TypeVar
 
 from ..message import constants
 from ..message import MessageHeader, Message, dump
-from ._helpers import SequenceGenerator, StoppableThread
+from ._helpers import SecondSlotCounter, SequenceGenerator, StoppableThread
 
 
 __all__ = ["PEER_RECV", "PEER_SEND", "PEER_TRANSPORT_TCP",
@@ -107,6 +107,8 @@ class PeerStats:
     def __init__(self):
         self.processed_req_time_total = deque(maxlen=1024)
         self.processed_req_time: dict[str, deque] = {}
+        self.received_req_counter: SecondSlotCounter = SecondSlotCounter(1000)
+        self.sent_result_code_range_counters: dict[str, SecondSlotCounter] = {}
 
     def add_processed_req_time(self, req_name: str, req_time: float):
         self.processed_req_time_total.append(req_time)
@@ -115,9 +117,18 @@ class PeerStats:
 
         self.processed_req_time[req_name].append(req_time)
 
+    def add_received_req(self):
+        self.received_req_counter.add_count(1)
+
+    def add_sent_result_code(self, result_code: int):
+        code_range = f"{int(result_code / 1000)}xxx"
+        self.sent_result_code_range_counters.setdefault(
+            code_range, SecondSlotCounter(1000))
+        self.sent_result_code_range_counters[code_range].add_count(1)
+
     @property
     def processed_req_per_second(self) -> dict[str, float]:
-        """Amount of requests processed per second, split by message type.
+        """Rate of requests processed per second, split by message type.
 
         Returns:
             A dictionary with keys of diameter command names (e.g.
@@ -132,7 +143,7 @@ class PeerStats:
 
     @property
     def processed_req_per_second_overall(self) -> float:
-        """Amount of requests processed per second.
+        """Overall rate of requests processed per second.
 
         Derived from the total sum of work time over the past 1024 received
         requests.
