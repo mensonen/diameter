@@ -18,6 +18,7 @@ except ImportError:
     sctp = None
 
 from collections import deque
+from copy import deepcopy
 from typing import TypeVar
 
 from ..message import constants
@@ -283,6 +284,10 @@ class Node:
         self.session_generator = SessionGenerator(self.origin_host)
         """A unique diameter session ID generator. The next unique session 
         ID can be retrieved `Node.session_generator.next_id()`."""
+        self.node_statistics_history: deque[dict] = deque(maxlen=1440)
+        """A list of node statistics snapshots, taken at one minute intervals
+        and kept for 24 hours. Each snapshot is a dictionary representation of
+        a [NodeStatistics][diameter.node.NodeStatistics] instance."""
 
         rp, wp = os.pipe()
         self.interrupt_read = rp
@@ -308,6 +313,8 @@ class Node:
         self.sctp_sockets: list[sctp.sctpsocket] = []
         self._connection_thread: StoppableThread = StoppableThread(
             target=self._handle_connections)
+        self._stat_collect_thread: StoppableThread = StoppableThread(
+            target=self._collect_stats)
 
     @property
     def auth_application_ids(self) -> set[int]:
@@ -446,6 +453,17 @@ class Node:
 
         if conn.last_read_since > idle_timeout:
             self.send_dwr(conn)
+
+    def _collect_stats(self, _thread: StoppableThread):
+        interval = time.time()
+        while not _thread.is_stopped:
+            if time.time() - interval >= 60:
+                interval = time.time()
+                stats_snapshot = dataclasses.asdict(self.node_statistics)
+                stats_snapshot["timestamp"] = int(time.time())
+                self.node_statistics_history.append(stats_snapshot)
+
+            time.sleep(2)
 
     def _connect_to_peer(self, peer: Peer):
         """Establishes a connection to a known peer."""
@@ -1005,18 +1023,22 @@ class Node:
                 req_time[cmd_name] += math.ceil(sum(times))
                 req_count[cmd_name] += len(times)
 
+            # iterating the counters is guaranteed to fail as the counter
+            # dictionary will change size while we're reading it
+            counter_copy = deepcopy(stats.received_req_counter)
             req_counters = [
                 sum(c) for c in zip(
                     req_counters,
-                    stats.received_req_counter.get_counts(60, 300, 900))
+                    counter_copy.get_counts(60, 300, 900))
             ]
 
             for result_code_range, counter in stats.sent_result_code_range_counters.items():
+                counter_copy = deepcopy(counter)
                 sent_res_code_counters.setdefault(result_code_range, [0, 0, 0])
                 sent_res_code_counters[result_code_range] = [
                     sum(c) for c in zip(
                         sent_res_code_counters[result_code_range],
-                        counter.get_counts(60, 300, 900)
+                        counter_copy.get_counts(60, 300, 900)
                     )
                 ]
 
@@ -1571,6 +1593,7 @@ class Node:
             sctp_socket.setblocking(False)
             self.sctp_sockets.append(sctp_socket)
 
+        self._stat_collect_thread.start()
         self._connection_thread.start()
 
         for peer in self.peers.values():
@@ -1629,6 +1652,8 @@ class Node:
 
         self._connection_thread.stop()
         self._connection_thread.join(self.wakeup_interval + 1)
+        self._stat_collect_thread.stop()
+        self._stat_collect_thread.join(2)
 
         self.logger.debug("closing listening sockets")
         for tcp_socket in self.tcp_sockets:
