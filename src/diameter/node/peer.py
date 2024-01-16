@@ -235,6 +235,10 @@ class Peer:
     at Node startup and at connection lost (see `reconnect_wait` timer). A 
     connection is automatically established regardless of whether the node acts 
     as a server or a client."""
+    always_reconnect: bool = False
+    """Indicates that the connection to the peer should always be attempted to
+    be re-established, even if the peer has disconnected cleanly after a
+    DPR/DPA procedure."""
     cea_timeout: int = None
     """Timeout waiting for a CEA after sending a CER. If no CEA is received 
     within this timeframe, the connection to the peer is closed."""

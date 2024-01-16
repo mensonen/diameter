@@ -965,6 +965,9 @@ class Node:
                 continue
             if peer.disconnected_since < peer.reconnect_wait:
                 continue
+            if (peer.disconnect_reason == DISCONNECT_REASON_DPR and
+                    not peer.always_reconnect):
+                continue
             self.logger.info(
                 f"connection to {peer.node_name} has been lost for "
                 f"{peer.disconnected_since} seconds, reconnecting")
