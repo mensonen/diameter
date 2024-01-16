@@ -20,6 +20,11 @@ __all__ = ["PEER_RECV", "PEER_SEND", "PEER_TRANSPORT_TCP",
            "PEER_TRANSPORT_SCTP", "PEER_CONNECTING", "PEER_CONNECTED",
            "PEER_READY", "PEER_READY_WAITING_DWA", "PEER_DISCONNECTING",
            "PEER_CLOSING", "PEER_CLOSED", "PEER_READY_STATES",
+           "DISCONNECT_REASON_DPR", "DISCONNECT_REASON_NODE_SHUTDOWN",
+           "DISCONNECT_REASON_CLEAN_DISCONNECT", "DISCONNECT_REASON_SOCKET_FAIL",
+           "DISCONNECT_REASON_GONE_AWAY", "DISCONNECT_REASON_FAILED_CONNECT",
+           "DISCONNECT_REASON_FAILED_CONNECT_CE", "DISCONNECT_REASON_UNKNOWN",
+           "DISCONNECT_REASON_CER_REJECTED", "DISCONNECT_REASON_DWA_TIMEOUT",
            "Peer", "PeerConnection", "PeerCounters", "PeerStats"]
 
 
@@ -47,7 +52,31 @@ PEER_CLOSING = 0x1b
 close its socket as soon as the write buffer has been emptied. This state is 
 not part of rfc6733, it is only an internal temporary flag."""
 PEER_CLOSED = 0x1c
-"""PeerConnection has closed connection."""
+"""Peer has closed connection."""
+DISCONNECT_REASON_DPR = 0x20
+"""Peer has been disconnected after receiving a peer disconnect request."""
+DISCONNECT_REASON_NODE_SHUTDOWN = 0x21
+"""Peer has been disconnected, because node shutdown has been initiated."""
+DISCONNECT_REASON_CLEAN_DISCONNECT = 0x22
+"""Peer has been disconnected due to no errors."""
+DISCONNECT_REASON_SOCKET_FAIL = 0x30
+"""Peer has been disconnected, because the underlying socket has failed."""
+DISCONNECT_REASON_GONE_AWAY = 0x31
+"""Peer has been disconnected, because the socket endpoint has gone away 
+(zero bytes read from socket)."""
+DISCONNECT_REASON_FAILED_CONNECT = 0x32
+"""Peer has been disconnected, because the initial socket failed to connect."""
+DISCONNECT_REASON_FAILED_CONNECT_CE = 0x33
+"""Peer has been disconnected, because the capabilities exchange failed to 
+complete after initial socket connect, e.g. due to a timeout."""
+DISCONNECT_REASON_CER_REJECTED = 0x34
+"""Peer has been disconnected, because the sent capabilities exchange request
+was rejected by the other peer."""
+DISCONNECT_REASON_DWA_TIMEOUT = 0x35
+"""Peer has been disconnected, because there was no response to a device 
+watchdog request within the configured timeout."""
+DISCONNECT_REASON_UNKNOWN = 0x40
+"""Peer has been disconnected for unknown reasons."""
 
 PEER_READY_STATES: tuple[int, ...] = (PEER_READY, PEER_READY_WAITING_DWA)
 _AnyMessageType = TypeVar("_AnyMessageType", bound=Message)
@@ -225,6 +254,11 @@ class Peer:
     peer has not yet (ever) been disconnected, a connection attempt is made
     immediately.
     """
+    disconnect_reason: int | None = None
+    """Reason for the peer having been disconnected. One of the 
+    `PEER_DISCONNECT_REASON_*` constants, or `None` if the peer has not yet 
+    been disconnected. The value is reset back to `None` after a peer has 
+    been reconnected."""
     last_connect: int = None
     """Unix timestamp of last successful connect."""
     last_disconnect: int = None

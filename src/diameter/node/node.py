@@ -371,6 +371,7 @@ class Node:
         peer = self._find_connection_peer(conn)
         if peer and not peer.connection:
             peer.connection = conn
+            peer.disconnect_reason = None
             self.logger.info(
                 f"added a new connection {conn.ip}:{conn.port} "
                 f"for peer {peer}")
@@ -390,6 +391,7 @@ class Node:
         if conn.host_identity not in self.peers:
             return
         peer = self.peers[conn.host_identity]
+        peer.disconnect_reason = None
         if not peer.connection:
             peer.connection = conn
         if conn.ident in self._half_ready_connections:
@@ -431,11 +433,13 @@ class Node:
             if conn.is_sender and conn.last_read_since > cea_timeout:
                 self.logger.warning(
                     f"{conn} exceeded CEA timeout, closing connection")
-                self.close_connection_socket(conn)
+                self.close_connection_socket(
+                    conn, DISCONNECT_REASON_FAILED_CONNECT_CE)
             elif conn.is_receiver and conn.last_read_since > cer_timeout:
                 self.logger.warning(
                     f"{conn} exceeded CER timeout, closing connection")
-                self.close_connection_socket(conn)
+                self.close_connection_socket(
+                    conn, DISCONNECT_REASON_FAILED_CONNECT_CE)
             return
 
         if conn.state not in PEER_READY_STATES:
@@ -444,7 +448,7 @@ class Node:
         if conn.state == PEER_READY_WAITING_DWA and conn.dwa_wait_time > dwa_timeout:
             self.logger.warning(
                 f"{conn} exceeded DWA timeout, closing connection")
-            self.close_connection_socket(conn)
+            self.close_connection_socket(conn, DISCONNECT_REASON_DWA_TIMEOUT)
             return
         elif conn.state == PEER_READY_WAITING_DWA:
             self.logger.debug(
@@ -493,7 +497,8 @@ class Node:
                                      peer.port))
             except socket.error as e:
                 if e.args[0] != errno.EINPROGRESS:
-                    self.remove_peer_connection(conn)
+                    self.remove_peer_connection(
+                        conn, DISCONNECT_REASON_SOCKET_FAIL)
                     return
                 self.logger.warning(f"{conn} socket not yet ready, waiting")
             else:
@@ -519,7 +524,8 @@ class Node:
                 peer_socket.connectx(connect_addr)
             except socket.error as e:
                 if e.args[0] != errno.EINPROGRESS:
-                    self.remove_peer_connection(conn)
+                    self.remove_peer_connection(
+                        conn, DISCONNECT_REASON_SOCKET_FAIL)
                     return
                 self.logger.warning(f"{conn} socket not yet ready, waiting")
             else:
@@ -594,7 +600,8 @@ class Node:
                 self.connection_logger.info(
                     "stop event received, closing all sockets")
                 for conn in list(self.connections.values()):
-                    self.close_connection_socket(conn)
+                    self.close_connection_socket(
+                        conn, DISCONNECT_REASON_NODE_SHUTDOWN)
                     # be nice and let the connection worker threads wind down
                     conn.close(signal_node=False)
                 return
@@ -627,12 +634,14 @@ class Node:
                     if conn:
                         self.connection_logger.debug(f"{conn} wants attention")
                         if conn.state == PEER_CLOSED:
-                            self.close_connection_socket(conn)
+                            self.close_connection_socket(
+                                conn, DISCONNECT_REASON_CLEAN_DISCONNECT)
                         elif len(conn.write_buffer) == 0 and conn.state == PEER_CLOSING:
                             self.connection_logger.debug(
                                 f"{conn} in CLOSING state and no more bytes to "
                                 f"send, closing socket")
-                            self.close_connection_socket(conn)
+                            self.close_connection_socket(
+                                conn, DISCONNECT_REASON_CLEAN_DISCONNECT)
                     else:
                         self.connection_logger.debug(
                             f"interrupt from peer connection {conn_id}, "
@@ -690,7 +699,8 @@ class Node:
                         self.connection_logger.warning(
                             f"{conn} socket read fail: {e.args[1]}, errno "
                             f"{e.args[0]}, disconnecting peer")
-                        self.close_connection_socket(conn)
+                        self.close_connection_socket(
+                            conn, DISCONNECT_REASON_SOCKET_FAIL)
                         conn.close(signal_node=False)
                     continue
 
@@ -698,7 +708,8 @@ class Node:
                     self.connection_logger.warning(
                         f"{conn} has gone away (read zero bytes), closing "
                         f"socket and removing peer")
-                    self.close_connection_socket(conn)
+                    self.close_connection_socket(
+                        conn, DISCONNECT_REASON_GONE_AWAY)
                     conn.close(signal_node=False)
                     continue
 
@@ -721,7 +732,8 @@ class Node:
                         self.connection_logger.warning(
                             f"{conn} connection socket has permanently failed "
                             f"with error {socket_error}, removing connection")
-                        self.close_connection_socket(conn)
+                        self.close_connection_socket(
+                            conn, DISCONNECT_REASON_FAILED_CONNECT)
                         conn.close(signal_node=False)
                         continue
 
@@ -730,7 +742,8 @@ class Node:
                         self.connection_logger.debug(
                             f"{conn} in CLOSING state nothing to write, "
                             f"closing socket")
-                        self.close_connection_socket(conn)
+                        self.close_connection_socket(
+                            conn, DISCONNECT_REASON_CLEAN_DISCONNECT)
                     continue
 
                 try:
@@ -763,7 +776,8 @@ class Node:
                         self.connection_logger.debug(
                             f"{conn} in CLOSING state and no more bytes to "
                             f"send, closing socket")
-                        self.close_connection_socket(conn)
+                        self.close_connection_socket(
+                            conn, DISCONNECT_REASON_CLEAN_DISCONNECT)
 
             for conn in list(self.connections.values()):
                 self._check_timers(conn)
@@ -1146,7 +1160,8 @@ class Node:
 
         return peer
 
-    def close_connection_socket(self, conn: PeerConnection):
+    def close_connection_socket(self, conn: PeerConnection,
+                                disconnect_reason: int = DISCONNECT_REASON_UNKNOWN):
         """Shuts down connection socket and stops observing it forever.
 
         If the corresponding peer has persistency enabled, the node will
@@ -1158,7 +1173,8 @@ class Node:
 
         Args:
             conn: An instance of a peer connection to disconnect
-
+            disconnect_reason: Reason for the connection being disconnected,
+                one of the `PEER_DISCONNECT_REASON_*` constant values
         """
         peer_socket = self.peer_sockets.get(conn.ident)
         if peer_socket:
@@ -1172,14 +1188,15 @@ class Node:
             peer_socket.close()
             conn.close(False)
 
-        self.remove_peer_connection(conn)
+        self.remove_peer_connection(conn, disconnect_reason)
 
     def receive_cea(self, conn: PeerConnection, message: CapabilitiesExchangeAnswer):
         if message.result_code != constants.E_RESULT_CODE_DIAMETER_SUCCESS:
             self.logger.warning(
                 f"{conn} CER rejected with {message.result_code} (message: "
                 f"{message.error_message}), closing connection")
-            self.close_connection_socket(conn)
+            self.close_connection_socket(
+                conn, DISCONNECT_REASON_CER_REJECTED)
             return
 
         # TODO: for SCTP, compare configured IP addresses with advertised and
@@ -1308,6 +1325,11 @@ class Node:
         self.logger.debug(f"{conn} changing state to DISCONNECTING")
 
         conn.state = PEER_DISCONNECTING
+
+        peer = self._find_connection_peer(conn)
+        if peer:
+            peer.disconnect_reason = DISCONNECT_REASON_DPR
+
         self.send_message(conn, answer)
 
     def receive_dwa(self, conn: PeerConnection, message: DeviceWatchdogAnswer):
@@ -1322,7 +1344,8 @@ class Node:
         self.logger.info(f"{conn} sending DWA")
         self.send_message(conn, answer)
 
-    def remove_peer_connection(self, conn: PeerConnection):
+    def remove_peer_connection(self, conn: PeerConnection,
+                               disconnect_reason: int = DISCONNECT_REASON_UNKNOWN):
         """Removes a peer connection that is no longer connected.
 
         !!! Warning
@@ -1334,6 +1357,8 @@ class Node:
         Args:
             conn: An instance of peer connection to remove from the list of
                 active connections
+            disconnect_reason: A reason for the connection being disconnected,
+                one of the `PEER_DISCONNECT_REASON_*` constant values.
 
         """
         if conn.ident in self.connections:
@@ -1345,6 +1370,9 @@ class Node:
             # unset so that a new connection may be made later
             peer.connection = None
             peer.last_disconnect = int(time.time())
+            # only set if not yet set
+            if peer.disconnect_reason is None:
+                peer.disconnect_reason = disconnect_reason
 
         # Remove pending answer tracking; we cannot know if the peer will
         # persist its hop-by-hop IDs over reconnect.
