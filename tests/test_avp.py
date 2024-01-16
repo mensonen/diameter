@@ -190,6 +190,24 @@ def test_create_time_type():
     now = now.replace(microsecond=0)
     assert a.value == now
 
+    # this is the date that NTP-format timestamps would overflow and raise an
+    # error
+    overflow_date = datetime.datetime(2036, 2, 7, 6, 28, 16)
+    t = avp.AvpTime()
+    t.value = overflow_date
+
+    assert t.value == overflow_date
+
+    after_2036 = datetime.datetime(2048, 2, 7, 6, 28, 16)
+    t = avp.AvpTime()
+    t.value = after_2036
+
+    assert t.value == after_2036
+    assert t.payload.hex() == "16925e80"
+
+    t = avp.AvpTime(payload=b"2B\x12.")
+    assert t.value == datetime.datetime(2062, 10, 27, 11, 8, 46)
+
 
 def test_create_grouped_type():
     ag = avp.AvpGrouped(constants.AVP_SUBSCRIPTION_ID)
@@ -308,14 +326,24 @@ def test_error_time_type():
     with pytest.raises(avp.AvpEncodeError):
         a.value = "2023-08-25 00:34:12"
 
-    # too far in the future, year 2036 is max
-    with pytest.raises(avp.AvpEncodeError):
-        a.value = datetime.datetime.fromtimestamp(3294967290)
-
     # a 64-bit integer will not do
     a.payload = b"\x00\x00\x00\x01\x00\x00\x00\x01"
     with pytest.raises(avp.AvpDecodeError):
         _ = a.value
+
+    # due to NTP time integer overflow corrections, dates before 1968 cannot
+    # be represented, this date will be a date in 2104
+    a = avp.AvpTime()
+    a.value = datetime.datetime(1968, 1, 16, 6, 28, 15)
+
+    assert not a.value == datetime.datetime(1968, 1, 16, 6, 28, 15)
+
+    # also dates past 2104 cannot be represented, as they will also flow over
+    # and start over at 2036
+    a = avp.AvpTime()
+    a.value = datetime.datetime(2105, 2, 7, 6, 28, 17)
+
+    assert not a.value == datetime.datetime(2105, 2, 7, 6, 28, 17)
 
 
 def test_error_grouped_type():

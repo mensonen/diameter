@@ -708,12 +708,24 @@ class AvpTime(Avp):
 
     According to `rfc677`, a Time format is derived from the OctetString basic
     AVP format. It contains four octets, in the same format as the first four
-    bytes are in the NTP timestamp format, defined in `rfc5905`.
+    bytes are in the NTP timestamp format, as defined in `rfc5905`.
 
-    The octets represent the number of seconds since 0h on 1 January 1900, in
-    UTC. This value will overflow at 6h 28m 16s UTC, 7 February 2036.
+    The octets represent *either* the number of seconds since 0h on 1 January
+    1900 UTC, or since 6h 28m 16s on 7 February 2036 UTC. The NTP timestamp
+    format would normally overflow in 2036, however `rfc2030` extends its
+    usage until 2104, by defining a specific date in 1968 as a cutoff point.
+    Time values before the cutoff date in 1968 are considered to be dates after
+    2036, while time values after the cutoff are dates between 1968 and 2036.
+
+    As a result, the `AvpTime` type cannot represent dates before 20 January
+    1968 at all.
     """
     seconds_since_1900 = ((70 * 365) + 17) * 86400
+    # 6h 28m 16s UTC, 7 February 2036, the timestamp when NTP format overflows
+    overflow_timestamp = 2085974896
+    # NTP formatted integer seconds at 4h 14m 8s UTC, 20 January 1968, the
+    # cutoff point where the most significant bit gets set for the first time.
+    overflow_detection_cutoff = 2147483648
 
     @property
     def value(self) -> datetime.datetime:
@@ -723,8 +735,12 @@ class AvpTime(Avp):
         will raise an `AvpEncodeError`."""
         try:
             seconds = struct.unpack("!I", self.payload)[0]
-            return datetime.datetime.fromtimestamp(
-                seconds - self.seconds_since_1900)
+            if seconds < self.overflow_detection_cutoff:
+                return datetime.datetime.fromtimestamp(
+                    seconds + self.overflow_timestamp)
+            else:
+                return datetime.datetime.fromtimestamp(
+                    seconds - self.seconds_since_1900)
         except struct.error as e:
             raise AvpDecodeError(
                 f"{self.name} value {self.payload} cannot be decoded as a "
@@ -737,7 +753,10 @@ class AvpTime(Avp):
                 f"{self.name} value {new_value} is not an instance of datetime")
         try:
             seconds = int(new_value.timestamp())
-            self.payload = struct.pack("!I", seconds + self.seconds_since_1900)
+            if seconds < self.overflow_timestamp:
+                self.payload = struct.pack("!I", seconds + self.seconds_since_1900)
+            else:
+                self.payload = struct.pack("!I", seconds - self.overflow_timestamp)
         except struct.error as e:
             raise AvpEncodeError(
                 f"{self.name} value {new_value} cannot be encoded as a "
