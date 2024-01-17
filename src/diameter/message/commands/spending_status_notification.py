@@ -68,7 +68,7 @@ class SpendingStatusNotification(DefinedMessage):
         accessing.
 
     """
-    code: int = 8388635
+    code: int = 8388636
     name: str = "Spending-Status-Notification"
     avp_def: AvpGenType
 
