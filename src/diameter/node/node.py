@@ -200,13 +200,12 @@ class Node:
         self._half_ready_connections: dict[str, PeerConnection] = {}
         self._started = False
         self._stopping = False
-        # this represents roughly the routing table described in rfc6733 2.7
+        # This represents roughly the routing table described in rfc6733 2.7;
         # it's a dictionary of realm names as keys, and route dictionaries as
         # values. Each route dictionary has an app as a key and a list of
         # Peer instances as a value. It als contains one app entry with
         # string value "_default", which is a list of default peers for the
-        # realm (slight deviation of the standard). Note that the realm is
-        # always `Node.realm_name` as the node cannot function as a relay.
+        # realm (slight deviation of the standard).
         self._peer_routes: dict[str, dict[Application | str, list[Peer]]] = {
             realm_name: {"_default": []}
         }
@@ -558,11 +557,12 @@ class Node:
 
     def _flag_connection_as_ready(self, conn: PeerConnection):
         conn.state = PEER_READY
-        for app, peers in self._peer_routes[self.realm_name].items():
-            for peer in peers:
-                if peer.connection == conn:
-                    app.is_ready.set()
-                    break
+        for app_peers in self._peer_routes.values():
+            for app, peers in app_peers.items():
+                for peer in peers:
+                    if peer.connection == conn:
+                        app.is_ready.set()
+                        break
 
     def _generate_answer(self, conn: PeerConnection, msg: _AnyMessageType) -> _AnyAnswerType:
         answer_msg = msg.to_answer()
@@ -1102,7 +1102,10 @@ class Node:
 
         """
         self.applications.append(app)
-        self._peer_routes[self.realm_name][app] = peers
+        for peer in peers:
+            self._peer_routes.setdefault(peer.realm_name, {})
+            peer_list = self._peer_routes[peer.realm_name].setdefault(app, [])
+            peer_list.append(peer)
         app._node = self
         app.start()
 
@@ -1384,7 +1387,13 @@ class Node:
 
         # Check if this was the last available peer for an app and clear app
         # ready flag if so, resulting in `wait_for_ready` to block again.
-        for app, peers in self._peer_routes[self.realm_name].items():
+        app_list = {}
+        for app_peers in self._peer_routes.values():
+            for app, peers in app_peers.items():
+                app_list.setdefault(app, [])
+                app_list[app] += peers
+
+        for app, peers in app_list.items():
             if not isinstance(app, Application):
                 continue
             any_peer_ready = False
