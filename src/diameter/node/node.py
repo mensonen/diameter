@@ -868,7 +868,7 @@ class Node:
 
         if not hasattr(message, "destination_realm"):
             self.logger.warning(
-                f"{conn} realm name present in request "
+                f"{conn} realm name not present in request "
                 f"{hex(message.header.hop_by_hop_identifier)}")
 
             err = self._generate_answer(conn, message)

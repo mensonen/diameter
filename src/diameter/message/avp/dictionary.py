@@ -180,6 +180,8 @@ AVP_DICTIONARY = {
     AVP_ERROR_REPORTING_HOST: {"name": "Error-Reporting-Host", "type": AvpOctetString, "mandatory": True},
     AVP_TERMINATION_CAUSE: {"name": "Termination-Cause", "type": AvpEnumerated, "mandatory": True},
     AVP_ORIGIN_REALM: {"name": "Origin-Realm", "type": AvpOctetString, "mandatory": True},
+    AVP_EXPERIMENTAL_RESULT: {"name": "Experimental-Result", "type": AvpGrouped, "mandatory": True},
+    AVP_EXPERIMENTAL_RESULT_CODE: {"name": "Experimental-Result-Code", "type": AvpUnsigned32, "mandatory": True},
     AVP_INBAND_SECURITY_ID: {"name": "Inband-Security-Id", "type": AvpEnumerated, "mandatory": True},
     AVP_E2E_SEQUENCE: {"name": "E2E-Sequence", "type": AvpGrouped, "mandatory": True},
     AVP_DRMP: {"name": "DRMP", "type": AvpEnumerated},

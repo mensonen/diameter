@@ -56,6 +56,19 @@ class VendorSpecificApplicationId:
 
 
 @dataclasses.dataclass
+class ExperimentalResult:
+    """A data container that represents the "Experimental-Result" (297) grouped AVP."""
+    vendor_id: int = None
+    experimental_result_code: int = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("vendor_id", AVP_VENDOR_ID, is_required=True),
+        AvpGenDef("experimental_result_code", AVP_ETSI_ETSI_EXPERIMENTAL_RESULT_CODE, is_required=True),
+    )
+
+
+@dataclasses.dataclass
 class MipMnAaaAuth:
     """A data container that represents the "MIP-MN-AAA-Auth" (322) grouped AVP."""
     mip_mn_aaa_spi: int = None
@@ -1899,6 +1912,23 @@ class PresenceReportingAreaInformation:
         AvpGenDef("presence_reporting_area_identifier", AVP_TGPP_PRESENCE_REPORTING_AREA_IDENTIFIER, VENDOR_TGPP),
         AvpGenDef("presence_reporting_area_status", AVP_TGPP_PRESENCE_REPORTING_AREA_STATUS, VENDOR_TGPP),
         AvpGenDef("presence_reporting_area_elements_list", AVP_TGPP_PRESENCE_REPORTING_AREA_ELEMENTS_LIST, VENDOR_TGPP)
+    )
+
+
+@dataclasses.dataclass
+class PolicyCounterStatusReport:
+    """A data container that represents the "Policy-Counter-Status-Report" (2903) grouped AVP.
+
+    3GPP TS 29.219 version 11.2.0 Release 11
+    """
+    policy_counter_identifier: str = None
+    policy_counter_status: str = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("policy_counter_identifier", AVP_TGPP_POLICY_COUNTER_IDENTIFIER, VENDOR_TGPP, is_required=True),
+        AvpGenDef("policy_counter_status", AVP_TGPP_POLICY_COUNTER_STATUS, VENDOR_TGPP, is_required=True),
     )
 
 
