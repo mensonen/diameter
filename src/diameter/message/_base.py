@@ -376,7 +376,8 @@ class DefinedMessage(Message):
         for avp_def in self.avp_def:
             if avp_def.attr_name == name:
                 return None
-        raise AttributeError()
+        raise AttributeError(
+            f"{self.__class__.__name__} has no attribute {name}")
 
     def __post_init__(self):
         self._additional_avps: list[Avp] = []
