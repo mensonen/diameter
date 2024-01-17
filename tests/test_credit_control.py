@@ -8,7 +8,7 @@ import pytest
 from diameter.message import Message, constants
 from diameter.message.avp import Avp, AvpOctetString
 from diameter.message.commands import CreditControlRequest, CreditControlAnswer
-from diameter.message.commands._attributes import SubscriptionId
+from diameter.message.commands.credit_control import SubscriptionId
 from diameter.message.commands.credit_control import GrantedServiceUnit
 from diameter.message.commands.credit_control import RequestedServiceUnit
 from diameter.message.commands.credit_control import UsedServiceUnit

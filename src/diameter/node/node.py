@@ -23,7 +23,7 @@ from typing import TypeVar
 
 from ..message import constants
 from ..message.commands import *
-from ..message.commands._attributes import FailedAvp
+from ..message.avp.grouped import FailedAvp
 from ._helpers import parse_diameter_uri, validate_message_avps
 from ._helpers import SequenceGenerator, SessionGenerator, StoppableThread
 from .peer import *

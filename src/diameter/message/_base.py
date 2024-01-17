@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import TypeVar, Type, Any
 
 from .avp import Avp, AvpGrouped
+from .avp.generator import AvpGenType, generate_avps_from_defs
 from .packer import Packer, Unpacker
 
 
@@ -430,4 +431,3 @@ def _traverse_avp_tree(avps: list[Avp],
 
 
 from .commands import all_commands
-from .commands._attributes import AvpGenType, generate_avps_from_defs

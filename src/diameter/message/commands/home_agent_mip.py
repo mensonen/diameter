@@ -9,7 +9,9 @@ from __future__ import annotations
 from typing import Type
 
 from .._base import Message, MessageHeader, DefinedMessage, _AnyMessageType
-from ._attributes import *
+from ..avp.grouped import *
+from ..avp.generator import AvpGenDef, AvpGenType
+from ._attributes import assign_attr_from_defs
 
 
 __all__ = ["HomeAgentMip", "HomeAgentMipAnswer", "HomeAgentMipRequest"]

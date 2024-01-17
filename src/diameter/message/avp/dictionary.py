@@ -1,6 +1,6 @@
-from . import (AvpAddress, AvpEnumerated, AvpFloat32, AvpFloat64, AvpGrouped,
-               AvpInteger32, AvpInteger64, AvpUnsigned32, AvpUnsigned64,
-               AvpOctetString, AvpTime, AvpUtf8String)
+from .avp import (AvpAddress, AvpEnumerated, AvpFloat32, AvpFloat64, AvpGrouped,
+                  AvpInteger32, AvpInteger64, AvpUnsigned32, AvpUnsigned64,
+                  AvpOctetString, AvpTime, AvpUtf8String)
 from ..constants import *
 
 # base avp dictionary with no vendors
