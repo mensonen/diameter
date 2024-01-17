@@ -341,7 +341,7 @@ class ThreadingApplication(Application):
         try:
             answer = self.handle_request(message)
         except Exception as e:
-            logger.warning(f"{self} message handling failed: {e}")
+            logger.warning(f"{self} message handling failed: {repr(e)}")
             answer = self.generate_answer(
                 message,
                 result_code=constants.E_RESULT_CODE_DIAMETER_UNABLE_TO_COMPLY)
