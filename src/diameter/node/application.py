@@ -320,7 +320,13 @@ class ThreadingApplication(Application):
 
             process_message = threading.Thread(
                 target=self._process_recv_msg, args=(recv_message,))
-            process_message.start()
+            try:
+                process_message.start()
+            except RuntimeError as e:
+                logger.warning(
+                    f"{self} failed to spawn a thread for calling "
+                    f"`handle_request`: {e}, discarded message "
+                    f"{hex(recv_message.header.hop_by_hop_identifier)}")
 
     def _wait_for_resp_msg(self, _thread):
         while True:
