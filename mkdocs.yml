@@ -31,8 +31,11 @@ nav:
     - Connecting to peers: guide/node.md
     - Application basics: guide/application.md
     - Sample application: guide/sample_application.md
+    - Statistics: guide/node_statistics.md
   - API Refrence:
-    - AVP: api/message_avp.md
+    - AVP:
+      - api/avp/index.md
+      - Grouped AVPs: api/avp/grouped.md
     - Message: api/message.md
     - Commands:
       - AA: api/commands/aa.md
@@ -67,6 +70,7 @@ plugins:
           separate_signature: true
           show_signature_annotations: true
           line_length: 70
+          signature_crossrefs: true
 watch:
   - src
 markdown_extensions:

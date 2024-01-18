@@ -19,7 +19,7 @@ assert isinstance(ccr, CreditControlRequest)
 ```
 
 Messages that have a Python implementation (e.g. "Accounting", "Credit-Control")
-are further split into "Request" and "Answer" classes. Parsing an Accounting
+are further split into "Request" and "Answer" classes. Parsing an "Accounting"
 message that is also a request will return an instance of 
 [`AccountingRequest`][diameter.message.commands.accounting.AccountingRequest],
 while an answer would return an instance of 
@@ -41,14 +41,15 @@ the following Diameter Commands:
  * Session-Termination
 
 For messages that do not have a Python implementation, an instance of 
-[`Message`][diameter.message.Message], or one of its subclasses is returned. 
-For these, refer to [the full list](../api/commands/other_commands.md).
+[`UndefinedMessage`][diameter.message.UndefinedMessage], or one of its 
+subclasses is returned. For these, refer to 
+[the full list](../api/commands/other_commands.md).
 
 
-### Reading AVPs
+### Accessing message AVPs
 
-For any command message that has a Python implementation, any AVP part of the 
-RFC can be accessed as an instance attribute:
+For any command message that is known to the diameter stack, any AVP part of the 
+specification can be accessed as an instance attribute:
 
 ```python
 from diameter.message import Message
@@ -63,8 +64,9 @@ assert ccr.destination_realm == b"mvno.net"
 assert ccr.multiple_services_credit_control[0].requested_service_unit.cc_total_octets == 0
 ```
 
-For AVPs not part of the RFCs, a [`find_avps`][diameter.message.Message.find_avps] 
-instance method is provided, which can be used to find any AVP within a message:
+For AVPs not part of the specification, a 
+[`find_avps`][diameter.message.Message.find_avps] instance method is provided, 
+which can be used to find any AVP within a message:
 
 ```python
 from diameter.message import Message
@@ -84,7 +86,17 @@ avps = ccr.find_avps(
 assert avps[0].value == b"\x06"
 ```
 
-This will also work for message types that have no Python implementation:
+Command messages that are known to the diameter stack (see 
+[the full list](../api/commands/other_commands.md)), but do not have a written
+Python implementation, still provide read-only access to AVPs as instance 
+attributes. Command messages that inherit 
+[`UndefinedMessage`][diameter.message.UndefinedMessage] attempt to automatically
+convert every AVP that the message contains into instance attributes, by 
+converting the AVP name to lowercase and replacing dashes with lowercase, e.g.
+a "Visited-PLMN-Id" becomes a `visited_plmn_id` instance attribute.
+
+This will also work for grouped AVPs. If an AVP appears more than once, it will
+be converted to a list:
 
 ```python
 from diameter.message import Message
@@ -92,9 +104,10 @@ from diameter.message.constants import *
 
 # Contains a 3GPP-Update-Location-Request
 ulr = Message.from_bytes(b"\x01\x00\x02\xc8\xc0\x00 ... ")
-assert ulr.session_id == ""  # Raises an AttributeError
+assert ulr.session_id == "epc.mnc003.mcc228.3gppnetwork.org;02472683;449d027e;13a0091b"
+assert ulr.vendor_specific_application_id.auth_application_id == 16777251
 
-# Searching will work:
+# Searching will also work:
 session_id = ulr.find_avps((AVP_SESSION_ID, 0))[0]
 ```
 

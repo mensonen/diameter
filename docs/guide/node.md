@@ -58,7 +58,11 @@ node.add_peer("aaa://ocs2.gy;transport=sctp", "realm.net",
 Adding a peer as `persistent` will result in the node establishing an outgoing 
 connection at startup and ensuring that the connection remains up, by means of
 reconnecting after connection loss, if necessary. A peer that is not set as 
-persistent will never be automatically connected to. 
+persistent will never be automatically connected to. A reconnect attempt is 
+*not* made, if the peer has been disconnected after a successful 
+"Disconnect-Peer-Request". This can be overridden by setting the 
+[`always_reconnect`][diameter.node.peer.Peer.always_reconnect] attribute to 
+true.
 
 Adding a peer without specifying its ip addresses will only make the peer 
 "known"; no outgoing connection is ever attempted and the initial connection 
@@ -208,6 +212,18 @@ A node has several attributes that can be used or altered after its creation:
     discovered. The dictionary holds host identities as strings as its keys and
     instances of [`Peer`][diameter.node.peer.Peer] as its values.
 
+`node_statistics`
+:   Returns an instance of [`NodeStats`][diameter.node.node.NodeStats], which 
+    contains statistical values, cumulated over every configured peer, at the
+    time of retrieval.
+
+`node_statistics_history`
+:   A list of dictionaries, each representing a serialised snapshot of a 
+    [`NodeStats`][diameter.node.node.NodeStats] instance, retrieved every 60 
+    seconds since the node startup, rotating at 1440 minutes. The historical 
+    statistics values are preserved over node restarts, but only stored in 
+    memory.
+
 
 ## Diameter peer
 
@@ -259,6 +275,11 @@ Peers have several attributes that can be queried and/or altered after creation:
 :   Time of peer inactivity, in seconds that the node will accept before a DWR 
     will be sent. Not set by default, uses the values configured for the node.
 
+`always_reconnect`
+:   Force a persistent peer to always reconnect after connection loss, even if
+    the peer has closed its connection after a successful 
+    "Disconnect-Peer-Request" exchange. Defaults to `false`.
+
 `reconnect_wait`
 :   Time to wait before attempting a re-connect for a persistent peer. Must be
     set individually for each peer, there are no default values provided by the
@@ -270,6 +291,19 @@ Peers have several attributes that can be queried and/or altered after creation:
 `counters`
 :   An instance of `PeerCounters`, which counts each CER, CEA, DWR, DWA, DPR,
     DPA and other app-routed requests and answers individually.
+
+`statistics`
+:   An instance of `PeerStats`, which keeps a record of response times, sent 
+    answer result codes, amount of requests received and rate of requests 
+    being processed.
+
+`disconnect_reason`
+:   Holds a value that indicates the reason for the most recent peer disconnect.
+    The value is `None`, if the peer has so far never been disconnected, or if
+    the peer is currently in a connected state. The value is one of the 
+    `PEER_DISCONNECT_REASON_*` constants and it gets set at the same time as 
+    the `connection` attribute gets unset. The reason is reset back to `None`,
+    if the peer reconnects and performs a successful CER/CEA exchange.
 
 For a full list of instance attributes, see [`Peer API reference`][diameter.node.peer.Peer].
 

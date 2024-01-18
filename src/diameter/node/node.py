@@ -54,7 +54,7 @@ class NodeStats:
     Represents a snapshot with cumulated and averaged statistical values for
     all configured peers at the time of retrieval. The meaning of each
     statistical value is identical to those of
-    [PeerStats][diameter.peer.PeerStats].
+    [PeerStats][diameter.node.peer.PeerStats].
     """
     avg_response_time: dict[str, float]
     """Average response time, split by message type."""
@@ -286,7 +286,7 @@ class Node:
         self.node_statistics_history: deque[dict] = deque(maxlen=1440)
         """A list of node statistics snapshots, taken at one minute intervals
         and kept for 24 hours. Each snapshot is a dictionary representation of
-        a [NodeStatistics][diameter.node.NodeStatistics] instance."""
+        a [NodeStats][diameter.node.NodeStats] instance."""
 
         rp, wp = os.pipe()
         self.interrupt_read = rp

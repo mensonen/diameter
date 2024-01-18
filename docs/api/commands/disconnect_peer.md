@@ -33,12 +33,3 @@ AVPs documented in rfc6733.
       filters:
         - "!^_"
         - "!^avp_def"
-
-
-::: diameter.message.commands.disconnect_peer.FailedAvp
-    options:
-      show_root_heading: true
-      show_root_full_path: false
-      show_if_no_docstring: true
-      filters:
-        - "!^avp_def"

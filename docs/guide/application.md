@@ -35,6 +35,7 @@ peer = node.add_peer("aaa://ocs2.gy;transport=sctp", "realm.net",
                      ip_addresses=["10.16.0.8", "10.16.5.8"], 
                      is_persistent=True)
 node.add_application(my_app, [peer])
+node.start()
 
 msg = Message()
 

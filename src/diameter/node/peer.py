@@ -29,26 +29,26 @@ __all__ = ["PEER_RECV", "PEER_SEND", "PEER_TRANSPORT_TCP",
 
 
 PEER_RECV = 0x01
-"""PeerConnection is a server, i.e. receives requests and sends answers."""
+"""Peer is a server, i.e. receives requests and sends answers."""
 PEER_SEND = 0x02
-"""PeerConnection is a client, i.e. sends requests and receives answers."""
+"""Peer is a client, i.e. sends requests and receives answers."""
 PEER_TRANSPORT_TCP = 0x0a
-"""PeerConnection connection is via TCP."""
+"""Peer connection is via TCP."""
 PEER_TRANSPORT_SCTP = 0x0b
-"""PeerConnection connection is via SCTP."""
+"""Peer connection is via SCTP."""
 PEER_CONNECTING = 0x10
-"""PeerConnection is in a state waiting for socket to become active."""
+"""Peer is in a state waiting for socket to become active."""
 PEER_CONNECTED = 0x11
-"""PeerConnection has established connection and is waiting for initial CER/CEA to 
+"""Peer has established connection and is waiting for initial CER/CEA to 
 complete."""
 PEER_READY = 0x12
-"""PeerConnection is ready to process messages."""
+"""Peer is ready to process messages."""
 PEER_READY_WAITING_DWA = 0x13
-"""PeerConnection is ready to process messages, but is waiting for a DWA."""
+"""Peer is ready to process messages, but is waiting for a DWA."""
 PEER_DISCONNECTING = 0x1a
-"""PeerConnection has sent a disconnect-peer-request and is waiting for DPA."""
+"""Peer has sent a Disconnect-Peer-Request and is waiting for DPA."""
 PEER_CLOSING = 0x1b
-"""PeerConnection is about to be closed; it will no longer read any messages and will
+"""Peer is about to be closed; it will no longer read any messages and will
 close its socket as soon as the write buffer has been emptied. This state is 
 not part of rfc6733, it is only an internal temporary flag."""
 PEER_CLOSED = 0x1c
@@ -122,13 +122,21 @@ class MessageDumpLogAdapter(logging.LoggerAdapter):
 class PeerCounters:
     """Peer message counters."""
     cer: int = 0
+    """Amount of CER messages received."""
     cea: int = 0
+    """Amount of CEA messages sent."""
     dwr: int = 0
+    """Amount of DWR messages received."""
     dwa: int = 0
+    """Amount of DWA messages sent."""
     dpr: int = 0
+    """Amount of DPR messages received."""
     dpa: int = 0
+    """Amount of DPA messages sent."""
     requests: int = 0
+    """Total amount of requests received."""
     answers: int = 0
+    """Total amount of messages sent."""
 
 
 class PeerStats:

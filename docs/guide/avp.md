@@ -69,7 +69,7 @@ assert a.payload == b"\x00\x04\x807"  # Network bytes representation
 ```
 
 Each individual AVP type has their specific python value, refer to 
-[AVP API reference](../api/message_avp.md) for details.
+[AVP API reference](../api/avp/index.md) for details.
 
 
 ## Creating an AVP
@@ -120,7 +120,7 @@ ps_information = Avp.new(AVP_TGPP_PS_INFORMATION, VENDOR_TGPP, value=[
 
 Each individual AVP type has their specific type of python value, and 
 attempting to set a value that has an invalid type will raise an exception. 
-Refer to [AVP API reference](../api/message_avp.md) for details for each AVP 
+Refer to [AVP API reference](../api/avp/index.md) for details for each AVP 
 type.
 
 
