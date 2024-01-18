@@ -1540,18 +1540,19 @@ class Node:
             realm_name = message.destination_realm.decode()
 
         peer_list = None
-        for route_app, peers in self._peer_routes[realm_name].items():
-            if app == route_app:
-                peer_list = peers
-                break
+        if realm_name in self._peer_routes:
+            for route_app, peers in self._peer_routes[realm_name].items():
+                if app == route_app:
+                    peer_list = peers
+                    break
 
-        if peer_list is None and "_default" in self._peer_routes[realm_name]:
-            peer_list = self._peer_routes[realm_name]["_default"]
+            if peer_list is None and "_default" in self._peer_routes[realm_name]:
+                peer_list = self._peer_routes[realm_name]["_default"]
 
         if not peer_list:
             raise NotRoutable(
-                "No peers configured for the application and no default "
-                "peer connections exist")
+                f"No peers in realm {realm_name} configured for the "
+                f"application and no default peer connections exist")
 
         usable_peers = [
             peer for peer in peer_list
