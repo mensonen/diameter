@@ -4,7 +4,7 @@ python API for reading and setting AVPs.
 """
 from typing import Type
 
-from .._base import Message, DefinedMessage
+from .._base import Message, DefinedMessage, UndefinedMessage
 
 # Message types that have "proper" implementations; Requests and Answers are
 # their own distinct classes and permit AVP values to be accessed as instance
@@ -31,7 +31,7 @@ from .session_termination import *
 # attribute-based AVP access.
 
 
-class SipUserAuthorization(Message):
+class SipUserAuthorization(UndefinedMessage):
     """A SIP-User-Authorization message.
 
     This message implementation provides no python subclasses for requests and
@@ -42,10 +42,11 @@ class SipUserAuthorization(Message):
     name: str = "SIP-User-Authorization"
 
     def __post_init__(self):
+        super().__post_init__()
         self.header.command_code = self.code
 
 
-class SipServerAssignment(Message):
+class SipServerAssignment(UndefinedMessage):
     """A SIP-Server-Assignment message.
 
     This message implementation provides no python subclasses for requests and
@@ -56,10 +57,11 @@ class SipServerAssignment(Message):
     name: str = "SIP-Server-Assignment"
 
     def __post_init__(self):
+        super().__post_init__()
         self.header.command_code = self.code
 
 
-class SipLocationInfo(Message):
+class SipLocationInfo(UndefinedMessage):
     """A SIP-Location-Info message.
 
     This message implementation provides no python subclasses for requests and
@@ -70,10 +72,11 @@ class SipLocationInfo(Message):
     name: str = "SIP-Location-Info"
 
     def __post_init__(self):
+        super().__post_init__()
         self.header.command_code = self.code
 
 
-class SipMultimediaAuth(Message):
+class SipMultimediaAuth(UndefinedMessage):
     """A SIP-Multimedia-Auth message.
 
     This message implementation provides no python subclasses for requests and
@@ -84,10 +87,11 @@ class SipMultimediaAuth(Message):
     name: str = "SIP-Multimedia-Auth"
 
     def __post_init__(self):
+        super().__post_init__()
         self.header.command_code = self.code
 
 
-class SipRegistrationTermination(Message):
+class SipRegistrationTermination(UndefinedMessage):
     """A SIP-Registration-Termination message.
 
     This message implementation provides no python subclasses for requests and
@@ -98,10 +102,11 @@ class SipRegistrationTermination(Message):
     name: str = "SIP-Registration-Termination"
 
     def __post_init__(self):
+        super().__post_init__()
         self.header.command_code = self.code
 
 
-class SipPushProfile(Message):
+class SipPushProfile(UndefinedMessage):
     """A SIP-Push-Profile message.
 
     This message implementation provides no python subclasses for requests and
@@ -112,10 +117,11 @@ class SipPushProfile(Message):
     name: str = "SIP-Push-Profile"
 
     def __post_init__(self):
+        super().__post_init__()
         self.header.command_code = self.code
 
 
-class UserAuthorization(Message):
+class UserAuthorization(UndefinedMessage):
     """A User-Authorization message.
 
     This message implementation provides no python subclasses for requests and
@@ -126,10 +132,11 @@ class UserAuthorization(Message):
     name: str = "User-Authorization"
 
     def __post_init__(self):
+        super().__post_init__()
         self.header.command_code = self.code
 
 
-class ServerAssignment(Message):
+class ServerAssignment(UndefinedMessage):
     """A Server-Assignment message.
 
     This message implementation provides no python subclasses for requests and
@@ -140,10 +147,11 @@ class ServerAssignment(Message):
     name: str = "Server-Assignment"
 
     def __post_init__(self):
+        super().__post_init__()
         self.header.command_code = self.code
 
 
-class LocationInfo(Message):
+class LocationInfo(UndefinedMessage):
     """A Location-Info message.
 
     This message implementation provides no python subclasses for requests and
@@ -154,10 +162,11 @@ class LocationInfo(Message):
     name: str = "Location-Info"
 
     def __post_init__(self):
+        super().__post_init__()
         self.header.command_code = self.code
 
 
-class MultimediaAuth(Message):
+class MultimediaAuth(UndefinedMessage):
     """A Multimedia-Auth message.
 
     This message implementation provides no python subclasses for requests and
@@ -168,10 +177,11 @@ class MultimediaAuth(Message):
     name: str = "Multimedia-Auth"
 
     def __post_init__(self):
+        super().__post_init__()
         self.header.command_code = self.code
 
 
-class RegistrationTermination(Message):
+class RegistrationTermination(UndefinedMessage):
     """A Registration-Termination message.
 
     This message implementation provides no python subclasses for requests and
@@ -182,10 +192,11 @@ class RegistrationTermination(Message):
     name: str = "Registration-Termination"
 
     def __post_init__(self):
+        super().__post_init__()
         self.header.command_code = self.code
 
 
-class PushProfile(Message):
+class PushProfile(UndefinedMessage):
     """A Push-Profile message.
 
     This message implementation provides no python subclasses for requests and
@@ -196,10 +207,11 @@ class PushProfile(Message):
     name: str = "Push-Profile"
 
     def __post_init__(self):
+        super().__post_init__()
         self.header.command_code = self.code
 
 
-class UserData(Message):
+class UserData(UndefinedMessage):
     """A User-Data message.
 
     This message implementation provides no python subclasses for requests and
@@ -210,10 +222,11 @@ class UserData(Message):
     name: str = "User-Data"
 
     def __post_init__(self):
+        super().__post_init__()
         self.header.command_code = self.code
 
 
-class ProfileUpdate(Message):
+class ProfileUpdate(UndefinedMessage):
     """A Profile-Update message.
 
     This message implementation provides no python subclasses for requests and
@@ -224,10 +237,11 @@ class ProfileUpdate(Message):
     name: str = "Profile-Update"
 
     def __post_init__(self):
+        super().__post_init__()
         self.header.command_code = self.code
 
 
-class SubscribeNotifications(Message):
+class SubscribeNotifications(UndefinedMessage):
     """A Subscribe-Notifications message.
 
     This message implementation provides no python subclasses for requests and
@@ -238,10 +252,11 @@ class SubscribeNotifications(Message):
     name: str = "Subscribe-Notifications"
 
     def __post_init__(self):
+        super().__post_init__()
         self.header.command_code = self.code
 
 
-class PushNotification(Message):
+class PushNotification(UndefinedMessage):
     """A Push-Notification message.
 
     This message implementation provides no python subclasses for requests and
@@ -252,10 +267,11 @@ class PushNotification(Message):
     name: str = "Push-Notification"
 
     def __post_init__(self):
+        super().__post_init__()
         self.header.command_code = self.code
 
 
-class BootstrapingInfo(Message):
+class BootstrapingInfo(UndefinedMessage):
     """A Bootstraping-Info message.
 
     This message implementation provides no python subclasses for requests and
@@ -266,10 +282,11 @@ class BootstrapingInfo(Message):
     name: str = "Bootstraping-Info"
 
     def __post_init__(self):
+        super().__post_init__()
         self.header.command_code = self.code
 
 
-class MessageProcess(Message):
+class MessageProcess(UndefinedMessage):
     """A Message-Process message.
 
     This message implementation provides no python subclasses for requests and
@@ -280,10 +297,11 @@ class MessageProcess(Message):
     name: str = "Message-Process"
 
     def __post_init__(self):
+        super().__post_init__()
         self.header.command_code = self.code
 
 
-class UpdateLocation(Message):
+class UpdateLocation(UndefinedMessage):
     """A 3GPP-Update-Location message.
 
     This message implementation provides no python subclasses for requests and
@@ -294,10 +312,11 @@ class UpdateLocation(Message):
     name: str = "3GPP-Update-Location"
 
     def __post_init__(self):
+        super().__post_init__()
         self.header.command_code = self.code
 
 
-class CancelLocation(Message):
+class CancelLocation(UndefinedMessage):
     """A 3GPP-Cancel-Location message.
 
     This message implementation provides no python subclasses for requests and
@@ -308,10 +327,11 @@ class CancelLocation(Message):
     name: str = "3GPP-Cancel-Location"
 
     def __post_init__(self):
+        super().__post_init__()
         self.header.command_code = self.code
 
 
-class AuthenticationInformation(Message):
+class AuthenticationInformation(UndefinedMessage):
     """A 3GPP-Authentication-Information message.
 
     This message implementation provides no python subclasses for requests and
@@ -322,10 +342,11 @@ class AuthenticationInformation(Message):
     name: str = "3GPP-Authentication-Information"
 
     def __post_init__(self):
+        super().__post_init__()
         self.header.command_code = self.code
 
 
-class InsertSubscriberData(Message):
+class InsertSubscriberData(UndefinedMessage):
     """A 3GPP-Insert-Subscriber-Data message.
 
     This message implementation provides no python subclasses for requests and
@@ -336,10 +357,11 @@ class InsertSubscriberData(Message):
     name: str = "3GPP-Insert-Subscriber-Data"
 
     def __post_init__(self):
+        super().__post_init__()
         self.header.command_code = self.code
 
 
-class DeleteSubscriberData(Message):
+class DeleteSubscriberData(UndefinedMessage):
     """A 3GPP-Delete-Subscriber-Data message.
 
     This message implementation provides no python subclasses for requests and
@@ -350,10 +372,11 @@ class DeleteSubscriberData(Message):
     name: str = "3GPP-Delete-Subscriber-Data"
 
     def __post_init__(self):
+        super().__post_init__()
         self.header.command_code = self.code
 
 
-class PurgeUE(Message):
+class PurgeUE(UndefinedMessage):
     """A 3GPP-Purge-UE message.
 
     This message implementation provides no python subclasses for requests and
@@ -364,10 +387,11 @@ class PurgeUE(Message):
     name: str = "3GPP-Purge-UE"
 
     def __post_init__(self):
+        super().__post_init__()
         self.header.command_code = self.code
 
 
-class Reset(Message):
+class Reset(UndefinedMessage):
     """A 3GPP-Reset message.
 
     This message implementation provides no python subclasses for requests and
@@ -378,10 +402,11 @@ class Reset(Message):
     name: str = "3GPP-Reset"
 
     def __post_init__(self):
+        super().__post_init__()
         self.header.command_code = self.code
 
 
-class Notify(Message):
+class Notify(UndefinedMessage):
     """A 3GPP-Notify message.
 
     This message implementation provides no python subclasses for requests and
@@ -392,10 +417,11 @@ class Notify(Message):
     name: str = "3GPP-Notify"
 
     def __post_init__(self):
+        super().__post_init__()
         self.header.command_code = self.code
 
 
-class MeIdentityCheck(Message):
+class MeIdentityCheck(UndefinedMessage):
     """A 3GPP-ME-Identity-Check message.
 
     This message implementation provides no python subclasses for requests and
@@ -406,10 +432,11 @@ class MeIdentityCheck(Message):
     name: str = "3GPP-ME-Identity-Check"
 
     def __post_init__(self):
+        super().__post_init__()
         self.header.command_code = self.code
 
 
-class MIp6(Message):
+class MIp6(UndefinedMessage):
     """A MIP6 message.
 
     This message implementation provides no python subclasses for requests and
@@ -420,6 +447,7 @@ class MIp6(Message):
     name: str = "MIP6"
 
     def __post_init__(self):
+        super().__post_init__()
         self.header.command_code = self.code
 
 
@@ -427,4 +455,7 @@ all_commands: dict[int, Type[Message]] = {
     m.code: m for m in Message.__subclasses__()}
 all_commands.update({
     m.code: m for m in DefinedMessage.__subclasses__()
+})
+all_commands.update({
+    m.code: m for m in UndefinedMessage.__subclasses__()
 })

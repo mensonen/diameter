@@ -29,8 +29,7 @@ class Message:
         new messages.
         
         !!! note
-        
-            The `lenght` property of the message header is zero for newly 
+            The `length` property of the message header is zero for newly 
             created messages and will not be set until the message is rendered
             using the [as_bytes][diameter.message.Message.as_bytes] method.
         """
@@ -231,7 +230,7 @@ class Message:
                     msg_type = cmd_type
         else:
             # Fall back on just producing a generic Diameter message instance
-            msg_type = Message
+            msg_type = UndefinedMessage
 
         unpacker = Unpacker(msg_data)
         unpacker.set_position(header.length_header)
@@ -368,7 +367,11 @@ class DefinedMessage(Message):
     """A base class for every diameter message that is defined in Python.
 
     Every subclass of this class has AVPs defined as python instance
-    attributes, defined based on the diameter base protocol rfc.
+    attributes, defined based on the corresponding diameter specification.
+
+    The attribute values can be changed. When a `DefinedMessage` instance is
+    converted back to bytes, appropriate AVPs are generated based on the set
+    instance attributes.
     """
     avp_def: AvpGenType = ()
 
@@ -404,6 +407,62 @@ class DefinedMessage(Message):
     def append_avp(self, avp: Avp):
         """Add an individual custom AVP."""
         self._additional_avps.append(avp)
+
+
+class UndefinedGroupedAvp:
+    pass
+
+
+class UndefinedMessage(Message):
+    """A base class for every unknown command message.
+
+    Every diameter command message that does not map to an instance of
+    `DefinedMessage` will be represented as an instance of `UndefinedMessage`.
+
+    This class will automatically attempt to convert received AVPs into
+    read-only instance attributes, using a naive conversion based on the AVP's
+    name. The AVP name is converted into lower case and all "-" are replaced
+    with underscores. I.e. a "Visited-PLMN-Id" AVP would be converted to a
+    "visited_plmn_id" instance attribute.
+
+    If an AVP appears multiple times in the original message, it is converted
+    into a list of AVPs.
+
+    If an AVP is of the type Grouped, it is converted into an instance of
+    `UndefinedGroupedAvp` and its sub-AVPs are set as instance attributes as
+    well.
+
+    !!! Note
+        Unlike `DefinedMessage`, instances of this class cannot be converted
+        back to bytes; there is no conversion of set instance attributes into
+        actual AVPs. Instances of this class are effectively read-only.
+
+    """
+    def __post_init__(self):
+        self._assign_attr_values(self, self.avps)
+
+    def _assign_attr_values(self, parent: UndefinedMessage | UndefinedGroupedAvp,
+                            avps: list[Avp]):
+        for avp in avps:
+            attr_name = self._produce_attr_name(avp)
+            if not isinstance(avp, AvpGrouped):
+                value = avp.value
+            else:
+                value = UndefinedGroupedAvp()
+                self._assign_attr_values(value, avp.value)
+
+            if hasattr(parent, attr_name):
+                existing_attr = getattr(parent, attr_name)
+                if not isinstance(existing_attr, list):
+                    existing_attr = [existing_attr]
+                    setattr(parent, attr_name, existing_attr)
+                existing_attr.append(value)
+            else:
+                setattr(parent, attr_name, value)
+
+    def _produce_attr_name(self, avp: Avp) -> str:
+        attr_name = avp.name.replace("-", "_").lower()
+        return attr_name
 
 
 _AnyMessageType = TypeVar("_AnyMessageType", bound=Message)
