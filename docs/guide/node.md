@@ -212,12 +212,12 @@ A node has several attributes that can be used or altered after its creation:
     discovered. The dictionary holds host identities as strings as its keys and
     instances of [`Peer`][diameter.node.peer.Peer] as its values.
 
-`node_statistics`
+`statistics`
 :   Returns an instance of [`NodeStats`][diameter.node.node.NodeStats], which 
     contains statistical values, cumulated over every configured peer, at the
     time of retrieval.
 
-`node_statistics_history`
+`statistics_history`
 :   A list of dictionaries, each representing a serialised snapshot of a 
     [`NodeStats`][diameter.node.node.NodeStats] instance, retrieved every 60 
     seconds since the node startup, rotating at 1440 minutes. The historical 

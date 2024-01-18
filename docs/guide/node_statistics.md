@@ -59,8 +59,8 @@ Peer statistics record the following values:
 
 The diameter node collects statistics for all of its peers and calculates 
 cumulated values. The node statistics are available as the 
-[`node_statistics`][diameter.node.Node.node_statistics] instance attribute, 
-which returns an instance of [`NodeStats`][diameter.node.NodeStats].
+[`statistics`][diameter.node.Node.statistics] instance attribute, which returns 
+an instance of [`NodeStats`][diameter.node.NodeStats].
 
 The node statistics record following values:
 
@@ -101,9 +101,9 @@ The node statistics record following values:
 
 ## Historical statistics
 
-The node, as long as it is running, takes a snapshot of the `node_statistics` 
+The node, as long as it is running, takes a snapshot of the `Node.statistics` 
 return value every 60 seconds and stores it as a serialised dictionary in the
-[`node_statistics_history`][diameter.node.Node.node_statistics_history] 
+[`statistics_history`][diameter.node.Node.statistics_history] 
 instance attribute. The history is a list (a deque) of dictionaries and holds 
 1440 entries, i.e. historical values for the past 24 hours.
 

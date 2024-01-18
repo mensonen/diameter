@@ -283,7 +283,7 @@ class Node:
         self.session_generator = SessionGenerator(self.origin_host)
         """A unique diameter session ID generator. The next unique session 
         ID can be retrieved `Node.session_generator.next_id()`."""
-        self.node_statistics_history: deque[dict] = deque(maxlen=1440)
+        self.statistics_history: deque[dict] = deque(maxlen=1440)
         """A list of node statistics snapshots, taken at one minute intervals
         and kept for 24 hours. Each snapshot is a dictionary representation of
         a [NodeStats][diameter.node.NodeStats] instance."""
@@ -464,9 +464,9 @@ class Node:
         while not _thread.is_stopped:
             if time.time() - interval >= 60:
                 interval = time.time()
-                stats_snapshot = dataclasses.asdict(self.node_statistics)
+                stats_snapshot = dataclasses.asdict(self.statistics)
                 stats_snapshot["timestamp"] = int(time.time())
-                self.node_statistics_history.append(stats_snapshot)
+                self.statistics_history.append(stats_snapshot)
 
             time.sleep(2)
 
@@ -1019,7 +1019,7 @@ class Node:
         peer.counters.answers += cea + dwa + dpa + app_answer
 
     @property
-    def node_statistics(self) -> NodeStats:
+    def statistics(self) -> NodeStats:
         """Calculated, cumulated and averaged statistics for the entire node."""
         avg_res_total_time = 0
         req_per_sec_total_time = 0
