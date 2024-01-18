@@ -371,6 +371,7 @@ class Node:
         if peer and not peer.connection:
             peer.connection = conn
             peer.disconnect_reason = None
+            peer.last_connect = int(time.time())
             self.logger.info(
                 f"added a new connection {conn.ip}:{conn.port} "
                 f"for peer {peer}")
@@ -395,6 +396,7 @@ class Node:
             peer.connection = conn
         if conn.ident in self._half_ready_connections:
             del self._half_ready_connections[conn.ident]
+            peer.last_connect = int(time.time())
 
     def _check_timers(self, conn: PeerConnection):
         """Validate timers for a connection.
