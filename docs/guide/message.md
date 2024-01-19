@@ -1,11 +1,39 @@
 # Parsing and writing messages
 
-The `diameter` package contains python implementations for the command messages
-described in the Diameter Base protocol, and for other, commonly used messages,
-such as credit control.
+The `diameter` package can parse network-received diameter command messages into
+Python structures that have AVP values accessible as instance attributes. Some 
+of these structures can also be converted back to actual diameter commands.
+
+The diameter stack handles command messages in three different ways:
+
+1. Full Python implementation
+:   A small set of diameter command messages have an implementation written 
+    fully in Python. These implementations all inherit from same base class
+    [`DefinedMessage`][diameter.message.DefinedMessage] and allow reading AVPs 
+    as instance attributes, as well as setting values for AVPs just by assigning 
+    a value to an instance attribute. These implementations exist mostly for the
+    most commonly used messages, such as CER/CEA, DWR/DEA, CCR/CCA, however the 
+    list is extended periodically.
+
+2. Known message with no implementation
+:   The stack contains a large list of command messages that are known, but 
+    have no actual implementation. These messages inherit 
+    [`UndefinedMessage`][diameter.message.UndefinedMessage] and
+    also permit reading AVP values as instance attributes. The message class
+    attempts to generate an instance attribute name that matches the name of
+    each AVP as closely as possible. These messages are essentially read-only,
+    the AVP values cannot be altered, and new messages cannot be created by
+    assigning values to instance attributes.
+
+3. Unknown messages
+:   The diameter stack can also parse messages that are entirely unknown. These
+    will also inherit `UndefinedMessage`, however the stack will not be able
+    to map them to known command codes and names and will name each message just
+    as "Unknown". AVP values are also accessible as instance attributes.
 
 
-## Reading mesasges
+
+## Reading messages
 
 Messages received from the network can be converted directly to Python types 
 using [`Message.from_bytes`][diameter.message.Message.from_bytes].
@@ -22,7 +50,7 @@ Messages that have a Python implementation (e.g. "Accounting", "Credit-Control")
 are further split into "Request" and "Answer" classes. Parsing an "Accounting"
 message that is also a request will return an instance of 
 [`AccountingRequest`][diameter.message.commands.accounting.AccountingRequest],
-while an answer would return an instance of 
+while an answer message would return an instance of 
 [`AccountingRequest`][diameter.message.commands.accounting.AccountingRequest].
 
 Python implementations with direct attribute access are currently provided for 
@@ -39,6 +67,8 @@ the following Diameter Commands:
  * Home-Agent-MIP
  * Re-Auth
  * Session-Termination
+ * Spending-Limit
+ * Spending-Status-Notification
 
 For messages that do not have a Python implementation, an instance of 
 [`UndefinedMessage`][diameter.message.UndefinedMessage], or one of its 
@@ -87,16 +117,20 @@ assert avps[0].value == b"\x06"
 ```
 
 Command messages that are known to the diameter stack (see 
-[the full list](../api/commands/other_commands.md)), but do not have a written
+[the full list](../api/commands/other_commands.md)), but do not have a written 
 Python implementation, still provide read-only access to AVPs as instance 
 attributes. Command messages that inherit 
 [`UndefinedMessage`][diameter.message.UndefinedMessage] attempt to automatically
 convert every AVP that the message contains into instance attributes, by 
-converting the AVP name to lowercase and replacing dashes with lowercase, e.g.
-a "Visited-PLMN-Id" becomes a `visited_plmn_id` instance attribute.
+converting the AVP name to lowercase and replacing dashes with underscore, e.g.
+a "Visited-PLMN-Id" AVP becomes a `visited_plmn_id` instance attribute. This 
+conversion may also result in attribute names that cannot be accessed using the
+dot notation. E.g. a "3GPP-User-Location-Info" converts into 
+`3gpp_user_location_info`, which cannot be accessed with dot notation. For 
+these, use of `hasattr` and `getattr` is recommended.
 
-This will also work for grouped AVPs. If an AVP appears more than once, it will
-be converted to a list:
+The automatic conversion will also work for grouped AVPs. If an AVP appears 
+more than once, it will be converted to a list:
 
 ```python
 from diameter.message import Message
@@ -109,6 +143,11 @@ assert ulr.vendor_specific_application_id.auth_application_id == 16777251
 
 # Searching will also work:
 session_id = ulr.find_avps((AVP_SESSION_ID, 0))[0]
+
+# In this message, the "Route-Record" AVP is included multiple times, so it has
+# been converted to a list:
+for route_record in ulr.route_record:
+    print(route_record)
 ```
 
 
@@ -172,15 +211,34 @@ Commands can be constructed manually as well, in case a Python implementation is
 not ready yet, or if custom behaviour is required:
 
 ```python
-from diameter.message import Avp, Message
+from diameter.message import Avp, Message, dump
+from diameter.message.commands import UpdateLocation
 from diameter.message.constants import *
 
+# UpdateLocation is known but has no implementation, AVPs must be created
+# manually and added to the command
+ulr = UpdateLocation()
+ulr.header.is_request = True
+ulr.avps = [
+    Avp.new(AVP_SESSION_ID, value="mnc003.mcc228.3gppnetwork.org;02472683")
+]
+print(dump(ulr))
+# produces:
+# 3GPP-Update-Location <Version: 0x01, Length: 68, Flags: 0x80 (request), Hop-by-Hop Identifier: 0x0, End-to-End Identifier: 0x0>
+#   Session-Id <Code: 0x107, Flags: 0x40 (-M-), Length: 46, Val: mnc003.mcc228.3gppnetwork.org;02472683>
+
+
+# When building a message using the `Message` base class, command code must
+# be provided manually:
 msg = Message()
 msg.header.command_code = 262
 msg.header.is_request = True
 msg.avps = [
     Avp.new(AVP_SESSION_ID, value="mnc003.mcc228.3gppnetwork.org;02472683")
 ]
-# etc
-msg.as_bytes()
+print(dump(msg))
+# produces:
+# Unknown <Version: 0x01, Length: 0, Flags: 0x80 (request), Hop-by-Hop Identifier: 0x0, End-to-End Identifier: 0x0>
+#   Session-Id <Code: 0x107, Flags: 0x40 (-M-), Length: 46, Val: mnc003.mcc228.3gppnetwork.org;02472683>
+
 ```

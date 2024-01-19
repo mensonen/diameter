@@ -20,9 +20,6 @@ logging.basicConfig(format="%(asctime)s %(name)-22s %(levelname)-7s %(message)s"
 # this shows a human-readable message dump in the logs
 logging.getLogger("diameter.peer.msg").setLevel(logging.DEBUG)
 
-# show a periodic dump of peer statistics
-logging.getLogger("diameter.stats").setLevel(logging.DEBUG)
-
 
 # Configure our server node
 node = Node("relay1.test.realm", "test.realm",

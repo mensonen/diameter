@@ -6,7 +6,6 @@ information present and then exits.
 import datetime
 import logging
 
-from diameter.message import Avp
 from diameter.message.commands.credit_control import CreditControlRequest
 from diameter.message.commands.credit_control import RequestedServiceUnit
 from diameter.message.commands.credit_control import ServiceInformation
@@ -20,8 +19,6 @@ from diameter.node.application import SimpleThreadingApplication
 logging.basicConfig(format="%(asctime)s %(name)s %(levelname)s %(message)s")
 # this shows a human-readable message dump in the logs
 logging.getLogger("diameter.peer.msg").setLevel(logging.DEBUG)
-# this silences periodic dumping of peer statistics
-logging.getLogger("diameter.stats").setLevel(logging.INFO)
 
 
 # Configure our client node

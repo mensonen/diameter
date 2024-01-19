@@ -32,6 +32,9 @@ nav:
     - Application basics: guide/application.md
     - Sample application: guide/sample_application.md
     - Statistics: guide/node_statistics.md
+  - Examples:
+    - Credit Control SMS client: examples/credit_control_sms_client.md
+    - Idling server and client: examples/idle_server_client.md
   - API Refrence:
     - AVP:
       - api/avp/index.md
@@ -55,22 +58,22 @@ nav:
     - Application: api/application.md
     - Node utilities: api/utilities.md
 plugins:
-- search
-- autorefs
-- mkdocstrings:
-    default_handler: python
-    handlers:
-      python:
-        options:
-          docstring_options:
-            ignore_init_summary: true
-          merge_init_into_class: true
-          docstring_style: google
-          show_source: false
-          separate_signature: true
-          show_signature_annotations: true
-          line_length: 70
-          signature_crossrefs: true
+  - search
+  - autorefs
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          options:
+            docstring_options:
+              ignore_init_summary: true
+            merge_init_into_class: true
+            docstring_style: google
+            show_source: false
+            separate_signature: true
+            show_signature_annotations: true
+            line_length: 70
+            signature_crossrefs: true
 watch:
   - src
 markdown_extensions:
@@ -80,6 +83,7 @@ markdown_extensions:
       stripnl: false
       line_spans: __span
   - pymdownx.superfences
+  - pymdownx.snippets
   - admonition
   - toc:
       permalink: true

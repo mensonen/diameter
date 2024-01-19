@@ -19,8 +19,6 @@ import logging
 logging.basicConfig(format="%(asctime)s %(name)s %(levelname)s %(message)s")
 # this shows a human-readable message dump in the logs
 logging.getLogger("diameter.peer.msg").setLevel(logging.DEBUG)
-# this silences periodic dumping of peer statistics
-logging.getLogger("diameter.stats").setLevel(logging.INFO)
 ```
 
 ## Creating a diameter node
@@ -86,7 +84,6 @@ the message data coding scheme and the type of the short message being sent.
 ```python
 import datetime
 
-from diameter.message import Avp
 from diameter.message.commands.credit_control import CreditControlRequest
 from diameter.message.commands.credit_control import RequestedServiceUnit
 from diameter.message.commands.credit_control import ServiceInformation
@@ -187,7 +184,6 @@ node.stop()
 import datetime
 import logging
 
-from diameter.message import Avp
 from diameter.message.commands.credit_control import CreditControlRequest
 from diameter.message.commands.credit_control import RequestedServiceUnit
 from diameter.message.commands.credit_control import ServiceInformation
