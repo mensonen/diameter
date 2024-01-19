@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.1">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.4">
     
     
       
@@ -24,7 +24,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.45e1311d.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.50c56a3b.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
@@ -1177,7 +1177,7 @@
           <li class="md-nav__item">
   <a href="#diameter.node.application.Application.generate_answer" class="md-nav__link">
     <span class="md-ellipsis">
-      generate_answer()
+      generate_answer
     </span>
   </a>
   
@@ -1186,7 +1186,7 @@
           <li class="md-nav__item">
   <a href="#diameter.node.application.Application.handle_answer" class="md-nav__link">
     <span class="md-ellipsis">
-      handle_answer()
+      handle_answer
     </span>
   </a>
   
@@ -1195,7 +1195,7 @@
           <li class="md-nav__item">
   <a href="#diameter.node.application.Application.handle_request" class="md-nav__link">
     <span class="md-ellipsis">
-      handle_request()
+      handle_request
     </span>
   </a>
   
@@ -1204,7 +1204,7 @@
           <li class="md-nav__item">
   <a href="#diameter.node.application.Application.send_answer" class="md-nav__link">
     <span class="md-ellipsis">
-      send_answer()
+      send_answer
     </span>
   </a>
   
@@ -1213,7 +1213,7 @@
           <li class="md-nav__item">
   <a href="#diameter.node.application.Application.send_request" class="md-nav__link">
     <span class="md-ellipsis">
-      send_request()
+      send_request
     </span>
   </a>
   
@@ -1222,7 +1222,7 @@
           <li class="md-nav__item">
   <a href="#diameter.node.application.Application.wait_for_ready" class="md-nav__link">
     <span class="md-ellipsis">
-      wait_for_ready()
+      wait_for_ready
     </span>
   </a>
   
@@ -1282,7 +1282,7 @@
           <li class="md-nav__item">
   <a href="#diameter.node.application.ThreadingApplication.handle_request" class="md-nav__link">
     <span class="md-ellipsis">
-      handle_request()
+      handle_request
     </span>
   </a>
   
@@ -1383,16 +1383,15 @@ which will cover the most scenarios without requiring any unnecessary setup.</p>
 
 
 
-
 <h2 id="diameter.node.application.Application" class="doc doc-heading">
           <span class="doc doc-object-name doc-class-name">Application</span>
 
 
 <a href="#diameter.node.application.Application" class="headerlink" title="Permanent link">&para;</a></h2>
 <div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">Application</span><span class="p">(</span>
-</span><span id="__span-0-2">    <span class="n">application_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-3">    <span class="n">is_acct_application</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-</span><span id="__span-0-4">    <span class="n">is_auth_application</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-0-2">    <span class="n">application_id</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-3">    <span class="n">is_acct_application</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-0-4">    <span class="n">is_auth_application</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 </span><span id="__span-0-5"><span class="p">)</span>
 </span></code></pre></div>
 
@@ -1481,17 +1480,16 @@ logic. In most cases, <code>SimpleThreadingApplication</code> and
 
 
 
-
 <h3 id="diameter.node.application.Application.generate_answer" class="doc doc-heading">
           <span class="doc doc-object-name doc-function-name">generate_answer</span>
 
 
 <a href="#diameter.node.application.Application.generate_answer" class="headerlink" title="Permanent link">&para;</a></h3>
 <div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">generate_answer</span><span class="p">(</span>
-</span><span id="__span-0-2">    <span class="n">message</span><span class="p">:</span> <span class="n">_AnyMessageType</span><span class="p">,</span>
-</span><span id="__span-0-3">    <span class="n">result_code</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-4">    <span class="n">error_message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-5"><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_AnyAnswerType</span>
+</span><span id="__span-0-2">    <span class="n">message</span><span class="p">:</span> <span class="n"><span title="diameter.node.application._AnyMessageType">_AnyMessageType</span></span><span class="p">,</span>
+</span><span id="__span-0-3">    <span class="n">result_code</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-4">    <span class="n">error_message</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-5"><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="diameter.node.application._AnyAnswerType">_AnyAnswerType</span></span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1568,13 +1566,12 @@ accepting AVPs as instance attributes</p>
 
 
 
-
 <h3 id="diameter.node.application.Application.handle_answer" class="doc doc-heading">
           <span class="doc doc-object-name doc-function-name">handle_answer</span>
 
 
 <a href="#diameter.node.application.Application.handle_answer" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">handle_answer</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">Message</span><span class="p">)</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">handle_answer</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message.Message" href="../message/#diameter.message.Message">Message</a></span><span class="p">)</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1603,13 +1600,12 @@ do the work in a separate thread.</p>
 
 
 
-
 <h3 id="diameter.node.application.Application.handle_request" class="doc doc-heading">
           <span class="doc doc-object-name doc-function-name">handle_request</span>
 
 
 <a href="#diameter.node.application.Application.handle_request" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">handle_request</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">Message</span><span class="p">)</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">handle_request</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message.Message" href="../message/#diameter.message.Message">Message</a></span><span class="p">)</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1637,13 +1633,12 @@ can be used, which spawns a new thread for every request.</p>
 
 
 
-
 <h3 id="diameter.node.application.Application.send_answer" class="doc doc-heading">
           <span class="doc doc-object-name doc-function-name">send_answer</span>
 
 
 <a href="#diameter.node.application.Application.send_answer" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">send_answer</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">Message</span><span class="p">)</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">send_answer</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message.Message" href="../message/#diameter.message.Message">Message</a></span><span class="p">)</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1695,13 +1690,12 @@ for any results from the network.</p>
 
 
 
-
 <h3 id="diameter.node.application.Application.send_request" class="doc doc-heading">
           <span class="doc doc-object-name doc-function-name">send_request</span>
 
 
 <a href="#diameter.node.application.Application.send_request" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">send_request</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">Message</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Message</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">send_request</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message.Message" href="../message/#diameter.message.Message">Message</a></span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="mi">30</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message.Message" href="../message/#diameter.message.Message">Message</a></span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1793,13 +1787,12 @@ request, returns <code>None</code> immediately without waiting.</p>
 
 
 
-
 <h3 id="diameter.node.application.Application.wait_for_ready" class="doc doc-heading">
           <span class="doc doc-object-name doc-function-name">wait_for_ready</span>
 
 
 <a href="#diameter.node.application.Application.wait_for_ready" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">wait_for_ready</span><span class="p">(</span><span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span><span class="p">)</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">wait_for_ready</span><span class="p">(</span><span class="n">timeout</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="mi">30</span><span class="p">)</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1882,10 +1875,10 @@ between calling this method and sending the request.</p>
 
   </div>
 
+
 </div>
 
 <div class="doc doc-object doc-class">
-
 
 
 
@@ -1906,10 +1899,10 @@ between calling this method and sending the request.</p>
 
   </div>
 
+
 </div>
 
 <div class="doc doc-object doc-class">
-
 
 
 
@@ -1930,10 +1923,10 @@ between calling this method and sending the request.</p>
 
   </div>
 
+
 </div>
 
 <div class="doc doc-object doc-class">
-
 
 
 
@@ -1954,10 +1947,10 @@ between calling this method and sending the request.</p>
 
   </div>
 
+
 </div>
 
 <div class="doc doc-object doc-class">
-
 
 
 
@@ -1967,11 +1960,11 @@ between calling this method and sending the request.</p>
 
 <a href="#diameter.node.application.SimpleThreadingApplication" class="headerlink" title="Permanent link">&para;</a></h2>
 <div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">SimpleThreadingApplication</span><span class="p">(</span>
-</span><span id="__span-0-2">    <span class="n">application_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-3">    <span class="n">is_acct_application</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-</span><span id="__span-0-4">    <span class="n">is_auth_application</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-</span><span id="__span-0-5">    <span class="n">max_threads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-</span><span id="__span-0-6">    <span class="n">request_handler</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-2">    <span class="n">application_id</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-3">    <span class="n">is_acct_application</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-0-4">    <span class="n">is_auth_application</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-0-5">    <span class="n">max_threads</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+</span><span id="__span-0-6">    <span class="n">request_handler</span><span class="p">:</span> <span class="n"><span title="typing.Callable">Callable</span></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 </span><span id="__span-0-7"><span class="p">)</span>
 </span></code></pre></div>
 
@@ -2116,10 +2109,10 @@ answer message</p>
 
   </div>
 
+
 </div>
 
 <div class="doc doc-object doc-class">
-
 
 
 
@@ -2129,10 +2122,10 @@ answer message</p>
 
 <a href="#diameter.node.application.ThreadingApplication" class="headerlink" title="Permanent link">&para;</a></h2>
 <div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">ThreadingApplication</span><span class="p">(</span>
-</span><span id="__span-0-2">    <span class="n">application_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-3">    <span class="n">is_acct_application</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-</span><span id="__span-0-4">    <span class="n">is_auth_application</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-</span><span id="__span-0-5">    <span class="n">max_threads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+</span><span id="__span-0-2">    <span class="n">application_id</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-3">    <span class="n">is_acct_application</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-0-4">    <span class="n">is_auth_application</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-0-5">    <span class="n">max_threads</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
 </span><span id="__span-0-6"><span class="p">)</span>
 </span></code></pre></div>
 
@@ -2242,13 +2235,12 @@ threads to spawn is unlimited.</p>
 
 
 
-
 <h3 id="diameter.node.application.ThreadingApplication.handle_request" class="doc doc-heading">
           <span class="doc doc-object-name doc-function-name">handle_request</span>
 
 
 <a href="#diameter.node.application.ThreadingApplication.handle_request" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">handle_request</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">Message</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Message</span> <span class="o">|</span> <span class="kc">None</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">handle_request</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message.Message" href="../message/#diameter.message.Message">Message</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message.Message" href="../message/#diameter.message.Message">Message</a></span> <span class="o">|</span> <span class="kc">None</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2270,6 +2262,7 @@ being returned to the network.</p>
   </div>
 
   </div>
+
 
 </div>
 
@@ -2327,10 +2320,10 @@ being returned to the network.</p>
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "toc.integrate"], "search": "../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "toc.integrate"], "search": "../../assets/javascripts/workers/search.c011b7c0.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.d7c377c4.min.js"></script>
+      <script src="../../assets/javascripts/bundle.7389ff0e.min.js"></script>
       
     
   </body>

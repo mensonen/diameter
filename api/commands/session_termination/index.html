@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.1">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.4">
     
     
       
@@ -24,7 +24,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.45e1311d.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.50c56a3b.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
@@ -1518,14 +1518,13 @@ implementing AVPs documented in rfc6733.</p>
 
 
 
-
 <h2 id="diameter.message.commands.session_termination.SessionTermination" class="doc doc-heading">
           <span class="doc doc-object-name doc-class-name">SessionTermination</span>
 
 
 <a href="#diameter.message.commands.session_termination.SessionTermination" class="headerlink" title="Permanent link">&para;</a></h2>
 <div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">SessionTermination</span><span class="p">(</span>
-</span><span id="__span-0-2">    <span class="n">header</span><span class="p">:</span> <span class="n">MessageHeader</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">avps</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Avp</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="__span-0-2">    <span class="n">header</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message._base.MessageHeader" href="../../message/#diameter.message.MessageHeader">MessageHeader</a></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">avps</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.Avp" href="../../avp/#diameter.message.avp.avp.Avp">Avp</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 </span><span id="__span-0-3"><span class="p">)</span>
 </span></code></pre></div>
 
@@ -1602,10 +1601,10 @@ accessing.</p>
 
   </div>
 
+
 </div>
 
 <div class="doc doc-object doc-class">
-
 
 
 
@@ -1615,7 +1614,7 @@ accessing.</p>
 
 <a href="#diameter.message.commands.session_termination.SessionTerminationAnswer" class="headerlink" title="Permanent link">&para;</a></h2>
 <div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">SessionTerminationAnswer</span><span class="p">(</span>
-</span><span id="__span-0-2">    <span class="n">header</span><span class="p">:</span> <span class="n">MessageHeader</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">avps</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Avp</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="__span-0-2">    <span class="n">header</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message._base.MessageHeader" href="../../message/#diameter.message.MessageHeader">MessageHeader</a></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">avps</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.Avp" href="../../avp/#diameter.message.avp.avp.Avp">Avp</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 </span><span id="__span-0-3"><span class="p">)</span>
 </span></code></pre></div>
 
@@ -1646,7 +1645,6 @@ accessing.</p>
 
 
 
-
 <h3 id="diameter.message.commands.session_termination.SessionTerminationAnswer.error_message" class="doc doc-heading">
           <span class="doc doc-object-name doc-attribute-name">error_message</span>
 
@@ -1656,7 +1654,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.session_termination.SessionTerminationAnswer.error_message" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">error_message</span><span class="p">:</span> <span class="nb">str</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">error_message</span><span class="p">:</span> <span class="n">str</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1665,7 +1663,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -1678,7 +1675,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.session_termination.SessionTerminationAnswer.error_reporting_host" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">error_reporting_host</span><span class="p">:</span> <span class="nb">bytes</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">error_reporting_host</span><span class="p">:</span> <span class="n">bytes</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1687,7 +1684,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -1700,7 +1696,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.session_termination.SessionTerminationAnswer.failed_avp" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">failed_avp</span><span class="p">:</span> <span class="n">FailedAvp</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">failed_avp</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.grouped.FailedAvp" href="../../avp/grouped/#diameter.message.avp.grouped.FailedAvp">FailedAvp</a></span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1709,7 +1705,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -1722,7 +1717,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.session_termination.SessionTerminationAnswer.origin_aaa_protocol" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">origin_aaa_protocol</span><span class="p">:</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">origin_aaa_protocol</span><span class="p">:</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1731,7 +1726,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -1744,7 +1738,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.session_termination.SessionTerminationAnswer.origin_host" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">origin_host</span><span class="p">:</span> <span class="nb">bytes</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">origin_host</span><span class="p">:</span> <span class="n">bytes</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1753,7 +1747,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -1766,7 +1759,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.session_termination.SessionTerminationAnswer.origin_realm" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">origin_realm</span><span class="p">:</span> <span class="nb">bytes</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">origin_realm</span><span class="p">:</span> <span class="n">bytes</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1775,7 +1768,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -1788,7 +1780,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.session_termination.SessionTerminationAnswer.origin_state_id" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">origin_state_id</span><span class="p">:</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">origin_state_id</span><span class="p">:</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1797,7 +1789,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -1810,7 +1801,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.session_termination.SessionTerminationAnswer.proxy_info" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">proxy_info</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ProxyInfo</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">proxy_info</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.grouped.ProxyInfo" href="../../avp/grouped/#diameter.message.avp.grouped.ProxyInfo">ProxyInfo</a></span><span class="p">]</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1819,7 +1810,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -1832,7 +1822,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.session_termination.SessionTerminationAnswer.redirect_host" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">redirect_host</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">redirect_host</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n">str</span><span class="p">]</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1841,7 +1831,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -1854,7 +1843,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.session_termination.SessionTerminationAnswer.redirect_host_usage" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">redirect_host_usage</span><span class="p">:</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">redirect_host_usage</span><span class="p">:</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1863,7 +1852,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -1876,7 +1864,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.session_termination.SessionTerminationAnswer.redirect_max_cache_time" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">redirect_max_cache_time</span><span class="p">:</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">redirect_max_cache_time</span><span class="p">:</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1885,7 +1873,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -1898,7 +1885,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.session_termination.SessionTerminationAnswer.result_code" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">result_code</span><span class="p">:</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">result_code</span><span class="p">:</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1907,7 +1894,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -1920,7 +1906,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.session_termination.SessionTerminationAnswer.session_id" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">session_id</span><span class="p">:</span> <span class="nb">str</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">session_id</span><span class="p">:</span> <span class="n">str</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1929,7 +1915,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -1942,7 +1927,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.session_termination.SessionTerminationAnswer.state_class" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">state_class</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">state_class</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n">bytes</span><span class="p">]</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1951,7 +1936,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -1964,7 +1948,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.session_termination.SessionTerminationAnswer.user_name" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">user_name</span><span class="p">:</span> <span class="nb">str</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">user_name</span><span class="p">:</span> <span class="n">str</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1980,10 +1964,10 @@ accessing.</p>
 
   </div>
 
+
 </div>
 
 <div class="doc doc-object doc-class">
-
 
 
 
@@ -1993,7 +1977,7 @@ accessing.</p>
 
 <a href="#diameter.message.commands.session_termination.SessionTerminationRequest" class="headerlink" title="Permanent link">&para;</a></h2>
 <div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">SessionTerminationRequest</span><span class="p">(</span>
-</span><span id="__span-0-2">    <span class="n">header</span><span class="p">:</span> <span class="n">MessageHeader</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">avps</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Avp</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="__span-0-2">    <span class="n">header</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message._base.MessageHeader" href="../../message/#diameter.message.MessageHeader">MessageHeader</a></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">avps</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.Avp" href="../../avp/#diameter.message.avp.avp.Avp">Avp</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 </span><span id="__span-0-3"><span class="p">)</span>
 </span></code></pre></div>
 
@@ -2019,7 +2003,6 @@ accessing.</p>
 
 
 
-
 <h3 id="diameter.message.commands.session_termination.SessionTerminationRequest.auth_application_id" class="doc doc-heading">
           <span class="doc doc-object-name doc-attribute-name">auth_application_id</span>
 
@@ -2029,7 +2012,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.session_termination.SessionTerminationRequest.auth_application_id" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">auth_application_id</span><span class="p">:</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">auth_application_id</span><span class="p">:</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2038,7 +2021,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2051,7 +2033,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.session_termination.SessionTerminationRequest.destination_host" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">destination_host</span><span class="p">:</span> <span class="nb">bytes</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">destination_host</span><span class="p">:</span> <span class="n">bytes</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2060,7 +2042,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2073,7 +2054,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.session_termination.SessionTerminationRequest.destination_realm" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">destination_realm</span><span class="p">:</span> <span class="nb">bytes</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">destination_realm</span><span class="p">:</span> <span class="n">bytes</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2082,7 +2063,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2095,7 +2075,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.session_termination.SessionTerminationRequest.origin_aaa_protocol" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">origin_aaa_protocol</span><span class="p">:</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">origin_aaa_protocol</span><span class="p">:</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2104,7 +2084,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2117,7 +2096,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.session_termination.SessionTerminationRequest.origin_host" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">origin_host</span><span class="p">:</span> <span class="nb">bytes</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">origin_host</span><span class="p">:</span> <span class="n">bytes</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2126,7 +2105,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2139,7 +2117,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.session_termination.SessionTerminationRequest.origin_realm" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">origin_realm</span><span class="p">:</span> <span class="nb">bytes</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">origin_realm</span><span class="p">:</span> <span class="n">bytes</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2148,7 +2126,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2161,7 +2138,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.session_termination.SessionTerminationRequest.origin_state_id" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">origin_state_id</span><span class="p">:</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">origin_state_id</span><span class="p">:</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2170,7 +2147,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2183,7 +2159,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.session_termination.SessionTerminationRequest.proxy_info" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">proxy_info</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ProxyInfo</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">proxy_info</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.grouped.ProxyInfo" href="../../avp/grouped/#diameter.message.avp.grouped.ProxyInfo">ProxyInfo</a></span><span class="p">]</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2192,7 +2168,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2205,7 +2180,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.session_termination.SessionTerminationRequest.route_record" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">route_record</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">route_record</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n">bytes</span><span class="p">]</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2214,7 +2189,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2227,7 +2201,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.session_termination.SessionTerminationRequest.session_id" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">session_id</span><span class="p">:</span> <span class="nb">str</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">session_id</span><span class="p">:</span> <span class="n">str</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2236,7 +2210,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2249,7 +2222,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.session_termination.SessionTerminationRequest.state_class" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">state_class</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">state_class</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n">bytes</span><span class="p">]</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2258,7 +2231,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2271,7 +2243,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.session_termination.SessionTerminationRequest.termination_cause" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">termination_cause</span><span class="p">:</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">termination_cause</span><span class="p">:</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2280,7 +2252,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2293,7 +2264,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.session_termination.SessionTerminationRequest.user_name" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">user_name</span><span class="p">:</span> <span class="nb">str</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">user_name</span><span class="p">:</span> <span class="n">str</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2308,6 +2279,7 @@ accessing.</p>
   </div>
 
   </div>
+
 
 </div>
 
@@ -2359,10 +2331,10 @@ accessing.</p>
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.indexes", "toc.integrate"], "search": "../../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.indexes", "toc.integrate"], "search": "../../../assets/javascripts/workers/search.c011b7c0.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.d7c377c4.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.7389ff0e.min.js"></script>
       
     
   </body>

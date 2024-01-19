@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.1">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.4">
     
     
       
@@ -24,7 +24,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.45e1311d.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.50c56a3b.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
@@ -1283,7 +1283,7 @@
           <li class="md-nav__item">
   <a href="#diameter.message.commands.credit_control.CreditControlAnswer.add_multiple_services_credit_control" class="md-nav__link">
     <span class="md-ellipsis">
-      add_multiple_services_credit_control()
+      add_multiple_services_credit_control
     </span>
   </a>
   
@@ -1586,7 +1586,7 @@
           <li class="md-nav__item">
   <a href="#diameter.message.commands.credit_control.CreditControlRequest.add_multiple_services_credit_control" class="md-nav__link">
     <span class="md-ellipsis">
-      add_multiple_services_credit_control()
+      add_multiple_services_credit_control
     </span>
   </a>
   
@@ -1595,7 +1595,7 @@
           <li class="md-nav__item">
   <a href="#diameter.message.commands.credit_control.CreditControlRequest.add_subscription_id" class="md-nav__link">
     <span class="md-ellipsis">
-      add_subscription_id()
+      add_subscription_id
     </span>
   </a>
   
@@ -1871,13 +1871,12 @@ diameter charging application specification, as documented in <code>3GPP TS 32.2
 
 
 
-
 <h2 id="diameter.message.commands.credit_control.CreditControl" class="doc doc-heading">
           <span class="doc doc-object-name doc-class-name">CreditControl</span>
 
 
 <a href="#diameter.message.commands.credit_control.CreditControl" class="headerlink" title="Permanent link">&para;</a></h2>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">CreditControl</span><span class="p">(</span><span class="n">header</span><span class="p">:</span> <span class="n">MessageHeader</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">avps</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Avp</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">CreditControl</span><span class="p">(</span><span class="n">header</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message._base.MessageHeader" href="../../message/#diameter.message.MessageHeader">MessageHeader</a></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">avps</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.Avp" href="../../avp/#diameter.message.avp.avp.Avp">Avp</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents first">
@@ -1953,10 +1952,10 @@ accessing.</p>
 
   </div>
 
+
 </div>
 
 <div class="doc doc-object doc-class">
-
 
 
 
@@ -1966,7 +1965,7 @@ accessing.</p>
 
 <a href="#diameter.message.commands.credit_control.CreditControlAnswer" class="headerlink" title="Permanent link">&para;</a></h2>
 <div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">CreditControlAnswer</span><span class="p">(</span>
-</span><span id="__span-0-2">    <span class="n">header</span><span class="p">:</span> <span class="n">MessageHeader</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">avps</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Avp</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="__span-0-2">    <span class="n">header</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message._base.MessageHeader" href="../../message/#diameter.message.MessageHeader">MessageHeader</a></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">avps</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.Avp" href="../../avp/#diameter.message.avp.avp.Avp">Avp</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 </span><span id="__span-0-3"><span class="p">)</span>
 </span></code></pre></div>
 
@@ -1992,7 +1991,6 @@ accessing.</p>
 
 
 
-
 <h3 id="diameter.message.commands.credit_control.CreditControlAnswer.acct_multi_session_id" class="doc doc-heading">
           <span class="doc doc-object-name doc-attribute-name">acct_multi_session_id</span>
 
@@ -2002,7 +2000,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlAnswer.acct_multi_session_id" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">acct_multi_session_id</span><span class="p">:</span> <span class="nb">bytes</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">acct_multi_session_id</span><span class="p">:</span> <span class="n">bytes</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2011,7 +2009,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2024,7 +2021,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlAnswer.auth_application_id" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">auth_application_id</span><span class="p">:</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">auth_application_id</span><span class="p">:</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2033,7 +2030,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2046,7 +2042,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlAnswer.cc_request_number" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">cc_request_number</span><span class="p">:</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">cc_request_number</span><span class="p">:</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2055,7 +2051,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2068,7 +2063,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlAnswer.cc_request_type" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">cc_request_type</span><span class="p">:</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">cc_request_type</span><span class="p">:</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2077,7 +2072,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2090,7 +2084,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlAnswer.cc_session_failover" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">cc_session_failover</span><span class="p">:</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">cc_session_failover</span><span class="p">:</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2099,7 +2093,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2112,7 +2105,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlAnswer.cc_sub_session_id" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">cc_sub_session_id</span><span class="p">:</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">cc_sub_session_id</span><span class="p">:</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2121,7 +2114,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2134,7 +2126,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlAnswer.check_balance_result" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">check_balance_result</span><span class="p">:</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">check_balance_result</span><span class="p">:</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2143,7 +2135,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2156,7 +2147,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlAnswer.cost_information" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">cost_information</span><span class="p">:</span> <span class="n">CostInformation</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">cost_information</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.grouped.CostInformation" href="../../avp/grouped/#diameter.message.avp.grouped.CostInformation">CostInformation</a></span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2165,7 +2156,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2178,7 +2168,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlAnswer.credit_control_failure_handling" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">credit_control_failure_handling</span><span class="p">:</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">credit_control_failure_handling</span><span class="p">:</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2187,7 +2177,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2200,7 +2189,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlAnswer.direct_debiting_failure_handling" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">direct_debiting_failure_handling</span><span class="p">:</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">direct_debiting_failure_handling</span><span class="p">:</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2209,7 +2198,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2222,7 +2210,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlAnswer.event_timestamp" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">event_timestamp</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">event_timestamp</span><span class="p">:</span> <span class="n"><span title="diameter.message.avp.grouped.datetime.datetime">datetime</span></span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2231,7 +2219,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2244,7 +2231,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlAnswer.failed_avp" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">failed_avp</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">FailedAvp</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">failed_avp</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.grouped.FailedAvp" href="../../avp/grouped/#diameter.message.avp.grouped.FailedAvp">FailedAvp</a></span><span class="p">]</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2253,7 +2240,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2266,7 +2252,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlAnswer.final_unit_indication" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">final_unit_indication</span><span class="p">:</span> <span class="n">FinalUnitIndication</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">final_unit_indication</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.grouped.FinalUnitIndication" href="../../avp/grouped/#diameter.message.avp.grouped.FinalUnitIndication">FinalUnitIndication</a></span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2275,7 +2261,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2288,7 +2273,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlAnswer.granted_service_unit" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">granted_service_unit</span><span class="p">:</span> <span class="n">GrantedServiceUnit</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">granted_service_unit</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.grouped.GrantedServiceUnit" href="../../avp/grouped/#diameter.message.avp.grouped.GrantedServiceUnit">GrantedServiceUnit</a></span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2297,7 +2282,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2310,7 +2294,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlAnswer.low_balance_indication" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">low_balance_indication</span><span class="p">:</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">low_balance_indication</span><span class="p">:</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2319,7 +2303,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2332,7 +2315,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlAnswer.multiple_services_credit_control" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">multiple_services_credit_control</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">MultipleServicesCreditControl</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">multiple_services_credit_control</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.grouped.MultipleServicesCreditControl" href="../../avp/grouped/#diameter.message.avp.grouped.MultipleServicesCreditControl">MultipleServicesCreditControl</a></span><span class="p">]</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2341,7 +2324,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2354,7 +2336,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlAnswer.oc_olr" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">oc_olr</span><span class="p">:</span> <span class="n">OcOlr</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">oc_olr</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.grouped.OcOlr" href="../../avp/grouped/#diameter.message.avp.grouped.OcOlr">OcOlr</a></span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2363,7 +2345,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2376,7 +2357,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlAnswer.oc_supported_features" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">oc_supported_features</span><span class="p">:</span> <span class="n">OcSupportedFeatures</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">oc_supported_features</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.grouped.OcSupportedFeatures" href="../../avp/grouped/#diameter.message.avp.grouped.OcSupportedFeatures">OcSupportedFeatures</a></span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2385,7 +2366,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2398,7 +2378,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlAnswer.origin_host" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">origin_host</span><span class="p">:</span> <span class="nb">bytes</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">origin_host</span><span class="p">:</span> <span class="n">bytes</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2407,7 +2387,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2420,7 +2399,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlAnswer.origin_realm" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">origin_realm</span><span class="p">:</span> <span class="nb">bytes</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">origin_realm</span><span class="p">:</span> <span class="n">bytes</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2429,7 +2408,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2442,7 +2420,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlAnswer.origin_state_id" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">origin_state_id</span><span class="p">:</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">origin_state_id</span><span class="p">:</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2451,7 +2429,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2464,7 +2441,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlAnswer.proxy_info" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">proxy_info</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ProxyInfo</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">proxy_info</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.grouped.ProxyInfo" href="../../avp/grouped/#diameter.message.avp.grouped.ProxyInfo">ProxyInfo</a></span><span class="p">]</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2473,7 +2450,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2486,7 +2462,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlAnswer.qos_final_unit_indication" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">qos_final_unit_indication</span><span class="p">:</span> <span class="n">QosFinalUnitIndication</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">qos_final_unit_indication</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.grouped.QosFinalUnitIndication" href="../../avp/grouped/#diameter.message.avp.grouped.QosFinalUnitIndication">QosFinalUnitIndication</a></span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2495,7 +2471,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2508,7 +2483,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlAnswer.redirect_host" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">redirect_host</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">redirect_host</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n">str</span><span class="p">]</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2517,7 +2492,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2530,7 +2504,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlAnswer.redirect_host_usage" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">redirect_host_usage</span><span class="p">:</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">redirect_host_usage</span><span class="p">:</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2539,7 +2513,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2552,7 +2525,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlAnswer.redirect_max_cache_time" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">redirect_max_cache_time</span><span class="p">:</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">redirect_max_cache_time</span><span class="p">:</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2561,7 +2534,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2574,7 +2546,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlAnswer.remaining_balance" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">remaining_balance</span><span class="p">:</span> <span class="n">RemainingBalance</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">remaining_balance</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.grouped.RemainingBalance" href="../../avp/grouped/#diameter.message.avp.grouped.RemainingBalance">RemainingBalance</a></span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2583,7 +2555,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2596,7 +2567,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlAnswer.result_code" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">result_code</span><span class="p">:</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">result_code</span><span class="p">:</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2605,7 +2576,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2618,7 +2588,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlAnswer.route_record" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">route_record</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">route_record</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n">bytes</span><span class="p">]</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2627,7 +2597,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2640,7 +2609,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlAnswer.service_information" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">service_information</span><span class="p">:</span> <span class="n">ServiceInformation</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">service_information</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.grouped.ServiceInformation" href="../../avp/grouped/#diameter.message.avp.grouped.ServiceInformation">ServiceInformation</a></span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2649,7 +2618,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2662,7 +2630,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlAnswer.session_id" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">session_id</span><span class="p">:</span> <span class="nb">str</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">session_id</span><span class="p">:</span> <span class="n">str</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2671,7 +2639,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2684,7 +2651,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlAnswer.user_name" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">user_name</span><span class="p">:</span> <span class="nb">str</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">user_name</span><span class="p">:</span> <span class="n">str</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2693,7 +2660,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2706,7 +2672,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlAnswer.validity_time" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">validity_time</span><span class="p">:</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">validity_time</span><span class="p">:</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2721,24 +2687,23 @@ accessing.</p>
 
 
 
-
 <h3 id="diameter.message.commands.credit_control.CreditControlAnswer.add_multiple_services_credit_control" class="doc doc-heading">
           <span class="doc doc-object-name doc-function-name">add_multiple_services_credit_control</span>
 
 
 <a href="#diameter.message.commands.credit_control.CreditControlAnswer.add_multiple_services_credit_control" class="headerlink" title="Permanent link">&para;</a></h3>
 <div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">add_multiple_services_credit_control</span><span class="p">(</span>
-</span><span id="__span-0-2">    <span class="n">granted_service_unit</span><span class="p">:</span> <span class="n">GrantedServiceUnit</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-3">    <span class="n">requested_service_unit</span><span class="p">:</span> <span class="n">RequestedServiceUnit</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-4">    <span class="n">used_service_unit</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">UsedServiceUnit</span><span class="p">]</span> <span class="o">|</span> <span class="n">UsedServiceUnit</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-5">    <span class="n">tariff_change_usage</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-6">    <span class="n">service_identifier</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-7">    <span class="n">rating_group</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-8">    <span class="n">g_s_u_pool_reference</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">GsuPoolReference</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-9">    <span class="n">validity_time</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-10">    <span class="n">result_code</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-11">    <span class="n">final_unit_indication</span><span class="p">:</span> <span class="n">FinalUnitIndication</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-12">    <span class="n">avp</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Avp</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-2">    <span class="n">granted_service_unit</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.grouped.GrantedServiceUnit" href="../../avp/grouped/#diameter.message.avp.grouped.GrantedServiceUnit">GrantedServiceUnit</a></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-3">    <span class="n">requested_service_unit</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.grouped.RequestedServiceUnit" href="../../avp/grouped/#diameter.message.avp.grouped.RequestedServiceUnit">RequestedServiceUnit</a></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-4">    <span class="n">used_service_unit</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.grouped.UsedServiceUnit" href="../../avp/grouped/#diameter.message.avp.grouped.UsedServiceUnit">UsedServiceUnit</a></span><span class="p">]</span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.grouped.UsedServiceUnit" href="../../avp/grouped/#diameter.message.avp.grouped.UsedServiceUnit">UsedServiceUnit</a></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-5">    <span class="n">tariff_change_usage</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-6">    <span class="n">service_identifier</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n">int</span><span class="p">]</span> <span class="o">|</span> <span class="n">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-7">    <span class="n">rating_group</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-8">    <span class="n">g_s_u_pool_reference</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.grouped.GsuPoolReference" href="../../avp/grouped/#diameter.message.avp.grouped.GsuPoolReference">GsuPoolReference</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-9">    <span class="n">validity_time</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-10">    <span class="n">result_code</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-11">    <span class="n">final_unit_indication</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.grouped.FinalUnitIndication" href="../../avp/grouped/#diameter.message.avp.grouped.FinalUnitIndication">FinalUnitIndication</a></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-12">    <span class="n">avp</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.grouped.Avp" href="../../avp/#diameter.message.avp.avp.Avp">Avp</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 </span><span id="__span-0-13"><span class="p">)</span>
 </span></code></pre></div>
 
@@ -2932,10 +2897,10 @@ accessing.</p>
 
   </div>
 
+
 </div>
 
 <div class="doc doc-object doc-class">
-
 
 
 
@@ -2945,7 +2910,7 @@ accessing.</p>
 
 <a href="#diameter.message.commands.credit_control.CreditControlRequest" class="headerlink" title="Permanent link">&para;</a></h2>
 <div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">CreditControlRequest</span><span class="p">(</span>
-</span><span id="__span-0-2">    <span class="n">header</span><span class="p">:</span> <span class="n">MessageHeader</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">avps</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Avp</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="__span-0-2">    <span class="n">header</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message._base.MessageHeader" href="../../message/#diameter.message.MessageHeader">MessageHeader</a></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">avps</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.Avp" href="../../avp/#diameter.message.avp.avp.Avp">Avp</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 </span><span id="__span-0-3"><span class="p">)</span>
 </span></code></pre></div>
 
@@ -2971,7 +2936,6 @@ accessing.</p>
 
 
 
-
 <h3 id="diameter.message.commands.credit_control.CreditControlRequest.acct_multi_session_id" class="doc doc-heading">
           <span class="doc doc-object-name doc-attribute-name">acct_multi_session_id</span>
 
@@ -2981,7 +2945,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlRequest.acct_multi_session_id" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">acct_multi_session_id</span><span class="p">:</span> <span class="nb">bytes</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">acct_multi_session_id</span><span class="p">:</span> <span class="n">bytes</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2990,7 +2954,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -3003,7 +2966,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlRequest.aoc_request_type" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">aoc_request_type</span><span class="p">:</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">aoc_request_type</span><span class="p">:</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -3012,7 +2975,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -3025,7 +2987,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlRequest.auth_application_id" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">auth_application_id</span><span class="p">:</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">auth_application_id</span><span class="p">:</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -3034,7 +2996,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -3047,7 +3008,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlRequest.cc_correlation_id" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">cc_correlation_id</span><span class="p">:</span> <span class="nb">bytes</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">cc_correlation_id</span><span class="p">:</span> <span class="n">bytes</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -3056,7 +3017,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -3069,7 +3029,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlRequest.cc_request_number" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">cc_request_number</span><span class="p">:</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">cc_request_number</span><span class="p">:</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -3078,7 +3038,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -3091,7 +3050,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlRequest.cc_request_type" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">cc_request_type</span><span class="p">:</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">cc_request_type</span><span class="p">:</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -3100,7 +3059,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -3113,7 +3071,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlRequest.cc_sub_session_id" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">cc_sub_session_id</span><span class="p">:</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">cc_sub_session_id</span><span class="p">:</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -3122,7 +3080,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -3135,7 +3092,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlRequest.destination_host" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">destination_host</span><span class="p">:</span> <span class="nb">bytes</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">destination_host</span><span class="p">:</span> <span class="n">bytes</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -3150,7 +3107,6 @@ the subsequent requests, based on the CCR-I answer.</p>
 
 
 
-
 <h3 id="diameter.message.commands.credit_control.CreditControlRequest.destination_realm" class="doc doc-heading">
           <span class="doc doc-object-name doc-attribute-name">destination_realm</span>
 
@@ -3160,7 +3116,7 @@ the subsequent requests, based on the CCR-I answer.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlRequest.destination_realm" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">destination_realm</span><span class="p">:</span> <span class="nb">bytes</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">destination_realm</span><span class="p">:</span> <span class="n">bytes</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -3169,7 +3125,6 @@ the subsequent requests, based on the CCR-I answer.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -3182,7 +3137,7 @@ the subsequent requests, based on the CCR-I answer.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlRequest.event_timestamp" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">event_timestamp</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">event_timestamp</span><span class="p">:</span> <span class="n"><span title="diameter.message.avp.grouped.datetime.datetime">datetime</span></span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -3191,7 +3146,6 @@ the subsequent requests, based on the CCR-I answer.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -3204,7 +3158,7 @@ the subsequent requests, based on the CCR-I answer.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlRequest.multiple_services_credit_control" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">multiple_services_credit_control</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">MultipleServicesCreditControl</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">multiple_services_credit_control</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.grouped.MultipleServicesCreditControl" href="../../avp/grouped/#diameter.message.avp.grouped.MultipleServicesCreditControl">MultipleServicesCreditControl</a></span><span class="p">]</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -3213,7 +3167,6 @@ the subsequent requests, based on the CCR-I answer.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -3226,7 +3179,7 @@ the subsequent requests, based on the CCR-I answer.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlRequest.multiple_services_indicator" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">multiple_services_indicator</span><span class="p">:</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">multiple_services_indicator</span><span class="p">:</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -3235,7 +3188,6 @@ the subsequent requests, based on the CCR-I answer.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -3248,7 +3200,7 @@ the subsequent requests, based on the CCR-I answer.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlRequest.oc_supported_features" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">oc_supported_features</span><span class="p">:</span> <span class="n">OcSupportedFeatures</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">oc_supported_features</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.grouped.OcSupportedFeatures" href="../../avp/grouped/#diameter.message.avp.grouped.OcSupportedFeatures">OcSupportedFeatures</a></span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -3257,7 +3209,6 @@ the subsequent requests, based on the CCR-I answer.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -3270,7 +3221,7 @@ the subsequent requests, based on the CCR-I answer.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlRequest.origin_host" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">origin_host</span><span class="p">:</span> <span class="nb">bytes</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">origin_host</span><span class="p">:</span> <span class="n">bytes</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -3279,7 +3230,6 @@ the subsequent requests, based on the CCR-I answer.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -3292,7 +3242,7 @@ the subsequent requests, based on the CCR-I answer.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlRequest.origin_realm" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">origin_realm</span><span class="p">:</span> <span class="nb">bytes</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">origin_realm</span><span class="p">:</span> <span class="n">bytes</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -3301,7 +3251,6 @@ the subsequent requests, based on the CCR-I answer.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -3314,7 +3263,7 @@ the subsequent requests, based on the CCR-I answer.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlRequest.origin_state_id" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">origin_state_id</span><span class="p">:</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">origin_state_id</span><span class="p">:</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -3323,7 +3272,6 @@ the subsequent requests, based on the CCR-I answer.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -3336,7 +3284,7 @@ the subsequent requests, based on the CCR-I answer.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlRequest.proxy_info" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">proxy_info</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ProxyInfo</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">proxy_info</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.grouped.ProxyInfo" href="../../avp/grouped/#diameter.message.avp.grouped.ProxyInfo">ProxyInfo</a></span><span class="p">]</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -3345,7 +3293,6 @@ the subsequent requests, based on the CCR-I answer.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -3358,7 +3305,7 @@ the subsequent requests, based on the CCR-I answer.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlRequest.requested_action" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">requested_action</span><span class="p">:</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">requested_action</span><span class="p">:</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -3367,7 +3314,6 @@ the subsequent requests, based on the CCR-I answer.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -3380,7 +3326,7 @@ the subsequent requests, based on the CCR-I answer.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlRequest.requested_service_unit" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">requested_service_unit</span><span class="p">:</span> <span class="n">RequestedServiceUnit</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">requested_service_unit</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.grouped.RequestedServiceUnit" href="../../avp/grouped/#diameter.message.avp.grouped.RequestedServiceUnit">RequestedServiceUnit</a></span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -3389,7 +3335,6 @@ the subsequent requests, based on the CCR-I answer.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -3402,7 +3347,7 @@ the subsequent requests, based on the CCR-I answer.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlRequest.route_record" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">route_record</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">route_record</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n">bytes</span><span class="p">]</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -3411,7 +3356,6 @@ the subsequent requests, based on the CCR-I answer.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -3424,7 +3368,7 @@ the subsequent requests, based on the CCR-I answer.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlRequest.service_context_id" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">service_context_id</span><span class="p">:</span> <span class="nb">str</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">service_context_id</span><span class="p">:</span> <span class="n">str</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -3433,7 +3377,6 @@ the subsequent requests, based on the CCR-I answer.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -3446,7 +3389,7 @@ the subsequent requests, based on the CCR-I answer.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlRequest.service_identifier" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">service_identifier</span><span class="p">:</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">service_identifier</span><span class="p">:</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -3455,7 +3398,6 @@ the subsequent requests, based on the CCR-I answer.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -3468,7 +3410,7 @@ the subsequent requests, based on the CCR-I answer.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlRequest.service_information" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">service_information</span><span class="p">:</span> <span class="n">ServiceInformation</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">service_information</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.grouped.ServiceInformation" href="../../avp/grouped/#diameter.message.avp.grouped.ServiceInformation">ServiceInformation</a></span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -3477,7 +3419,6 @@ the subsequent requests, based on the CCR-I answer.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -3490,7 +3431,7 @@ the subsequent requests, based on the CCR-I answer.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlRequest.service_parameter_info" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">service_parameter_info</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ServiceParameterInfo</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">service_parameter_info</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.grouped.ServiceParameterInfo" href="../../avp/grouped/#diameter.message.avp.grouped.ServiceParameterInfo">ServiceParameterInfo</a></span><span class="p">]</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -3499,7 +3440,6 @@ the subsequent requests, based on the CCR-I answer.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -3512,7 +3452,7 @@ the subsequent requests, based on the CCR-I answer.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlRequest.session_id" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">session_id</span><span class="p">:</span> <span class="nb">str</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">session_id</span><span class="p">:</span> <span class="n">str</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -3521,7 +3461,6 @@ the subsequent requests, based on the CCR-I answer.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -3534,7 +3473,7 @@ the subsequent requests, based on the CCR-I answer.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlRequest.subscription_id" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">subscription_id</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">SubscriptionId</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">subscription_id</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.grouped.SubscriptionId" href="../../avp/grouped/#diameter.message.avp.grouped.SubscriptionId">SubscriptionId</a></span><span class="p">]</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -3543,7 +3482,6 @@ the subsequent requests, based on the CCR-I answer.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -3556,7 +3494,7 @@ the subsequent requests, based on the CCR-I answer.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlRequest.termination_cause" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">termination_cause</span><span class="p">:</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">termination_cause</span><span class="p">:</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -3565,7 +3503,6 @@ the subsequent requests, based on the CCR-I answer.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -3578,7 +3515,7 @@ the subsequent requests, based on the CCR-I answer.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlRequest.used_service_unit" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">used_service_unit</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">UsedServiceUnit</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">used_service_unit</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.grouped.UsedServiceUnit" href="../../avp/grouped/#diameter.message.avp.grouped.UsedServiceUnit">UsedServiceUnit</a></span><span class="p">]</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -3587,7 +3524,6 @@ the subsequent requests, based on the CCR-I answer.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -3600,7 +3536,7 @@ the subsequent requests, based on the CCR-I answer.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlRequest.user_equipment_info" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">user_equipment_info</span><span class="p">:</span> <span class="n">UserEquipmentInfo</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">user_equipment_info</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.grouped.UserEquipmentInfo" href="../../avp/grouped/#diameter.message.avp.grouped.UserEquipmentInfo">UserEquipmentInfo</a></span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -3609,7 +3545,6 @@ the subsequent requests, based on the CCR-I answer.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -3622,7 +3557,7 @@ the subsequent requests, based on the CCR-I answer.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlRequest.user_equipment_info_extension" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">user_equipment_info_extension</span><span class="p">:</span> <span class="n">UserEquipmentInfoExtension</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">user_equipment_info_extension</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.grouped.UserEquipmentInfoExtension" href="../../avp/grouped/#diameter.message.avp.grouped.UserEquipmentInfoExtension">UserEquipmentInfoExtension</a></span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -3631,7 +3566,6 @@ the subsequent requests, based on the CCR-I answer.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -3644,7 +3578,7 @@ the subsequent requests, based on the CCR-I answer.</p>
   </span>
 
 <a href="#diameter.message.commands.credit_control.CreditControlRequest.user_name" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">user_name</span><span class="p">:</span> <span class="nb">str</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">user_name</span><span class="p">:</span> <span class="n">str</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -3659,24 +3593,23 @@ the subsequent requests, based on the CCR-I answer.</p>
 
 
 
-
 <h3 id="diameter.message.commands.credit_control.CreditControlRequest.add_multiple_services_credit_control" class="doc doc-heading">
           <span class="doc doc-object-name doc-function-name">add_multiple_services_credit_control</span>
 
 
 <a href="#diameter.message.commands.credit_control.CreditControlRequest.add_multiple_services_credit_control" class="headerlink" title="Permanent link">&para;</a></h3>
 <div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">add_multiple_services_credit_control</span><span class="p">(</span>
-</span><span id="__span-0-2">    <span class="n">granted_service_unit</span><span class="p">:</span> <span class="n">GrantedServiceUnit</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-3">    <span class="n">requested_service_unit</span><span class="p">:</span> <span class="n">RequestedServiceUnit</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-4">    <span class="n">used_service_unit</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">UsedServiceUnit</span><span class="p">]</span> <span class="o">|</span> <span class="n">UsedServiceUnit</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-5">    <span class="n">tariff_change_usage</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-6">    <span class="n">service_identifier</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-7">    <span class="n">rating_group</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-8">    <span class="n">g_s_u_pool_reference</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">GsuPoolReference</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-9">    <span class="n">validity_time</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-10">    <span class="n">result_code</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-11">    <span class="n">final_unit_indication</span><span class="p">:</span> <span class="n">FinalUnitIndication</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-12">    <span class="n">avp</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Avp</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-2">    <span class="n">granted_service_unit</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.grouped.GrantedServiceUnit" href="../../avp/grouped/#diameter.message.avp.grouped.GrantedServiceUnit">GrantedServiceUnit</a></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-3">    <span class="n">requested_service_unit</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.grouped.RequestedServiceUnit" href="../../avp/grouped/#diameter.message.avp.grouped.RequestedServiceUnit">RequestedServiceUnit</a></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-4">    <span class="n">used_service_unit</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.grouped.UsedServiceUnit" href="../../avp/grouped/#diameter.message.avp.grouped.UsedServiceUnit">UsedServiceUnit</a></span><span class="p">]</span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.grouped.UsedServiceUnit" href="../../avp/grouped/#diameter.message.avp.grouped.UsedServiceUnit">UsedServiceUnit</a></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-5">    <span class="n">tariff_change_usage</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-6">    <span class="n">service_identifier</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n">int</span><span class="p">]</span> <span class="o">|</span> <span class="n">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-7">    <span class="n">rating_group</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-8">    <span class="n">g_s_u_pool_reference</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.grouped.GsuPoolReference" href="../../avp/grouped/#diameter.message.avp.grouped.GsuPoolReference">GsuPoolReference</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-9">    <span class="n">validity_time</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-10">    <span class="n">result_code</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-11">    <span class="n">final_unit_indication</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.grouped.FinalUnitIndication" href="../../avp/grouped/#diameter.message.avp.grouped.FinalUnitIndication">FinalUnitIndication</a></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-12">    <span class="n">avp</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.grouped.Avp" href="../../avp/#diameter.message.avp.avp.Avp">Avp</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 </span><span id="__span-0-13"><span class="p">)</span>
 </span></code></pre></div>
 
@@ -3869,14 +3802,13 @@ the subsequent requests, based on the CCR-I answer.</p>
 
 
 
-
 <h3 id="diameter.message.commands.credit_control.CreditControlRequest.add_subscription_id" class="doc doc-heading">
           <span class="doc doc-object-name doc-function-name">add_subscription_id</span>
 
 
 <a href="#diameter.message.commands.credit_control.CreditControlRequest.add_subscription_id" class="headerlink" title="Permanent link">&para;</a></h3>
 <div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">add_subscription_id</span><span class="p">(</span>
-</span><span id="__span-0-2">    <span class="n">subscription_id_type</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">subscription_id_data</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-0-2">    <span class="n">subscription_id_type</span><span class="p">:</span> <span class="n">int</span><span class="p">,</span> <span class="n">subscription_id_data</span><span class="p">:</span> <span class="n">str</span>
 </span><span id="__span-0-3"><span class="p">)</span>
 </span></code></pre></div>
 
@@ -3939,6 +3871,7 @@ constant values</p>
 
   </div>
 
+
 </div>
 
 
@@ -3989,10 +3922,10 @@ constant values</p>
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.indexes", "toc.integrate"], "search": "../../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.indexes", "toc.integrate"], "search": "../../../assets/javascripts/workers/search.c011b7c0.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.d7c377c4.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.7389ff0e.min.js"></script>
       
     
   </body>

@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.1">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.4">
     
     
       
@@ -24,7 +24,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.45e1311d.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.50c56a3b.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
@@ -1509,14 +1509,13 @@ implementing AVPs documented in rfc6733.</p>
 
 
 
-
 <h2 id="diameter.message.commands.capabilities_exchange.CapabilitiesExchange" class="doc doc-heading">
           <span class="doc doc-object-name doc-class-name">CapabilitiesExchange</span>
 
 
 <a href="#diameter.message.commands.capabilities_exchange.CapabilitiesExchange" class="headerlink" title="Permanent link">&para;</a></h2>
 <div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">CapabilitiesExchange</span><span class="p">(</span>
-</span><span id="__span-0-2">    <span class="n">header</span><span class="p">:</span> <span class="n">MessageHeader</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">avps</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Avp</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="__span-0-2">    <span class="n">header</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message._base.MessageHeader" href="../../message/#diameter.message.MessageHeader">MessageHeader</a></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">avps</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.Avp" href="../../avp/#diameter.message.avp.avp.Avp">Avp</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 </span><span id="__span-0-3"><span class="p">)</span>
 </span></code></pre></div>
 
@@ -1593,10 +1592,10 @@ accessing.</p>
 
   </div>
 
+
 </div>
 
 <div class="doc doc-object doc-class">
-
 
 
 
@@ -1606,7 +1605,7 @@ accessing.</p>
 
 <a href="#diameter.message.commands.capabilities_exchange.CapabilitiesExchangeAnswer" class="headerlink" title="Permanent link">&para;</a></h2>
 <div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">CapabilitiesExchangeAnswer</span><span class="p">(</span>
-</span><span id="__span-0-2">    <span class="n">header</span><span class="p">:</span> <span class="n">MessageHeader</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">avps</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Avp</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="__span-0-2">    <span class="n">header</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message._base.MessageHeader" href="../../message/#diameter.message.MessageHeader">MessageHeader</a></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">avps</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.Avp" href="../../avp/#diameter.message.avp.avp.Avp">Avp</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 </span><span id="__span-0-3"><span class="p">)</span>
 </span></code></pre></div>
 
@@ -1632,7 +1631,6 @@ accessing.</p>
 
 
 
-
 <h3 id="diameter.message.commands.capabilities_exchange.CapabilitiesExchangeAnswer.acct_application_id" class="doc doc-heading">
           <span class="doc doc-object-name doc-attribute-name">acct_application_id</span>
 
@@ -1642,7 +1640,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.capabilities_exchange.CapabilitiesExchangeAnswer.acct_application_id" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">acct_application_id</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">acct_application_id</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n">int</span><span class="p">]</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1651,7 +1649,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -1664,7 +1661,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.capabilities_exchange.CapabilitiesExchangeAnswer.auth_application_id" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">auth_application_id</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">auth_application_id</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n">int</span><span class="p">]</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1673,7 +1670,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -1686,7 +1682,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.capabilities_exchange.CapabilitiesExchangeAnswer.error_message" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">error_message</span><span class="p">:</span> <span class="nb">str</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">error_message</span><span class="p">:</span> <span class="n">str</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1695,7 +1691,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -1708,7 +1703,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.capabilities_exchange.CapabilitiesExchangeAnswer.failed_avp" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">failed_avp</span><span class="p">:</span> <span class="n">FailedAvp</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">failed_avp</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.grouped.FailedAvp" href="../../avp/grouped/#diameter.message.avp.grouped.FailedAvp">FailedAvp</a></span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1717,7 +1712,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -1730,7 +1724,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.capabilities_exchange.CapabilitiesExchangeAnswer.firmware_revision" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">firmware_revision</span><span class="p">:</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">firmware_revision</span><span class="p">:</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1739,7 +1733,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -1752,7 +1745,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.capabilities_exchange.CapabilitiesExchangeAnswer.host_ip_address" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">host_ip_address</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">host_ip_address</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n">str</span><span class="p">]</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1761,7 +1754,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -1774,7 +1766,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.capabilities_exchange.CapabilitiesExchangeAnswer.inband_security_id" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">inband_security_id</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">inband_security_id</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n">int</span><span class="p">]</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1783,7 +1775,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -1796,7 +1787,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.capabilities_exchange.CapabilitiesExchangeAnswer.origin_host" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">origin_host</span><span class="p">:</span> <span class="nb">bytes</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">origin_host</span><span class="p">:</span> <span class="n">bytes</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1805,7 +1796,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -1818,7 +1808,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.capabilities_exchange.CapabilitiesExchangeAnswer.origin_realm" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">origin_realm</span><span class="p">:</span> <span class="nb">bytes</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">origin_realm</span><span class="p">:</span> <span class="n">bytes</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1827,7 +1817,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -1840,7 +1829,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.capabilities_exchange.CapabilitiesExchangeAnswer.origin_state_id" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">origin_state_id</span><span class="p">:</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">origin_state_id</span><span class="p">:</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1849,7 +1838,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -1862,7 +1850,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.capabilities_exchange.CapabilitiesExchangeAnswer.product_name" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">product_name</span><span class="p">:</span> <span class="nb">str</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">product_name</span><span class="p">:</span> <span class="n">str</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1871,7 +1859,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -1884,7 +1871,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.capabilities_exchange.CapabilitiesExchangeAnswer.result_code" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">result_code</span><span class="p">:</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">result_code</span><span class="p">:</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1893,7 +1880,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -1906,7 +1892,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.capabilities_exchange.CapabilitiesExchangeAnswer.supported_vendor_id" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">supported_vendor_id</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">supported_vendor_id</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n">int</span><span class="p">]</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1915,7 +1901,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -1928,7 +1913,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.capabilities_exchange.CapabilitiesExchangeAnswer.vendor_id" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">vendor_id</span><span class="p">:</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">vendor_id</span><span class="p">:</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1937,7 +1922,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -1950,7 +1934,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.capabilities_exchange.CapabilitiesExchangeAnswer.vendor_specific_application_id" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">vendor_specific_application_id</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">VendorSpecificApplicationId</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">vendor_specific_application_id</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.grouped.VendorSpecificApplicationId" href="../../avp/grouped/#diameter.message.avp.grouped.VendorSpecificApplicationId">VendorSpecificApplicationId</a></span><span class="p">]</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1966,10 +1950,10 @@ accessing.</p>
 
   </div>
 
+
 </div>
 
 <div class="doc doc-object doc-class">
-
 
 
 
@@ -1979,7 +1963,7 @@ accessing.</p>
 
 <a href="#diameter.message.commands.capabilities_exchange.CapabilitiesExchangeRequest" class="headerlink" title="Permanent link">&para;</a></h2>
 <div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">CapabilitiesExchangeRequest</span><span class="p">(</span>
-</span><span id="__span-0-2">    <span class="n">header</span><span class="p">:</span> <span class="n">MessageHeader</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">avps</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Avp</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="__span-0-2">    <span class="n">header</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message._base.MessageHeader" href="../../message/#diameter.message.MessageHeader">MessageHeader</a></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">avps</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.Avp" href="../../avp/#diameter.message.avp.avp.Avp">Avp</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 </span><span id="__span-0-3"><span class="p">)</span>
 </span></code></pre></div>
 
@@ -2005,7 +1989,6 @@ accessing.</p>
 
 
 
-
 <h3 id="diameter.message.commands.capabilities_exchange.CapabilitiesExchangeRequest.acct_application_id" class="doc doc-heading">
           <span class="doc doc-object-name doc-attribute-name">acct_application_id</span>
 
@@ -2015,7 +1998,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.capabilities_exchange.CapabilitiesExchangeRequest.acct_application_id" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">acct_application_id</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">acct_application_id</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n">int</span><span class="p">]</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2024,7 +2007,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2037,7 +2019,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.capabilities_exchange.CapabilitiesExchangeRequest.auth_application_id" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">auth_application_id</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">auth_application_id</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n">int</span><span class="p">]</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2046,7 +2028,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2059,7 +2040,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.capabilities_exchange.CapabilitiesExchangeRequest.firmware_revision" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">firmware_revision</span><span class="p">:</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">firmware_revision</span><span class="p">:</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2068,7 +2049,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2081,7 +2061,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.capabilities_exchange.CapabilitiesExchangeRequest.host_ip_address" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">host_ip_address</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">host_ip_address</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n">str</span><span class="p">]</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2090,7 +2070,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2103,7 +2082,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.capabilities_exchange.CapabilitiesExchangeRequest.inband_security_id" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">inband_security_id</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">inband_security_id</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n">int</span><span class="p">]</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2112,7 +2091,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2125,7 +2103,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.capabilities_exchange.CapabilitiesExchangeRequest.origin_host" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">origin_host</span><span class="p">:</span> <span class="nb">bytes</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">origin_host</span><span class="p">:</span> <span class="n">bytes</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2134,7 +2112,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2147,7 +2124,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.capabilities_exchange.CapabilitiesExchangeRequest.origin_realm" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">origin_realm</span><span class="p">:</span> <span class="nb">bytes</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">origin_realm</span><span class="p">:</span> <span class="n">bytes</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2156,7 +2133,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2169,7 +2145,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.capabilities_exchange.CapabilitiesExchangeRequest.origin_state_id" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">origin_state_id</span><span class="p">:</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">origin_state_id</span><span class="p">:</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2178,7 +2154,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2191,7 +2166,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.capabilities_exchange.CapabilitiesExchangeRequest.product_name" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">product_name</span><span class="p">:</span> <span class="nb">str</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">product_name</span><span class="p">:</span> <span class="n">str</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2200,7 +2175,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2213,7 +2187,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.capabilities_exchange.CapabilitiesExchangeRequest.supported_vendor_id" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">supported_vendor_id</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">supported_vendor_id</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n">int</span><span class="p">]</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2222,7 +2196,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2235,7 +2208,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.capabilities_exchange.CapabilitiesExchangeRequest.vendor_id" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">vendor_id</span><span class="p">:</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">vendor_id</span><span class="p">:</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2244,7 +2217,6 @@ accessing.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2257,7 +2229,7 @@ accessing.</p>
   </span>
 
 <a href="#diameter.message.commands.capabilities_exchange.CapabilitiesExchangeRequest.vendor_specific_application_id" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">vendor_specific_application_id</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">VendorSpecificApplicationId</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">vendor_specific_application_id</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.grouped.VendorSpecificApplicationId" href="../../avp/grouped/#diameter.message.avp.grouped.VendorSpecificApplicationId">VendorSpecificApplicationId</a></span><span class="p">]</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2272,6 +2244,7 @@ accessing.</p>
   </div>
 
   </div>
+
 
 </div>
 
@@ -2323,10 +2296,10 @@ accessing.</p>
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.indexes", "toc.integrate"], "search": "../../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.indexes", "toc.integrate"], "search": "../../../assets/javascripts/workers/search.c011b7c0.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.d7c377c4.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.7389ff0e.min.js"></script>
       
     
   </body>

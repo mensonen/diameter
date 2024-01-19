@@ -14,7 +14,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.1">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.4">
     
     
       
@@ -22,7 +22,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.45e1311d.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.50c56a3b.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
@@ -1200,7 +1200,7 @@
           <li class="md-nav__item">
   <a href="#diameter.node.SequenceGenerator.next_sequence" class="md-nav__link">
     <span class="md-ellipsis">
-      next_sequence()
+      next_sequence
     </span>
   </a>
   
@@ -1224,7 +1224,7 @@
           <li class="md-nav__item">
   <a href="#diameter.node.SessionGenerator.next_id" class="md-nav__link">
     <span class="md-ellipsis">
-      next_id()
+      next_id
     </span>
   </a>
   
@@ -1238,7 +1238,7 @@
         <li class="md-nav__item">
   <a href="#diameter.node.parse_diameter_uri" class="md-nav__link">
     <span class="md-ellipsis">
-      parse_diameter_uri()
+      parse_diameter_uri
     </span>
   </a>
   
@@ -1307,7 +1307,7 @@
         <li class="md-nav__item">
   <a href="#diameter.node.validate_message_avps" class="md-nav__link">
     <span class="md-ellipsis">
-      validate_message_avps()
+      validate_message_avps
     </span>
   </a>
   
@@ -1356,13 +1356,12 @@
 
 
 
-
 <h2 id="diameter.node.SequenceGenerator" class="doc doc-heading">
           <span class="doc doc-object-name doc-class-name">SequenceGenerator</span>
 
 
 <a href="#diameter.node.SequenceGenerator" class="headerlink" title="Permanent link">&para;</a></h2>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">SequenceGenerator</span><span class="p">(</span><span class="n">include_now</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">SequenceGenerator</span><span class="p">(</span><span class="n">include_now</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents first">
@@ -1422,7 +1421,6 @@ initialised to a random value.</p>
 
 
 
-
 <h3 id="diameter.node.SequenceGenerator.sequence" class="doc doc-heading">
           <span class="doc doc-object-name doc-attribute-name">sequence</span>
 
@@ -1432,7 +1430,7 @@ initialised to a random value.</p>
   </span>
 
 <a href="#diameter.node.SequenceGenerator.sequence" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">sequence</span><span class="p">:</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">sequence</span><span class="p">:</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1449,13 +1447,12 @@ initialised to a random value.</p>
 
 
 
-
 <h3 id="diameter.node.SequenceGenerator.next_sequence" class="doc doc-heading">
           <span class="doc doc-object-name doc-function-name">next_sequence</span>
 
 
 <a href="#diameter.node.SequenceGenerator.next_sequence" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">next_sequence</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">next_sequence</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1472,10 +1469,10 @@ initialised to a random value.</p>
 
   </div>
 
+
 </div>
 
 <div class="doc doc-object doc-class">
-
 
 
 
@@ -1484,7 +1481,7 @@ initialised to a random value.</p>
 
 
 <a href="#diameter.node.SessionGenerator" class="headerlink" title="Permanent link">&para;</a></h2>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">SessionGenerator</span><span class="p">(</span><span class="n">node_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">SessionGenerator</span><span class="p">(</span><span class="n">node_name</span><span class="p">:</span> <span class="n">str</span><span class="p">)</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents first">
@@ -1573,13 +1570,12 @@ generated session IDs.</p>
 
 
 
-
 <h3 id="diameter.node.SessionGenerator.next_id" class="doc doc-heading">
           <span class="doc doc-object-name doc-function-name">next_id</span>
 
 
 <a href="#diameter.node.SessionGenerator.next_id" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">next_id</span><span class="p">(</span><span class="o">*</span><span class="n">optional</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">next_id</span><span class="p">(</span><span class="o">*</span><span class="n">optional</span><span class="p">:</span> <span class="n">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">str</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1628,11 +1624,11 @@ by ";"</p>
 
   </div>
 
+
 </div>
 
 
 <div class="doc doc-object doc-function">
-
 
 
 
@@ -1641,7 +1637,7 @@ by ";"</p>
 
 
 <a href="#diameter.node.parse_diameter_uri" class="headerlink" title="Permanent link">&para;</a></h2>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">parse_diameter_uri</span><span class="p">(</span><span class="n">uri</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DiameterUri</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">parse_diameter_uri</span><span class="p">(</span><span class="n">uri</span><span class="p">:</span> <span class="n">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.node._helpers.DiameterUri" href="#diameter.node._helpers.DiameterUri">DiameterUri</a></span>
 </span></code></pre></div>
 
   <div class="doc doc-contents first">
@@ -1718,7 +1714,6 @@ port, params and is_secure attributes</p>
 
 
 
-
 <h2 id="diameter.node._helpers.DiameterUri" class="doc doc-heading">
           <span class="doc doc-object-name doc-class-name">DiameterUri</span>
 
@@ -1746,7 +1741,6 @@ port, params and is_secure attributes</p>
 
 
 
-
 <h3 id="diameter.node._helpers.DiameterUri.fqdn" class="doc doc-heading">
           <span class="doc doc-object-name doc-attribute-name">fqdn</span>
 
@@ -1756,7 +1750,7 @@ port, params and is_secure attributes</p>
   </span>
 
 <a href="#diameter.node._helpers.DiameterUri.fqdn" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">fqdn</span><span class="p">:</span> <span class="nb">str</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">fqdn</span><span class="p">:</span> <span class="n">str</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1765,7 +1759,6 @@ port, params and is_secure attributes</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -1778,7 +1771,7 @@ port, params and is_secure attributes</p>
   </span>
 
 <a href="#diameter.node._helpers.DiameterUri.is_secure" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">is_secure</span><span class="p">:</span> <span class="nb">bool</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">is_secure</span><span class="p">:</span> <span class="n">bool</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1787,7 +1780,6 @@ port, params and is_secure attributes</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -1800,7 +1792,7 @@ port, params and is_secure attributes</p>
   </span>
 
 <a href="#diameter.node._helpers.DiameterUri.params" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">params</span><span class="p">:</span> <span class="nb">dict</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">params</span><span class="p">:</span> <span class="n">dict</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1809,7 +1801,6 @@ port, params and is_secure attributes</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -1822,7 +1813,7 @@ port, params and is_secure attributes</p>
   </span>
 
 <a href="#diameter.node._helpers.DiameterUri.port" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">port</span><span class="p">:</span> <span class="nb">int</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">port</span><span class="p">:</span> <span class="n">int</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1831,7 +1822,6 @@ port, params and is_secure attributes</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -1844,7 +1834,7 @@ port, params and is_secure attributes</p>
   </span>
 
 <a href="#diameter.node._helpers.DiameterUri.scheme" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">scheme</span><span class="p">:</span> <span class="nb">str</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">scheme</span><span class="p">:</span> <span class="n">str</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1860,11 +1850,11 @@ port, params and is_secure attributes</p>
 
   </div>
 
+
 </div>
 
 
 <div class="doc doc-object doc-function">
-
 
 
 
@@ -1873,7 +1863,7 @@ port, params and is_secure attributes</p>
 
 
 <a href="#diameter.node.validate_message_avps" class="headerlink" title="Permanent link">&para;</a></h2>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">validate_message_avps</span><span class="p">(</span><span class="n">msg</span><span class="p">:</span> <span class="n">_AnyMessageType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Avp</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">validate_message_avps</span><span class="p">(</span><span class="n">msg</span><span class="p">:</span> <span class="n"><span title="diameter.node._helpers._AnyMessageType">_AnyMessageType</span></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">list</span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="diameter.message.Avp" href="../avp/#diameter.message.avp.avp.Avp">Avp</a></span><span class="p">]</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents first">
@@ -1961,10 +1951,10 @@ every AVP that is missing in the message</p>
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "toc.integrate"], "search": "../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "toc.integrate"], "search": "../../assets/javascripts/workers/search.c011b7c0.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.d7c377c4.min.js"></script>
+      <script src="../../assets/javascripts/bundle.7389ff0e.min.js"></script>
       
     
   </body>

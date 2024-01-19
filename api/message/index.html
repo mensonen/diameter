@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.1">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.4">
     
     
       
@@ -24,7 +24,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.45e1311d.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.50c56a3b.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
@@ -813,7 +813,7 @@
           <li class="md-nav__item">
   <a href="#diameter.message.Message.append_avp" class="md-nav__link">
     <span class="md-ellipsis">
-      append_avp()
+      append_avp
     </span>
   </a>
   
@@ -822,7 +822,7 @@
           <li class="md-nav__item">
   <a href="#diameter.message.Message.as_bytes" class="md-nav__link">
     <span class="md-ellipsis">
-      as_bytes()
+      as_bytes
     </span>
   </a>
   
@@ -831,7 +831,7 @@
           <li class="md-nav__item">
   <a href="#diameter.message.Message.find_avps" class="md-nav__link">
     <span class="md-ellipsis">
-      find_avps()
+      find_avps
     </span>
   </a>
   
@@ -840,7 +840,7 @@
           <li class="md-nav__item">
   <a href="#diameter.message.Message.from_bytes" class="md-nav__link">
     <span class="md-ellipsis">
-      from_bytes()
+      from_bytes
     </span>
   </a>
   
@@ -849,7 +849,7 @@
           <li class="md-nav__item">
   <a href="#diameter.message.Message.to_answer" class="md-nav__link">
     <span class="md-ellipsis">
-      to_answer()
+      to_answer
     </span>
   </a>
   
@@ -858,7 +858,7 @@
           <li class="md-nav__item">
   <a href="#diameter.message.Message.type_factory" class="md-nav__link">
     <span class="md-ellipsis">
-      type_factory()
+      type_factory
     </span>
   </a>
   
@@ -900,7 +900,7 @@
           <li class="md-nav__item">
   <a href="#diameter.message.DefinedMessage.append_avp" class="md-nav__link">
     <span class="md-ellipsis">
-      append_avp()
+      append_avp
     </span>
   </a>
   
@@ -923,7 +923,7 @@
         <li class="md-nav__item">
   <a href="#diameter.message.dump" class="md-nav__link">
     <span class="md-ellipsis">
-      dump()
+      dump
     </span>
   </a>
   
@@ -1401,13 +1401,12 @@ message headers and messages.</p>
 
 
 
-
 <h2 id="diameter.message.Message" class="doc doc-heading">
           <span class="doc doc-object-name doc-class-name">Message</span>
 
 
 <a href="#diameter.message.Message" class="headerlink" title="Permanent link">&para;</a></h2>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">Message</span><span class="p">(</span><span class="n">header</span><span class="p">:</span> <span class="n">MessageHeader</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">avps</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Avp</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">Message</span><span class="p">(</span><span class="n">header</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message._base.MessageHeader" href="#diameter.message.MessageHeader">MessageHeader</a></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">avps</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.Avp" href="../avp/#diameter.message.avp.avp.Avp">Avp</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1435,7 +1434,6 @@ command message instances.</p>
 
 
 
-
 <h3 id="diameter.message.Message.code" class="doc doc-heading">
           <span class="doc doc-object-name doc-attribute-name">code</span>
 
@@ -1446,7 +1444,7 @@ command message instances.</p>
   </span>
 
 <a href="#diameter.message.Message.code" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">code</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">code</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="mi">0</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1460,7 +1458,6 @@ command message instances.</p>
 
 
 
-
 <h3 id="diameter.message.Message.header" class="doc doc-heading">
           <span class="doc doc-object-name doc-attribute-name">header</span>
 
@@ -1470,7 +1467,7 @@ command message instances.</p>
   </span>
 
 <a href="#diameter.message.Message.header" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">header</span><span class="p">:</span> <span class="n">MessageHeader</span> <span class="o">=</span> <span class="n">header</span> <span class="ow">or</span> <span class="n">MessageHeader</span><span class="p">()</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">header</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message._base.MessageHeader" href="#diameter.message.MessageHeader">MessageHeader</a></span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message._base.Message.header" href="#diameter.message.Message.header">header</a></span> <span class="ow">or</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message._base.MessageHeader" href="#diameter.message.MessageHeader">MessageHeader</a></span><span class="p">()</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1491,7 +1488,6 @@ using the <a class="autorefs autorefs-internal" href="#diameter.message.Message.
 
 
 
-
 <h3 id="diameter.message.Message.name" class="doc doc-heading">
           <span class="doc doc-object-name doc-attribute-name">name</span>
 
@@ -1502,7 +1498,7 @@ using the <a class="autorefs autorefs-internal" href="#diameter.message.Message.
   </span>
 
 <a href="#diameter.message.Message.name" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;Unknown&#39;</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">name</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="s1">&#39;Unknown&#39;</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1519,13 +1515,12 @@ using the <a class="autorefs autorefs-internal" href="#diameter.message.Message.
 
 
 
-
 <h3 id="diameter.message.Message.append_avp" class="doc doc-heading">
           <span class="doc doc-object-name doc-function-name">append_avp</span>
 
 
 <a href="#diameter.message.Message.append_avp" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">append_avp</span><span class="p">(</span><span class="n">avp</span><span class="p">:</span> <span class="n">Avp</span><span class="p">)</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">append_avp</span><span class="p">(</span><span class="n">avp</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.Avp" href="../avp/#diameter.message.avp.avp.Avp">Avp</a></span><span class="p">)</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1541,13 +1536,12 @@ using the <a class="autorefs autorefs-internal" href="#diameter.message.Message.
 
 
 
-
 <h3 id="diameter.message.Message.as_bytes" class="doc doc-heading">
           <span class="doc doc-object-name doc-function-name">as_bytes</span>
 
 
 <a href="#diameter.message.Message.as_bytes" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">as_bytes</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bytes</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">as_bytes</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">bytes</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1567,15 +1561,14 @@ length is still zero. The header length is updated every time
 
 
 
-
 <h3 id="diameter.message.Message.find_avps" class="doc doc-heading">
           <span class="doc doc-object-name doc-function-name">find_avps</span>
 
 
 <a href="#diameter.message.Message.find_avps" class="headerlink" title="Permanent link">&para;</a></h3>
 <div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">find_avps</span><span class="p">(</span>
-</span><span id="__span-0-2">    <span class="o">*</span><span class="n">code_and_vendor</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">alt_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Avp</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span id="__span-0-3"><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Avp</span><span class="p">]</span>
+</span><span id="__span-0-2">    <span class="o">*</span><span class="n">code_and_vendor</span><span class="p">:</span> <span class="n">tuple</span><span class="p">[</span><span class="n">int</span><span class="p">,</span> <span class="n">int</span><span class="p">],</span> <span class="n">alt_list</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.Avp" href="../avp/#diameter.message.avp.avp.Avp">Avp</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="__span-0-3"><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">list</span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.Avp" href="../avp/#diameter.message.avp.avp.Avp">Avp</a></span><span class="p">]</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1630,7 +1623,6 @@ an optional keyword argument <code>alt_avps</code>.</p>
 
 
 
-
 <h3 id="diameter.message.Message.from_bytes" class="doc doc-heading">
           <span class="doc doc-object-name doc-function-name">from_bytes</span>
 
@@ -1641,8 +1633,8 @@ an optional keyword argument <code>alt_avps</code>.</p>
 
 <a href="#diameter.message.Message.from_bytes" class="headerlink" title="Permanent link">&para;</a></h3>
 <div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">from_bytes</span><span class="p">(</span>
-</span><span id="__span-0-2">    <span class="n">msg_data</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">plain_msg</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-</span><span id="__span-0-3"><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_AnyMessageType</span>
+</span><span id="__span-0-2">    <span class="n">msg_data</span><span class="p">:</span> <span class="n">bytes</span><span class="p">,</span> <span class="n">plain_msg</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="kc">False</span>
+</span><span id="__span-0-3"><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="diameter.message._base._AnyMessageType">_AnyMessageType</span></span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1682,13 +1674,12 @@ of parsed AVPs and does nothing else.</p>
 
 
 
-
 <h3 id="diameter.message.Message.to_answer" class="doc doc-heading">
           <span class="doc doc-object-name doc-function-name">to_answer</span>
 
 
 <a href="#diameter.message.Message.to_answer" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">to_answer</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">_AnyMessageType</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">to_answer</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n"><span title="diameter.message._base._AnyMessageType">_AnyMessageType</span></span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1708,7 +1699,6 @@ returns a new instance with the copied header.</p>
 
 
 
-
 <h3 id="diameter.message.Message.type_factory" class="doc doc-heading">
           <span class="doc doc-object-name doc-function-name">type_factory</span>
 
@@ -1718,7 +1708,7 @@ returns a new instance with the copied header.</p>
   </span>
 
 <a href="#diameter.message.Message.type_factory" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">type_factory</span><span class="p">(</span><span class="n">header</span><span class="p">:</span> <span class="n">MessageHeader</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">[</span><span class="n">_AnyMessageType</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">type_factory</span><span class="p">(</span><span class="n">header</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message._base.MessageHeader" href="#diameter.message.MessageHeader">MessageHeader</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="typing.Type">Type</span></span><span class="p">[</span><span class="n"><span title="diameter.message._base._AnyMessageType">_AnyMessageType</span></span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1741,10 +1731,10 @@ for "Request" and "Answer" messages, based on the given header.</p>
 
   </div>
 
+
 </div>
 
 <div class="doc doc-object doc-class">
-
 
 
 
@@ -1754,13 +1744,13 @@ for "Request" and "Answer" messages, based on the given header.</p>
 
 <a href="#diameter.message.MessageHeader" class="headerlink" title="Permanent link">&para;</a></h2>
 <div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">MessageHeader</span><span class="p">(</span>
-</span><span id="__span-0-2">    <span class="n">version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-</span><span id="__span-0-3">    <span class="n">length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-</span><span id="__span-0-4">    <span class="n">command_flags</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-</span><span id="__span-0-5">    <span class="n">command_code</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-</span><span id="__span-0-6">    <span class="n">application_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-</span><span id="__span-0-7">    <span class="n">hop_by_hop_identifier</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-</span><span id="__span-0-8">    <span class="n">end_to_end_identifier</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+</span><span id="__span-0-2">    <span class="n">version</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+</span><span id="__span-0-3">    <span class="n">length</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+</span><span id="__span-0-4">    <span class="n">command_flags</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+</span><span id="__span-0-5">    <span class="n">command_code</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+</span><span id="__span-0-6">    <span class="n">application_id</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+</span><span id="__span-0-7">    <span class="n">hop_by_hop_identifier</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+</span><span id="__span-0-8">    <span class="n">end_to_end_identifier</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
 </span><span id="__span-0-9"><span class="p">)</span>
 </span></code></pre></div>
 
@@ -1786,10 +1776,10 @@ for "Request" and "Answer" messages, based on the given header.</p>
 
   </div>
 
+
 </div>
 
 <div class="doc doc-object doc-class">
-
 
 
 
@@ -1798,7 +1788,7 @@ for "Request" and "Answer" messages, based on the given header.</p>
 
 
 <a href="#diameter.message.DefinedMessage" class="headerlink" title="Permanent link">&para;</a></h2>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">DefinedMessage</span><span class="p">(</span><span class="n">header</span><span class="p">:</span> <span class="n">MessageHeader</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">avps</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Avp</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">DefinedMessage</span><span class="p">(</span><span class="n">header</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message._base.MessageHeader" href="#diameter.message.MessageHeader">MessageHeader</a></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">avps</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.Avp" href="../avp/#diameter.message.avp.avp.Avp">Avp</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1828,7 +1818,6 @@ instance attributes.</p>
 
 
 
-
 <h3 id="diameter.message.DefinedMessage.avps" class="doc doc-heading">
           <span class="doc doc-object-name doc-attribute-name">avps</span>
 
@@ -1839,7 +1828,7 @@ instance attributes.</p>
   </span>
 
 <a href="#diameter.message.DefinedMessage.avps" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">avps</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Avp</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">avps</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.Avp" href="../avp/#diameter.message.avp.avp.Avp">Avp</a></span><span class="p">]</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1860,13 +1849,12 @@ if set, followed by any unknown AVPs.</p>
 
 
 
-
 <h3 id="diameter.message.DefinedMessage.append_avp" class="doc doc-heading">
           <span class="doc doc-object-name doc-function-name">append_avp</span>
 
 
 <a href="#diameter.message.DefinedMessage.append_avp" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">append_avp</span><span class="p">(</span><span class="n">avp</span><span class="p">:</span> <span class="n">Avp</span><span class="p">)</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">append_avp</span><span class="p">(</span><span class="n">avp</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.Avp" href="../avp/#diameter.message.avp.avp.Avp">Avp</a></span><span class="p">)</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1883,10 +1871,10 @@ if set, followed by any unknown AVPs.</p>
 
   </div>
 
+
 </div>
 
 <div class="doc doc-object doc-class">
-
 
 
 
@@ -1896,7 +1884,7 @@ if set, followed by any unknown AVPs.</p>
 
 <a href="#diameter.message.UndefinedMessage" class="headerlink" title="Permanent link">&para;</a></h2>
 <div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">UndefinedMessage</span><span class="p">(</span>
-</span><span id="__span-0-2">    <span class="n">header</span><span class="p">:</span> <span class="n">MessageHeader</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">avps</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Avp</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="__span-0-2">    <span class="n">header</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message._base.MessageHeader" href="#diameter.message.MessageHeader">MessageHeader</a></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">avps</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="diameter.message.avp.Avp" href="../avp/#diameter.message.avp.avp.Avp">Avp</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 </span><span id="__span-0-3"><span class="p">)</span>
 </span></code></pre></div>
 
@@ -1944,6 +1932,7 @@ actual AVPs. Instances of this class are effectively read-only.</p>
 
   </div>
 
+
 </div>
 
 
@@ -1952,13 +1941,12 @@ actual AVPs. Instances of this class are effectively read-only.</p>
 
 
 
-
 <h2 id="diameter.message.dump" class="doc doc-heading">
           <span class="doc doc-object-name doc-function-name">dump</span>
 
 
 <a href="#diameter.message.dump" class="headerlink" title="Permanent link">&para;</a></h2>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">dump</span><span class="p">(</span><span class="n">msg</span><span class="p">:</span> <span class="n">Message</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">dump</span><span class="p">(</span><span class="n">msg</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="diameter.message._base.Message" href="#diameter.message.Message">Message</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">str</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2090,10 +2078,10 @@ recursively looping through each AVP and calling <code>str(avp)</code>.</p>
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "toc.integrate"], "search": "../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "toc.integrate"], "search": "../../assets/javascripts/workers/search.c011b7c0.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.d7c377c4.min.js"></script>
+      <script src="../../assets/javascripts/bundle.7389ff0e.min.js"></script>
       
     
   </body>
