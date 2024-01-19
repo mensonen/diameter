@@ -287,6 +287,19 @@ class Node:
         """A list of node statistics snapshots, taken at one minute intervals
         and kept for 24 hours. Each snapshot is a dictionary representation of
         a [NodeStats][diameter.node.NodeStats] instance."""
+        self.peers_logging: bool = False
+        """If enabled, will dump a JSON representation of each peer
+        configuration and their current connection status, at every
+        `wakeup_interval` seconds. The logging will be done through
+        "diameter.stats" log facility an can also be silenced by changing the
+        log level to anything above DEBUG."""
+        self.stats_logging: bool = False
+        """If enabled, will dump a JSON representation of the statistics for
+        each peer in the logs, at every `wakeup_interval` seconds. The
+        logging will be done through "diameter.stats" log facility an can
+        also be silenced by changing the log level to anything above DEBUG.
+        Enabling this may have a slight performance impact, as the main
+        thread will block while the statistics are being gathered."""
 
         rp, wp = os.pipe()
         self.interrupt_read = rp
@@ -595,8 +608,10 @@ class Node:
 
     def _handle_connections(self, _thread: StoppableThread):
         while True:
-            self.stats_logger.log_peers()
-            self.stats_logger.log_stats()
+            if self.peers_logging:
+                self.stats_logger.log_peers()
+            if self.stats_logging:
+                self.stats_logger.log_stats()
 
             if _thread.is_stopped:
                 self.connection_logger.info(
