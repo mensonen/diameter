@@ -9,25 +9,25 @@
       
       
       
-        <link rel="prev" href="../setup/">
+        <link rel="prev" href="../sample_application/">
       
       
-        <link rel="next" href="avp/">
+        <link rel="next" href="../../examples/credit_control_sms_client/">
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.1">
     
     
       
-        <title>Using the diameter stack - Python Diameter Stack</title>
+        <title>Statistics - Python Diameter Stack</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.45e1311d.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.45e1311d.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -46,9 +46,9 @@
       
     
     
-      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#using-the-diameter-stack" class="md-skip">
+        <a href="#node-statistics-and-performance-values" class="md-skip">
           Skip to content
         </a>
       
@@ -94,7 +94,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Python Diameter Stack" class="md-header__button md-logo" aria-label="Python Diameter Stack" data-md-component="logo">
+    <a href="../.." title="Python Diameter Stack" class="md-header__button md-logo" aria-label="Python Diameter Stack" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Using the diameter stack
+              Statistics
             
           </span>
         </div>
@@ -229,7 +229,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Python Diameter Stack" class="md-nav__button md-logo" aria-label="Python Diameter Stack" data-md-component="logo">
+    <a href="../.." title="Python Diameter Stack" class="md-nav__button md-logo" aria-label="Python Diameter Stack" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -259,7 +259,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -279,7 +279,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../setup/" class="md-nav__link">
+      <a href="../../setup/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -333,7 +333,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="./" class="md-nav__link md-nav__link--active">
+            <a href="../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -344,7 +344,7 @@
             </a>
             
               
-              <label class="md-nav__link md-nav__link--active" for="__nav_3" id="__nav_3_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
@@ -366,7 +366,7 @@
   
   
     <li class="md-nav__item">
-      <a href="avp/" class="md-nav__link">
+      <a href="../avp/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -387,7 +387,7 @@
   
   
     <li class="md-nav__item">
-      <a href="message/" class="md-nav__link">
+      <a href="../message/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -408,7 +408,7 @@
   
   
     <li class="md-nav__item">
-      <a href="node/" class="md-nav__link">
+      <a href="../node/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -429,7 +429,7 @@
   
   
     <li class="md-nav__item">
-      <a href="application/" class="md-nav__link">
+      <a href="../application/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -450,7 +450,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sample_application/" class="md-nav__link">
+      <a href="../sample_application/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -468,10 +468,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="node_statistics/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Statistics
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -480,6 +500,53 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#peer-statistics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Peer statistics
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#node-statistics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Node statistics
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#historical-statistics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Historical statistics
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -542,7 +609,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../examples/credit_control_sms_client/" class="md-nav__link">
+      <a href="../../examples/credit_control_sms_client/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -563,7 +630,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../examples/idle_server_client/" class="md-nav__link">
+      <a href="../../examples/idle_server_client/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -666,7 +733,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../api/avp/" class="md-nav__link ">
+            <a href="../../api/avp/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -699,7 +766,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/avp/grouped/" class="md-nav__link">
+      <a href="../../api/avp/grouped/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -728,7 +795,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/message/" class="md-nav__link">
+      <a href="../../api/message/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -812,7 +879,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/commands/aa/" class="md-nav__link">
+      <a href="../../api/commands/aa/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -833,7 +900,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/commands/aa_mobile_node/" class="md-nav__link">
+      <a href="../../api/commands/aa_mobile_node/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -854,7 +921,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/commands/abort_session/" class="md-nav__link">
+      <a href="../../api/commands/abort_session/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -875,7 +942,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/commands/accounting/" class="md-nav__link">
+      <a href="../../api/commands/accounting/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -896,7 +963,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/commands/capabilities_exchange/" class="md-nav__link">
+      <a href="../../api/commands/capabilities_exchange/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -917,7 +984,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/commands/credit_control/" class="md-nav__link">
+      <a href="../../api/commands/credit_control/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -938,7 +1005,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/commands/device_watchdog/" class="md-nav__link">
+      <a href="../../api/commands/device_watchdog/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -959,7 +1026,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/commands/diameter_eap/" class="md-nav__link">
+      <a href="../../api/commands/diameter_eap/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -980,7 +1047,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/commands/disconnect_peer/" class="md-nav__link">
+      <a href="../../api/commands/disconnect_peer/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1001,7 +1068,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/commands/re_auth/" class="md-nav__link">
+      <a href="../../api/commands/re_auth/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1022,7 +1089,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/commands/session_termination/" class="md-nav__link">
+      <a href="../../api/commands/session_termination/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1043,7 +1110,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/commands/other_commands/" class="md-nav__link">
+      <a href="../../api/commands/other_commands/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1072,7 +1139,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/node/" class="md-nav__link">
+      <a href="../../api/node/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1093,7 +1160,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/peer/" class="md-nav__link">
+      <a href="../../api/peer/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1114,7 +1181,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/application/" class="md-nav__link">
+      <a href="../../api/application/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1135,7 +1202,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/utilities/" class="md-nav__link">
+      <a href="../../api/utilities/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1174,57 +1241,141 @@
   
 
 
-<h1 id="using-the-diameter-stack">Using the diameter stack<a class="headerlink" href="#using-the-diameter-stack" title="Permanent link">&para;</a></h1>
-<p>The <code>diameter</code> package offers tools for parsing and creating AVPs, parsing and
-creating diameter messages, connecting to diameter peers and writing diameter
-applications.</p>
-<h2 id="modules">Modules<a class="headerlink" href="#modules" title="Permanent link">&para;</a></h2>
-<p>The entire package can be imported as <code>diameter</code>. It provides following 
-importable modules:</p>
-<ul>
-<li><code>diameter.message</code><ul>
-<li><code>diameter.message.avp</code></li>
-<li><code>diameter.message.commands</code></li>
-<li><code>diameter.message.constants</code></li>
-</ul>
-</li>
-<li><code>diameter.node</code><ul>
-<li><code>diameter.node.application</code></li>
-<li><code>diameter.node.peer</code></li>
-</ul>
-</li>
-</ul>
-<h3 id="avp-and-message-modules">AVP and message modules<a class="headerlink" href="#avp-and-message-modules" title="Permanent link">&para;</a></h3>
-<p>The AVP and message handling modules are part of <code>diameter.message</code>.</p>
-<div class="highlight"><pre><span></span><code><span id="__span-0-1"><span class="c1"># base class for parsing and creating AVPs</span>
-</span><span id="__span-0-2"><span class="kn">from</span> <span class="nn">diameter.message</span> <span class="kn">import</span> <span class="n">Avp</span>
-</span><span id="__span-0-3">
-</span><span id="__span-0-4"><span class="c1"># subclasses of AVPs are in the `avp` module</span>
-</span><span id="__span-0-5"><span class="kn">from</span> <span class="nn">diameter.message.avp</span> <span class="kn">import</span> <span class="n">AvpTime</span><span class="p">,</span> <span class="n">AvpOctetString</span>
-</span><span id="__span-0-6">
-</span><span id="__span-0-7"><span class="c1"># all package constants for AVPs, applications, vendors, enums etc</span>
-</span><span id="__span-0-8"><span class="kn">from</span> <span class="nn">diameter.message.constants</span> <span class="kn">import</span> <span class="o">*</span>
+<h1 id="node-statistics-and-performance-values">Node statistics and performance values<a class="headerlink" href="#node-statistics-and-performance-values" title="Permanent link">&para;</a></h1>
+<p>The diameter stack collects statistical data on its performance.</p>
+<p>Statistics are provided on three different levels:</p>
+<h2 id="peer-statistics">Peer statistics<a class="headerlink" href="#peer-statistics" title="Permanent link">&para;</a></h2>
+<p>Statistics are collected individually for each configured peer, accessible 
+through the <a class="autorefs autorefs-internal" href="../../api/peer/#diameter.node.peer.Peer.statistics"><code>statistics</code></a> instance 
+attribute, which holds an instance of <a class="autorefs autorefs-internal" href="../../api/peer/#diameter.node.peer.PeerStats"><code>PeerStats</code></a>.</p>
+<p>Peer statistics record the following values:</p>
+<dl>
+<dt><code>avg_response_time</code></dt>
+<dd>
+<p>Average time in seconds spent processing a request, recorded individually
+for each received request type. Contains a dictionary, with request types
+as keys and average response times as values, e.g.:</p>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><span class="p">{</span><span class="nt">&quot;Capabilities-Exchange&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;Device-Watchdog&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.000157</span><span class="p">}</span>
 </span></code></pre></div>
-<p>See <a href="avp/">working with AVPs</a> for a guide on AVPs.</p>
-<div class="highlight"><pre><span></span><code><span id="__span-1-1"><span class="c1"># base class for parsing and creating messages</span>
-</span><span id="__span-1-2"><span class="kn">from</span> <span class="nn">diameter.message</span> <span class="kn">import</span> <span class="n">Message</span>
-</span><span id="__span-1-3">
-</span><span id="__span-1-4"><span class="c1"># subclasses of messages ae in the `commands` module</span>
-</span><span id="__span-1-5"><span class="kn">from</span> <span class="nn">diameter.message.commands</span> <span class="kn">import</span> <span class="n">AbortSessionRequest</span><span class="p">,</span> <span class="n">ReAuthRequest</span>
+<p>The value is calculated from the time spent processing the last 1024 
+requests.</p>
+</dd>
+<dt><code>avg_response_time_overall</code></dt>
+<dd>
+<p>Average time in seconds spent processing any request received through the 
+peer.</p>
+<p>The value is calculated from the time spent processing the last 1024 
+requests.</p>
+</dd>
+<dt><code>processed_req_per_second</code></dt>
+<dd>
+<p>The <em>rate</em> of requests processed, per second, recorded individually for 
+each received request type. Contains a dictionary, with request types as
+keys and rate of processed requests as values. E.g.:</p>
+<div class="highlight"><pre><span></span><code><span id="__span-1-1"><span class="p">{</span><span class="nt">&quot;Capabilities-Exchange&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;Device-Watchdog&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">3.0</span><span class="p">}</span>
 </span></code></pre></div>
-<p>See <a href="message/">working with messages</a> for a guide on diameter messages.</p>
-<h3 id="node-application-and-peer-modules">Node, application and peer modules<a class="headerlink" href="#node-application-and-peer-modules" title="Permanent link">&para;</a></h3>
-<p>The diameter connectivity and application support are part of <code>diameter.node</code>.</p>
-<div class="highlight"><pre><span></span><code><span id="__span-2-1"><span class="c1"># Nodes and peers</span>
-</span><span id="__span-2-2"><span class="kn">from</span> <span class="nn">diameter.node</span> <span class="kn">import</span> <span class="n">Node</span>
-</span><span id="__span-2-3"><span class="kn">from</span> <span class="nn">diameter.node.peer</span> <span class="kn">import</span> <span class="n">Peer</span><span class="p">,</span> <span class="n">PeerConnection</span>
+<p>The rate is calculated by adding the total sum of time spent processing the
+last 1024 requests, separately for each request type, and dividing the sums
+by the amount of requests. </p>
+<p>The request rate is likely to be very high, if the peer receives low 
+traffic.</p>
+</dd>
+<dt><code>processed_req_per_second_overall</code></dt>
+<dd>
+<p>The overall <em>rate</em> of requests processed, per second, for the entire peer.</p>
+<p>Similar to <code>processed_req_per_second</code>, the rate is calculated by adding the
+total sum of time spent on processing the last 1024 requests, for any 
+request type, and diving the sum by the amount of requests.</p>
+</dd>
+</dl>
+<h2 id="node-statistics">Node statistics<a class="headerlink" href="#node-statistics" title="Permanent link">&para;</a></h2>
+<p>The diameter node collects statistics for all of its peers and calculates 
+cumulated values. The node statistics are available as the 
+<a class="autorefs autorefs-internal" href="../../api/node/#diameter.node.node.Node.statistics"><code>statistics</code></a> instance attribute, which returns 
+an instance of <a class="autorefs autorefs-internal" href="../../api/node/#diameter.node.node.NodeStats"><code>NodeStats</code></a>.</p>
+<p>The node statistics record following values:</p>
+<dl>
+<dt><code>avg_response_time</code></dt>
+<dd>Average response time, recorded individually for each request type. 
+Identical to the same attribute in peer statistics, except calculated 
+cumulated over all peers.</dd>
+<dt><code>avg_response_time_overall</code></dt>
+<dd>Average response time for the entire node.
+Identical to the same attribute in peer statistics, except calculated 
+cumulated over all peers.</dd>
+<dt><code>processed_req_per_second</code></dt>
+<dd>Rate of requests processed per second. Identical to the same attribute in 
+peer statistics, except calculated cumulated over all peers.</dd>
+<dt><code>processed_req_per_second_overall</code></dt>
+<dd>Rate of requests processed per second. Identical to the same attribute in 
+peer statistics, except calculated cumulated over all peers.</dd>
+<dt><code>received_req_counters</code></dt>
+<dd>A list containing three integer values, indicating the exact amount of 
+request received by the node in the last minute, five minutes and the last
+15 minutes.</dd>
+<dt><code>sent_result_code_range_counters</code></dt>
+<dd>
+<p>A dictionary containing exact values of sent result code types. The 
+dictionary holds result code ranges as keys, and lists of integers as 
+values. Each result code range has the format of "1xxx", "2xxx" etc. Each
+value is a list with three integers; the amount of sent result codes for 
+the last minute, last 5 minutes and last 15 minutes. E.g.:</p>
+<div class="highlight"><pre><span></span><code><span id="__span-2-1"><span class="p">{</span><span class="nt">&quot;2xxx&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">150</span><span class="p">,</span><span class="mi">321</span><span class="p">,</span><span class="mi">321</span><span class="p">],</span><span class="w"> </span><span class="nt">&quot;4xxx&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">58</span><span class="p">,</span><span class="mi">103</span><span class="p">,</span><span class="mi">103</span><span class="p">],</span><span class="w"> </span><span class="nt">&quot;5xxx&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]}</span>
 </span></code></pre></div>
-<p>See <a href="node/">connecting to peers</a> for a guide on node and peer connectivity.</p>
-<div class="highlight"><pre><span></span><code><span id="__span-3-1"><span class="c1"># application base classes</span>
-</span><span id="__span-3-2"><span class="kn">from</span> <span class="nn">diameter.node.application</span> <span class="kn">import</span> <span class="n">Application</span><span class="p">,</span> <span class="n">SimpleThreadingApplication</span>
+</dd>
+</dl>
+<h2 id="historical-statistics">Historical statistics<a class="headerlink" href="#historical-statistics" title="Permanent link">&para;</a></h2>
+<p>The node, as long as it is running, takes a snapshot of the <code>Node.statistics</code> 
+return value every 60 seconds and stores it as a serialised dictionary in the
+<a class="autorefs autorefs-internal" href="../../api/node/#diameter.node.node.Node.statistics_history"><code>statistics_history</code></a> 
+instance attribute. The history is a list (a deque) of dictionaries and holds 
+1440 entries, i.e. historical values for the past 24 hours.</p>
+<p>Values of each dictionary correspond to attribute names of <code>NodeStats</code>, with
+one <code>timestamp</code> key added, containing the UNIX timestamp of the snapshot.</p>
+<div class="highlight"><pre><span></span><code><span id="__span-3-1"><span class="p">[</span>
+</span><span id="__span-3-2"><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-3-3"><span class="w">        </span><span class="nt">&quot;avg_response_time&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-4"><span class="w">            </span><span class="nt">&quot;Capabilities-Exchange&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span>
+</span><span id="__span-3-5"><span class="w">            </span><span class="nt">&quot;Credit-Control&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.033816425120772944</span><span class="p">,</span>
+</span><span id="__span-3-6"><span class="w">            </span><span class="nt">&quot;Device-Watchdog&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.3333333333333333</span>
+</span><span id="__span-3-7"><span class="w">        </span><span class="p">},</span>
+</span><span id="__span-3-8"><span class="w">        </span><span class="nt">&quot;avg_response_time_overall&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.029674902627634447</span><span class="p">,</span>
+</span><span id="__span-3-9"><span class="w">        </span><span class="nt">&quot;processed_req_per_second&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-10"><span class="w">            </span><span class="nt">&quot;Capabilities-Exchange&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span>
+</span><span id="__span-3-11"><span class="w">            </span><span class="nt">&quot;Credit-Control&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">29.571428571428573</span><span class="p">,</span>
+</span><span id="__span-3-12"><span class="w">            </span><span class="nt">&quot;Device-Watchdog&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">3.0</span>
+</span><span id="__span-3-13"><span class="w">        </span><span class="p">},</span>
+</span><span id="__span-3-14"><span class="w">        </span><span class="nt">&quot;processed_req_per_second_overall&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">30.714285714285715</span><span class="p">,</span>
+</span><span id="__span-3-15"><span class="w">        </span><span class="nt">&quot;received_req_counters&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">209</span><span class="p">,</span><span class="w"> </span><span class="mi">213</span><span class="p">,</span><span class="w"> </span><span class="mi">213</span><span class="p">],</span>
+</span><span id="__span-3-16"><span class="w">        </span><span class="nt">&quot;sent_result_code_range_counters&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-17"><span class="w">            </span><span class="nt">&quot;2xxx&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">166</span><span class="p">,</span><span class="w"> </span><span class="mi">171</span><span class="p">,</span><span class="w"> </span><span class="mi">171</span><span class="p">],</span>
+</span><span id="__span-3-18"><span class="w">            </span><span class="nt">&quot;4xxx&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">44</span><span class="p">,</span><span class="w"> </span><span class="mi">44</span><span class="p">,</span><span class="w"> </span><span class="mi">44</span><span class="p">]</span>
+</span><span id="__span-3-19"><span class="w">        </span><span class="p">},</span>
+</span><span id="__span-3-20"><span class="w">        </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1705507856</span>
+</span><span id="__span-3-21"><span class="w">    </span><span class="p">},</span>
+</span><span id="__span-3-22"><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-3-23"><span class="w">        </span><span class="nt">&quot;avg_response_time&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-24"><span class="w">            </span><span class="nt">&quot;Capabilities-Exchange&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span>
+</span><span id="__span-3-25"><span class="w">            </span><span class="nt">&quot;Credit-Control&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.03357314148681055</span><span class="p">,</span>
+</span><span id="__span-3-26"><span class="w">            </span><span class="nt">&quot;Device-Watchdog&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.3333333333333333</span>
+</span><span id="__span-3-27"><span class="w">        </span><span class="p">},</span>
+</span><span id="__span-3-28"><span class="w">        </span><span class="nt">&quot;avg_response_time_overall&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.028846585890826056</span><span class="p">,</span>
+</span><span id="__span-3-29"><span class="w">        </span><span class="nt">&quot;processed_req_per_second&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-30"><span class="w">            </span><span class="nt">&quot;Capabilities-Exchange&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span>
+</span><span id="__span-3-31"><span class="w">            </span><span class="nt">&quot;Credit-Control&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">29.785714285714285</span><span class="p">,</span>
+</span><span id="__span-3-32"><span class="w">            </span><span class="nt">&quot;Device-Watchdog&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">3.0</span>
+</span><span id="__span-3-33"><span class="w">        </span><span class="p">},</span>
+</span><span id="__span-3-34"><span class="w">        </span><span class="nt">&quot;processed_req_per_second_overall&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">30.357142857142858</span><span class="p">,</span>
+</span><span id="__span-3-35"><span class="w">        </span><span class="nt">&quot;received_req_counters&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">209</span><span class="p">,</span><span class="w"> </span><span class="mi">423</span><span class="p">,</span><span class="w"> </span><span class="mi">423</span><span class="p">],</span>
+</span><span id="__span-3-36"><span class="w">        </span><span class="nt">&quot;sent_result_code_range_counters&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-37"><span class="w">            </span><span class="nt">&quot;2xxx&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">150</span><span class="p">,</span><span class="w"> </span><span class="mi">321</span><span class="p">,</span><span class="w"> </span><span class="mi">321</span><span class="p">],</span>
+</span><span id="__span-3-38"><span class="w">            </span><span class="nt">&quot;4xxx&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">58</span><span class="p">,</span><span class="w"> </span><span class="mi">103</span><span class="p">,</span><span class="w"> </span><span class="mi">103</span><span class="p">],</span>
+</span><span id="__span-3-39"><span class="w">            </span><span class="nt">&quot;5xxx&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span>
+</span><span id="__span-3-40"><span class="w">        </span><span class="p">},</span>
+</span><span id="__span-3-41"><span class="w">        </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1705507916</span>
+</span><span id="__span-3-42"><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-3-43"><span class="p">]</span>
 </span></code></pre></div>
-<p>See <a href="application/">application basics</a> and <a href="sample_application/">sample application</a>
-for guides on writing applications.</p>
 
 
 
@@ -1271,10 +1422,10 @@ for guides on writing applications.</p>
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.indexes", "toc.integrate"], "search": "../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "toc.integrate"], "search": "../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.d7c377c4.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7c377c4.min.js"></script>
       
     
   </body>
