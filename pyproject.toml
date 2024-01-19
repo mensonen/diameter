@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "python-diameter"
 description = "A diameter stack implemented in python"
 readme = "README.md"
-license = {file = "LICENSE"}
+license = {"text" = "MIT License"}
 requires-python = ">= 3.11"
 authors = [
     {name = "Mikko Mensonen"}
