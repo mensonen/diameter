@@ -383,6 +383,22 @@ class AccountingRequest(Accounting):
         setattr(self, "route_record", [])
         setattr(self, "state_class", [])
         setattr(self, "connection_info", [])
+        setattr(self, "filter_id", [])
+        setattr(self, "nas_filter_rule", [])
+        setattr(self, "qos_filter_rule", [])
+        setattr(self, "framed_appletalk_network", [])
+        setattr(self, "framed_compression", [])
+        setattr(self, "framed_ipv6_prefix", [])
+        setattr(self, "framed_ipv6_route", [])
+        setattr(self, "framed_route", [])
+        setattr(self, "login_ip_host", [])
+        setattr(self, "login_ipv6_host", [])
+        setattr(self, "tunneling", [])
+
+        setattr(self, "application_server_information", [])
+        setattr(self, "inter_operator_identifier", [])
+        setattr(self, "sdp_session_description", [])
+        setattr(self, "sdp_media_component", [])
 
         assign_attr_from_defs(self, self._avps)
         self._avps = []
