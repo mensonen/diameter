@@ -190,6 +190,28 @@ class AccountingRequest(Accounting):
     proxy_info: list[ProxyInfo]
     route_record: list[bytes]
 
+    # Additional AVPs from 3GPP TS 32.225 (Diameter Rf Offline Charging)
+    event_type: EventType
+    role_of_node: int
+    user_session_id: str
+    calling_party_address: str
+    called_party_address: str
+    time_stamps: TimeStamps
+    application_server_information: list[ApplicationServerInformation]
+    inter_operator_identifier: list[InterOperatorIdentifier]
+    ims_charging_identifier: str
+    sdp_session_description: list[str]
+    sdp_media_component: list[SdpMediaComponent]
+    ggsn_address: str
+    served_party_ip_address: str
+    authorised_qos: str
+    server_capabilities: ServerCapabilities
+    trunk_group_id: TrunkGroupId
+    bearer_service: bytes
+    service_id: str
+    # uus_data: Not defined as the AVP has a conflicting code 856??
+    cause: Cause
+
     # Additional AVPs from rfc7155 (NAS Application)
     origin_aaa_protocol: int
     origin_state_id: int
@@ -270,6 +292,26 @@ class AccountingRequest(Accounting):
         AvpGenDef("event_timestamp", AVP_EVENT_TIMESTAMP),
         AvpGenDef("proxy_info", AVP_PROXY_INFO, type_class=ProxyInfo),
         AvpGenDef("route_record", AVP_ROUTE_RECORD),
+
+        AvpGenDef("event_type", AVP_TGPP_EVENT_TYPE, VENDOR_TGPP, type_class=EventType),
+        AvpGenDef("role_of_node", AVP_TGPP_ROLE_OF_NODE, VENDOR_TGPP),
+        AvpGenDef("user_session_id", AVP_TGPP_USER_SESSION_ID, VENDOR_TGPP),
+        AvpGenDef("calling_party_address", AVP_TGPP_CALLING_PARTY_ADDRESS, VENDOR_TGPP),
+        AvpGenDef("called_party_address", AVP_TGPP_CALLED_PARTY_ADDRESS, VENDOR_TGPP),
+        AvpGenDef("time_stamps", AVP_TGPP_TIME_STAMPS, VENDOR_TGPP, type_class=TimeStamps),
+        AvpGenDef("application_server_information", AVP_TGPP_APPLICATION_SERVER_INFORMATION, VENDOR_TGPP, type_class=ApplicationServerInformation),
+        AvpGenDef("inter_operator_identifier", AVP_TGPP_INTER_OPERATOR_IDENTIFIER, VENDOR_TGPP, type_class=InterOperatorIdentifier),
+        AvpGenDef("ims_charging_identifier", AVP_TGPP_IMS_CHARGING_IDENTIFIER, VENDOR_TGPP),
+        AvpGenDef("sdp_session_description", AVP_TGPP_SDP_SESSION_DESCRIPTION, VENDOR_TGPP),
+        AvpGenDef("sdp_media_component", AVP_TGPP_SDP_MEDIA_COMPONENT, VENDOR_TGPP, type_class=SdpMediaComponent),
+        AvpGenDef("ggsn_address", AVP_TGPP_GGSN_ADDRESS, VENDOR_TGPP),
+        AvpGenDef("served_party_ip_address", AVP_TGPP_SERVED_PARTY_IP_ADDRESS, VENDOR_TGPP),
+        AvpGenDef("authorised_qos", AVP_TGPP_AUTHORISED_QOS, VENDOR_TGPP),
+        AvpGenDef("server_capabilities", AVP_TGPP_SERVER_CAPABILITIES, VENDOR_TGPP, type_class=ServerCapabilities),
+        AvpGenDef("trunk_group_id", AVP_TGPP_TRUNK_GROUP_ID, VENDOR_TGPP, type_class=TrunkGroupId),
+        AvpGenDef("bearer_service", AVP_TGPP_BEARER_SERVICE, VENDOR_TGPP),
+        AvpGenDef("service_id", AVP_TGPP_SERVICE_ID, VENDOR_TGPP),
+        AvpGenDef("cause", AVP_TGPP_CAUSE, VENDOR_TGPP, type_class=Cause),
 
         AvpGenDef("origin_aaa_protocol", AVP_ORIGIN_AAA_PROTOCOL),
         AvpGenDef("origin_state_id", AVP_ORIGIN_STATE_ID),

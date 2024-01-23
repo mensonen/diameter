@@ -1135,6 +1135,23 @@ class TrunkGroupId:
 
 
 @dataclasses.dataclass
+class Cause:
+    """A data container that represents the "Cause" (860) grouped AVP.
+
+    3GPP TS 32.225 version 5.7.0
+    """
+    cause_code: int = None
+    node_functionality: int = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("cause_code", AVP_TGPP_CAUSE_CODE, VENDOR_TGPP, is_required=True),
+        AvpGenDef("node_functionality", AVP_TGPP_NODE_FUNCTIONALITY, VENDOR_TGPP, is_required=True),
+    )
+
+
+
+@dataclasses.dataclass
 class PsFurnishChargingInformation:
     """A data container that represents the "PS-Furnish-Charging-Information" (865) grouped AVP.
 
