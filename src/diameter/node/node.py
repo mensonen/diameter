@@ -574,6 +574,8 @@ class Node:
         conn.state = PEER_READY
         for app_peers in self._peer_routes.values():
             for app, peers in app_peers.items():
+                if not isinstance(app, Application):
+                    continue
                 for peer in peers:
                     if peer.connection == conn:
                         app.is_ready.set()
