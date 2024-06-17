@@ -24,6 +24,11 @@ The `diameter` package provides tools for:
 - [Creating diameter nodes and connecting to other peers](guide/node.md)
 - [Writing diameter applications](guide/application.md)
 
+## Supported applications
+
+The diameter stack has inbuilt support for Diameter Base, *Gy*, *Rf*, *Ro* and
+*Sy* applications and a generic implementation of application types that allows
+working even with unsupported application types.
 
 ## Supported diameter application commands
 
@@ -55,5 +60,9 @@ application message types:
 
 *Diameter Extensible Authentication Protocol (EAP)* `rfc4072`
 :   * Diameter-EAP
+
+*Diameter Policy and charging control* `rfc4072`
+:   * Spending-Limit
+    * Spending-Status-Notification
 
 The stack includes also a generic fallback Python class for every other message.
