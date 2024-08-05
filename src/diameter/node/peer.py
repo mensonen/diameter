@@ -558,7 +558,7 @@ class PeerConnection:
 
             resume_waiting = False
             while len(self._read_buffer) > 0 and resume_waiting is False:
-                msg_header = None
+                msg_header = message = None
                 try:
                     msg_header = MessageHeader.from_bytes(self._read_buffer)
                     self.logger.debug(
@@ -588,10 +588,11 @@ class PeerConnection:
                         self.close()
                         return
 
-                self.msg_dump.received(message)
-                self.logger.info(f"received a message: {message}")
+                if message:
+                    self.msg_dump.received(message)
+                    self.logger.info(f"received a message: {message}")
 
-                self.__dispatch_message(message)
+                    self.__dispatch_message(message)
 
     def work_write_queue(self, _thread: StoppableThread):
         while True:
