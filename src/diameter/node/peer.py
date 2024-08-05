@@ -569,9 +569,11 @@ class PeerConnection:
                             f"message incomplete (received "
                             f"{len(self._read_buffer)} bytes so far), waiting")
                         resume_waiting = True
-                    message = Message.from_bytes(self._read_buffer[:msg_header.length])
-                    self.reset_last_message()
-                    self._read_buffer = self._read_buffer[msg_header.length:]
+                    else:
+                        message = Message.from_bytes(
+                            self._read_buffer[:msg_header.length])
+                        self.reset_last_message()
+                        self._read_buffer = self._read_buffer[msg_header.length:]
 
                 except Exception as e:
                     if msg_header and len(self._read_buffer) >= msg_header.length:
