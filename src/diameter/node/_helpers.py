@@ -269,7 +269,7 @@ class SessionGenerator:
                 generated session IDs.
 
         """
-        self._base_value = int(time.time()).to_bytes(4).hex()
+        self._base_value = int(time.time()).to_bytes(4, byteorder="big").hex()
         self._busy_lock = threading.Lock()
         self._sequence = random.getrandbits(64)
         self.diameter_identity = node_name
@@ -288,7 +288,7 @@ class SessionGenerator:
                 self._sequence = self.MIN_SEQUENCE
             else:
                 self._sequence += 1
-            current_sequence = self._sequence.to_bytes(8).hex()
+            current_sequence = self._sequence.to_bytes(8, byteorder="big").hex()
 
         parts = [self.diameter_identity, self._base_value,
                  current_sequence[:8], current_sequence[8:]]
