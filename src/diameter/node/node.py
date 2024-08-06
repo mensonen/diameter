@@ -1101,7 +1101,8 @@ class Node:
             sent_result_code_range_counters=sent_res_code_counters
         )
 
-    def add_application(self, app: Application, peers: list[Peer]):
+    def add_application(self, app: Application, peers: list[Peer],
+                        realms: list[str] = None):
         """Register an application with diameter node.
 
         The added application will receive diameter requests that the node
@@ -1118,13 +1119,22 @@ class Node:
                 [`Node.add_peer`][diameter.node.node.Node.add_peer]. The given
                 list of peers will be used to determine how messages are to be
                 routed
+            realms: An optional list of realms served for the peers through
+                the application, in addition to the realm name given as part of
+                [`Node.add_peer`][diameter.node.node.Node.add_peer] call. The
+                realm names given here are only used for routing messages with
+                Destination-Realm AVP values deviating from the peer's default
+                realm name. Any auto-generated Message, e.g. DWR/DWA, will use
+                the realm name configured while creating the peer instance.
 
         """
         self.applications.append(app)
         for peer in peers:
-            self._peer_routes.setdefault(peer.realm_name, {})
-            peer_list = self._peer_routes[peer.realm_name].setdefault(app, [])
-            peer_list.append(peer)
+            peer_realms = [peer.realm_name] + (realms or [])
+            for realm_name in peer_realms:
+                self._peer_routes.setdefault(realm_name, {})
+                peer_list = self._peer_routes[realm_name].setdefault(app, [])
+                peer_list.append(peer)
         app._node = self
         app.start()
 
