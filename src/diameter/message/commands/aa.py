@@ -381,8 +381,6 @@ class AaRequest(Aa):
         setattr(self, "redirect_host", [])
         setattr(self, "proxy_info", [])
         setattr(self, "route_record", [])
-        setattr(self, "media_component_description", MediaComponentDescription())
-        setattr(self, "supported_features", SupportedFeatures())
         setattr(self, "specific_action", [])
 
         assign_attr_from_defs(self, self._avps)

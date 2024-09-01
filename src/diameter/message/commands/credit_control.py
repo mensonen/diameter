@@ -361,9 +361,6 @@ class CreditControlRequest(CreditControl):
         setattr(self, "service_parameter_info", [])
         setattr(self, "proxy_info", [])
         setattr(self, "route_record", [])
-        setattr(self, "supported_features", SupportedFeatures())
-        setattr(self, "qos_information", QosInformation())
-        setattr(self, "default_eps_bearer_qos", DefaultEpsBearerQos())
         setattr(self, "event_trigger", [])
 
         assign_attr_from_defs(self, self._avps)
