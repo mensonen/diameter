@@ -305,6 +305,10 @@ class AaRequest(Aa):
     tunneling: list[Tunneling]
     proxy_info: list[ProxyInfo]
     route_record: list[bytes]
+    af_charging_identifier: str
+    media_component_description: MediaComponentDescription
+    supported_features: SupportedFeatures
+    specific_action: list[int]
 
     avp_def: AvpGenType = (
         AvpGenDef("session_id", AVP_SESSION_ID, is_required=True),
@@ -356,6 +360,11 @@ class AaRequest(Aa):
         AvpGenDef("tunneling", AVP_TUNNELING, type_class=Tunneling),
         AvpGenDef("proxy_info", AVP_PROXY_INFO, type_class=ProxyInfo),
         AvpGenDef("route_record", AVP_ROUTE_RECORD),
+        AvpGenDef("af_charging_identifier", AVP_TGPP_AF_CHARGING_IDENTIFIER, VENDOR_TGPP),
+        AvpGenDef("media_component_description", AVP_TGPP_MEDIA_COMPONENT_DESCRIPTION, VENDOR_TGPP, type_class=MediaComponentDescription),
+        AvpGenDef("media_sub_component", AVP_TGPP_MEDIA_SUB_COMPONENT, VENDOR_TGPP, type_class=MediaSubComponent),
+        AvpGenDef("specific_action", AVP_TGPP_SPECIFIC_ACTION, VENDOR_TGPP),
+        AvpGenDef("supported_features", AVP_TGPP_SUPPORTED_FEATURES, VENDOR_TGPP, type_class=SupportedFeatures),
     )
 
     def __post_init__(self):
@@ -372,6 +381,9 @@ class AaRequest(Aa):
         setattr(self, "redirect_host", [])
         setattr(self, "proxy_info", [])
         setattr(self, "route_record", [])
+        setattr(self, "media_component_description", MediaComponentDescription())
+        setattr(self, "supported_features", SupportedFeatures())
+        setattr(self, "specific_action", [])
 
         assign_attr_from_defs(self, self._avps)
         self._avps = []
