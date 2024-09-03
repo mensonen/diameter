@@ -200,6 +200,9 @@ class ReAuthRequest(ReAuth):
     g_s_u_pool_identifier: int
     service_identifier: int
     rating_group: int
+    charging_rule_install: list[ChargingRuleInstall]
+    charging_rule_remove: list[ChargingRuleRemove]
+
 
     avp_def: AvpGenType = (
         AvpGenDef("session_id", AVP_SESSION_ID, is_required=True),
@@ -237,6 +240,8 @@ class ReAuthRequest(ReAuth):
         AvpGenDef("g_s_u_pool_identifier", AVP_G_S_U_POOL_IDENTIFIER),
         AvpGenDef("service_identifier", AVP_SERVICE_IDENTIFIER),
         AvpGenDef("rating_group", AVP_RATING_GROUP),
+        AvpGenDef("charging_rule_install", AVP_TGPP_CHARGING_RULE_INSTALL, VENDOR_TGPP, type_class=ChargingRuleInstall),
+        AvpGenDef("charging_rule_remove", AVP_TGPP_CHARGING_RULE_REMOVE, VENDOR_TGPP, type_class=ChargingRuleRemove),
     )
 
     def __post_init__(self):
@@ -249,6 +254,8 @@ class ReAuthRequest(ReAuth):
         setattr(self, "route_record", [])
         setattr(self, "framed_ipv6_prefix", [])
         setattr(self, "reply_message", [])
+        setattr(self, "charging_rule_install", [])
+        setattr(self, "charging_rule_remove", [])
 
         assign_attr_from_defs(self, self._avps)
         self._avps = []

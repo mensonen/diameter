@@ -1333,6 +1333,8 @@ class QosInformation:
     guaranteed_bitrate_ul: int = None
     guaranteed_bitrate_dl: int = None
     bearer_identifier: bytes = None
+    apn_aggregate_max_bitrate_ul: int = None
+    apn_aggregate_max_bitrate_dl: int = None
 
     # noinspection PyDataclass
     avp_def: dataclasses.InitVar[AvpGenType] = (
@@ -1342,6 +1344,8 @@ class QosInformation:
         AvpGenDef("guaranteed_bitrate_ul", AVP_TGPP_GUARANTEED_BITRATE_UL, VENDOR_TGPP),
         AvpGenDef("guaranteed_bitrate_dl", AVP_TGPP_GUARANTEED_BITRATE_DL, VENDOR_TGPP),
         AvpGenDef("bearer_identifier", AVP_TGPP_BEARER_IDENTIFIER, VENDOR_TGPP),
+        AvpGenDef("apn_aggregate_max_bitrate_ul", AVP_TGPP_APN_AGGREGATE_MAX_BITRATE_UL, VENDOR_TGPP),
+        AvpGenDef("apn_aggregate_max_bitrate_dl", AVP_TGPP_APN_AGGREGATE_MAX_BITRATE_DL, VENDOR_TGPP),
     )
 
 
@@ -3734,4 +3738,90 @@ class ServiceInformation:
         AvpGenDef("dcd_information", AVP_TGPP_DCD_INFORMATION, VENDOR_TGPP, type_class=DcdInformation),
         AvpGenDef("m2m_information", AVP_ONEM2M_M2M_INFORMATION, VENDOR_ONEM2M, type_class=M2mInformation),
         AvpGenDef("cpdt_information", AVP_TGPP_CPDT_INFORMATION, VENDOR_TGPP, type_class=CpdtInformation),
+    )
+
+@dataclasses.dataclass
+class AllocationRetentionPriority:
+    """A data container that represents the "Allocation-Retention-Priority" (1034) grouped AVP."""
+    priority_level: int = None
+    pre_emption_vulnerability: int = None
+    pre_emption_capability: int = None
+
+    # # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("priority_level", AVP_TGPP_PRIORITY_LEVEL, VENDOR_TGPP),
+        AvpGenDef("pre_emption_vulnerability", AVP_TGPP_PRE_EMPTION_VULNERABILITY, VENDOR_TGPP),
+        AvpGenDef("pre_emption_capability", AVP_TGPP_PRE_EMPTION_CAPABILITY, VENDOR_TGPP),
+    )
+
+@dataclasses.dataclass
+class DefaultEpsBearerQos:
+    """A data container that represents the "Default-EPS-Bearer-QoS" (1435) grouped AVP."""
+    qos_class_identifier: str = None
+    allocation_retention_priority: AllocationRetentionPriority = AllocationRetentionPriority
+
+    # # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("qos_class_identifier", AVP_TGPP_QOS_CLASS_IDENTIFIER, VENDOR_TGPP),
+        AvpGenDef("allocation_retention_priority", AVP_TGPP_ALLOCATION_RETENTION_PRIORITY, VENDOR_TGPP,type_class=AllocationRetentionPriority),
+    )
+@dataclasses.dataclass
+class MediaSubComponent:
+    """A data container that represents the "Media-Sub-Component" (1436) grouped AVP."""
+    flow_description: list[str] = dataclasses.field(default_factory=list)
+    flow_usage: int = None
+    flow_number: int = None
+    flow_status: int = None
+
+    # # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("flow_description", AVP_TGPP_FLOW_DESCRIPTION, VENDOR_TGPP),
+        AvpGenDef("flow_usage", AVP_TGPP_FLOW_USAGE, VENDOR_TGPP),
+        AvpGenDef("flow_number", AVP_TGPP_FLOW_NUMBER, VENDOR_TGPP),
+        AvpGenDef("flow_status", AVP_TGPP_FLOW_STATUS, VENDOR_TGPP),
+
+    )
+
+@dataclasses.dataclass
+class MediaComponentDescription:
+    """A data container that represents the "Media-Component-Description" (1435) grouped AVP."""
+    media_component_number: int = None
+    media_sub_component: list[MediaSubComponent] = dataclasses.field(default_factory=list)
+    # Need AF-Application-Identifier, Max-Requested-Bandwith-UL and DL
+    af_application_identifier: str = None
+    max_requested_bandwidth_ul: int = None
+    max_requested_bandwidth_dl: int = None
+    media_type: int = None
+
+    # # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("media_component_number", AVP_TGPP_MEDIA_COMPONENT_NUMBER, VENDOR_TGPP),
+        AvpGenDef("media_sub_component", AVP_TGPP_MEDIA_SUB_COMPONENT, VENDOR_TGPP, type_class=MediaSubComponent),
+        # Need AF-Application-Identifier, Max-Requested-Bandwith-UL and DL
+        AvpGenDef("af_application_identifier", AVP_TGPP_AF_APPLICATION_IDENTIFIER, VENDOR_TGPP),
+        AvpGenDef("max_requested_bandwidth_ul", AVP_TGPP_MAX_REQUESTED_BANDWIDTH_UL, VENDOR_TGPP),
+        AvpGenDef("max_requested_bandwidth_dl", AVP_TGPP_MAX_REQUESTED_BANDWIDTH_DL, VENDOR_TGPP),
+        AvpGenDef("media_type", AVP_TGPP_MEDIA_TYPE, VENDOR_TGPP),
+    )
+    
+@dataclasses.dataclass
+class ChargingRuleInstall:
+    """A data container that represents the "Charging-Rule-Install" (1001) grouped AVP."""
+    charging_rule_base_name: list[Avp] = dataclasses.field(default_factory=list)
+    charging_rule_name: list[Avp] = dataclasses.field(default_factory=list)
+
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("charging_rule_base_name", AVP_TGPP_CHARGING_RULE_BASE_NAME, VENDOR_TGPP),
+        AvpGenDef("charging_rule_name", AVP_TGPP_CHARGING_RULE_NAME, VENDOR_TGPP),
+    )
+
+@dataclasses.dataclass
+class ChargingRuleRemove:
+    """A data container that represents the "Charging-Rule-Remove" (1002) grouped AVP."""
+    charging_rule_base_name: list[Avp] = dataclasses.field(default_factory=list)
+    charging_rule_name: list[Avp] = dataclasses.field(default_factory=list)
+
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("charging_rule_base_name", AVP_TGPP_CHARGING_RULE_BASE_NAME, VENDOR_TGPP),
+        AvpGenDef("charging_rule_name", AVP_TGPP_CHARGING_RULE_NAME, VENDOR_TGPP),
     )
