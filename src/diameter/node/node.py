@@ -1191,7 +1191,7 @@ class Node:
             persistent=is_persistent)
         self.peers[uri.fqdn] = peer
         if is_default:
-            self._peer_routes[realm_name]["_default"].append(peer)
+            self._peer_routes.get(realm_name, {}).get("_default", []).append(peer)
 
         return peer
 
