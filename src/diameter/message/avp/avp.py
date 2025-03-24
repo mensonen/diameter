@@ -397,7 +397,8 @@ class AvpAddress(Avp):
         elif addr_type == 8:
             return addr_type, self.payload[2:].decode("utf-8")
         else:
-            return addr_type, self.payload[2:].decode("utf-8")
+            # Instead of trying to decode unknown formats, just return hex string
+            return addr_type, self.payload[2:].hex()
 
     @value.setter
     def value(self, new_value: str):
