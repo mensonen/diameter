@@ -90,6 +90,11 @@ def test_create_address_type():
     assert a.value == (8, "48507909008")
     assert a.payload == bytes.fromhex("00083438353037393039303038")
 
+    # family 10 = invented undefined, should not raise errors on decode
+    a = avp.AvpAddress(constants.AVP_TGPP_SMSC_ADDRESS, payload=b"\x00\naddress")
+    assert a.value == (10, "61646472657373")
+    assert a.payload == bytes.fromhex("000a61646472657373")
+
 
 def test_create_float_type():
     # create a "Float32" AVP
