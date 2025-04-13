@@ -1589,7 +1589,7 @@ AVP_VENDOR_DICTIONARY[10415] = {
     AVP_TGPP_3GPP_IMSI_MCC_MNC: {"name": "3GPP-IMSI-MCC-MNC", "type": AvpUtf8String, "mandatory": True, "vendor": 10415},
     AVP_TGPP_3GPP_GGSN_MCC_MNC: {"name": "3GPP-GGSN-MCC-MNC", "type": AvpUtf8String, "mandatory": True, "vendor": 10415},
     AVP_TGPP_3GPP_NSAPI: {"name": "3GPP-NSAPI", "type": AvpUtf8String, "mandatory": True, "vendor": 10415},
-    AVP_TGPP_3GPP_SESSION_STOP_INDICATOR: {"name": "3GPP-Session-Stop-Indicator", "type": AvpUtf8String, "mandatory": True, "vendor": 10415},
+    AVP_TGPP_3GPP_SESSION_STOP_INDICATOR: {"name": "3GPP-Session-Stop-Indicator", "type": AvpOctetString, "mandatory": True, "vendor": 10415},
     AVP_TGPP_3GPP_SELECTION_MODE: {"name": "3GPP-Selection-Mode", "type": AvpUtf8String, "mandatory": True, "vendor": 10415},
     AVP_TGPP_3GPP_CHARGING_CHARACTERISTICS: {"name": "3GPP-Charging-Characteristics", "type": AvpUtf8String, "mandatory": True, "vendor": 10415},
     AVP_TGPP_3GPP_CG_IPV6_ADDRESS: {"name": "3GPP-CG-IPv6-Address", "type": AvpOctetString, "mandatory": True, "vendor": 10415},

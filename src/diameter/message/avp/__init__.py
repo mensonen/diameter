@@ -6,7 +6,7 @@ from . import avp
 from . import errors
 from . import generator
 
-from .avp import (Avp, AvpAddress, AvpEnumerated, AvpFloat32, AvpFloat64,
+from .avp import (Avp, AvpAddress, AvpAddressSolo, AvpEnumerated, AvpFloat32, AvpFloat64,
                   AvpGrouped, AvpInteger32, AvpInteger64, AvpUnsigned32,
                   AvpUnsigned64, AvpOctetString, AvpTime, AvpUtf8String)
 from .errors import AvpDecodeError, AvpEncodeError
