@@ -1,6 +1,6 @@
 from .avp import (AvpAddress, AvpEnumerated, AvpFloat32, AvpFloat64, AvpGrouped,
                   AvpInteger32, AvpInteger64, AvpUnsigned32, AvpUnsigned64,
-                  AvpOctetString, AvpTime, AvpUtf8String)
+                  AvpOctetString, AvpTime, AvpUtf8String, AvpAddressSolo)
 from ..constants import *
 
 # base avp dictionary with no vendors
@@ -1582,10 +1582,10 @@ AVP_VENDOR_DICTIONARY[10415] = {
     AVP_TGPP_3GPP_IMSI: {"name": "3GPP-IMSI", "type": AvpUtf8String, "mandatory": True, "vendor": 10415},
     AVP_TGPP_3GPP_CHARGING_ID: {"name": "3GPP-Charging-Id", "type": AvpOctetString, "mandatory": True, "vendor": 10415},
     AVP_TGPP_3GPP_PDP_TYPE: {"name": "3GPP-PDP-Type", "type": AvpEnumerated, "mandatory": True, "vendor": 10415},
-    AVP_TGPP_3GPP_CG_ADDRESS: {"name": "3GPP-CG-Address", "type": AvpAddress, "mandatory": True, "vendor": 10415},
+    AVP_TGPP_3GPP_CG_ADDRESS: {"name": "3GPP-CG-Address", "type": AvpAddressSolo, "mandatory": True, "vendor": 10415},
     AVP_TGPP_3GPP_GPRS_NEGOTIATED_QOS_PROFILE: {"name": "3GPP-GPRS-Negotiated-QoS-Profile", "type": AvpUtf8String, "mandatory": True, "vendor": 10415},
-    AVP_TGPP_3GPP_SGSN_ADDRESS: {"name": "3GPP-SGSN-Address", "type": AvpAddress, "mandatory": True, "vendor": 10415},
-    AVP_TGPP_3GPP_GGSN_ADDRESS: {"name": "3GPP-GGSN-Address", "type": AvpAddress, "mandatory": True, "vendor": 10415},
+    AVP_TGPP_3GPP_SGSN_ADDRESS: {"name": "3GPP-SGSN-Address", "type": AvpAddressSolo, "mandatory": True, "vendor": 10415},
+    AVP_TGPP_3GPP_GGSN_ADDRESS: {"name": "3GPP-GGSN-Address", "type": AvpAddressSolo, "mandatory": True, "vendor": 10415},
     AVP_TGPP_3GPP_IMSI_MCC_MNC: {"name": "3GPP-IMSI-MCC-MNC", "type": AvpUtf8String, "mandatory": True, "vendor": 10415},
     AVP_TGPP_3GPP_GGSN_MCC_MNC: {"name": "3GPP-GGSN-MCC-MNC", "type": AvpUtf8String, "mandatory": True, "vendor": 10415},
     AVP_TGPP_3GPP_NSAPI: {"name": "3GPP-NSAPI", "type": AvpUtf8String, "mandatory": True, "vendor": 10415},

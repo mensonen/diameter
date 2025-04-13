@@ -434,6 +434,57 @@ class AvpAddress(Avp):
         self.payload = payload
 
 
+class AvpAddressSolo(Avp):
+    """An AVP type that implements "Address" only without ip address type.
+
+    According to `rfc677`, an Address format is derived from the OctetString
+    format and represents usually an IPv4 or an IPv6 address, or an E.164
+    subscriber ID. The format contains both the value and the address family
+    defined by IANAADFAM.
+
+    But old system does not use ip address type, so we need to implement this
+    """
+    @property
+    def value(self) -> tuple[int, str]:
+        """The address family and its value. When reading, always returns a
+        tuple containing the address family and a string representation of
+        the actual address. Currently implemented address families are:
+
+         * 1: IP version 4
+
+        When setting a new value, only the actual string value should be set,
+        the address family is determined automatically. E.g.:
+
+            >>> addr = AvpAddressSolo()
+            >>> addr.value = "10.0.0.1"
+            >>> addr.value
+            (1, '10.0.0.1')
+            >>> addr.value = "41780009999"
+            >>> addr.value
+            (8, '41780009999')
+
+        If the value to be set cannot be parsed as a valid IPv4 or an IPv6
+        address, the address family is automatically set to E.164.
+        """
+        addr_type = 1
+
+        return addr_type, socket.inet_ntop(socket.AF_INET, self.payload)
+
+
+    @value.setter
+    def value(self, new_value: str):
+        if isinstance(new_value, str) and ("." in new_value or ":" in new_value):
+            payload = None
+
+            try:
+                payload = struct.pack(
+                    "!h4s", 1, socket.inet_pton(socket.AF_INET, new_value))
+            except Exception:
+                pass
+
+        self.payload = payload
+
+
 class AvpFloat32(Avp):
     """An AVP type that implements "Float32"."""
     @property
