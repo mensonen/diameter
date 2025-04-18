@@ -909,7 +909,7 @@ class OcSupportedFeatures:
 
     # noinspection PyDataclass
     avp_def: dataclasses.InitVar[AvpGenType] = (
-        AvpGenDef("vendor_id", AVP_OC_FEATURE_VECTOR),
+        AvpGenDef("oc_feature_vector", AVP_OC_FEATURE_VECTOR),
     )
 
 
