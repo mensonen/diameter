@@ -23,6 +23,7 @@ from .re_auth import *
 from .spending_limit import *
 from .spending_status_notification import *
 from .session_termination import *
+from .user_authorization import *
 
 
 # Remaining Message types that have no implementation (yet), either because
@@ -115,21 +116,6 @@ class SipPushProfile(UndefinedMessage):
     """
     code: int = 288
     name: str = "SIP-Push-Profile"
-
-    def __post_init__(self):
-        super().__post_init__()
-        self.header.command_code = self.code
-
-
-class UserAuthorization(UndefinedMessage):
-    """A User-Authorization message.
-
-    This message implementation provides no python subclasses for requests and
-    answers; AVPs must be created manually and added using the
-    [UserAuthorization.append_avp][diameter.message.Message.append_avp] method.
-    """
-    code: int = 300
-    name: str = "User-Authorization"
 
     def __post_init__(self):
         super().__post_init__()
