@@ -20,6 +20,7 @@ from .diameter_eap import *
 from .disconnect_peer import *
 from .home_agent_mip import *
 from .re_auth import *
+from .server_assignment import *
 from .spending_limit import *
 from .spending_status_notification import *
 from .session_termination import *
@@ -116,21 +117,6 @@ class SipPushProfile(UndefinedMessage):
     """
     code: int = 288
     name: str = "SIP-Push-Profile"
-
-    def __post_init__(self):
-        super().__post_init__()
-        self.header.command_code = self.code
-
-
-class ServerAssignment(UndefinedMessage):
-    """A Server-Assignment message.
-
-    This message implementation provides no python subclasses for requests and
-    answers; AVPs must be created manually and added using the
-    [ServerAssignment.append_avp][diameter.message.Message.append_avp] method.
-    """
-    code: int = 301
-    name: str = "Server-Assignment"
 
     def __post_init__(self):
         super().__post_init__()
