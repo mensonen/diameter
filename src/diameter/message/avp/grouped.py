@@ -1054,6 +1054,23 @@ class SipAuthDataItem:
 
 
 @dataclasses.dataclass
+class DeregistrationReason:
+    """A data container that represents the "Deregistration-Reason" (615) grouped AVP.
+
+    3GPP TS 29.229 version 13.1.0
+    """
+    reason_code: int = None
+    reason_info: str = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("reason_code", AVP_TGPP_REASON_CODE, VENDOR_TGPP),
+        AvpGenDef("reason_info", AVP_TGPP_REASON_INFO, VENDOR_TGPP)
+    )
+
+
+@dataclasses.dataclass
 class ChargingInformation:
     """A data container that represents the "Charging-Information" (618) grouped AVP.
 
@@ -1185,6 +1202,23 @@ class ScscfRestorationInfo:
         AvpGenDef("user_name", AVP_USER_NAME, is_required=True),
         AvpGenDef("restoration_info", AVP_TGPP_RESTORATION_INFO, VENDOR_TGPP, is_required=True, type_class=RestorationInfo),
         AvpGenDef("sip_authentication_scheme", AVP_SIP_AUTHENTICATION_SCHEME),
+    )
+
+
+@dataclasses.dataclass
+class IdentityWithEmergencyRegistration:
+    """A data container that represents the "Identity-with-Emergency-Registration" (651) grouped AVP.
+
+    3GPP TS 29.229 version 13.1.0
+    """
+    user_name: str = None
+    public_identity: str = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("user_name", AVP_USER_NAME, is_required=True),
+        AvpGenDef("public_identity", AVP_TGPP_PUBLIC_IDENTITY, VENDOR_TGPP, is_required=True)
     )
 
 

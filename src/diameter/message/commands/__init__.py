@@ -22,6 +22,7 @@ from .home_agent_mip import *
 from .location_info import *
 from .multimedia_auth import *
 from .re_auth import *
+from .registration_termination import *
 from .server_assignment import *
 from .spending_limit import *
 from .spending_status_notification import *
@@ -119,21 +120,6 @@ class SipPushProfile(UndefinedMessage):
     """
     code: int = 288
     name: str = "SIP-Push-Profile"
-
-    def __post_init__(self):
-        super().__post_init__()
-        self.header.command_code = self.code
-
-
-class RegistrationTermination(UndefinedMessage):
-    """A Registration-Termination message.
-
-    This message implementation provides no python subclasses for requests and
-    answers; AVPs must be created manually and added using the
-    [AaMobileNode.append_avpRegistrationTerminationdiameter.message.Message.append_avp] method.
-    """
-    code: int = 304
-    name: str = "Registration-Termination"
 
     def __post_init__(self):
         super().__post_init__()
