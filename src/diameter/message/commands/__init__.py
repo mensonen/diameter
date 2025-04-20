@@ -19,6 +19,7 @@ from .device_watchdog import *
 from .diameter_eap import *
 from .disconnect_peer import *
 from .home_agent_mip import *
+from .location_info import *
 from .multimedia_auth import *
 from .re_auth import *
 from .server_assignment import *
@@ -118,21 +119,6 @@ class SipPushProfile(UndefinedMessage):
     """
     code: int = 288
     name: str = "SIP-Push-Profile"
-
-    def __post_init__(self):
-        super().__post_init__()
-        self.header.command_code = self.code
-
-
-class LocationInfo(UndefinedMessage):
-    """A Location-Info message.
-
-    This message implementation provides no python subclasses for requests and
-    answers; AVPs must be created manually and added using the
-    [LocationInfo.append_avp][diameter.message.Message.append_avp] method.
-    """
-    code: int = 302
-    name: str = "Location-Info"
 
     def __post_init__(self):
         super().__post_init__()
