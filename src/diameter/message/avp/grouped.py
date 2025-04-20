@@ -996,15 +996,73 @@ class ServerCapabilities:
 
 
 @dataclasses.dataclass
+class SipDigestAuthenticate:
+    """A data container that represents the "SIP-Digest-Authenticate" (635) grouped AVP.
+
+    3GPP TS 29.229 version 13.1.0
+    """
+    digest_realm: str = None
+    digest_algorithm: str = None
+    digest_qop: str = None
+    digest_ha1: str = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("digest_realm", AVP_DIGEST_REALM, is_required=True),
+        AvpGenDef("digest_qop", AVP_DIGEST_QOP),
+        AvpGenDef("digest_ha1", AVP_DIGEST_HA1, is_required=True),
+        AvpGenDef("digest_algorithm", AVP_DIGEST_ALGORITHM, is_required=True),
+    )
+
+
+@dataclasses.dataclass
+class SipAuthDataItem:
+    """A data container that represents the "SIP-Auth-Data-Item" (612) grouped AVP.
+
+    3GPP TS 29.229 version 13.1.0
+    """
+    sip_item_number: int = None
+    sip_authentication_scheme: int = None
+    sip_authenticate: bytes = None
+    sip_authorization: bytes = None
+    sip_authentication_context: bytes = None
+    confidentiality_key: bytes = None
+    integrity_key: bytes = None
+    sip_digest_authenticate: SipDigestAuthenticate = None
+    framed_ip_address: bytes = None
+    framed_ipv6_prefix: bytes = None
+    framed_interface_id: int = None
+    line_identifier: list[bytes] = dataclasses.field(default_factory=list)
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("sip_item_number", AVP_SIP_ITEM_NUMBER),
+        AvpGenDef("sip_authentication_scheme", AVP_SIP_AUTHENTICATION_SCHEME),
+        AvpGenDef("sip_authenticate", AVP_TGPP_3GPP_SIP_AUTHENTICATE, VENDOR_TGPP),
+        AvpGenDef("sip_authorization", AVP_TGPP_3GPP_SIP_AUTHORIZATION, VENDOR_TGPP),
+        AvpGenDef("sip_authentication_context", AVP_TGPP_SIP_AUTHENTICATION_CONTEXT, VENDOR_TGPP),
+        AvpGenDef("confidentiality_key", AVP_TGPP_CONFIDENTIALITY_KEY, VENDOR_TGPP),
+        AvpGenDef("integrity_key", AVP_TGPP_INTEGRITY_KEY, VENDOR_TGPP),
+        AvpGenDef("sip_digest_authenticate", AVP_TGPP_SIP_DIGEST_AUTHENTICATE, VENDOR_TGPP, type_class=SipDigestAuthenticate),
+        AvpGenDef("framed_ip_address", AVP_FRAMED_IP_ADDRESS),
+        AvpGenDef("framed_ipv6_prefix", AVP_FRAMED_IPV6_PREFIX),
+        AvpGenDef("framed_interface_id", AVP_FRAMED_INTERFACE_ID),
+        AvpGenDef("line_identifier", AVP_ETSI_LINE_IDENTIFIER, VENDOR_ETSI)
+    )
+
+
+@dataclasses.dataclass
 class ChargingInformation:
     """A data container that represents the "Charging-Information" (618) grouped AVP.
 
     3GPP TS 29.229 version 13.1.0
     """
-    primary_event_charging_function_name: str
-    secondary_event_charging_function_name: str
-    primary_charging_collection_function_name: str
-    secondary_charging_collection_function_name: str
+    primary_event_charging_function_name: str = None
+    secondary_event_charging_function_name: str = None
+    primary_charging_collection_function_name: str = None
+    secondary_charging_collection_function_name: str = None
     additional_avps: list[Avp] = dataclasses.field(default_factory=list)
 
     # noinspection PyDataclass
