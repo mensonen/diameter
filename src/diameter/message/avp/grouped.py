@@ -909,7 +909,7 @@ class OcSupportedFeatures:
 
     # noinspection PyDataclass
     avp_def: dataclasses.InitVar[AvpGenType] = (
-        AvpGenDef("vendor_id", AVP_OC_FEATURE_VECTOR),
+        AvpGenDef("oc_feature_vector", AVP_OC_FEATURE_VECTOR),
     )
 
 
@@ -996,6 +996,102 @@ class ServerCapabilities:
 
 
 @dataclasses.dataclass
+class SipDigestAuthenticate:
+    """A data container that represents the "SIP-Digest-Authenticate" (635) grouped AVP.
+
+    3GPP TS 29.229 version 13.1.0
+    """
+    digest_realm: str = None
+    digest_algorithm: str = None
+    digest_qop: str = None
+    digest_ha1: str = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("digest_realm", AVP_DIGEST_REALM, is_required=True),
+        AvpGenDef("digest_qop", AVP_DIGEST_QOP),
+        AvpGenDef("digest_ha1", AVP_DIGEST_HA1, is_required=True),
+        AvpGenDef("digest_algorithm", AVP_DIGEST_ALGORITHM, is_required=True),
+    )
+
+
+@dataclasses.dataclass
+class SipAuthDataItem:
+    """A data container that represents the "SIP-Auth-Data-Item" (612) grouped AVP.
+
+    3GPP TS 29.229 version 13.1.0
+    """
+    sip_item_number: int = None
+    sip_authentication_scheme: int = None
+    sip_authenticate: bytes = None
+    sip_authorization: bytes = None
+    sip_authentication_context: bytes = None
+    confidentiality_key: bytes = None
+    integrity_key: bytes = None
+    sip_digest_authenticate: SipDigestAuthenticate = None
+    framed_ip_address: bytes = None
+    framed_ipv6_prefix: bytes = None
+    framed_interface_id: int = None
+    line_identifier: list[bytes] = dataclasses.field(default_factory=list)
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("sip_item_number", AVP_SIP_ITEM_NUMBER),
+        AvpGenDef("sip_authentication_scheme", AVP_SIP_AUTHENTICATION_SCHEME),
+        AvpGenDef("sip_authenticate", AVP_TGPP_3GPP_SIP_AUTHENTICATE, VENDOR_TGPP),
+        AvpGenDef("sip_authorization", AVP_TGPP_3GPP_SIP_AUTHORIZATION, VENDOR_TGPP),
+        AvpGenDef("sip_authentication_context", AVP_TGPP_SIP_AUTHENTICATION_CONTEXT, VENDOR_TGPP),
+        AvpGenDef("confidentiality_key", AVP_TGPP_CONFIDENTIALITY_KEY, VENDOR_TGPP),
+        AvpGenDef("integrity_key", AVP_TGPP_INTEGRITY_KEY, VENDOR_TGPP),
+        AvpGenDef("sip_digest_authenticate", AVP_TGPP_SIP_DIGEST_AUTHENTICATE, VENDOR_TGPP, type_class=SipDigestAuthenticate),
+        AvpGenDef("framed_ip_address", AVP_FRAMED_IP_ADDRESS),
+        AvpGenDef("framed_ipv6_prefix", AVP_FRAMED_IPV6_PREFIX),
+        AvpGenDef("framed_interface_id", AVP_FRAMED_INTERFACE_ID),
+        AvpGenDef("line_identifier", AVP_ETSI_LINE_IDENTIFIER, VENDOR_ETSI)
+    )
+
+
+@dataclasses.dataclass
+class DeregistrationReason:
+    """A data container that represents the "Deregistration-Reason" (615) grouped AVP.
+
+    3GPP TS 29.229 version 13.1.0
+    """
+    reason_code: int = None
+    reason_info: str = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("reason_code", AVP_TGPP_REASON_CODE, VENDOR_TGPP),
+        AvpGenDef("reason_info", AVP_TGPP_REASON_INFO, VENDOR_TGPP)
+    )
+
+
+@dataclasses.dataclass
+class ChargingInformation:
+    """A data container that represents the "Charging-Information" (618) grouped AVP.
+
+    3GPP TS 29.229 version 13.1.0
+    """
+    primary_event_charging_function_name: str = None
+    secondary_event_charging_function_name: str = None
+    primary_charging_collection_function_name: str = None
+    secondary_charging_collection_function_name: str = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("primary_event_charging_function_name", AVP_TGPP_PRIMARY_EVENT_CHARGING_FUNCTION_NAME, VENDOR_TGPP),
+        AvpGenDef("secondary_event_charging_function_name", AVP_TGPP_SECONDARY_EVENT_CHARGING_FUNCTION_NAME, VENDOR_TGPP),
+        AvpGenDef("primary_charging_collection_function_name", AVP_TGPP_PRIMARY_CHARGING_COLLECTION_FUNCTION_NAME, VENDOR_TGPP),
+        AvpGenDef("secondary_charging_collection_function_name", AVP_TGPP_SECONDARY_CHARGING_COLLECTION_FUNCTION_NAME, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
 class SupportedFeatures:
     """A data container that represents the "Supported-Features" (628) grouped AVP.
 
@@ -1011,6 +1107,135 @@ class SupportedFeatures:
         AvpGenDef("vendor_id", AVP_VENDOR_ID, is_required=True),
         AvpGenDef("feature_list_id", AVP_TGPP_FEATURE_LIST_ID, VENDOR_TGPP, is_required=True),
         AvpGenDef("feature_list", AVP_TGPP_FEATURE_LIST, VENDOR_TGPP, is_required=True),
+    )
+
+
+@dataclasses.dataclass
+class AssociatedIdentities:
+    """A data container that represents the "Associated-Identities" (632) grouped AVP.
+
+    3GPP TS 29.229 version 13.1.0
+    """
+    user_name: list[str] = dataclasses.field(default_factory=list)
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("user_name", AVP_USER_NAME, is_required=True),
+    )
+
+
+@dataclasses.dataclass
+class SubscriptionInfo:
+    """A data container that represents the "Subscription-Info" (642) grouped AVP.
+
+    3GPP TS 29.229 version 13.1.0
+    """
+    call_id_sip_header: bytes = None
+    from_sip_header: bytes = None
+    to_sip_header: bytes = None
+    record_route: bytes = None
+    contact: bytes = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("call_id_sip_header", AVP_TGPP_CALL_ID_SIP_HEADER, VENDOR_TGPP, is_required=True),
+        AvpGenDef("from_sip_header", AVP_TGPP_FROM_SIP_HEADER, VENDOR_TGPP, is_required=True),
+        AvpGenDef("to_sip_header", AVP_TGPP_TO_SIP_HEADER, VENDOR_TGPP, is_required=True),
+        AvpGenDef("record_route", AVP_TGPP_RECORD_ROUTE, VENDOR_TGPP, is_required=True),
+        AvpGenDef("contact", AVP_TGPP_CONTACT, VENDOR_TGPP, is_required=True)
+    )
+
+
+@dataclasses.dataclass
+class AssociatedRegisteredIdentities:
+    """A data container that represents the "Associated-Registered-Identities" (647) grouped AVP.
+
+    3GPP TS 29.229 version 13.1.0
+    """
+    user_name: list[str] = dataclasses.field(default_factory=list)
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("user_name", AVP_USER_NAME, is_required=True),
+    )
+
+
+@dataclasses.dataclass
+class RestorationInfo:
+    """A data container that represents the "Restoration-Info" (649) grouped AVP.
+
+    3GPP TS 29.229 version 13.1.0
+    """
+    path: bytes = None
+    contact: bytes = None
+    initial_cseq_sequence_number: int = None
+    call_id_sip_header: bytes = None
+    subscription_info: SubscriptionInfo = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("path", AVP_TGPP_PATH, VENDOR_TGPP, is_required=True),
+        AvpGenDef("contact", AVP_TGPP_CONTACT, VENDOR_TGPP, is_required=True),
+        AvpGenDef("initial_cseq_sequence_number", AVP_TGPP_INITIAL_CSEQ_SEQUENCE_NUMBER, VENDOR_TGPP),
+        AvpGenDef("call_id_sip_header", AVP_TGPP_CALL_ID_SIP_HEADER, VENDOR_TGPP),
+        AvpGenDef("subscription_info", AVP_TGPP_SUBSCRIPTION_INFO, VENDOR_TGPP, type_class=SubscriptionInfo),
+    )
+
+
+@dataclasses.dataclass
+class ScscfRestorationInfo:
+    """A data container that represents the "SCSCF-Restoration-Info" (639) grouped AVP.
+
+    3GPP TS 29.229 version 13.1.0
+    """
+    user_name: str = None
+    restoration_info: RestorationInfo = None
+    sip_authentication_scheme: int = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("user_name", AVP_USER_NAME, is_required=True),
+        AvpGenDef("restoration_info", AVP_TGPP_RESTORATION_INFO, VENDOR_TGPP, is_required=True, type_class=RestorationInfo),
+        AvpGenDef("sip_authentication_scheme", AVP_SIP_AUTHENTICATION_SCHEME),
+    )
+
+
+@dataclasses.dataclass
+class IdentityWithEmergencyRegistration:
+    """A data container that represents the "Identity-with-Emergency-Registration" (651) grouped AVP.
+
+    3GPP TS 29.229 version 13.1.0
+    """
+    user_name: str = None
+    public_identity: str = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("user_name", AVP_USER_NAME, is_required=True),
+        AvpGenDef("public_identity", AVP_TGPP_PUBLIC_IDENTITY, VENDOR_TGPP, is_required=True)
+    )
+
+
+@dataclasses.dataclass
+class AllowedWafWwsfIdentities:
+    """A data container that represents the "Allowed-WAF-WWSF-Identities" (656) grouped AVP.
+
+    3GPP TS 29.229 version 13.1.0
+    """
+    webrtc_authentication_function_name: list[str] = dataclasses.field(default_factory=list)
+    webrtc_web_server_function_name: list[str] = dataclasses.field(default_factory=list)
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("webrtc_authentication_function_name", AVP_TGPP_WEBRTC_AUTHENTICATION_FUNCTION_NAME, VENDOR_TGPP, is_required=True),
+        AvpGenDef("webrtc_web_server_function_name", AVP_TGPP_WEBRTC_WEB_SERVER_FUNCTION_NAME, VENDOR_TGPP, is_required=True)
     )
 
 

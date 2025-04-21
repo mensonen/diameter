@@ -19,10 +19,16 @@ from .device_watchdog import *
 from .diameter_eap import *
 from .disconnect_peer import *
 from .home_agent_mip import *
+from .location_info import *
+from .multimedia_auth import *
+from .push_profile import *
 from .re_auth import *
+from .registration_termination import *
+from .server_assignment import *
 from .spending_limit import *
 from .spending_status_notification import *
 from .session_termination import *
+from .user_authorization import *
 
 
 # Remaining Message types that have no implementation (yet), either because
@@ -115,96 +121,6 @@ class SipPushProfile(UndefinedMessage):
     """
     code: int = 288
     name: str = "SIP-Push-Profile"
-
-    def __post_init__(self):
-        super().__post_init__()
-        self.header.command_code = self.code
-
-
-class UserAuthorization(UndefinedMessage):
-    """A User-Authorization message.
-
-    This message implementation provides no python subclasses for requests and
-    answers; AVPs must be created manually and added using the
-    [UserAuthorization.append_avp][diameter.message.Message.append_avp] method.
-    """
-    code: int = 300
-    name: str = "User-Authorization"
-
-    def __post_init__(self):
-        super().__post_init__()
-        self.header.command_code = self.code
-
-
-class ServerAssignment(UndefinedMessage):
-    """A Server-Assignment message.
-
-    This message implementation provides no python subclasses for requests and
-    answers; AVPs must be created manually and added using the
-    [ServerAssignment.append_avp][diameter.message.Message.append_avp] method.
-    """
-    code: int = 301
-    name: str = "Server-Assignment"
-
-    def __post_init__(self):
-        super().__post_init__()
-        self.header.command_code = self.code
-
-
-class LocationInfo(UndefinedMessage):
-    """A Location-Info message.
-
-    This message implementation provides no python subclasses for requests and
-    answers; AVPs must be created manually and added using the
-    [LocationInfo.append_avp][diameter.message.Message.append_avp] method.
-    """
-    code: int = 302
-    name: str = "Location-Info"
-
-    def __post_init__(self):
-        super().__post_init__()
-        self.header.command_code = self.code
-
-
-class MultimediaAuth(UndefinedMessage):
-    """A Multimedia-Auth message.
-
-    This message implementation provides no python subclasses for requests and
-    answers; AVPs must be created manually and added using the
-    [MultimediaAuth.append_avp][diameter.message.Message.append_avp] method.
-    """
-    code: int = 303
-    name: str = "Multimedia-Auth"
-
-    def __post_init__(self):
-        super().__post_init__()
-        self.header.command_code = self.code
-
-
-class RegistrationTermination(UndefinedMessage):
-    """A Registration-Termination message.
-
-    This message implementation provides no python subclasses for requests and
-    answers; AVPs must be created manually and added using the
-    [AaMobileNode.append_avpRegistrationTerminationdiameter.message.Message.append_avp] method.
-    """
-    code: int = 304
-    name: str = "Registration-Termination"
-
-    def __post_init__(self):
-        super().__post_init__()
-        self.header.command_code = self.code
-
-
-class PushProfile(UndefinedMessage):
-    """A Push-Profile message.
-
-    This message implementation provides no python subclasses for requests and
-    answers; AVPs must be created manually and added using the
-    [PushProfile.append_avp][diameter.message.Message.append_avp] method.
-    """
-    code: int = 305
-    name: str = "Push-Profile"
 
     def __post_init__(self):
         super().__post_init__()

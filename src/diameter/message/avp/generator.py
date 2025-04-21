@@ -47,6 +47,9 @@ def generate_avps_from_defs(obj: AvpGenerator, strict: bool = False) -> list[Avp
         return avp_list
 
     for gen_def in obj.avp_def:
+        # catch early cases where avp_def exists contains junk
+        if not isinstance(gen_def, AvpGenDef):
+            continue
         if not hasattr(obj, gen_def.attr_name) and gen_def.is_required:
             msg = f"mandatory AVP attribute `{gen_def.attr_name}` is not set"
             if strict:
