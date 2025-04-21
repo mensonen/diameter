@@ -36,9 +36,9 @@ The `diameter` package provides tools for:
 
 ## Supported applications
 
-The diameter stack has inbuilt support for Diameter Base, *Gy*, *Rf*, *Ro* and
-*Sy* applications and a generic implementation of application types that allows
-working even with unsupported application types.
+The diameter stack has inbuilt support for Diameter Base, *Gy*, *Rf*, *Ro*, 
+*Sy*, *Cx* and *Dx* applications and a generic implementation of application 
+types that allows working even with unsupported application types.
 
 ## Supported diameter application commands
 
@@ -80,5 +80,14 @@ application message types:
 
  * Spending-Limit
  * Spending-Status-Notification
+
+*Diameter Cx and Dx interfaces* `3GPP TS 29.229`
+
+ * User-Authorization
+ * Server-Assignment
+ * Location-Info
+ * Multimedia-Auth
+ * Registration-Termination
+ * Push-Profile
 
 The stack includes also a generic fallback Python class for every other message.
