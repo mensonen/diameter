@@ -89,7 +89,7 @@ class SpendingStatusNotificationAnswer(SpendingStatusNotification):
     origin_host: bytes
     origin_realm: bytes
     result_code: int
-    experimental_result: str
+    experimental_result: ExperimentalResult
     origin_state_id: int
     error_message: str
     error_reporting_host: bytes
@@ -120,7 +120,6 @@ class SpendingStatusNotificationAnswer(SpendingStatusNotification):
         self.header.is_request = False
         self.header.is_proxyable = True
 
-        setattr(self, "policy_counter_status_report", [])
         setattr(self, "redirect_host", [])
         setattr(self, "proxy_info", [])
 
