@@ -21,6 +21,7 @@ from .disconnect_peer import *
 from .home_agent_mip import *
 from .location_info import *
 from .multimedia_auth import *
+from .push_profile import *
 from .re_auth import *
 from .registration_termination import *
 from .server_assignment import *
@@ -120,21 +121,6 @@ class SipPushProfile(UndefinedMessage):
     """
     code: int = 288
     name: str = "SIP-Push-Profile"
-
-    def __post_init__(self):
-        super().__post_init__()
-        self.header.command_code = self.code
-
-
-class PushProfile(UndefinedMessage):
-    """A Push-Profile message.
-
-    This message implementation provides no python subclasses for requests and
-    answers; AVPs must be created manually and added using the
-    [PushProfile.append_avp][diameter.message.Message.append_avp] method.
-    """
-    code: int = 305
-    name: str = "Push-Profile"
 
     def __post_init__(self):
         super().__post_init__()
