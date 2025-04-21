@@ -309,6 +309,7 @@ class AaRequest(Aa):
     media_component_description: MediaComponentDescription
     supported_features: SupportedFeatures
     specific_action: list[int]
+    subscription_id: list[SubscriptionId]
 
     avp_def: AvpGenType = (
         AvpGenDef("session_id", AVP_SESSION_ID, is_required=True),
@@ -365,6 +366,7 @@ class AaRequest(Aa):
         AvpGenDef("media_sub_component", AVP_TGPP_MEDIA_SUB_COMPONENT, VENDOR_TGPP, type_class=MediaSubComponent),
         AvpGenDef("specific_action", AVP_TGPP_SPECIFIC_ACTION, VENDOR_TGPP),
         AvpGenDef("supported_features", AVP_TGPP_SUPPORTED_FEATURES, VENDOR_TGPP, type_class=SupportedFeatures),
+        AvpGenDef("subscription_id", AVP_SUBSCRIPTION_ID, type_class=SubscriptionId),
     )
 
     def __post_init__(self):
@@ -382,6 +384,20 @@ class AaRequest(Aa):
         setattr(self, "proxy_info", [])
         setattr(self, "route_record", [])
         setattr(self, "specific_action", [])
+        setattr(self, "subscription_id", [])
+
 
         assign_attr_from_defs(self, self._avps)
         self._avps = []
+
+    def add_subscription_id(self, subscription_id_type: int,
+                            subscription_id_data: str):
+        """Add a subscription ID to the request.
+
+        Args:
+            subscription_id_type: One of the `E_SUBSCRIPTION_ID_TYPE_*`
+                constant values
+            subscription_id_data: Actual subscription ID
+        """
+        self.subscription_id.append(SubscriptionId(
+            subscription_id_type, subscription_id_data))
