@@ -51,8 +51,17 @@ nav:
       - Device Watchdog: api/commands/device_watchdog.md
       - Diameter EAP: api/commands/diameter_eap.md
       - Disconnect Peer: api/commands/disconnect_peer.md
+      - Home Agent MIP: api/commands/home_agent_mip.md
+      - Location Info: api/commands/location_info.md
+      - Multimedia Auth: api/commands/multimedia_auth.md
+      - Push Profile: api/commands/push_profile.md
       - Re Auth: api/commands/re_auth.md
+      - Registration Termination: api/commands/registration_termination.md
+      - Server Assignment: api/commands/server_assignment.md
       - Session Termination: api/commands/session_termination.md
+      - Spending Limit: api/commands/spending_limit.md
+      - Spending Status Notification: api/commands/spending_status_notification.md
+      - User Authorization: api/commands/user_authorization.md
       - Other: api/commands/other_commands.md
     - Node: api/node.md
     - Peer: api/peer.md
