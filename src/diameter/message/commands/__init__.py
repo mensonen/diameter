@@ -2358,3 +2358,60 @@ all_commands.update({
 all_commands.update({
     m.code: m for m in UndefinedMessage.__subclasses__()
 })
+
+
+def register(cmd_class: Type[DefinedMessage]):
+    """Register a custom command.
+
+    Adds a class that extends [DefinedMessage][diameter.message.DefinedMessage]
+    to the internal registry of commands. Registered custom commands will be
+    automatically recognised when parsing network-received bytes. If the command
+    also implements a request and answer subclass, those are automatically
+    returned as well.
+
+    ```
+    msg_bytes = "01000028c00003e70000000000000000000000000000010740000014686f73742e7265616c6d3b31"
+
+    # returns an instance of UndefinedMessage
+    msg = Message.from_bytes(msg_bytes)
+    print(dump(msg))
+
+    # Prints:
+    # Unknown <Version: 0x01, Length: 40, Flags: 0xc0 (request, proxyable), Hop-by-Hop Identifier: 0x0, End-to-End Identifier: 0x0>
+    #   Session-Id <Code: 0x107, Flags: 0x40 (-M-), Length: 20, Val: host.realm;1>
+
+    from diameter.message import DefinedMessage
+    from diameter.message.commands import register
+
+    class SpecialMessage(DefinedMessage):
+        code: int = 999
+        name: str = "Special-Message"
+
+        def __post_init__(self):
+            self.header.command_code = self.code
+            super().__post_init__()
+
+    register(SpecialMessage)
+
+    # now returns an instance of SpecialMessage
+    msg = Message.from_bytes(msg_bytes)
+    print(dump(msg))
+
+    # Prints:
+    # Special-Message <Version: 0x01, Length: 40, Flags: 0xc0 (request, proxyable), Hop-by-Hop Identifier: 0x0, End-to-End Identifier: 0x0>
+    #   Session-Id <Code: 0x107, Flags: 0x40 (-M-), Length: 20, Val: host.realm;1>
+    ```
+
+    !!! Warning
+        If a command implementation with the same command code already exists,
+        that implementation will be overwritten.
+
+    """
+    if not issubclass(cmd_class, DefinedMessage):
+        raise RuntimeError(f"Cannot register {cmd_class} as a command, it does "
+                           f"not subclass DefinedMessage")
+    if not hasattr(cmd_class, "code"):
+        raise RuntimeError(f"Cannot register {cmd_class} as a command, it does "
+                           f"not have a `code` attribute")
+
+    all_commands[cmd_class.code] = cmd_class
