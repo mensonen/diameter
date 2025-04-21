@@ -60,7 +60,7 @@ def test_ccr_create_new():
     ps_information.value = [
         Avp.new(constants.AVP_TGPP_3GPP_PDP_TYPE, constants.VENDOR_TGPP, value=0),
         Avp.new(constants.AVP_TGPP_PDP_ADDRESS, constants.VENDOR_TGPP, value="10.40.93.32"),
-        Avp.new(constants.AVP_TGPP_3GPP_NSAPI, constants.VENDOR_TGPP, value="5"),
+        Avp.new(constants.AVP_TGPP_3GPP_NSAPI, constants.VENDOR_TGPP, value=bytes.fromhex("05")),
         Avp.new(constants.AVP_TGPP_3GPP_RAT_TYPE, constants.VENDOR_TGPP, value=bytes.fromhex("06")),
     ]
     service_information.value = [ps_information]

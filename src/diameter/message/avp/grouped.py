@@ -2921,7 +2921,7 @@ class PsInformation:
     tgpp_imsi_mcc_mnc: str = None
     imsi_unauthenticated_flag: int = None
     tgpp_ggsn_mcc_mnc: str = None
-    tgpp_nsapi: str = None
+    tgpp_nsapi: bytes = None
     called_station_id: str = None
     tgpp_session_stop_indicator: str = None
     tgpp_selection_mode: str = None

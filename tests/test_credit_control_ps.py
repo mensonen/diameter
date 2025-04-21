@@ -87,7 +87,7 @@ def test_ccr_3gpp_ps_information():
             tgpp_imsi_mcc_mnc="22803",
             imsi_unauthenticated_flag=constants.E_IMSI_UNAUTHENTICATED_FLAG_AUTHENTICATED,
             tgpp_ggsn_mcc_mnc="22803",
-            tgpp_nsapi="5",
+            tgpp_nsapi=b"\05",
             called_station_id="41789900009",
             tgpp_session_stop_indicator="1",
             tgpp_selection_mode="2",
