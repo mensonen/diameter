@@ -32,6 +32,7 @@ nav:
     - Application basics: guide/application.md
     - Sample application: guide/sample_application.md
     - Statistics: guide/node_statistics.md
+    - Extending and customising: guide/extending_the_stack.md
   - Examples:
     - Credit Control SMS client: examples/credit_control_sms_client.md
     - Idling server and client: examples/idle_server_client.md
