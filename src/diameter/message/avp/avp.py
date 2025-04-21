@@ -767,3 +767,44 @@ _AnyAvpType = TypeVar("_AnyAvpType", bound=Avp)
 
 
 from .dictionary import AVP_DICTIONARY, AVP_VENDOR_DICTIONARY
+
+
+def register(avp: int, name: str, type_cls: type[_AnyAvpType],
+             vendor: int = None, mandatory: bool = None):
+    """Register a custom AVP definition.
+
+    Either overwrites an existing AVP definition or creates a new one.
+
+    Args:
+        avp: AVP code, required. If an existing code is used, it will overwrite
+            the previous definition
+        name: AVP name, used in human-readable dumps and AVP representations.
+            Usually in "Capitalised-Dash-Separated-Words" format
+        type_cls: AVP type class. Can be one of the existing types, such as
+            `AvpOctetString`, `AvpInteger32`, etc., or a custom definition. When
+            a custom definition is used, it should still subclass `Avp`.
+        vendor: Vendor code. Can be previously unused
+        mandatory: Set the AVP mandatory flag. When overwriting existing AVPs,
+            this should be set to the same value as the existing AVP.
+
+    ```
+    # Add a new AVP definition for AVP 90000001 and vendor 9999999
+    from diameter.message.avp import avp, AvpUtf8String
+
+    VENDOR_SPECIAL = 9999999
+    AVP_SPECIAL_SESSION_ID = 90000001
+
+    avp.register(avp=AVP_SPECIAL_SESSION_ID,
+                 name="Special-Session-Id",
+                 cls=AvpUtf8String,
+                 vendor=VENDOR_SPECIAL)
+    ```
+
+    """
+    if vendor is None:
+        AVP_DICTIONARY[avp] = {"name": name, "type": type_cls,
+                               "mandatory": mandatory}
+    else:
+        vendor_dict = AVP_VENDOR_DICTIONARY.setdefault(vendor, {})
+        vendor_dict[avp] = {"name": name, "type": type_cls,
+                            "mandatory": mandatory, "vendor": vendor}
