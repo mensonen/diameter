@@ -5,7 +5,7 @@ A diameter application is the highest level of abstraction provided by the
 
  * Synchronous return of answers after sending messages
  * Tracking requests that require answers
- * Routing requests to any suitable peers, including load balancing
+ * Customizable request routing to any suitable peers, including load balancing
  * Constructing answers from received request messages
 
 An "application" is any instance of a subclass of 
