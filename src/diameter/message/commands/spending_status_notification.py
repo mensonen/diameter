@@ -86,11 +86,14 @@ class SpendingStatusNotification(DefinedMessage):
 class SpendingStatusNotificationAnswer(SpendingStatusNotification):
     """A Spending-Status-Notification-Answer message."""
     session_id: str
+    drmp: int
     origin_host: bytes
     origin_realm: bytes
     result_code: int
     experimental_result: ExperimentalResult
     origin_state_id: int
+    oc_supported_features: OcSupportedFeatures
+    oc_olr: OcOlr
     error_message: str
     error_reporting_host: bytes
     redirect_host: list[str]
@@ -101,11 +104,14 @@ class SpendingStatusNotificationAnswer(SpendingStatusNotification):
 
     avp_def: AvpGenType = (
         AvpGenDef("session_id", AVP_SESSION_ID, is_required=True),
+        AvpGenDef("drmp", AVP_DRMP),
         AvpGenDef("origin_host", AVP_ORIGIN_HOST, is_required=True),
         AvpGenDef("origin_realm", AVP_ORIGIN_REALM, is_required=True),
         AvpGenDef("result_code", AVP_RESULT_CODE),
         AvpGenDef("experimental_result", AVP_EXPERIMENTAL_RESULT, type_class=ExperimentalResult),
         AvpGenDef("origin_state_id", AVP_ORIGIN_STATE_ID),
+        AvpGenDef("oc_supported_features", AVP_OC_SUPPORTED_FEATURES, type_class=OcSupportedFeatures),
+        AvpGenDef("oc_olr", AVP_OC_OLR, type_class=OcOlr),
         AvpGenDef("error_message", AVP_ERROR_MESSAGE, is_mandatory=False),
         AvpGenDef("error_reporting_host", AVP_ERROR_REPORTING_HOST, is_mandatory=False),
         AvpGenDef("redirect_host", AVP_REDIRECT_HOST),
@@ -130,13 +136,16 @@ class SpendingStatusNotificationAnswer(SpendingStatusNotification):
 class SpendingStatusNotificationRequest(SpendingStatusNotification):
     """A Spending-Status-Notification-Request message."""
     session_id: str
+    drmp: int
     origin_host: bytes
     origin_realm: bytes
     destination_realm: bytes
     destination_host: bytes
     auth_application_id: int
     origin_state_id: int
+    oc_supported_features: OcSupportedFeatures
     policy_counter_status_report: list[PolicyCounterStatusReport]
+    sn_request_type: int
     proxy_info: list[ProxyInfo]
     route_record: list[bytes]
 
@@ -145,13 +154,16 @@ class SpendingStatusNotificationRequest(SpendingStatusNotification):
 
     avp_def: AvpGenType = (
         AvpGenDef("session_id", AVP_SESSION_ID, is_required=True),
+        AvpGenDef("drmp", AVP_DRMP),
         AvpGenDef("origin_host", AVP_ORIGIN_HOST, is_required=True),
         AvpGenDef("origin_realm", AVP_ORIGIN_REALM, is_required=True),
         AvpGenDef("destination_realm", AVP_DESTINATION_REALM, is_required=True),
         AvpGenDef("destination_host", AVP_DESTINATION_HOST, is_mandatory=False),
         AvpGenDef("auth_application_id", AVP_AUTH_APPLICATION_ID, is_required=True),
         AvpGenDef("origin_state_id", AVP_ORIGIN_STATE_ID),
+        AvpGenDef("oc_supported_features", AVP_OC_SUPPORTED_FEATURES, type_class=OcSupportedFeatures),
         AvpGenDef("policy_counter_status_report", AVP_TGPP_POLICY_COUNTER_STATUS_REPORT, VENDOR_TGPP, type_class=PolicyCounterStatusReport),
+        AvpGenDef("sn_request_type", AVP_TGPP_SN_REQUEST_TYPE),
         AvpGenDef("proxy_info", AVP_PROXY_INFO, type_class=ProxyInfo),
         AvpGenDef("route_record", AVP_ROUTE_RECORD),
     )

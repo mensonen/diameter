@@ -1274,6 +1274,7 @@ AVP_VENDOR_DICTIONARY[10415] = {
     AVP_TGPP_POLICY_COUNTER_STATUS: {"name": "Policy-Counter-Status", "type": AvpUtf8String, "mandatory": True, "vendor": 10415},
     AVP_TGPP_POLICY_COUNTER_STATUS_REPORT: {"name": "Policy-Counter-Status-Report", "type": AvpGrouped, "mandatory": True, "vendor": 10415},
     AVP_TGPP_SL_REQUEST_TYPE: {"name": "SL-Request-Type", "type": AvpEnumerated, "mandatory": True, "vendor": 10415},
+    AVP_TGPP_SN_REQUEST_TYPE: {"name": "SN-Request-Type", "type": AvpUnsigned32, "mandatory": True, "vendor": 10415},
     AVP_TGPP_PENDING_POLICY_COUNTER_INFORMATION: {"name": "Pending-Policy-Counter-Information", "type": AvpGrouped, "mandatory": True, "vendor": 10415},
     AVP_TGPP_PENDING_POLICY_COUNTER_CHANGE_TIME: {"name": "Pending-Policy-Counter-Change-Time", "type": AvpTime, "mandatory": True, "vendor": 10415},
     AVP_TGPP_DEVICE_ACTION: {"name": "Device-Action", "type": AvpGrouped, "mandatory": True, "vendor": 10415},
