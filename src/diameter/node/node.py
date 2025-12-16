@@ -19,7 +19,7 @@ except ImportError:
 
 from collections import deque
 from copy import deepcopy
-from typing import TypeVar
+from typing import TypeVar, Callable
 
 from ..message import constants
 from ..message.commands import *
@@ -40,6 +40,14 @@ state_names = {
 
 _AnyMessageType = TypeVar("_AnyMessageType", bound=Message)
 _AnyAnswerType = TypeVar("_AnyAnswerType", bound=Message)
+
+def select_least_used_peer(node: Node, app: Application, message: Message, peers: list[Peer]) -> Peer:
+    peer = min(peers, key=lambda c: c.counters.requests)
+    node.logger.debug(
+        f"{peer.connection} is least used for app {app}, with "
+        f"{peer.counters.requests} total outgoing requests"
+    )
+    return peer
 
 
 class NodeError(Exception):
@@ -169,8 +177,9 @@ class Node:
     Outgoing requests are routed based on realm and peer routing tables; if
     a request does not contain the Destination-Host AVP, the request is
     forwarded to a peer that has a matching realm and application ID set. If
-    multiple peers are available, a rudimentary load balancing based on least
-    used connections is used. Answers are routed back to the peer that they
+    multiple peers are available, a callback function is used to select the 
+    peer for routing, defaulting to rudimentary load balancing based on least
+    used connections. Answers are routed back to the peer that they
     originated from, or dropped if the peer has gone away.
 
     """
@@ -320,6 +329,10 @@ class Node:
         """Peer connection lookup based on socket fileno."""
         self.applications: list[Application] = []
         """List of configured applications."""
+
+        self.peer_route_select_func: Callable[[Node, Application, Message, list[Peer]], Peer] = select_least_used_peer
+        """Callback function used to load balance requests over multiple available peers
+        Default is to select the least used connection."""
 
         self.tcp_sockets: list[socket.socket] = []
         self.sctp_sockets: list[sctp.sctpsocket] = []
@@ -1163,8 +1176,10 @@ class Node:
                 the node will automatically re-establish a connection to the
                 peer on startup and at connection loss
             is_default: Set this peer as the default peer for the realm. Note
-                that multiple defaults is permitted. Setting multiple pers
-                as default will result in load balancing between the peers.
+                that multiple defaults is permitted. Setting multiple peers
+                as default will result in peer selection via the
+                [`peer_route_select_func`][diameter.node.node.Node.peer_route_select_func]
+                callback between the peers.
 
         Returns:
             An instance of the peer. The returned instance is the actual peer
@@ -1546,8 +1561,10 @@ class Node:
 
         Determines the proper peer to be used for the particular message, by
         comparing the configured peer list with what is currently connected
-        and ready to receive requests. If multiple connections are available, a
-        rudimentary load balancing is used, with least-used peer selected.
+        and ready to receive requests. If multiple connections are available, the
+        [`peer_route_select_func`][diameter.node.node.Node.peer_route_select_func]
+        callback function is used to select the peer for routing, defaulting to
+        selecting the least used connection.
 
         Sets the hop-by-hop identifier automatically based on the selected
         peer.
@@ -1592,11 +1609,12 @@ class Node:
         if not usable_peers:
             raise NotRoutable("No connections is available to route to")
 
-        peer = min(usable_peers, key=lambda c: c.counters.requests)
+        if len(usable_peers) > 1:
+            peer = self.peer_route_select_func(self, app, message, usable_peers)
+        else:
+            peer = usable_peers[0]
+            self.logger.debug(f"Selected only available peer {peer.connection} for app {app}")
         conn = peer.connection
-        self.logger.debug(
-            f"{conn} is least used for app {app}, with "
-            f"{peer.counters.requests} total outgoing requests")
 
         if not message.header.hop_by_hop_identifier:
             message.header.hop_by_hop_identifier = conn.hop_by_hop_seq.next_sequence()
@@ -1706,7 +1724,7 @@ class Node:
         self._stopping = True
 
         if force:
-            self.logger.warning(f"forced close, sockets may not close claenly")
+            self.logger.warning("forced close, sockets may not close cleanly")
         else:
             for conn in self.connections.values():
                 if conn.state in PEER_READY_STATES:

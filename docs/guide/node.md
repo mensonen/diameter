@@ -233,6 +233,54 @@ A node has several attributes that can be used or altered after its creation:
     discovered. The dictionary holds host identities as strings as its keys and
     instances of [`Peer`][diameter.node.peer.Peer] as its values.
 
+`peer_route_select_func`
+:   A callback function used to select which peer to route a request to when
+    multiple peers are available for the same realm and application. The function
+    signature is:
+    
+    ```python
+    def select_peer_example(
+        node: Node,
+        app: Application,
+        message: Message,
+        peers: list[Peer]
+    ) -> Peer:
+        ...
+    ```
+    
+    The default implementation selects the least-used peer based on request
+    counters. You can customize this behavior by assigning your own function,
+    for example to select a random peer instead:
+    
+    ```python
+    import random
+    from diameter.node import Node
+    
+    def select_random_peer(node, app, message, peers):
+        """Select a random peer from the available peers."""
+        selected = random.choice(peers)
+        node.logger.debug(
+            f"Selected peer {selected.connection} randomly for app {app}"
+        )
+        return selected
+    
+    node = Node("peername.gy", "realm.net")
+    node.peer_route_select_func = select_random_peer
+    ```
+    
+    The function receives:
+    - `node`: The [`Node`][diameter.node.node.Node] instance
+    - `app`: The [`Application`][diameter.node.application.Application] instance
+      that wants to send the request
+    - `message`: The [`Message`][diameter.message.Message] to be sent
+    - `peers`: A list of [`Peer`][diameter.node.peer.Peer] instances that are
+      available and ready to receive requests
+    
+    The function must return a single [`Peer`][diameter.node.peer.Peer] instance
+    from the provided list. If the message cannot be routed, the function may also
+    raise a [`NotRoutable`][diameter.node.node.NotRoutable] exception, which is provided
+    by the stack.
+
 `statistics`
 :   Returns an instance of [`NodeStats`][diameter.node.node.NodeStats], which 
     contains statistical values, cumulated over every configured peer, at the
