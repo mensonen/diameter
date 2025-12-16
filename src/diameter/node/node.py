@@ -41,7 +41,17 @@ state_names = {
 _AnyMessageType = TypeVar("_AnyMessageType", bound=Message)
 _AnyAnswerType = TypeVar("_AnyAnswerType", bound=Message)
 
-def select_least_used_peer(node: Node, app: Application, message: Message, peers: list[Peer]) -> Peer:
+
+def select_least_used_peer(node: Node,
+                           app: Application,
+                           message: Message,
+                           peers: list[Peer]) -> Peer:
+    """Default peer load balancing implementation.
+
+    A naive load balancing method that looks into the `counters` attribute of
+    each peer in the `peers` list and selects the one with the lowest value for
+    the `requests` counter.
+    """
     peer = min(peers, key=lambda c: c.counters.requests)
     node.logger.debug(
         f"{peer.connection} is least used for app {app}, with "
@@ -331,8 +341,10 @@ class Node:
         """List of configured applications."""
 
         self.peer_route_select_func: Callable[[Node, Application, Message, list[Peer]], Peer] = select_least_used_peer
-        """Callback function used to load balance requests over multiple available peers
-        Default is to select the least used connection."""
+        """Callback function used to load balance requests when multiple peers 
+        are available. Default is to select the least used connection using 
+        [select_least_used_peer][diameter.node.select_least_used_peer]. This 
+        can be changed during runtime to use a different load balancing method."""
 
         self.tcp_sockets: list[socket.socket] = []
         self.sctp_sockets: list[sctp.sctpsocket] = []

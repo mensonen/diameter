@@ -29,3 +29,8 @@ API reference for various utilities in `diameter.node`.
     options:
       show_root_heading: true
       show_root_full_path: false
+
+::: diameter.node.select_least_used_peer
+    options:
+      show_root_heading: true
+      show_root_full_path: false
