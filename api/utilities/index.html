@@ -1627,6 +1627,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#diameter.node.select_least_used_peer" class="md-nav__link">
+    <span class="md-ellipsis">
+      select_least_used_peer
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2231,6 +2240,41 @@ every AVP that is missing in the message</p>
           </tr>
       </tbody>
     </table>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="diameter.node.select_least_used_peer" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">select_least_used_peer</span>
+
+
+<a href="#diameter.node.select_least_used_peer" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="nf">select_least_used_peer</span><span class="p">(</span>
+</span><span id="__span-0-2">    <span class="n">node</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="Node (diameter.node.node.Node)" href="../node/#diameter.node.node.Node">Node</a></span><span class="p">,</span> <span class="n">app</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="Application (diameter.node.application.Application)" href="../application/#diameter.node.application.Application">Application</a></span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="Message (diameter.message.commands.Message)" href="../message/#diameter.message.Message">Message</a></span><span class="p">,</span> <span class="n">peers</span><span class="p">:</span> <span class="n"><span title="list">list</span></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="Peer
+
+
+  
+      dataclass
+   (diameter.node.peer.Peer)" href="../peer/#diameter.node.peer.Peer">Peer</a></span><span class="p">]</span>
+</span><span id="__span-0-3"><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="Peer
+
+
+  
+      dataclass
+   (diameter.node.peer.Peer)" href="../peer/#diameter.node.peer.Peer">Peer</a></span>
+</span></code></pre></div>
+
+    <div class="doc doc-contents first">
+
+        <p>Default peer load balancing implementation.</p>
+<p>A naive load balancing method that looks into the <code>counters</code> attribute of
+each peer in the <code>peers</code> list and selects the one with the lowest value for
+the <code>requests</code> counter.</p>
 
 
     </div>

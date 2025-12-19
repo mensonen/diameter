@@ -1499,6 +1499,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#diameter.node.node.Node.peer_route_select_func" class="md-nav__link">
+    <span class="md-ellipsis">
+      peer_route_select_func
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#diameter.node.node.Node.peer_sockets" class="md-nav__link">
     <span class="md-ellipsis">
       peer_sockets
@@ -1967,8 +1976,9 @@ exist, a diameter error is returned to the peer.</p>
 <p>Outgoing requests are routed based on realm and peer routing tables; if
 a request does not contain the Destination-Host AVP, the request is
 forwarded to a peer that has a matching realm and application ID set. If
-multiple peers are available, a rudimentary load balancing based on least
-used connections is used. Answers are routed back to the peer that they
+multiple peers are available, a callback function is used to select the 
+peer for routing, defaulting to rudimentary load balancing based on least
+used connections. Answers are routed back to the peer that they
 originated from, or dropped if the peer has gone away.</p>
 
 
@@ -2279,6 +2289,45 @@ retrieved with <code>Node.end_to_end_seq.next_sequence()</code>.</p>
         <p>Default time spent idle before a DWR is triggered, in seconds. 
 Will be used if no specific timeout value has been configured for a 
 peer.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="diameter.node.node.Node.peer_route_select_func" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">peer_route_select_func</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#diameter.node.node.Node.peer_route_select_func" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><span class="n">peer_route_select_func</span><span class="p">:</span> <span class="n"><span title="typing.Callable">Callable</span></span><span class="p">[</span>
+</span><span id="__span-0-2">    <span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="Node (diameter.node.node.Node)" href="#diameter.node.node.Node">Node</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" title="Application (diameter.node.application.Application)" href="../application/#diameter.node.application.Application">Application</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" title="Message (diameter.message.commands.Message)" href="../message/#diameter.message.Message">Message</a></span><span class="p">,</span> <span class="n"><span title="list">list</span></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="Peer
+
+
+  
+      dataclass
+   (diameter.node.peer.Peer)" href="../peer/#diameter.node.peer.Peer">Peer</a></span><span class="p">]],</span> <span class="n"><a class="autorefs autorefs-internal" title="Peer
+
+
+  
+      dataclass
+   (diameter.node.peer.Peer)" href="../peer/#diameter.node.peer.Peer">Peer</a></span>
+</span><span id="__span-0-3"><span class="p">]</span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-internal" title="select_least_used_peer (diameter.node.node.select_least_used_peer)" href="../utilities/#diameter.node.select_least_used_peer">select_least_used_peer</a></span>
+</span></code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Callback function used to load balance requests when multiple peers 
+are available. Default is to select the least used connection using 
+<a class="autorefs autorefs-internal" title="select_least_used_peer" href="../utilities/#diameter.node.select_least_used_peer">select_least_used_peer</a>. This 
+can be changed during runtime to use a different load balancing method.</p>
 
     </div>
 
@@ -2852,8 +2901,15 @@ peer on startup and at connection loss</p>
             <td>
               <div class="doc-md-description">
                 <p>Set this peer as the default peer for the realm. Note
-that multiple defaults is permitted. Setting multiple pers
-as default will result in load balancing between the peers.</p>
+that multiple defaults is permitted. Setting multiple peers
+as default will result in peer selection via the
+<a class="autorefs autorefs-internal" title="peer_route_select_func
+
+
+  
+      instance-attribute
+  " href="#diameter.node.node.Node.peer_route_select_func"><code>peer_route_select_func</code></a>
+callback between the peers.</p>
               </div>
             </td>
             <td>
@@ -3196,8 +3252,15 @@ time</p>
 <p>Should always be used by an application before sending a request.</p>
 <p>Determines the proper peer to be used for the particular message, by
 comparing the configured peer list with what is currently connected
-and ready to receive requests. If multiple connections are available, a
-rudimentary load balancing is used, with least-used peer selected.</p>
+and ready to receive requests. If multiple connections are available, the
+<a class="autorefs autorefs-internal" title="peer_route_select_func
+
+
+  
+      instance-attribute
+  " href="#diameter.node.node.Node.peer_route_select_func"><code>peer_route_select_func</code></a>
+callback function is used to select the peer for routing, defaulting to
+selecting the least used connection.</p>
 <p>Sets the hop-by-hop identifier automatically based on the selected
 peer.</p>
 

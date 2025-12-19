@@ -1809,6 +1809,58 @@ instances of <a class="autorefs autorefs-internal" title="Peer
   
       dataclass
   " href="../../api/peer/#diameter.node.peer.Peer"><code>Peer</code></a> as its values.</dd>
+<dt><code>peer_route_select_func</code></dt>
+<dd>
+<p>A callback function used to select which peer to route a request to when
+multiple peers are available for the same realm and application. The function
+signature is:</p>
+<div class="highlight"><pre><span></span><code><span id="__span-7-1"><span class="k">def</span> <span class="nf">select_peer_example</span><span class="p">(</span>
+</span><span id="__span-7-2">    <span class="n">node</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
+</span><span id="__span-7-3">    <span class="n">app</span><span class="p">:</span> <span class="n">Application</span><span class="p">,</span>
+</span><span id="__span-7-4">    <span class="n">message</span><span class="p">:</span> <span class="n">Message</span><span class="p">,</span>
+</span><span id="__span-7-5">    <span class="n">peers</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Peer</span><span class="p">]</span>
+</span><span id="__span-7-6"><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Peer</span><span class="p">:</span>
+</span><span id="__span-7-7">    <span class="o">...</span>
+</span></code></pre></div>
+<p>The default implementation selects the least-used peer based on request
+counters. You can customize this behavior by assigning your own function,
+for example to select a random peer instead:</p>
+<div class="highlight"><pre><span></span><code><span id="__span-8-1"><span class="kn">import</span> <span class="nn">random</span>
+</span><span id="__span-8-2"><span class="kn">from</span> <span class="nn">diameter.node</span> <span class="kn">import</span> <span class="n">Node</span>
+</span><span id="__span-8-3">
+</span><span id="__span-8-4"><span class="k">def</span> <span class="nf">select_random_peer</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">app</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">peers</span><span class="p">):</span>
+</span><span id="__span-8-5"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Select a random peer from the available peers.&quot;&quot;&quot;</span>
+</span><span id="__span-8-6">    <span class="n">selected</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">peers</span><span class="p">)</span>
+</span><span id="__span-8-7">    <span class="n">node</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+</span><span id="__span-8-8">        <span class="sa">f</span><span class="s2">&quot;Selected peer </span><span class="si">{</span><span class="n">selected</span><span class="o">.</span><span class="n">connection</span><span class="si">}</span><span class="s2"> randomly for app </span><span class="si">{</span><span class="n">app</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="__span-8-9">    <span class="p">)</span>
+</span><span id="__span-8-10">    <span class="k">return</span> <span class="n">selected</span>
+</span><span id="__span-8-11">
+</span><span id="__span-8-12"><span class="n">node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;peername.gy&quot;</span><span class="p">,</span> <span class="s2">&quot;realm.net&quot;</span><span class="p">)</span>
+</span><span id="__span-8-13"><span class="n">node</span><span class="o">.</span><span class="n">peer_route_select_func</span> <span class="o">=</span> <span class="n">select_random_peer</span>
+</span></code></pre></div>
+<p>The function receives:
+- <code>node</code>: The <a class="autorefs autorefs-internal" title="Node" href="../../api/node/#diameter.node.node.Node"><code>Node</code></a> instance
+- <code>app</code>: The <a class="autorefs autorefs-internal" title="Application" href="../../api/application/#diameter.node.application.Application"><code>Application</code></a> instance
+  that wants to send the request
+- <code>message</code>: The <a class="autorefs autorefs-internal" title="Message" href="../../api/message/#diameter.message.Message"><code>Message</code></a> to be sent
+- <code>peers</code>: A list of <a class="autorefs autorefs-internal" title="Peer
+
+
+  
+      dataclass
+  " href="../../api/peer/#diameter.node.peer.Peer"><code>Peer</code></a> instances that are
+  available and ready to receive requests</p>
+<p>The function must return a single <a class="autorefs autorefs-internal" title="Peer
+
+
+  
+      dataclass
+  " href="../../api/peer/#diameter.node.peer.Peer"><code>Peer</code></a> instance
+from the provided list. If the message cannot be routed, the function may also
+raise a <a class="autorefs autorefs-internal" title="NotRoutable" href="../../api/node/#diameter.node.node.NotRoutable"><code>NotRoutable</code></a> exception, which is provided
+by the stack.</p>
+</dd>
 <dt><code>statistics</code></dt>
 <dd>Returns an instance of <a class="autorefs autorefs-internal" title="NodeStats
 
@@ -1842,11 +1894,11 @@ one instance of <code>Peer</code> for each connection that it either makes, rece
 connect to, or will accept a connection from.</p>
 <p>An instance of a peer is returned every time 
 <a class="autorefs autorefs-internal" title="add_peer" href="../../api/node/#diameter.node.node.Node.add_peer"><code>Node.add_peer</code></a> is called:</p>
-<div class="highlight"><pre><span></span><code><span id="__span-7-1"><span class="kn">from</span> <span class="nn">diameter.node</span> <span class="kn">import</span> <span class="n">Node</span>
-</span><span id="__span-7-2">
-</span><span id="__span-7-3"><span class="n">node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;peername.gy&quot;</span><span class="p">,</span> <span class="s2">&quot;realm.net&quot;</span><span class="p">)</span>
-</span><span id="__span-7-4"><span class="n">peer</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">add_peer</span><span class="p">(</span><span class="s2">&quot;aaa://ocs2.gy;transport=sctp&quot;</span><span class="p">,</span> <span class="s2">&quot;realm.net&quot;</span><span class="p">,</span> 
-</span><span id="__span-7-5">                     <span class="n">ip_addresses</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;10.16.0.8&quot;</span><span class="p">,</span> <span class="s2">&quot;10.16.5.8&quot;</span><span class="p">])</span>
+<div class="highlight"><pre><span></span><code><span id="__span-9-1"><span class="kn">from</span> <span class="nn">diameter.node</span> <span class="kn">import</span> <span class="n">Node</span>
+</span><span id="__span-9-2">
+</span><span id="__span-9-3"><span class="n">node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;peername.gy&quot;</span><span class="p">,</span> <span class="s2">&quot;realm.net&quot;</span><span class="p">)</span>
+</span><span id="__span-9-4"><span class="n">peer</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">add_peer</span><span class="p">(</span><span class="s2">&quot;aaa://ocs2.gy;transport=sctp&quot;</span><span class="p">,</span> <span class="s2">&quot;realm.net&quot;</span><span class="p">,</span> 
+</span><span id="__span-9-5">                     <span class="n">ip_addresses</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;10.16.0.8&quot;</span><span class="p">,</span> <span class="s2">&quot;10.16.5.8&quot;</span><span class="p">])</span>
 </span></code></pre></div>
 <p>A configured peer can be passed on to <a href="../application/">a diameter application</a>. </p>
 <p>A peer may be configured with a realm other than the Node and multiple realms
@@ -1929,16 +1981,16 @@ determined as the supported application IDs after a CER/CEA has taken place.</dd
 <dd>
 <p>The hop-by-hop identifier generator. This must be used every time a new 
 request message is to be sent through the peer:</p>
-<div class="highlight"><pre><span></span><code><span id="__span-8-1"><span class="kn">from</span> <span class="nn">diameter.node</span> <span class="kn">import</span> <span class="n">Node</span>
-</span><span id="__span-8-2"><span class="kn">from</span> <span class="nn">diameter.node.peer</span> <span class="kn">import</span> <span class="n">PEER_READY_STATES</span>
-</span><span id="__span-8-3">
-</span><span id="__span-8-4"><span class="n">n</span> <span class="o">=</span> <span class="n">Node</span><span class="p">()</span>
-</span><span id="__span-8-5"><span class="c1"># just pick any ready peer</span>
-</span><span id="__span-8-6"><span class="n">usable_peers</span> <span class="o">=</span> <span class="p">[</span>
-</span><span id="__span-8-7">    <span class="n">peer</span> <span class="k">for</span> <span class="n">peer</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">peers</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
-</span><span id="__span-8-8">    <span class="k">if</span> <span class="n">peer</span><span class="o">.</span><span class="n">conenction</span> <span class="ow">and</span> <span class="n">peer</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">state</span> <span class="ow">in</span> <span class="n">PEER_READY_STATES</span><span class="p">]</span>
-</span><span id="__span-8-9"><span class="n">peer</span> <span class="o">=</span> <span class="n">usable_peers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-</span><span id="__span-8-10"><span class="n">m</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">hop_by_hop_identifier</span> <span class="o">=</span> <span class="n">peer</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">hop_by_hop_seq</span><span class="o">.</span><span class="n">next_sequence</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><span id="__span-10-1"><span class="kn">from</span> <span class="nn">diameter.node</span> <span class="kn">import</span> <span class="n">Node</span>
+</span><span id="__span-10-2"><span class="kn">from</span> <span class="nn">diameter.node.peer</span> <span class="kn">import</span> <span class="n">PEER_READY_STATES</span>
+</span><span id="__span-10-3">
+</span><span id="__span-10-4"><span class="n">n</span> <span class="o">=</span> <span class="n">Node</span><span class="p">()</span>
+</span><span id="__span-10-5"><span class="c1"># just pick any ready peer</span>
+</span><span id="__span-10-6"><span class="n">usable_peers</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="__span-10-7">    <span class="n">peer</span> <span class="k">for</span> <span class="n">peer</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">peers</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+</span><span id="__span-10-8">    <span class="k">if</span> <span class="n">peer</span><span class="o">.</span><span class="n">conenction</span> <span class="ow">and</span> <span class="n">peer</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">state</span> <span class="ow">in</span> <span class="n">PEER_READY_STATES</span><span class="p">]</span>
+</span><span id="__span-10-9"><span class="n">peer</span> <span class="o">=</span> <span class="n">usable_peers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span><span id="__span-10-10"><span class="n">m</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">hop_by_hop_identifier</span> <span class="o">=</span> <span class="n">peer</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">hop_by_hop_seq</span><span class="o">.</span><span class="n">next_sequence</span><span class="p">()</span>
 </span></code></pre></div>
 <p>Note that when working with <a href="../application/">applications</a>, the end-to-end 
 identifier will be set automatically for every outgoing request, when 
@@ -1967,27 +2019,27 @@ towards a remote peer.</dd>
 <p>Normally incoming and outgoing messages are expected to be handled and 
 generated by <a href="../application/">applications</a>, however a message can also be 
 manually pushed through any connected peer:</p>
-<div class="highlight"><pre><span></span><code><span id="__span-9-1"><span class="kn">from</span> <span class="nn">diameter.message.commands.re_auth</span> <span class="kn">import</span> <span class="n">ReAuthRequest</span>
-</span><span id="__span-9-2"><span class="kn">from</span> <span class="nn">diameter.node</span> <span class="kn">import</span> <span class="n">Node</span>
-</span><span id="__span-9-3"><span class="kn">from</span> <span class="nn">diameter.node.peer</span> <span class="kn">import</span> <span class="n">PEER_READY_STATES</span>
-</span><span id="__span-9-4">
-</span><span id="__span-9-5"><span class="n">node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;peername.gy&quot;</span><span class="p">,</span> <span class="s2">&quot;realm.net&quot;</span><span class="p">)</span>
-</span><span id="__span-9-6"><span class="n">peer</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">add_peer</span><span class="p">(</span><span class="s2">&quot;aaa://ocs2.gy;transport=sctp&quot;</span><span class="p">,</span> <span class="s2">&quot;realm.net&quot;</span><span class="p">,</span> 
-</span><span id="__span-9-7">                     <span class="n">ip_addresses</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;10.16.0.8&quot;</span><span class="p">,</span> <span class="s2">&quot;10.16.5.8&quot;</span><span class="p">],</span> 
-</span><span id="__span-9-8">                     <span class="n">is_persistent</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</span><span id="__span-9-9"><span class="n">node</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-</span><span id="__span-9-10">
-</span><span id="__span-9-11"><span class="c1"># ideally should wait until connection becomes available; the READY state is not </span>
-</span><span id="__span-9-12"><span class="c1"># achieved until CER/CEA has completed, which is likely to take a few seconds</span>
-</span><span id="__span-9-13"><span class="k">if</span> <span class="n">peer</span><span class="o">.</span><span class="n">connection</span> <span class="ow">and</span> <span class="n">peer</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">state</span> <span class="ow">in</span> <span class="n">PEER_READY_STATES</span><span class="p">:</span>
-</span><span id="__span-9-14">    <span class="n">rar</span> <span class="o">=</span> <span class="n">ReAuthRequest</span><span class="p">()</span>
-</span><span id="__span-9-15">    <span class="n">rar</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">end_to_end_identifier</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">end_to_end_seq</span><span class="o">.</span><span class="n">next_sequence</span><span class="p">()</span>
-</span><span id="__span-9-16">    <span class="n">rar</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">hop_by_hop_identifier</span> <span class="o">=</span> <span class="n">peer</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">hop_by_hop_seq</span><span class="o">.</span><span class="n">next_sequence</span><span class="p">()</span>
-</span><span id="__span-9-17">    <span class="n">rar</span><span class="o">.</span><span class="n">session_id</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">session_generator</span><span class="o">.</span><span class="n">next_id</span><span class="p">()</span>
-</span><span id="__span-9-18">    <span class="c1"># ... set all other required attributes and then send</span>
-</span><span id="__span-9-19">    <span class="n">node</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">peer</span><span class="o">.</span><span class="n">connection</span><span class="p">,</span> <span class="n">rar</span><span class="p">)</span>
-</span><span id="__span-9-20">
-</span><span id="__span-9-21"><span class="n">node</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><span id="__span-11-1"><span class="kn">from</span> <span class="nn">diameter.message.commands.re_auth</span> <span class="kn">import</span> <span class="n">ReAuthRequest</span>
+</span><span id="__span-11-2"><span class="kn">from</span> <span class="nn">diameter.node</span> <span class="kn">import</span> <span class="n">Node</span>
+</span><span id="__span-11-3"><span class="kn">from</span> <span class="nn">diameter.node.peer</span> <span class="kn">import</span> <span class="n">PEER_READY_STATES</span>
+</span><span id="__span-11-4">
+</span><span id="__span-11-5"><span class="n">node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;peername.gy&quot;</span><span class="p">,</span> <span class="s2">&quot;realm.net&quot;</span><span class="p">)</span>
+</span><span id="__span-11-6"><span class="n">peer</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">add_peer</span><span class="p">(</span><span class="s2">&quot;aaa://ocs2.gy;transport=sctp&quot;</span><span class="p">,</span> <span class="s2">&quot;realm.net&quot;</span><span class="p">,</span> 
+</span><span id="__span-11-7">                     <span class="n">ip_addresses</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;10.16.0.8&quot;</span><span class="p">,</span> <span class="s2">&quot;10.16.5.8&quot;</span><span class="p">],</span> 
+</span><span id="__span-11-8">                     <span class="n">is_persistent</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="__span-11-9"><span class="n">node</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</span><span id="__span-11-10">
+</span><span id="__span-11-11"><span class="c1"># ideally should wait until connection becomes available; the READY state is not </span>
+</span><span id="__span-11-12"><span class="c1"># achieved until CER/CEA has completed, which is likely to take a few seconds</span>
+</span><span id="__span-11-13"><span class="k">if</span> <span class="n">peer</span><span class="o">.</span><span class="n">connection</span> <span class="ow">and</span> <span class="n">peer</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">state</span> <span class="ow">in</span> <span class="n">PEER_READY_STATES</span><span class="p">:</span>
+</span><span id="__span-11-14">    <span class="n">rar</span> <span class="o">=</span> <span class="n">ReAuthRequest</span><span class="p">()</span>
+</span><span id="__span-11-15">    <span class="n">rar</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">end_to_end_identifier</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">end_to_end_seq</span><span class="o">.</span><span class="n">next_sequence</span><span class="p">()</span>
+</span><span id="__span-11-16">    <span class="n">rar</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">hop_by_hop_identifier</span> <span class="o">=</span> <span class="n">peer</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">hop_by_hop_seq</span><span class="o">.</span><span class="n">next_sequence</span><span class="p">()</span>
+</span><span id="__span-11-17">    <span class="n">rar</span><span class="o">.</span><span class="n">session_id</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">session_generator</span><span class="o">.</span><span class="n">next_id</span><span class="p">()</span>
+</span><span id="__span-11-18">    <span class="c1"># ... set all other required attributes and then send</span>
+</span><span id="__span-11-19">    <span class="n">node</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">peer</span><span class="o">.</span><span class="n">connection</span><span class="p">,</span> <span class="n">rar</span><span class="p">)</span>
+</span><span id="__span-11-20">
+</span><span id="__span-11-21"><span class="n">node</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
 </span></code></pre></div>
 
 
