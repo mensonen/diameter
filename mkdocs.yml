@@ -36,7 +36,7 @@ nav:
   - Examples:
     - Credit Control SMS client: examples/credit_control_sms_client.md
     - Idling server and client: examples/idle_server_client.md
-  - API Refrence:
+  - API Reference:
     - AVP:
       - api/avp/index.md
       - Grouped AVPs: api/avp/grouped.md

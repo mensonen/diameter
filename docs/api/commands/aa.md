@@ -4,7 +4,7 @@ shallow_toc: 4
 API reference for `diameter.message.commands.aa`.
 
 This module contains AA Request and Answer messages, implementing AVPs
-documented in rfc7155.
+documented in `rfc7155`.
 
 ::: diameter.message.commands.aa.Aa
     options:

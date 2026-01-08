@@ -4,7 +4,7 @@ shallow_toc: 4
 API reference for `diameter.message.commands.session_termination`.
 
 This module contains Session-Termination Request and Answer messages,
-implementing AVPs documented in rfc6733.
+implementing AVPs documented in `rfc6733`.
 
 ::: diameter.message.commands.session_termination.SessionTermination
     options:

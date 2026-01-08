@@ -4,7 +4,7 @@ shallow_toc: 4
 API reference for `diameter.message.commands.home_agent_mip`.
 
 This module contains Home-Agent-MIP Request and Answer messages, implementing
-AVPs documented in rfc4004.
+AVPs documented in `rfc4004`.
 
 ::: diameter.message.commands.home_agent_mip.HomeAgentMip
     options:

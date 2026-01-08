@@ -4,7 +4,7 @@ shallow_toc: 4
 API reference for `diameter.message.commands.multimedia_auth`.
 
 This module contains Multimedia-Auth Request and Answer messages, implementing
-AVPs documented in 3GPP TS 29.229.
+AVPs documented in `3GPP TS 29.229`.
 
 ::: diameter.message.commands.multimedia_auth.MultimediaAuth
     options:

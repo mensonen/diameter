@@ -4,7 +4,7 @@ shallow_toc: 4
 API reference for `diameter.message.commands.location_info`.
 
 This module contains Location-Info Request and Answer messages, implementing
-AVPs documented in 3GPP TS 29.229.
+AVPs documented in `3GPP TS 29.229`.
 
 ::: diameter.message.commands.location_info.LocationInfo
     options:
