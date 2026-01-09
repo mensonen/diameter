@@ -64,7 +64,7 @@ persistent will never be automatically connected to. A reconnect attempt is
 [`always_reconnect`][diameter.node.peer.Peer.always_reconnect] attribute to 
 true.
 
-Adding a peer without specifying its ip addresses will only make the peer 
+Adding a peer without specifying its IP addresses will only make the peer 
 "known"; no outgoing connection is ever attempted and the initial connection 
 must be made by the peer themselves, towards our node (for this the node must 
 [act as a server](#starting-a-server)).
@@ -150,7 +150,7 @@ A node has several attributes that can be used or altered after its creation:
     `Node.start()` is called.
 
 `product_name`
-:   The product name that the noed will advertise in CER and CEA. Defaults to 
+:   The product name that the node will advertise in CER and CEA. Defaults to 
     "python-diameter". Can be changed at any time, though preferably before
     `Node.start()` is called.
 

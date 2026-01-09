@@ -61,7 +61,7 @@ The `diameter` package offers three different application implementations:
 [`Application`][diameter.node.application.Application]
 :   The most basic form of an application. Must be subclassed and contains two 
     methods, `handle_request`, which must be overridden, and `handle_answer`,
-    which *may* be overriden, but is usually not necessary. 
+    which *may* be overridden, but is usually not necessary. 
 
     The `Application` class calls internally `handle_request` for each 
     received diameter request in the main thread. It calls `handle_answer` for
@@ -96,7 +96,7 @@ The `diameter` package offers three different application implementations:
 :   A variation of application, which spawns a new thread for each incoming 
     request, up to an optional maximum amount of threads. Must be subclassed.
     Also contains two methods, `handle_request`, which must be overridden, 
-    and `handle_answer`, which *may* be overriden, but is usually not necessary.
+    and `handle_answer`, which *may* be overridden, but is usually not necessary.
 
     Unlike in the base `Application` class, the threading application expects
     that the overridden `handle_request` returns a valid diameter message as an

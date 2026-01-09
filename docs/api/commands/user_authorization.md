@@ -4,7 +4,7 @@ shallow_toc: 4
 API reference for `diameter.message.commands.user_authorization`.
 
 This module contains User-Authorization Request and Answer messages, 
-implementing AVPs documented in 3GPP TS 29.229.
+implementing AVPs documented in `3GPP TS 29.229`.
 
 ::: diameter.message.commands.user_authorization.UserAuthorization
     options:

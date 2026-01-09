@@ -5,7 +5,7 @@ AVPs, to communicate with diameter peers using the diameter base protocol and
 to write diameter applications, as defined in the Diameter Base `rfc6733`.
 
 The diameter stack supports transports over both *TCP* and *SCTP*, with 
-SCTP support provided by an optional depency on [pysctp](https://pypi.org/project/pysctp/).
+SCTP support provided by an optional dependency on [pysctp](https://pypi.org/project/pysctp/).
 
 The provided Application and Node implementations handle the majority of the 
 basic protocol-level operations automatically, such as managing peer tables, 
@@ -20,7 +20,7 @@ bytes. Message AVPs can be accessed directly as instance attributes.
 The `diameter` package provides tools for:
 
 - [Parsing and writing AVPs](guide/avp.md)
-- [Parsing and writing diameter Mesages](guide/message.md)
+- [Parsing and writing diameter Messages](guide/message.md)
 - [Creating diameter nodes and connecting to other peers](guide/node.md)
 - [Writing diameter applications](guide/application.md)
 

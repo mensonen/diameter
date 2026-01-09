@@ -39,7 +39,7 @@ See [working with AVPs](avp.md) for a guide on AVPs.
 # base class for parsing and creating messages
 from diameter.message import Message
 
-# subclasses of messages ae in the `commands` module
+# subclasses of messages are in the `commands` module
 from diameter.message.commands import AbortSessionRequest, ReAuthRequest
 ```
 

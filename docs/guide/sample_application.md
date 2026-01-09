@@ -161,7 +161,7 @@ until a given timeout (default 30 seconds) has passed, waiting for an answer to
 arrive through the peer. If an answer is received, it is returned, otherwise an
 exception is raised.
 
-As we are only going to send one single message, the noed can be stopped 
+As we are only going to send one single message, the node can be stopped 
 afterwards, which will cleanly disconnect from the remote peer.
 
 ```python

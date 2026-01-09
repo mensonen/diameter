@@ -4,7 +4,7 @@ shallow_toc: 4
 API reference for `diameter.message.commands.spending_limit`.
 
 This module contains Spending-Limit Request and Answer messages, 
-implementing AVPs documented in 3GPP TS 29.219.
+implementing AVPs documented in `3GPP TS 29.219`.
 
 ::: diameter.message.commands.spending_limit.SpendingLimit
     options:

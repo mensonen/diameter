@@ -4,7 +4,7 @@ shallow_toc: 4
 API reference for `diameter.message.commands.disconnect_peer`.
 
 This module contains Disconnect-PeerConnection Request and Answer messages, implementing
-AVPs documented in rfc6733.
+AVPs documented in `rfc6733`.
 
 ::: diameter.message.commands.disconnect_peer.DisconnectPeer
     options:
