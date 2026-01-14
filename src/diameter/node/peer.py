@@ -594,6 +594,14 @@ class PeerConnection:
 
                     self.__dispatch_message(message)
 
+                # stop consuming buffer if we do not have enough bytes left for
+                # a message header
+                if 0 < len(self._read_buffer) < 20:
+                    self.logger.debug(
+                        f"message incomplete (buffer has only "
+                        f"{len(self._read_buffer)} bytes left), waiting")
+                    resume_waiting = True
+
     def work_write_queue(self, _thread: StoppableThread):
         while True:
             if _thread.is_stopped:
