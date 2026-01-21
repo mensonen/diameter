@@ -100,7 +100,7 @@ class Application:
             answer_msg.acct_application_id = self.application_id
         if result_code:
             answer_msg.result_code = result_code
-        if result_code:
+        if error_message:
             answer_msg.error_message = error_message
 
         return answer_msg
