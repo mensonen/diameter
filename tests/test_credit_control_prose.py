@@ -12,11 +12,11 @@ from diameter.message.commands.credit_control import ServiceInformation
 from diameter.message.commands.credit_control import ProseInformation
 from diameter.message.commands.credit_control import SupportedFeatures
 from diameter.message.commands.credit_control import CoverageInfo
-from diameter.message.commands.credit_control import LocationInfo
 from diameter.message.commands.credit_control import RadioParameterSetInfo
 from diameter.message.commands.credit_control import TransmitterInfo
 from diameter.message.commands.credit_control import ProSeDirectCommunicationTransmissionDataContainer
 from diameter.message.commands.credit_control import ProSeDirectCommunicationReceptionDataContainer
+from diameter.message.avp.grouped import LocationInfo
 
 
 def test_ccr_3gpp_prose_information():

@@ -18,6 +18,192 @@ from ..constants import *
 logger = logging.getLogger("diameter.avp")
 
 
+__all__ = [
+    "AccessNetworkInfoChange",
+    "AccessTransferInformation",
+    "AccumulatedCost",
+    "AdditionalContentInformation",
+    "AddressDomain",
+    "AfCorrelationInformation",
+    "AllocationRetentionPriority",
+    "AllowedWafWwsfIdentities",
+    "AnnouncementInformation",
+    "AocCostInformation",
+    "AocInformation",
+    "AocService",
+    "AocSubscriptionInformation",
+    "ApnRateControl",
+    "ApnRateControlDownlink",
+    "ApnRateControlUplink",
+    "ApplicationServerInformation",
+    "AssociatedIdentities",
+    "AssociatedRegisteredIdentities",
+    "BasicServiceCode",
+    "CalledIdentityChange",
+    "CalleeInformation",
+    "Cause",
+    "CcMoney",
+    "ChapAuth",
+    "ChargingInformation",
+    "ChargingRuleInstall",
+    "ChargingRuleRemove",
+    "Classifier",
+    "CostInformation",
+    "CoverageInfo",
+    "CpdtInformation",
+    "CurrentTariff",
+    "DcdInformation",
+    "DefaultEpsBearerQos",
+    "DeregistrationReason",
+    "DestinationInterface",
+    "EarlyMediaDescription",
+    "EnhancedDiagnostics",
+    "Envelope",
+    "EthOption",
+    "EthProtoType",
+    "Eui64AddressMask",
+    "EventType",
+    "ExcessTreatment",
+    "ExperimentalResult",
+    "FailedAvp",
+    "FilterRule",
+    "FinalUnitIndication",
+    "FixedUserLocationInfo",
+    "Flows",
+    "FromSpec",
+    "FromToSpec",
+    "GenericSpec",
+    "GrantedServiceUnit",
+    "GsuPoolReference",
+    "IcmpType",
+    "IdentityWithEmergencyRegistration",
+    "ImInformation",
+    "ImsInformation",
+    "IncrementalCost",
+    "InterOperatorIdentifier",
+    "IpAddressMask",
+    "IpAddressRange",
+    "IpOption",
+    "IsupCause",
+    "LcsClientId",
+    "LcsClientName",
+    "LcsInformation",
+    "LcsRequestorId",
+    "LocationInfoGrouped",
+    "LocationType",
+    "M2mInformation",
+    "MacAddressMask",
+    "MbmsInformation",
+    "MediaComponentDescription",
+    "MediaSubComponent",
+    "MessageBody",
+    "MessageClass",
+    "MipFaToHaMsa",
+    "MipFaToMnMsa",
+    "MipHaToFaMsa",
+    "MipHaToMnMsa",
+    "MipHomeAgentHost",
+    "MipMnAaaAuth",
+    "MipMnToFaMsa",
+    "MipMnToHaMsa",
+    "MipOriginatingForeignAaa",
+    "MmContentType",
+    "MmsInformation",
+    "MmtelInformation",
+    "MultipleServicesCreditControl",
+    "NextTariff",
+    "NiddSubmission",
+    "NniInformation",
+    "OcOlr",
+    "OcSupportedFeatures",
+    "OfflineCharging",
+    "OriginatorAddress",
+    "OriginatorInterface",
+    "OriginatorReceivedAddress",
+    "ParticipantGroup",
+    "PocInformation",
+    "PocUserRole",
+    "PolicyCounterStatusReport",
+    "PortRange",
+    "PresenceReportingAreaInformation",
+    "ProSeDirectCommunicationReceptionDataContainer",
+    "ProSeDirectCommunicationTransmissionDataContainer",
+    "ProseInformation",
+    "ProxyInfo",
+    "PsFurnishChargingInformation",
+    "PsInformation",
+    "QosFinalUnitIndication",
+    "QosInformation",
+    "QosParameters",
+    "QosProfileTemplate",
+    "RadioParameterSetInfo",
+    "RanSecondaryRatUsageReport",
+    "RateElement",
+    "RealTimeTariffInformation",
+    "RecipientAddress",
+    "RecipientInfo",
+    "RecipientReceivedAddress",
+    "RedirectServer",
+    "RedirectServerExtension",
+    "RelatedChangeConditionInformation",
+    "RelatedTrigger",
+    "RemainingBalance",
+    "RequestedServiceUnit",
+    "RestorationInfo",
+    "RrcCauseCounter",
+    "ScaleFactor",
+    "ScsAsAddress",
+    "ScscfRestorationInfo",
+    "SdpMediaComponent",
+    "SdpTimestamps",
+    "ServerCapabilities",
+    "ServiceDataContainer",
+    "ServiceGenericInformation",
+    "ServiceInformation",
+    "ServiceParameterInfo",
+    "ServiceSpecificInfo",
+    "ServingNode",
+    "ServingPlmnRateControl",
+    "SipAuthDataItem",
+    "SipDigestAuthenticate",
+    "SmDeviceTriggerInformation",
+    "SmsInformation",
+    "SubscriptionId",
+    "SubscriptionInfo",
+    "SupplementaryService",
+    "SupportedFeatures",
+    "TalkBurstExchange",
+    "TariffInformation",
+    "TcpFlags",
+    "TcpOption",
+    "TerminalInformation",
+    "TimeOfDayCondition",
+    "TimeQuotaMechanism",
+    "TimeStamps",
+    "ToSpec",
+    "TrafficDataVolumes",
+    "TransmitterInfo",
+    "Trigger",
+    "TrunkGroupId",
+    "Tunneling",
+    "TwanUserLocationInfo",
+    "UnitCost",
+    "UnitValue",
+    "UsedServiceUnit",
+    "UserCsgInformation",
+    "UserEquipmentInfo",
+    "UserEquipmentInfoExtension",
+    "UserPriorityRange",
+    "UwanUserLocationInfo",
+    "VariablePart",
+    "VcsInformation",
+    "VendorSpecificApplicationId",
+    "VlanIdRange",
+    "VolteInformation",
+    "WlanOperatorId",
+]
+
+
 @dataclasses.dataclass
 class GenericSpec:
     additional_avps: list[Avp] = dataclasses.field(default_factory=list)
@@ -2640,6 +2826,28 @@ class LocationInfo:
     """A data container that represents the "Location-Info" (3460) grouped AVP.
 
     3GPP TS 32.299 version 16.2.0
+
+    !!! Warning
+        The name of this python class conflicts with the [LocationInfo][diameter.message.commands.LocationInfo]
+        command message. Therefore it is not contained in the `__all__` list
+        and cannot be imported with
+
+        ```python
+        from diameter.message.avp.grouped import *
+        ```
+
+        When done so, it appears as its alias,
+        [LocationInfoGrouped][diameter.message.avp.grouped.LocationInfoGrouped].
+
+        However, if this AVP is required, as non-aliased, it can still be
+        imported directly, but doing so may still result in a conflict with
+        `LocationInfo` command.
+
+        ```python
+        from diameter.message.avp.grouped import LocationInfo
+        ```
+
+
     """
     tgpp_user_location_info: bytes = None
     change_time: datetime.datetime = None
@@ -2649,6 +2857,14 @@ class LocationInfo:
         AvpGenDef("tgpp_user_location_info", AVP_TGPP_3GPP_USER_LOCATION_INFO, VENDOR_TGPP),
         AvpGenDef("change_time", AVP_TGPP_CHANGE_TIME, VENDOR_TGPP),
     )
+
+
+LocationInfoGrouped = LocationInfo
+"""A data container that represents the "Location-Info" (3460) grouped AVP.
+
+This is an alias for [LocationInfo][diameter.message.avp.grouped.LocationInfo],
+as "LocationInfo" conflicts with a message command with the same name. 
+"""
 
 
 @dataclasses.dataclass
@@ -3965,6 +4181,7 @@ class ServiceInformation:
         AvpGenDef("cpdt_information", AVP_TGPP_CPDT_INFORMATION, VENDOR_TGPP, type_class=CpdtInformation),
     )
 
+
 @dataclasses.dataclass
 class AllocationRetentionPriority:
     """A data container that represents the "Allocation-Retention-Priority" (1034) grouped AVP."""
@@ -3972,12 +4189,13 @@ class AllocationRetentionPriority:
     pre_emption_vulnerability: int = None
     pre_emption_capability: int = None
 
-    # # noinspection PyDataclass
+    # noinspection PyDataclass
     avp_def: dataclasses.InitVar[AvpGenType] = (
         AvpGenDef("priority_level", AVP_TGPP_PRIORITY_LEVEL, VENDOR_TGPP),
         AvpGenDef("pre_emption_vulnerability", AVP_TGPP_PRE_EMPTION_VULNERABILITY, VENDOR_TGPP),
         AvpGenDef("pre_emption_capability", AVP_TGPP_PRE_EMPTION_CAPABILITY, VENDOR_TGPP),
     )
+
 
 @dataclasses.dataclass
 class DefaultEpsBearerQos:
@@ -3985,11 +4203,13 @@ class DefaultEpsBearerQos:
     qos_class_identifier: str = None
     allocation_retention_priority: AllocationRetentionPriority = AllocationRetentionPriority
 
-    # # noinspection PyDataclass
+    # noinspection PyDataclass
     avp_def: dataclasses.InitVar[AvpGenType] = (
         AvpGenDef("qos_class_identifier", AVP_TGPP_QOS_CLASS_IDENTIFIER, VENDOR_TGPP),
         AvpGenDef("allocation_retention_priority", AVP_TGPP_ALLOCATION_RETENTION_PRIORITY, VENDOR_TGPP,type_class=AllocationRetentionPriority),
     )
+
+
 @dataclasses.dataclass
 class MediaSubComponent:
     """A data container that represents the "Media-Sub-Component" (1436) grouped AVP."""
@@ -3998,14 +4218,14 @@ class MediaSubComponent:
     flow_number: int = None
     flow_status: int = None
 
-    # # noinspection PyDataclass
+    # noinspection PyDataclass
     avp_def: dataclasses.InitVar[AvpGenType] = (
         AvpGenDef("flow_description", AVP_TGPP_FLOW_DESCRIPTION, VENDOR_TGPP),
         AvpGenDef("flow_usage", AVP_TGPP_FLOW_USAGE, VENDOR_TGPP),
         AvpGenDef("flow_number", AVP_TGPP_FLOW_NUMBER, VENDOR_TGPP),
         AvpGenDef("flow_status", AVP_TGPP_FLOW_STATUS, VENDOR_TGPP),
-
     )
+
 
 @dataclasses.dataclass
 class MediaComponentDescription:
@@ -4018,7 +4238,7 @@ class MediaComponentDescription:
     max_requested_bandwidth_dl: int = None
     media_type: int = None
 
-    # # noinspection PyDataclass
+    # noinspection PyDataclass
     avp_def: dataclasses.InitVar[AvpGenType] = (
         AvpGenDef("media_component_number", AVP_TGPP_MEDIA_COMPONENT_NUMBER, VENDOR_TGPP),
         AvpGenDef("media_sub_component", AVP_TGPP_MEDIA_SUB_COMPONENT, VENDOR_TGPP, type_class=MediaSubComponent),
@@ -4028,17 +4248,20 @@ class MediaComponentDescription:
         AvpGenDef("max_requested_bandwidth_dl", AVP_TGPP_MAX_REQUESTED_BANDWIDTH_DL, VENDOR_TGPP),
         AvpGenDef("media_type", AVP_TGPP_MEDIA_TYPE, VENDOR_TGPP),
     )
-    
+
+
 @dataclasses.dataclass
 class ChargingRuleInstall:
     """A data container that represents the "Charging-Rule-Install" (1001) grouped AVP."""
     charging_rule_base_name: list[Avp] = dataclasses.field(default_factory=list)
     charging_rule_name: list[Avp] = dataclasses.field(default_factory=list)
 
+    # noinspection PyDataclass
     avp_def: dataclasses.InitVar[AvpGenType] = (
         AvpGenDef("charging_rule_base_name", AVP_TGPP_CHARGING_RULE_BASE_NAME, VENDOR_TGPP),
         AvpGenDef("charging_rule_name", AVP_TGPP_CHARGING_RULE_NAME, VENDOR_TGPP),
     )
+
 
 @dataclasses.dataclass
 class ChargingRuleRemove:
@@ -4046,6 +4269,7 @@ class ChargingRuleRemove:
     charging_rule_base_name: list[Avp] = dataclasses.field(default_factory=list)
     charging_rule_name: list[Avp] = dataclasses.field(default_factory=list)
 
+    # noinspection PyDataclass
     avp_def: dataclasses.InitVar[AvpGenType] = (
         AvpGenDef("charging_rule_base_name", AVP_TGPP_CHARGING_RULE_BASE_NAME, VENDOR_TGPP),
         AvpGenDef("charging_rule_name", AVP_TGPP_CHARGING_RULE_NAME, VENDOR_TGPP),
