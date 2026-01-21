@@ -12,6 +12,7 @@ from .._base import Message, MessageHeader, DefinedMessage, _AnyMessageType
 from ..avp.grouped import *
 from ..avp.generator import AvpGenDef, AvpGenType
 from ._attributes import assign_attr_from_defs
+from ..constants import *
 
 
 __all__ = ["SessionTermination", "SessionTerminationAnswer",
