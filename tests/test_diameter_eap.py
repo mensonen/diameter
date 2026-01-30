@@ -2,6 +2,8 @@
 Run from package root:
 ~# python3 -m pytest -vv
 """
+import ipaddress
+
 import pytest
 
 from diameter.message import constants
@@ -46,9 +48,9 @@ def test_der_create_new():
     der.connect_info = "28800 V42BIS/LAPM"
     der.framed_compression = [10]
     der.framed_interface_id = 1
-    der.framed_ip_address = b"10.0.0.1"
+    der.framed_ip_address = ipaddress.ip_address("10.0.0.1").packed
     der.framed_ipv6_prefix = [b"efefbada"]
-    der.framed_ip_netmask = b"255.255.255.0"
+    der.framed_ip_netmask = ipaddress.ip_address("255.255.255.0").packed
     der.framed_mtu = 1500
     der.framed_protocol = constants.E_FRAMED_PROTOCOL_GANDALF
     der.tunneling = [Tunneling(
