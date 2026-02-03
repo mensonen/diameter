@@ -616,11 +616,6 @@ class Node:
         if hasattr(msg, "proxy_info"):
             answer_msg.proxy_info = msg.proxy_info
 
-        if isinstance(answer_msg, CapabilitiesExchangeAnswer):
-            answer_msg.host_ip_address = self.ip_addresses
-            answer_msg.vendor_id = self.vendor_id
-            answer_msg.product_name = self.product_name
-
         return answer_msg
 
     def _generate_connection_id(self, cur_iteration: int = 0) -> str:
@@ -1289,6 +1284,7 @@ class Node:
 
     def receive_cer(self, conn: PeerConnection, message: CapabilitiesExchangeRequest):
         answer: CapabilitiesExchangeAnswer = self._generate_answer(conn, message)
+        answer.host_ip_address = self.ip_addresses
         answer.vendor_id = self.vendor_id
         answer.product_name = self.product_name
         answer.supported_vendor_id = list(self.vendor_ids)
