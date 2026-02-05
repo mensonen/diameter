@@ -20,7 +20,7 @@ classifiers = [
 dynamic = ["version"]
 
 [project.urls]
-Documentation = "https://mensonen.github.io/diameter/"
+Documentation = "https://python-diameter.org/"
 Repository = "https://github.com/mensonen/diameter"
 
 [tool.setuptools_scm]

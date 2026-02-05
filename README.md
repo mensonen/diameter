@@ -29,10 +29,10 @@ bytes. Message AVPs can be accessed directly as instance attributes.
 
 The `diameter` package provides tools for:
 
-- [Parsing and writing AVPs](https://mensonen.github.io/diameter/guide/avp)
-- [Parsing and writing diameter Mesages](https://mensonen.github.io/diameter/guide/message)
-- [Creating diameter nodes and connecting to other peers](https://mensonen.github.io/diameter/guide/node)
-- [Writing diameter applications](https://mensonen.github.io/diameter/guide/application)
+- [Parsing and writing AVPs](https://python-diameter.org/docs/current/guide/avp/)
+- [Parsing and writing diameter Mesages](https://python-diameter.org/docs/current/guide/message/)
+- [Creating diameter nodes and connecting to other peers](https://python-diameter.org/docs/current/guide/node/)
+- [Writing diameter applications](https://python-diameter.org/docs/current/guide/application/)
 
 ## Supported applications
 
