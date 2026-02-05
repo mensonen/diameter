@@ -322,11 +322,11 @@ class Avp:
     @property
     def length(self):
         """The entire length of the AVP, including header and vendor bit."""
-        if not self.payload:
-            return 0
         hdr_length = 8
         if self.vendor_id:
             hdr_length += 4
+        if not self.payload:
+            return hdr_length
         return hdr_length + len(self.payload)
 
     @property
