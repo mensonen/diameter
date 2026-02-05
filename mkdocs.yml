@@ -1,4 +1,4 @@
-site_name: Python Diameter Stack
+site_name: Python Diameter
 repo_url: https://github.com/mensonen/diameter
 theme:
   name: "material"
@@ -19,10 +19,17 @@ theme:
         name: Switch to light mode
   features:
     - navigation.indexes
+    - navigation.tabs
+    - navigation.tabs.sticky
     - toc.integrate
   custom_dir: overrides
+  font:
+    text: "Open Sans"
+    code: "Source Code Pro"
+  logo: logo.png
 nav:
-  - Home: index.md
+  - Home: "/"
+  - About: index.md
   - Installation: setup.md
   - User Guide:
     - guide/index.md
