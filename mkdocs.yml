@@ -1,5 +1,5 @@
 site_name: Python Diameter
-repo_url: https://github.com/mensonen/diameter
+site_url: "https://python-diameter.org/docs/"
 theme:
   name: "material"
   palette:
@@ -27,6 +27,7 @@ theme:
     text: "Open Sans"
     code: "Source Code Pro"
   logo: logo.png
+  favicon: favicon-64x64.png
 nav:
   - Home: "/"
   - About: index.md
@@ -104,3 +105,8 @@ markdown_extensions:
   - admonition
   - toc:
       permalink: true
+extra:
+  version:
+    # not actually using mike, the versions.json is static, but this turns on
+    # the version selector dropdown
+    provider: "mike"
