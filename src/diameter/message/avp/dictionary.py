@@ -1,10 +1,19 @@
+import typing
 from .avp import (AvpAddress, AvpEnumerated, AvpFloat32, AvpFloat64, AvpGrouped,
                   AvpInteger32, AvpInteger64, AvpUnsigned32, AvpUnsigned64,
-                  AvpOctetString, AvpTime, AvpUtf8String)
+                  AvpOctetString, AvpTime, AvpUtf8String, Avp)
 from ..constants import *
 
+
+class AvpInfo(typing.TypedDict):
+    name: str
+    type: type[Avp]
+    mandatory: typing.NotRequired[bool]
+    vendor: typing.NotRequired[int]
+
+
 # base avp dictionary with no vendors
-AVP_DICTIONARY = {
+AVP_DICTIONARY: dict[int, AvpInfo] = {
     AVP_USER_NAME: {"name": "User-Name", "type": AvpUtf8String, "mandatory": True},
     AVP_USER_PASSWORD: {"name": "User-Password", "type": AvpOctetString, "mandatory": True},
     AVP_CHAP_PASSWORD: {"name": "CHAP-Password", "type": AvpOctetString, "mandatory": True},
@@ -433,7 +442,7 @@ AVP_DICTIONARY = {
     AVP_NONE_SIP_SERVER_NAME: {"name": "SIP-Server-Name", "type": AvpOctetString, "mandatory": True}}
 
 # vendor specific
-AVP_VENDOR_DICTIONARY = {}
+AVP_VENDOR_DICTIONARY: dict[int, dict[int, AvpInfo]] = {}
 AVP_VENDOR_DICTIONARY[0] = {}
 AVP_VENDOR_DICTIONARY[61] = {}
 AVP_VENDOR_DICTIONARY[429] = {}

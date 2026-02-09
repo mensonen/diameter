@@ -9,11 +9,9 @@ import warnings
 
 import pytest
 
-import diameter.message.avp.avp as avp
 import diameter.message.avp.grouped as grouped_lib
 from diameter.message import DefinedMessage
 from diameter.message.avp.avp import *
-from diameter.message.avp.dictionary import AVP_DICTIONARY, AVP_VENDOR_DICTIONARY
 from diameter.message.avp.generator import AvpGenDef, AvpGenerator
 
 # Doesn't include AvpGrouped
@@ -29,26 +27,6 @@ AVP_TYPES_TO_PYTHON_TYPES = {
     AvpUtf8String: str,
     AvpTime: datetime.datetime,
 }
-
-
-class AvpInfo(typing.TypedDict):
-    name: str
-    type: type[avp.Avp]
-    mandatory: bool
-    vendor: typing.NotRequired[int]
-
-
-def get_avp_dictionary_entry(avp_code: int, vendor_id: int) -> AvpInfo | None:
-    if avp_code in AVP_DICTIONARY and vendor_id == 0:
-        return AVP_DICTIONARY[avp_code]
-
-    elif (vendor_id != 0
-            and vendor_id in AVP_VENDOR_DICTIONARY
-            and avp_code in AVP_VENDOR_DICTIONARY[vendor_id]):
-        return AVP_VENDOR_DICTIONARY[vendor_id][avp_code]
-
-    else:
-        return None
 
 
 def validate_avp_generator_annotations(avp_generator: type[AvpGenerator]):
