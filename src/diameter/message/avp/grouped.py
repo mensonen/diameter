@@ -651,7 +651,7 @@ class FromToSpec:
     ip_address_mask: list[IpAddressMask] = dataclasses.field(default_factory=list)
     mac_address: list[bytes] = dataclasses.field(default_factory=list)
     mac_address_mask: list[MacAddressMask] = dataclasses.field(default_factory=list)
-    eu164_address: list[str] = dataclasses.field(default_factory=list)
+    eu164_address: list[bytes] = dataclasses.field(default_factory=list)
     eu164_address_mask: list[Eui64AddressMask] = dataclasses.field(default_factory=list)
     port: list[int] = dataclasses.field(default_factory=list)
     port_range: list[PortRange] = dataclasses.field(default_factory=list)
@@ -800,7 +800,7 @@ class EthOption:
     """A data container that represents the ETH-Option AVP."""
     eth_proto_type: EthProtoType = None
     vlan_id_range: list[VlanIdRange] = dataclasses.field(default_factory=list)
-    user_priority_range: list[int] = dataclasses.field(default_factory=list)
+    user_priority_range: list[UserPriorityRange] = dataclasses.field(default_factory=list)
     additional_avps: list[Avp] = dataclasses.field(default_factory=list)
 
     # noinspection PyDataclass
@@ -814,7 +814,7 @@ class EthOption:
 @dataclasses.dataclass
 class Classifier:
     """A data container that represents the "Clasifier" grouped AVP."""
-    classifier_id: int = None
+    classifier_id: bytes = None
     protocol: int = None
     direction: int = None
     from_spec: list[FromSpec] = dataclasses.field(default_factory=list)
@@ -830,7 +830,7 @@ class Classifier:
 
     # noinspection PyDataclass
     avp_def: dataclasses.InitVar[AvpGenType] = (
-        AvpGenDef("vendor_id", AVP_VENDOR_ID, is_required=True),
+        AvpGenDef("classifier_id", AVP_CLASSIFIER_ID, is_required=True),
         AvpGenDef("protocol", AVP_PROTOCOL),
         AvpGenDef("direction", AVP_DIRECTION),
         AvpGenDef("from_spec", AVP_FROM_SPEC, type_class=FromSpec),
@@ -2512,7 +2512,7 @@ class RelatedChangeConditionInformation:
         AvpGenDef("tgpp_user_location_info", AVP_TGPP_3GPP_USER_LOCATION_INFO, VENDOR_TGPP),
         AvpGenDef("tgpp2_bsid", AVP_TGPP2_3GPP2_BSID, VENDOR_TGPP2),
         AvpGenDef("uwan_user_location_info", AVP_TGPP_UWAN_USER_LOCATION_INFO, VENDOR_TGPP, type_class=UwanUserLocationInfo),
-        AvpGenDef("presence_reporting_area_information", AVP_TGPP_PRESENCE_REPORTING_AREA_INFORMATION, VENDOR_TGPP, type_class=PresenceReportingAreaInformation),
+        AvpGenDef("presence_reporting_area_status", AVP_TGPP_PRESENCE_REPORTING_AREA_STATUS, VENDOR_TGPP),
         AvpGenDef("user_csg_information", AVP_TGPP_USER_CSG_INFORMATION, VENDOR_TGPP, type_class=UserCsgInformation),
         AvpGenDef("tgpp_rat_type", AVP_TGPP_3GPP_RAT_TYPE, VENDOR_TGPP),
     )
@@ -2643,7 +2643,7 @@ class ServiceDataContainer:
     tgpp_ps_data_off_status: int = None
     traffic_steering_policy_identifier_dl: bytes = None
     traffic_steering_policy_identifier_ul: bytes = None
-    volte_information: int = None
+    volte_information: VolteInformation = None
 
     # noinspection PyDataclass
     avp_def: dataclasses.InitVar[AvpGenType] = (
@@ -2678,7 +2678,7 @@ class ServiceDataContainer:
         AvpGenDef("apn_rate_control", AVP_TGPP_APN_RATE_CONTROL, VENDOR_TGPP, type_class=ApnRateControl),
         AvpGenDef("tgpp_ps_data_off_status", AVP_TGPP_3GPP_PS_DATA_OFF_STATUS, VENDOR_TGPP),
         AvpGenDef("traffic_steering_policy_identifier_dl", AVP_TGPP_TRAFFIC_STEERING_POLICY_IDENTIFIER_DL, VENDOR_TGPP),
-        AvpGenDef("traffic_steering_policy_identifier_dl", AVP_TGPP_TRAFFIC_STEERING_POLICY_IDENTIFIER_UL, VENDOR_TGPP),
+        AvpGenDef("traffic_steering_policy_identifier_ul", AVP_TGPP_TRAFFIC_STEERING_POLICY_IDENTIFIER_UL, VENDOR_TGPP),
         AvpGenDef("volte_information", AVP_TGPP_VOLTE_INFORMATION, VENDOR_TGPP, type_class=VolteInformation),
     )
 
@@ -3073,7 +3073,7 @@ class MultipleServicesCreditControl:
         AvpGenDef("quota_holding_time", AVP_TGPP_QUOTA_HOLDING_TIME, VENDOR_TGPP),
         AvpGenDef("quota_consumption_time", AVP_TGPP_QUOTA_CONSUMPTION_TIME, VENDOR_TGPP),
         AvpGenDef("reporting_reason", AVP_TGPP_3GPP_REPORTING_REASON, VENDOR_TGPP),
-        AvpGenDef("trigger", AVP_TGPP_TRIGGER, VENDOR_TGPP),
+        AvpGenDef("trigger", AVP_TGPP_TRIGGER, VENDOR_TGPP, type_class=Trigger),
         AvpGenDef("ps_furnish_charging_information", AVP_TGPP_PS_FURNISH_CHARGING_INFORMATION, VENDOR_TGPP, type_class=PsFurnishChargingInformation),
         AvpGenDef("refund_information", AVP_TGPP_REFUND_INFORMATION, VENDOR_TGPP),
         AvpGenDef("af_correlation_information", AVP_TGPP_AF_CORRELATION_INFORMATION, VENDOR_TGPP, type_class=AfCorrelationInformation),
@@ -4200,7 +4200,7 @@ class AllocationRetentionPriority:
 @dataclasses.dataclass
 class DefaultEpsBearerQos:
     """A data container that represents the "Default-EPS-Bearer-QoS" (1435) grouped AVP."""
-    qos_class_identifier: str = None
+    qos_class_identifier: int = None
     allocation_retention_priority: AllocationRetentionPriority = AllocationRetentionPriority
 
     # noinspection PyDataclass
@@ -4213,7 +4213,7 @@ class DefaultEpsBearerQos:
 @dataclasses.dataclass
 class MediaSubComponent:
     """A data container that represents the "Media-Sub-Component" (1436) grouped AVP."""
-    flow_description: list[str] = dataclasses.field(default_factory=list)
+    flow_description: list[bytes] = dataclasses.field(default_factory=list)
     flow_usage: int = None
     flow_number: int = None
     flow_status: int = None
@@ -4233,7 +4233,7 @@ class MediaComponentDescription:
     media_component_number: int = None
     media_sub_component: list[MediaSubComponent] = dataclasses.field(default_factory=list)
     # Need AF-Application-Identifier, Max-Requested-Bandwith-UL and DL
-    af_application_identifier: str = None
+    af_application_identifier: bytes = None
     max_requested_bandwidth_ul: int = None
     max_requested_bandwidth_dl: int = None
     media_type: int = None
