@@ -42,11 +42,9 @@ def get_avp_dictionary_entry(avp_code: int, vendor_id: int) -> AvpInfo | None:
     if avp_code in AVP_DICTIONARY and vendor_id == 0:
         return AVP_DICTIONARY[avp_code]
 
-    elif (
-        vendor_id != 0
-        and vendor_id in AVP_VENDOR_DICTIONARY
-        and avp_code in AVP_VENDOR_DICTIONARY[vendor_id]
-    ):
+    elif (vendor_id != 0
+            and vendor_id in AVP_VENDOR_DICTIONARY
+            and avp_code in AVP_VENDOR_DICTIONARY[vendor_id]):
         return AVP_VENDOR_DICTIONARY[vendor_id][avp_code]
 
     else:
