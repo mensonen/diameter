@@ -200,19 +200,14 @@ class Avp:
         avp_payload = b""
         if avp_length > 0:
             avp_payload = unpacker.unpack_fopaque(avp_length)
-        avp_name = None
 
-        if avp_code in AVP_DICTIONARY and not avp_vendor_id:
-            avp_type: Type[Avp] = AVP_DICTIONARY[avp_code]["type"]
-            avp_name = AVP_DICTIONARY[avp_code]["name"]
-
-        elif (avp_vendor_id and avp_vendor_id in AVP_VENDOR_DICTIONARY and
-                avp_code in AVP_VENDOR_DICTIONARY[avp_vendor_id]):
-            avp_type: Type[Avp] = AVP_VENDOR_DICTIONARY[avp_vendor_id][avp_code]["type"]
-            avp_name = AVP_VENDOR_DICTIONARY[avp_vendor_id][avp_code]["name"]
-
+        avp_info = get_avp_dictionary_entry(avp_code, avp_vendor_id)
+        if avp_info is not None:
+            avp_type: Type[Avp] = avp_info["type"]
+            avp_name = avp_info["name"]
         else:
             avp_type: Type[Avp] = Avp
+            avp_name = None
 
         avp = avp_type(avp_code, avp_vendor_id, avp_payload, avp_flags)
         if avp_name:
@@ -247,14 +242,8 @@ class Avp:
             is_private: Optionally sets or unsets the private flag. Default is
                 to leave the flag untouched
         """
-        if avp_code in AVP_DICTIONARY and not vendor_id:
-            entry = AVP_DICTIONARY[avp_code]
-
-        elif (vendor_id and vendor_id in AVP_VENDOR_DICTIONARY and
-                avp_code in AVP_VENDOR_DICTIONARY[vendor_id]):
-            entry = AVP_VENDOR_DICTIONARY[vendor_id][avp_code]
-
-        else:
+        entry = get_avp_dictionary_entry(avp_code, vendor_id)
+        if entry is None:
             raise ValueError(f"AVP code {avp_code} with vendor {vendor_id} is "
                              f"unknown")
 
@@ -766,7 +755,30 @@ As enumeration is a list of valid integer values, is an alias for
 _AnyAvpType = TypeVar("_AnyAvpType", bound=Avp)
 
 
-from .dictionary import AVP_DICTIONARY, AVP_VENDOR_DICTIONARY
+from .dictionary import AVP_DICTIONARY, AVP_VENDOR_DICTIONARY, AvpInfo
+
+
+def get_avp_dictionary_entry(avp_code: int, vendor_id: int = 0) -> AvpInfo | None:
+    """Gets an AVP_DICTIONARY or AVP_VENDOR_DICTIONARY entry.
+
+    Args:
+        avp_code: An AVP code to identify entry
+        vendor_id: A vendor ID, or zero if AVP doesn't have one
+
+    Returns:
+        An AVP definition in form of a dictionary or None if
+        no entry was found.
+    """
+    if avp_code in AVP_DICTIONARY and vendor_id == 0:
+        return AVP_DICTIONARY[avp_code]
+
+    elif (vendor_id != 0
+            and vendor_id in AVP_VENDOR_DICTIONARY
+            and avp_code in AVP_VENDOR_DICTIONARY[vendor_id]):
+        return AVP_VENDOR_DICTIONARY[vendor_id][avp_code]
+
+    else:
+        return None
 
 
 def register(avp: int, name: str, type_cls: type[_AnyAvpType],
