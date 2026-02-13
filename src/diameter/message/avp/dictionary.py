@@ -1441,6 +1441,7 @@ AVP_VENDOR_DICTIONARY[10415] = {
     AVP_TGPP_PROXIMITY_ALERT_INDICATION: {"name": "Proximity-Alert-Indication", "type": AvpEnumerated, "mandatory": True, "vendor": 10415},
     AVP_TGPP_PROXIMITY_ALERT_TIMESTAMP: {"name": "Proximity-Alert-Timestamp", "type": AvpTime, "mandatory": True, "vendor": 10415},
     AVP_TGPP_PROXIMITY_CANCELLATION_TIMESTAMP: {"name": "Proximity-Cancellation-Timestamp", "type": AvpTime, "mandatory": True, "vendor": 10415},
+    AVP_TGPP_TIME_FIRST_RECEPTION: {"name": "Time-First-Reception", "type": AvpTime, "mandatory": True, "vendor": 10415},
     AVP_TGPP_TIME_FIRST_TRANSMISSION: {"name": "Time-First-Transmission", "type": AvpTime, "mandatory": True, "vendor": 10415},
     AVP_TGPP_PROSE_FUNCTION_PLMN_IDENTIFIER: {"name": "ProSe-Function-PLMN-Identifier", "type": AvpUtf8String, "mandatory": True, "vendor": 10415},
     AVP_TGPP_APPLICATION_SPECIFIC_DATA: {"name": "Application-Specific-Data", "type": AvpOctetString, "mandatory": True, "vendor": 10415},
