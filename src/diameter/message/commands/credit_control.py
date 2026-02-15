@@ -6,9 +6,12 @@ AVPs documented in `rfc8506`, `rfc5777` and `rfc6733`.
 """
 from __future__ import annotations
 
+import datetime
+
 from typing import Type
 
 from .._base import Message, MessageHeader, DefinedMessage, _AnyMessageType
+from ..avp import Avp
 from ..avp.grouped import *
 from ..avp.generator import AvpGenDef, AvpGenType
 from ._attributes import assign_attr_from_defs
@@ -119,7 +122,6 @@ class CreditControlAnswer(CreditControl):
     qos_information: QosInformation
     bearer_control_mode: int
     charging_rule_install: list[ChargingRuleInstall]
-
 
     # 3GPP extensions: ETSI 132.299
     low_balance_indication: int
@@ -279,8 +281,8 @@ class CreditControlRequest(CreditControl):
     #
     framed_ip_address: bytes
     framed_ipv6_prefix: list[bytes]
-    rat_type : int
-    ip_can_type : int
+    rat_type: int
+    ip_can_type: int
     supported_features: SupportedFeatures
     qos_information: QosInformation
     default_eps_bearer_qos: DefaultEpsBearerQos

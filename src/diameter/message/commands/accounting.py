@@ -6,6 +6,8 @@ AVPs documented in rfc6733.
 """
 from __future__ import annotations
 
+import datetime
+
 from typing import Type
 
 from .._base import Message, MessageHeader, DefinedMessage, _AnyMessageType

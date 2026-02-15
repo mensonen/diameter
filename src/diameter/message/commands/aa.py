@@ -387,7 +387,6 @@ class AaRequest(Aa):
         setattr(self, "specific_action", [])
         setattr(self, "subscription_id", [])
 
-
         assign_attr_from_defs(self, self._avps)
         self._avps = []
 
