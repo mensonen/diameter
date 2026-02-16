@@ -204,7 +204,6 @@ class ReAuthRequest(ReAuth):
     charging_rule_install: list[ChargingRuleInstall]
     charging_rule_remove: list[ChargingRuleRemove]
 
-
     avp_def: AvpGenType = (
         AvpGenDef("session_id", AVP_SESSION_ID, is_required=True),
         AvpGenDef("origin_host", AVP_ORIGIN_HOST, is_required=True),
