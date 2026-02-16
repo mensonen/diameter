@@ -319,6 +319,9 @@ class Node:
         also be silenced by changing the log level to anything above DEBUG.
         Enabling this may have a slight performance impact, as the main
         thread will block while the statistics are being gathered."""
+        self.validate_received_request_avps: bool = True
+        """When enabled, validates presence of all required AVPs in all
+        received request messages."""
 
         rp, wp = os.pipe()
         self.interrupt_read = rp
@@ -836,7 +839,7 @@ class Node:
         if peer:
             peer.statistics.add_received_req()
 
-        if msg.header.is_request:
+        if msg.header.is_request and self.validate_received_request_avps:
             failed_avp = validate_message_avps(msg)
             if failed_avp:
                 self.logger.warning(f"{conn} message failed AVP validation")

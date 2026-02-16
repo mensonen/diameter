@@ -89,7 +89,11 @@ class Avp:
         self.vendor_id = vendor_id
 
     def __str__(self) -> str:
-        own_value = self.value
+        try:
+            own_value = self.value
+        except AvpDecodeError:
+            own_value = "(unset)"
+
         fmt_val = vnd_val = ""
         if not isinstance(own_value, list):
             fmt_val = f", Val: {own_value}"

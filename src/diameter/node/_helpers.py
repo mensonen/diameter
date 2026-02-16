@@ -83,7 +83,7 @@ def validate_message_avps(msg: _AnyMessageType) -> list[Avp]:
     logger = logging.getLogger("diameter.node")
 
     for gen_def in msg.avp_def:
-        if gen_def.is_required and not hasattr(msg, gen_def.attr_name):
+        if gen_def.is_required and getattr(msg, gen_def.attr_name) is None:
             logger.debug(
                 f"mandatory AVP {gen_def.avp_code}, vendor {gen_def.vendor_id} "
                 f"is not set")
