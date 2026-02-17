@@ -28,6 +28,7 @@ from .server_assignment import *
 from .spending_limit import *
 from .spending_status_notification import *
 from .session_termination import *
+from .update_location import *
 from .user_authorization import *
 
 
@@ -211,21 +212,6 @@ class MessageProcess(UndefinedMessage):
     """
     code: int = 311
     name: str = "Message-Process"
-
-    def __post_init__(self):
-        super().__post_init__()
-        self.header.command_code = self.code
-
-
-class UpdateLocation(UndefinedMessage):
-    """A 3GPP-Update-Location message.
-
-    This message implementation provides no python subclasses for requests and
-    answers; AVPs must be created manually and added using the
-    [UpdateLocation.append_avp][diameter.message.Message.append_avp] method.
-    """
-    code: int = 316
-    name: str = "3GPP-Update-Location"
 
     def __post_init__(self):
         super().__post_init__()
