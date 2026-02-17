@@ -22,23 +22,33 @@ __all__ = [
     "AccessNetworkInfoChange",
     "AccessTransferInformation",
     "AccumulatedCost",
+    "ActiveApn",
     "AdditionalContentInformation",
     "AddressDomain",
+    "AdjacentAccessRestrictionData",
+    "AdjacentPlmns",
+    "AeseCommunicationPattern",
     "AfCorrelationInformation",
     "AllocationRetentionPriority",
     "AllowedWafWwsfIdentities",
+    "Ambr",
     "AnnouncementInformation",
     "AocCostInformation",
     "AocInformation",
     "AocService",
     "AocSubscriptionInformation",
+    "ApnConfiguration",
+    "ApnConfigurationProfile",
     "ApnRateControl",
     "ApnRateControlDownlink",
     "ApnRateControlUplink",
     "ApplicationServerInformation",
+    "AreaScope",
     "AssociatedIdentities",
     "AssociatedRegisteredIdentities",
+    "AuthenticationInfo",
     "BasicServiceCode",
+    "CallBarringInfo",
     "CalledIdentityChange",
     "CalleeInformation",
     "Cause",
@@ -48,23 +58,34 @@ __all__ = [
     "ChargingRuleInstall",
     "ChargingRuleRemove",
     "Classifier",
+    "CommunicationPatternSet",
     "CostInformation",
     "CoverageInfo",
     "CpdtInformation",
     "CurrentTariff",
+    "CsgSubscriptionData",
     "DcdInformation",
     "DefaultEpsBearerQos",
     "DeregistrationReason",
     "DestinationInterface",
+    "EUtranVector",
     "EarlyMediaDescription",
+    "EdrxCycleLength",
+    "EdrxRelatedRat",
+    "EmergencyInfo",
     "EnhancedDiagnostics",
     "Envelope",
+    "EpsLocationInformation",
+    "EpsSubscribedQosProfile",
+    "EpsUserState",
+    "EquivalentPlmnList",
     "EthOption",
     "EthProtoType",
     "Eui64AddressMask",
     "EventType",
     "ExcessTreatment",
     "ExperimentalResult",
+    "ExternalClient",
     "FailedAvp",
     "FilterRule",
     "FinalUnitIndication",
@@ -73,12 +94,16 @@ __all__ = [
     "FromSpec",
     "FromToSpec",
     "GenericSpec",
+    "GeranVector",
+    "GprsSubscriptionData",
     "GrantedServiceUnit",
     "GsuPoolReference",
     "IcmpType",
     "IdentityWithEmergencyRegistration",
+    "IdleStatusIndication",
     "ImInformation",
     "ImsInformation",
+    "ImsiGroupId",
     "IncrementalCost",
     "InterOperatorIdentifier",
     "IpAddressMask",
@@ -87,17 +112,27 @@ __all__ = [
     "IsupCause",
     "LcsClientId",
     "LcsClientName",
+    "LcsInfo",
     "LcsInformation",
+    "LcsPrivacyException",
     "LcsRequestorId",
+    "Load",
+    "LocalTimeZone",
+    "LocationInfo",
     "LocationInfoGrouped",
+    "LocationInformationConfiguration",
     "LocationType",
     "M2mInformation",
     "MacAddressMask",
     "MbmsInformation",
+    "MbsfnArea",
+    "MdtConfiguration",
+    "MdtConfigurationNr",
     "MediaComponentDescription",
     "MediaSubComponent",
     "MessageBody",
     "MessageClass",
+    "Mip6AgentInfo",
     "MipFaToHaMsa",
     "MipFaToMnMsa",
     "MipHaToFaMsa",
@@ -107,9 +142,15 @@ __all__ = [
     "MipMnToFaMsa",
     "MipMnToHaMsa",
     "MipOriginatingForeignAaa",
+    "MmeLocationInformation",
+    "MmeUserState",
     "MmContentType",
     "MmsInformation",
     "MmtelInformation",
+    "MoLr",
+    "MonitoringEventConfiguration",
+    "MonitoringEventReport",
+    "MtcProviderInfo",
     "MultipleServicesCreditControl",
     "NextTariff",
     "NiddSubmission",
@@ -121,6 +162,11 @@ __all__ = [
     "OriginatorInterface",
     "OriginatorReceivedAddress",
     "ParticipantGroup",
+    "Pc5FlowBitrates",
+    "Pc5QosFlow",
+    "PdnConnectivityStatusConfiguration",
+    "PdnConnectivityStatusReport",
+    "PdpContext",
     "PocInformation",
     "PocUserRole",
     "PolicyCounterStatusReport",
@@ -128,7 +174,9 @@ __all__ = [
     "PresenceReportingAreaInformation",
     "ProSeDirectCommunicationReceptionDataContainer",
     "ProSeDirectCommunicationTransmissionDataContainer",
+    "ProseAllowedPlmn",
     "ProseInformation",
+    "ProSeSubscriptionData",
     "ProxyInfo",
     "PsFurnishChargingInformation",
     "PsInformation",
@@ -148,10 +196,13 @@ __all__ = [
     "RelatedChangeConditionInformation",
     "RelatedTrigger",
     "RemainingBalance",
+    "RequestedEutranAuthenticationInfo",
     "RequestedServiceUnit",
+    "RequestedUtranGeranAuthenticationInfo",
     "RestorationInfo",
     "RrcCauseCounter",
     "ScaleFactor",
+    "ScheduledCommunicationTime",
     "ScsAsAddress",
     "ScscfRestorationInfo",
     "SdpMediaComponent",
@@ -162,31 +213,42 @@ __all__ = [
     "ServiceInformation",
     "ServiceParameterInfo",
     "ServiceSpecificInfo",
+    "ServiceType",
     "ServingNode",
     "ServingPlmnRateControl",
+    "SgsnLocationInformation",
+    "SgsnUserState",
     "SipAuthDataItem",
     "SipDigestAuthenticate",
     "SmDeviceTriggerInformation",
     "SmsInformation",
+    "SpecificApnInfo",
+    "SubscriptionData",
+    "SubscriptionDataDeletion",
     "SubscriptionId",
     "SubscriptionInfo",
     "SupplementaryService",
     "SupportedFeatures",
+    "SupportedServices",
     "TalkBurstExchange",
     "TariffInformation",
     "TcpFlags",
     "TcpOption",
+    "TeleServiceList",
     "TerminalInformation",
     "TimeOfDayCondition",
     "TimeQuotaMechanism",
     "TimeStamps",
     "ToSpec",
+    "TraceData",
     "TrafficDataVolumes",
     "TransmitterInfo",
     "Trigger",
     "TrunkGroupId",
     "Tunneling",
     "TwanUserLocationInfo",
+    "UePc5Qos",
+    "UeReachabilityConfiguration",
     "UnitCost",
     "UnitValue",
     "UsedServiceUnit",
@@ -194,13 +256,19 @@ __all__ = [
     "UserEquipmentInfo",
     "UserEquipmentInfoExtension",
     "UserPriorityRange",
+    "UtranVector",
     "UwanUserLocationInfo",
+    "V2xSubscriptionData",
+    "V2xSubscriptionDataNr",
     "VariablePart",
     "VcsInformation",
     "VendorSpecificApplicationId",
     "VlanIdRange",
     "VolteInformation",
+    "VplmnCsgSubscriptionData",
+    "WlanOffloadability",
     "WlanOperatorId",
+    "PagingTimeWindow",
 ]
 
 
@@ -410,6 +478,25 @@ class MipHomeAgentHost:
     avp_def: dataclasses.InitVar[AvpGenType] = (
         AvpGenDef("origin_realm", AVP_ORIGIN_REALM, is_required=True),
         AvpGenDef("origin_host", AVP_ORIGIN_HOST, is_required=True),
+    )
+
+
+@dataclasses.dataclass
+class Mip6AgentInfo:
+    """A data container that represents the "MIP6-Agent-Info" (486) grouped AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    mip_home_agent_address: str = None
+    mip_home_agent_host: MipHomeAgentHost = None
+    mip6_home_link_prefix: list[bytes] = dataclasses.field(default_factory=list)
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("mip_home_agent_address", AVP_MIP_HOME_AGENT_ADDRESS),
+        AvpGenDef("mip_home_agent_host", AVP_MIP_HOME_AGENT_HOST, type_class=MipHomeAgentHost),
+        AvpGenDef("mip6_home_link_prefix", AVP_MIP6_HOME_LINK_PREFIX),
     )
 
 
@@ -1182,6 +1269,25 @@ class ServerCapabilities:
 
 
 @dataclasses.dataclass
+class Load:
+    """A data container that represents the "Load" (650) AVP.
+
+    RFC 8583
+    """
+    load_type: int = None
+    load_value: int = None
+    sourceid: bytes = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("load_type", AVP_LOAD_TYPE),
+        AvpGenDef("load_value", AVP_LOAD_VALUE),
+        AvpGenDef("sourceid", AVP_SOURCEID)
+    )
+
+
+@dataclasses.dataclass
 class SipDigestAuthenticate:
     """A data container that represents the "SIP-Digest-Authenticate" (635) grouped AVP.
 
@@ -1559,7 +1665,6 @@ class Cause:
         AvpGenDef("cause_code", AVP_TGPP_CAUSE_CODE, VENDOR_TGPP, is_required=True),
         AvpGenDef("node_functionality", AVP_TGPP_NODE_FUNCTIONALITY, VENDOR_TGPP, is_required=True),
     )
-
 
 
 @dataclasses.dataclass
@@ -2075,6 +2180,1605 @@ class VolteInformation:
 
 
 @dataclasses.dataclass
+class AllocationRetentionPriority:
+    """A data container that represents the "Allocation-Retention-Priority" (1034) grouped AVP."""
+    priority_level: int = None
+    pre_emption_vulnerability: int = None
+    pre_emption_capability: int = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("priority_level", AVP_TGPP_PRIORITY_LEVEL, VENDOR_TGPP),
+        AvpGenDef("pre_emption_vulnerability", AVP_TGPP_PRE_EMPTION_VULNERABILITY, VENDOR_TGPP),
+        AvpGenDef("pre_emption_capability", AVP_TGPP_PRE_EMPTION_CAPABILITY, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
+class DefaultEpsBearerQos:
+    """A data container that represents the "Default-EPS-Bearer-QoS" (1435) grouped AVP."""
+    qos_class_identifier: int = None
+    allocation_retention_priority: AllocationRetentionPriority = AllocationRetentionPriority
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("qos_class_identifier", AVP_TGPP_QOS_CLASS_IDENTIFIER, VENDOR_TGPP),
+        AvpGenDef("allocation_retention_priority", AVP_TGPP_ALLOCATION_RETENTION_PRIORITY, VENDOR_TGPP, type_class=AllocationRetentionPriority),
+    )
+
+
+@dataclasses.dataclass
+class EpsSubscribedQosProfile:
+    """A data container that represents the "PS-Subscribed-QoS-Profile" (1431) grouped AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    qos_class_identifier: int = None
+    allocation_retention_priority: AllocationRetentionPriority = AllocationRetentionPriority
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("qos_class_identifier", AVP_TGPP_QOS_CLASS_IDENTIFIER, VENDOR_TGPP),
+        AvpGenDef("allocation_retention_priority", AVP_TGPP_ALLOCATION_RETENTION_PRIORITY, VENDOR_TGPP, type_class=AllocationRetentionPriority),
+    )
+
+
+@dataclasses.dataclass
+class Ambr:
+    """A data container that represents the "AMBR" (1435) grouped AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    max_requested_bandwidth_ul: int = None
+    max_requested_bandwidth_dl: int = None
+    extended_max_requested_bw_ul: int = None
+    extended_max_requested_bw_dl: int = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("max_requested_bandwidth_ul", AVP_TGPP_MAX_REQUESTED_BANDWIDTH_UL, VENDOR_TGPP, is_required=True),
+        AvpGenDef("max_requested_bandwidth_dl", AVP_TGPP_MAX_REQUESTED_BANDWIDTH_DL, VENDOR_TGPP, is_required=True),
+        AvpGenDef("extended_max_requested_bw_ul", AVP_TGPP_EXTENDED_MAX_REQUESTED_BW_UL, VENDOR_TGPP),
+        AvpGenDef("extended_max_requested_bw_dl", AVP_TGPP_EXTENDED_MAX_REQUESTED_BW_DL, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
+class SpecificApnInfo:
+    """A data container that represents the "Specific-APN-Info" (1472) grouped AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    service_selection: str = None
+    mip6_agent_info: Mip6AgentInfo = None
+    visited_network_identifier: bytes = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("service_selection", AVP_SERVICE_SELECTION, is_required=True),
+        AvpGenDef("mip6_agent_info", AVP_MIP6_AGENT_INFO, is_required=True, type_class=Mip6AgentInfo),
+        AvpGenDef("visited_network_identifier", AVP_TGPP_VISITED_NETWORK_IDENTIFIER, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
+class WlanOffloadability:
+    """A data container that represents the "WLAN-offloadability" (1667) grouped AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    wlan_offloadability_eutran: int = None
+    wlan_offloadability_utran: int = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("wlan_offloadability_eutran", AVP_TGPP_WLAN_OFFLOADABILITY_EUTRAN, VENDOR_TGPP),
+        AvpGenDef("wlan_offloadability_utran", AVP_TGPP_WLAN_OFFLOADABILITY_UTRAN, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
+class RequestedEutranAuthenticationInfo:
+    """A data container that represents the "Requested-EUTRAN-Authentication-Info" (1408) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    number_of_requested_vectors: int = None
+    immediate_response_preferred: int = None
+    re_synchronization_info: bytes = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("number_of_requested_vectors", AVP_TGPP_NUMBER_OF_REQUESTED_VECTORS, VENDOR_TGPP),
+        AvpGenDef("immediate_response_preferred", AVP_TGPP_IMMEDIATE_RESPONSE_PREFERRED, VENDOR_TGPP),
+        AvpGenDef("re_synchronization_info", AVP_TGPP_RE_SYNCHRONIZATION_INFO, VENDOR_TGPP)
+    )
+
+
+@dataclasses.dataclass
+class RequestedUtranGeranAuthenticationInfo:
+    """A data container that represents the "Requested-UTRAN-GERAN-Authentication-Info" (1409) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    number_of_requested_vectors: int = None
+    immediate_response_preferred: int = None
+    re_synchronization_info: bytes = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("number_of_requested_vectors", AVP_TGPP_NUMBER_OF_REQUESTED_VECTORS, VENDOR_TGPP),
+        AvpGenDef("immediate_response_preferred", AVP_TGPP_IMMEDIATE_RESPONSE_PREFERRED, VENDOR_TGPP),
+        AvpGenDef("re_synchronization_info", AVP_TGPP_RE_SYNCHRONIZATION_INFO, VENDOR_TGPP)
+    )
+
+
+@dataclasses.dataclass
+class EUtranVector:
+    """A data container that represents the "E-UTRAN-Vector" (1414) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    item_number: int = None
+    rand: bytes = None
+    xres: bytes = None
+    autn: bytes = None
+    kasme: bytes = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("item_number", AVP_TGPP_ITEM_NUMBER, VENDOR_TGPP),
+        AvpGenDef("rand", AVP_TGPP_RAND, VENDOR_TGPP, is_required=True),
+        AvpGenDef("xres", AVP_TGPP_XRES, VENDOR_TGPP, is_required=True),
+        AvpGenDef("autn", AVP_TGPP_AUTN, VENDOR_TGPP, is_required=True),
+        AvpGenDef("kasme", AVP_TGPP_KASME, VENDOR_TGPP, is_required=True)
+    )
+
+
+@dataclasses.dataclass
+class UtranVector:
+    """A data container that represents the "UTRAN-Vector" (1415) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    item_number: int = None
+    rand: bytes = None
+    xres: bytes = None
+    autn: bytes = None
+    confidentiality_key: bytes = None
+    integrity_key: bytes = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("item_number", AVP_TGPP_ITEM_NUMBER, VENDOR_TGPP),
+        AvpGenDef("rand", AVP_TGPP_RAND, VENDOR_TGPP, is_required=True),
+        AvpGenDef("xres", AVP_TGPP_XRES, VENDOR_TGPP, is_required=True),
+        AvpGenDef("autn", AVP_TGPP_AUTN, VENDOR_TGPP, is_required=True),
+        AvpGenDef("confidentiality_key", AVP_TGPP_CONFIDENTIALITY_KEY, VENDOR_TGPP, is_required=True),
+        AvpGenDef("integrity_key", AVP_TGPP_INTEGRITY_KEY, VENDOR_TGPP, is_required=True)
+    )
+
+
+@dataclasses.dataclass
+class GeranVector:
+    """A data container that represents the "GERAN-Vector" (1416) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    item_number: int = None
+    rand: bytes = None
+    sres: bytes = None
+    kc: bytes = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("item_number", AVP_TGPP_ITEM_NUMBER, VENDOR_TGPP),
+        AvpGenDef("rand", AVP_TGPP_RAND, VENDOR_TGPP, is_required=True),
+        AvpGenDef("sres", AVP_TGPP_SRES, VENDOR_TGPP, is_required=True),
+        AvpGenDef("kc", AVP_TGPP_KC, VENDOR_TGPP, is_required=True)
+    )
+
+
+@dataclasses.dataclass
+class AuthenticationInfo:
+    """A data container that represents the "Authentication-Info" (1413) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    e_utran_vector: list[EUtranVector] = dataclasses.field(default_factory=list)
+    utran_vector: list[UtranVector] = dataclasses.field(default_factory=list)
+    geran_vector: list[GeranVector] = dataclasses.field(default_factory=list)
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("e_utran_vector", AVP_TGPP_E_UTRAN_VECTOR, VENDOR_TGPP, type_class=EUtranVector),
+        AvpGenDef("utran_vector", AVP_TGPP_UTRAN_VECTOR, VENDOR_TGPP, type_class=UtranVector),
+        AvpGenDef("geran_vector", AVP_TGPP_GERAN_VECTOR, VENDOR_TGPP, type_class=GeranVector)
+    )
+
+
+@dataclasses.dataclass
+class ApnConfiguration:
+    """A data container that represents the "APN-Configuration" (1430) grouped AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    context_identifier: int = None
+    served_party_ip_address: list[str] = dataclasses.field(default_factory=list)
+    pdn_type: int = None
+    service_selection: str = None
+    eps_subscribed_qos_profile: EpsSubscribedQosProfile = None
+    vplmn_dynamic_address_allowed: int = None
+    mip6_agent_info: Mip6AgentInfo = None
+    visited_network_identifier: bytes = None
+    pdn_gw_allocation_type: int = None
+    tgpp_charging_characteristics: str = None
+    ambr: Ambr = None
+    specific_apn_info: list[SpecificApnInfo] = dataclasses.field(default_factory=list)
+    apn_oi_replacement: str = None
+    sipto_permission: int = None
+    lipa_permission: int = None
+    restoration_priority: int = None
+    sipto_local_network_permission: int = None
+    wlan_offloadability: WlanOffloadability = None
+    non_ip_pdn_type_indicator: int = None
+    non_ip_data_delivery_mechanism: int = None
+    scef_id: bytes = None
+    scef_realm: bytes = None
+    preferred_data_mode: int = None
+    pdn_connection_continuity: int = None
+    rds_indicator: int = None
+    interworking_5gs_indicator: int = None
+    ethernet_pdn_type_indicator: int = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("context_identifier", AVP_TGPP_CONTEXT_IDENTIFIER, VENDOR_TGPP, is_required=True),
+        AvpGenDef("served_party_ip_address", AVP_TGPP_SERVED_PARTY_IP_ADDRESS, VENDOR_TGPP),
+        AvpGenDef("pdn_type", AVP_TGPP_PDN_TYPE, VENDOR_TGPP),
+        AvpGenDef("service_selection", AVP_SERVICE_SELECTION),
+        AvpGenDef("eps_subscribed_qos_profile", AVP_TGPP_EPS_SUBSCRIBED_QOS_PROFILE, VENDOR_TGPP, type_class=EpsSubscribedQosProfile),
+        AvpGenDef("vplmn_dynamic_address_allowed", AVP_TGPP_VPLMN_DYNAMIC_ADDRESS_ALLOWED, VENDOR_TGPP),
+        AvpGenDef("mip6_agent_info", AVP_MIP6_AGENT_INFO, type_class=Mip6AgentInfo),
+        AvpGenDef("visited_network_identifier", AVP_TGPP_VISITED_NETWORK_IDENTIFIER, VENDOR_TGPP),
+        AvpGenDef("pdn_gw_allocation_type", AVP_TGPP_PDN_GW_ALLOCATION_TYPE, VENDOR_TGPP),
+        AvpGenDef("tgpp_charging_characteristics", AVP_TGPP_3GPP_CHARGING_CHARACTERISTICS, VENDOR_TGPP),
+        AvpGenDef("ambr", AVP_TGPP_AMBR, VENDOR_TGPP, type_class=Ambr),
+        AvpGenDef("specific_apn_info", AVP_TGPP_SPECIFIC_APN_INFO, VENDOR_TGPP, type_class=SpecificApnInfo),
+        AvpGenDef("apn_oi_replacement", AVP_TGPP_APN_OI_REPLACEMENT, VENDOR_TGPP),
+        AvpGenDef("sipto_permission", AVP_TGPP_SIPTO_PERMISSION, VENDOR_TGPP),
+        AvpGenDef("lipa_permission", AVP_TGPP_LIPA_PERMISSION, VENDOR_TGPP),
+        AvpGenDef("restoration_priority", AVP_TGPP_RESTORATION_PRIORITY, VENDOR_TGPP),
+        AvpGenDef("sipto_local_network_permission", AVP_TGPP_SIPTO_LOCAL_NETWORK_PERMISSION, VENDOR_TGPP),
+        AvpGenDef("wlan_offloadability", AVP_TGPP_WLAN_OFFLOADABILITY, VENDOR_TGPP, type_class=WlanOffloadability),
+        AvpGenDef("non_ip_pdn_type_indicator", AVP_TGPP_NON_IP_PDN_TYPE_INDICATOR, VENDOR_TGPP),
+        AvpGenDef("non_ip_data_delivery_mechanism", AVP_TGPP_NON_IP_DATA_DELIVERY_MECHANISM, VENDOR_TGPP),
+        AvpGenDef("scef_id", AVP_TGPP_SCEF_ID, VENDOR_TGPP),
+        AvpGenDef("scef_realm", AVP_TGPP_SCEF_REALM, VENDOR_TGPP),
+        AvpGenDef("preferred_data_mode", AVP_TGPP_PREFERRED_DATA_MODE, VENDOR_TGPP),
+        AvpGenDef("pdn_connection_continuity", AVP_TGPP_PDN_CONNECTION_CONTINUITY, VENDOR_TGPP),
+        AvpGenDef("rds_indicator", AVP_TGPP_RDS_INDICATOR, VENDOR_TGPP),
+        AvpGenDef("interworking_5gs_indicator", AVP_TGPP_INTERWORKING_5GS_INDICATOR, VENDOR_TGPP),
+        AvpGenDef("ethernet_pdn_type_indicator", AVP_TGPP_ETHERNET_PDN_TYPE_INDICATOR, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
+class ExternalClient:
+    """A data container that represents the "External-Client" (1479) grouped AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    client_identity: bytes = None
+    gmlc_restriction: int = None
+    notification_to_ue_user: int = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("client_identity", AVP_TGPP_CLIENT_IDENTITY, VENDOR_TGPP, is_required=True),
+        AvpGenDef("gmlc_restriction", AVP_TGPP_GMLC_RESTRICTION, VENDOR_TGPP),
+        AvpGenDef("notification_to_ue_user", AVP_TGPP_NOTIFICATION_TO_UE_USER, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
+class ApnConfigurationProfile:
+    """A data container that represents the "APN-Configuration-Profile" (1429) grouped AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    context_identifier: int = None
+    additional_context_identifier: int = None
+    third_context_identifier: int = None
+    all_apn_configurations_included_indicator: int = None
+    apn_configuration: list[ApnConfiguration] = dataclasses.field(default_factory=list)
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("context_identifier", AVP_TGPP_CONTEXT_IDENTIFIER, VENDOR_TGPP, is_required=True),
+        AvpGenDef("additional_context_identifier", AVP_TGPP_ADDITIONAL_CONTEXT_IDENTIFIER, VENDOR_TGPP),
+        AvpGenDef("third_context_identifier", AVP_TGPP_THIRD_CONTEXT_IDENTIFIER, VENDOR_TGPP),
+        AvpGenDef("all_apn_configurations_included_indicator", AVP_TGPP_ALL_APN_CONFIGURATIONS_INCLUDED_INDICATOR, VENDOR_TGPP, is_required=True),
+        AvpGenDef("apn_configuration", AVP_TGPP_APN_CONFIGURATION, VENDOR_TGPP, is_required=True, type_class=ApnConfiguration),
+    )
+
+
+@dataclasses.dataclass
+class AreaScope:
+    """A data container that represents the "Area-Scope" (1623) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    cell_global_identity: list[bytes] = dataclasses.field(default_factory=list)
+    e_utran_cell_global_identity: list[bytes] = dataclasses.field(default_factory=list)
+    routing_area_identity: list[bytes] = dataclasses.field(default_factory=list)
+    location_area_identity: list[bytes] = dataclasses.field(default_factory=list)
+    tracking_area_identity: list[bytes] = dataclasses.field(default_factory=list)
+    nr_cell_global_identity: list[bytes] = dataclasses.field(default_factory=list)
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("cell_global_identity", AVP_TGPP_CELL_GLOBAL_IDENTITY, VENDOR_TGPP),
+        AvpGenDef("e_utran_cell_global_identity", AVP_TGPP_E_UTRAN_CELL_GLOBAL_IDENTITY, VENDOR_TGPP),
+        AvpGenDef("routing_area_identity", AVP_TGPP_ROUTING_AREA_IDENTITY, VENDOR_TGPP),
+        AvpGenDef("location_area_identity", AVP_TGPP_LOCATION_AREA_IDENTITY, VENDOR_TGPP),
+        AvpGenDef("tracking_area_identity", AVP_TGPP_TRACKING_AREA_IDENTITY, VENDOR_TGPP),
+        AvpGenDef("nr_cell_global_identity", AVP_TGPP_NR_CELL_GLOBAL_IDENTITY, VENDOR_TGPP)
+    )
+
+
+@dataclasses.dataclass
+class MbsfnArea:
+    """A data container that represents the "MBSFN-Area" (1694) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    mbsfn_area_id: int = None
+    carrier_frequency: int = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("mbsfn_area_id", AVP_TGPP_MBSFN_AREA_ID, VENDOR_TGPP),
+        AvpGenDef("carrier_frequency", AVP_TGPP_CARRIER_FREQUENCY, VENDOR_TGPP)
+    )
+
+
+@dataclasses.dataclass
+class MdtConfiguration:
+    """A data container that represents the "MDT-Configuration" (1622) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    job_type: int = None
+    area_scope: AreaScope = None
+    list_of_measurements: int = None
+    reporting_trigger: int = None
+    report_interval: int = None
+    report_amount: int = None
+    event_threshold_rsrp: int = None
+    event_threshold_rsrq: int = None
+    logging_interval: int = None
+    logging_duration: int = None
+    measurement_period_lte: int = None
+    measurement_period_umts: int = None
+    collection_period_rrm_lte: int = None
+    collection_period_rrm_umts: int = None
+    positioning_method: bytes = None
+    measurement_quantity: bytes = None
+    event_threshold_event_1f: int = None
+    event_threshold_event_1i: int = None
+    mdt_allowed_plmn_id: list[bytes] = dataclasses.field(default_factory=list)
+    mbsfn_area: list[MbsfnArea] = dataclasses.field(default_factory=list)
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("job_type", AVP_TGPP_JOB_TYPE, VENDOR_TGPP, is_required=True),
+        AvpGenDef("area_scope", AVP_TGPP_AREA_SCOPE, VENDOR_TGPP, type_class=AreaScope),
+        AvpGenDef("list_of_measurements", AVP_TGPP_LIST_OF_MEASUREMENTS, VENDOR_TGPP),
+        AvpGenDef("reporting_trigger", AVP_TGPP_REPORTING_TRIGGER, VENDOR_TGPP),
+        AvpGenDef("report_interval", AVP_TGPP_REPORT_INTERVAL, VENDOR_TGPP),
+        AvpGenDef("report_amount", AVP_TGPP_REPORT_AMOUNT, VENDOR_TGPP),
+        AvpGenDef("event_threshold_rsrp", AVP_TGPP_EVENT_THRESHOLD_RSRP, VENDOR_TGPP),
+        AvpGenDef("event_threshold_rsrq", AVP_TGPP_EVENT_THRESHOLD_RSRQ, VENDOR_TGPP),
+        AvpGenDef("logging_interval", AVP_TGPP_LOGGING_INTERVAL, VENDOR_TGPP),
+        AvpGenDef("logging_duration", AVP_TGPP_LOGGING_DURATION, VENDOR_TGPP),
+        AvpGenDef("measurement_period_lte", AVP_TGPP_MEASUREMENT_PERIOD_LTE, VENDOR_TGPP),
+        AvpGenDef("measurement_period_umts", AVP_TGPP_MEASUREMENT_PERIOD_UMTS, VENDOR_TGPP),
+        AvpGenDef("collection_period_rrm_lte", AVP_TGPP_COLLECTION_PERIOD_RRM_LTE, VENDOR_TGPP),
+        AvpGenDef("collection_period_rrm_umts", AVP_TGPP_COLLECTION_PERIOD_RRM_UMTS, VENDOR_TGPP),
+        AvpGenDef("positioning_method", AVP_TGPP_POSITIONING_METHOD, VENDOR_TGPP),
+        AvpGenDef("measurement_quantity", AVP_TGPP_MEASUREMENT_QUANTITY, VENDOR_TGPP),
+        AvpGenDef("event_threshold_event_1f", AVP_TGPP_EVENT_THRESHOLD_EVENT_1F, VENDOR_TGPP),
+        AvpGenDef("event_threshold_event_1i", AVP_TGPP_EVENT_THRESHOLD_EVENT_1I, VENDOR_TGPP),
+        AvpGenDef("mdt_allowed_plmn_id", AVP_TGPP_MDT_ALLOWED_PLMN_ID, VENDOR_TGPP),
+        AvpGenDef("mbsfn_area", AVP_TGPP_MBSFN_AREA, VENDOR_TGPP, type_class=MbsfnArea)
+    )
+
+
+@dataclasses.dataclass
+class MdtConfigurationNr:
+    """A data container that represents the "MDT-Configuration-NR" (1720) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    job_type: int = None
+    area_scope: AreaScope = None
+    list_of_measurements: int = None
+    reporting_trigger: int = None
+    report_interval: int = None
+    report_amount: int = None
+    event_threshold_rsrp: int = None
+    event_threshold_rsrq: int = None
+    event_threshold_sinr: int = None
+    collection_period_rrm_nr: int = None
+    collection_period_m6_nr: int = None
+    collection_period_m7_nr: int = None
+    positioning_method: bytes = None
+    sensor_measurement: list[int] = dataclasses.field(default_factory=list)
+    mdt_allowed_plmn_id: list[bytes] = dataclasses.field(default_factory=list)
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("job_type", AVP_TGPP_JOB_TYPE, VENDOR_TGPP, is_required=True),
+        AvpGenDef("area_scope", AVP_TGPP_AREA_SCOPE, VENDOR_TGPP, type_class=AreaScope),
+        AvpGenDef("list_of_measurements", AVP_TGPP_LIST_OF_MEASUREMENTS, VENDOR_TGPP),
+        AvpGenDef("reporting_trigger", AVP_TGPP_REPORTING_TRIGGER, VENDOR_TGPP),
+        AvpGenDef("report_interval", AVP_TGPP_REPORT_INTERVAL, VENDOR_TGPP),
+        AvpGenDef("report_amount", AVP_TGPP_REPORT_AMOUNT, VENDOR_TGPP),
+        AvpGenDef("event_threshold_rsrp", AVP_TGPP_EVENT_THRESHOLD_RSRP, VENDOR_TGPP),
+        AvpGenDef("event_threshold_rsrq", AVP_TGPP_EVENT_THRESHOLD_RSRQ, VENDOR_TGPP),
+        AvpGenDef("event_threshold_sinr", AVP_TGPP_EVENT_THRESHOLD_SINR, VENDOR_TGPP),
+        AvpGenDef("collection_period_rrm_nr", AVP_TGPP_COLLECTION_PERIOD_RRM_NR, VENDOR_TGPP),
+        AvpGenDef("collection_period_m6_nr", AVP_TGPP_COLLECTION_PERIOD_M6_NR, VENDOR_TGPP),
+        AvpGenDef("collection_period_m7_nr", AVP_TGPP_COLLECTION_PERIOD_M7_NR, VENDOR_TGPP),
+        AvpGenDef("positioning_method", AVP_TGPP_POSITIONING_METHOD, VENDOR_TGPP),
+        AvpGenDef("sensor_measurement", AVP_TGPP_SENSOR_MEASUREMENT, VENDOR_TGPP),
+        AvpGenDef("mdt_allowed_plmn_id", AVP_TGPP_MDT_ALLOWED_PLMN_ID, VENDOR_TGPP)
+    )
+
+
+@dataclasses.dataclass
+class TraceData:
+    """A data container that represents the "Trace-Data" (1458) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    trace_reference: bytes = None
+    trace_depth: int = None
+    trace_ne_type_list: bytes = None
+    trace_interface_list: bytes = None
+    trace_event_list: bytes = None
+    omc_id: bytes = None
+    trace_collection_entity: str = None
+    mdt_configuration: MdtConfiguration = None
+    mdt_configuration_nr: MdtConfigurationNr = None
+    trace_reporting_consumer_uri: bytes = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("trace_reference", AVP_TGPP_TRACE_REFERENCE, VENDOR_TGPP, is_required=True),
+        AvpGenDef("trace_depth", AVP_TGPP_TRACE_DEPTH, VENDOR_TGPP, is_required=True),
+        AvpGenDef("trace_ne_type_list", AVP_TGPP_TRACE_NE_TYPE_LIST, VENDOR_TGPP, is_required=True),
+        AvpGenDef("trace_interface_list", AVP_TGPP_TRACE_INTERFACE_LIST, VENDOR_TGPP),
+        AvpGenDef("trace_event_list", AVP_TGPP_TRACE_EVENT_LIST, VENDOR_TGPP, is_required=True),
+        AvpGenDef("omc_id", AVP_TGPP_OMC_ID, VENDOR_TGPP),
+        AvpGenDef("trace_collection_entity", AVP_TGPP_TRACE_COLLECTION_ENTITY, VENDOR_TGPP, is_required=True),
+        AvpGenDef("mdt_configuration", AVP_TGPP_MDT_CONFIGURATION, VENDOR_TGPP, type_class=MdtConfiguration),
+        AvpGenDef("mdt_configuration_nr", AVP_TGPP_MDT_CONFIGURATION_NR, VENDOR_TGPP, type_class=MdtConfigurationNr),
+        AvpGenDef("trace_reporting_consumer_uri", AVP_TGPP_TRACE_REPORTING_CONSUMER_URI, VENDOR_TGPP)
+    )
+
+
+@dataclasses.dataclass
+class PdpContext:
+    """A data container that represents the "PDP-Context" (1469) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    context_identifier: int = None
+    pdp_type: bytes = None
+    pdp_address: str = None
+    qos_subscribed: bytes = None
+    vplmn_dynamic_address_allowed: int = None
+    service_selection: str = None
+    tgpp_charging_characteristics: str = None
+    ext_pdp_type: bytes = None
+    ext_pdp_address: str = None
+    ambr: Ambr = None
+    apn_oi_replacement: str = None
+    sipto_permission: int = None
+    lipa_permission: int = None
+    restoration_priority: int = None
+    sipto_local_network_permission: int = None
+    non_ip_data_delivery_mechanism: int = None
+    scef_id: bytes = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("context_identifier", AVP_TGPP_CONTEXT_IDENTIFIER, VENDOR_TGPP, is_required=True),
+        AvpGenDef("pdp_type", AVP_TGPP_PDP_TYPE, VENDOR_TGPP, is_required=True),
+        AvpGenDef("pdp_address", AVP_TGPP_PDP_ADDRESS, VENDOR_TGPP),
+        AvpGenDef("qos_subscribed", AVP_TGPP_QOS_SUBSCRIBED, VENDOR_TGPP, is_required=True),
+        AvpGenDef("vplmn_dynamic_address_allowed", AVP_TGPP_VPLMN_DYNAMIC_ADDRESS_ALLOWED, VENDOR_TGPP),
+        AvpGenDef("service_selection", AVP_SERVICE_SELECTION, is_required=True),
+        AvpGenDef("tgpp_charging_characteristics", AVP_TGPP_3GPP_CHARGING_CHARACTERISTICS, VENDOR_TGPP),
+        AvpGenDef("ext_pdp_type", AVP_TGPP_EXT_PDP_TYPE, VENDOR_TGPP),
+        AvpGenDef("ext_pdp_address", AVP_TGPP_EXT_PDP_ADDRESS, VENDOR_TGPP),
+        AvpGenDef("ambr", AVP_TGPP_AMBR, VENDOR_TGPP, type_class=Ambr),
+        AvpGenDef("apn_oi_replacement", AVP_TGPP_APN_OI_REPLACEMENT, VENDOR_TGPP),
+        AvpGenDef("sipto_permission", AVP_TGPP_SIPTO_PERMISSION, VENDOR_TGPP),
+        AvpGenDef("lipa_permission", AVP_TGPP_LIPA_PERMISSION, VENDOR_TGPP),
+        AvpGenDef("restoration_priority", AVP_TGPP_RESTORATION_PRIORITY, VENDOR_TGPP),
+        AvpGenDef("sipto_local_network_permission", AVP_TGPP_SIPTO_LOCAL_NETWORK_PERMISSION, VENDOR_TGPP),
+        AvpGenDef("non_ip_data_delivery_mechanism", AVP_TGPP_NON_IP_DATA_DELIVERY_MECHANISM, VENDOR_TGPP),
+        AvpGenDef("scef_id", AVP_TGPP_SCEF_ID, VENDOR_TGPP)
+    )
+
+
+@dataclasses.dataclass
+class LcsPrivacyException:
+    """A data container that represents the "LCS-PrivacyException" (1475) grouped AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    ss_code: bytes = None
+    ss_status: bytes = None
+    notification_to_ue_user: int = None
+    external_client: list[ExternalClient] = dataclasses.field(default_factory=list)
+    plmn_client: list[int] = dataclasses.field(default_factory=list)
+    service_type: list[int] = dataclasses.field(default_factory=list)
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("ss_code", AVP_TGPP_SS_CODE, VENDOR_TGPP, is_required=True),
+        AvpGenDef("ss_status", AVP_TGPP_SS_STATUS, VENDOR_TGPP, is_required=True),
+        AvpGenDef("notification_to_ue_user", AVP_TGPP_NOTIFICATION_TO_UE_USER, VENDOR_TGPP),
+        AvpGenDef("external_client", AVP_TGPP_EXTERNAL_CLIENT, VENDOR_TGPP, type_class=ExternalClient),
+        AvpGenDef("plmn_client", AVP_TGPP_PLMN_CLIENT, VENDOR_TGPP),
+        AvpGenDef("service_type", AVP_SERVICE_TYPE),
+    )
+
+
+@dataclasses.dataclass
+class MoLr:
+    """A data container that represents the "MO-LR" (1485) grouped AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    ss_code: bytes = None
+    ss_status: bytes = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("ss_code", AVP_TGPP_SS_CODE, VENDOR_TGPP, is_required=True),
+        AvpGenDef("ss_status", AVP_TGPP_SS_STATUS, VENDOR_TGPP, is_required=True),
+    )
+
+
+@dataclasses.dataclass
+class LcsInfo:
+    """A data container that represents the "LCS-Info" (1473) grouped AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    gmlc_number: list[bytes] = dataclasses.field(default_factory=list)
+    lcs_privacyexception: LcsPrivacyException = None
+    mo_lr: MoLr = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("gmlc_number", AVP_TGPP_GMLC_NUMBER, VENDOR_TGPP),
+        AvpGenDef("lcs_privacyexception", AVP_TGPP_LCS_PRIVACYEXCEPTION, VENDOR_TGPP, type_class=LcsPrivacyException),
+        AvpGenDef("mo_lr", AVP_TGPP_MO_LR, VENDOR_TGPP, type_class=MoLr),
+    )
+
+
+@dataclasses.dataclass
+class TeleServiceList:
+    """A data container that represents the "Teleservice-List" (1486) grouped AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    ts_code: list[bytes] = dataclasses.field(default_factory=list)
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("ts_code", AVP_TGPP_TS_CODE, VENDOR_TGPP, is_required=True),
+    )
+
+
+@dataclasses.dataclass
+class CallBarringInfo:
+    """A data container that represents the "Call-Barring-Info" (1488) grouped AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    ss_code: bytes = None
+    ss_status: bytes = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("ss_code", AVP_TGPP_SS_CODE, VENDOR_TGPP, is_required=True),
+        AvpGenDef("ss_status", AVP_TGPP_SS_STATUS, VENDOR_TGPP, is_required=True),
+    )
+
+
+@dataclasses.dataclass
+class GprsSubscriptionData:
+    """A data container that represents the "GPRS-Subscription-Data" (1467) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    complete_data_list_included_indicator: int = None
+    pdp_context: list[PdpContext] = dataclasses.field(default_factory=list)
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("complete_data_list_included_indicator", AVP_TGPP_COMPLETE_DATA_LIST_INCLUDED_INDICATOR, VENDOR_TGPP, is_required=True),
+        AvpGenDef("pdp_context", AVP_TGPP_PDP_CONTEXT, VENDOR_TGPP, is_required=True, type_class=PdpContext)
+    )
+
+
+@dataclasses.dataclass
+class CsgSubscriptionData:
+    """A data container that represents the "CSG-Subscription-Data" (1436) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    csg_id: int = None
+    expiration_date: datetime.datetime = None
+    service_selection: list[str] = dataclasses.field(default_factory=list)
+    visited_plmn_id: bytes = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("csg_id", AVP_TGPP_CSG_ID, VENDOR_TGPP, is_required=True),
+        AvpGenDef("expiration_date", AVP_TGPP_EXPIRATION_DATE, VENDOR_TGPP),
+        AvpGenDef("service_selection", AVP_SERVICE_SELECTION),
+        AvpGenDef("visited_plmn_id", AVP_TGPP_VISITED_PLMN_ID, VENDOR_TGPP)
+    )
+
+
+@dataclasses.dataclass
+class ServiceType:
+    """A data container that represents the "Service-Type" (1483) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    servicetypeidentity: int = None
+    gmlc_restriction: int = None
+    notification_to_ue_user: int = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("servicetypeidentity", AVP_TGPP_SERVICETYPEIDENTITY, VENDOR_TGPP, is_required=True),
+        AvpGenDef("gmlc_restriction", AVP_TGPP_GMLC_RESTRICTION, VENDOR_TGPP),
+        AvpGenDef("notification_to_ue_user", AVP_TGPP_NOTIFICATION_TO_UE_USER, VENDOR_TGPP)
+    )
+
+
+@dataclasses.dataclass
+class MmeUserState:
+    """A data container that represents the "MME-User-State" (1497) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    user_state: int = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("user_state", AVP_TGPP_USER_STATE, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
+class SgsnUserState:
+    """A data container that represents the "SGSN-User-State" (1498) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    user_state: int = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("user_state", AVP_TGPP_USER_STATE, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
+class EpsUserState:
+    """A data container that represents the "EPS-User-State" (1495) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    mme_user_state: MmeUserState = None
+    sgsn_user_state: SgsnUserState = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("mme_user_state", AVP_TGPP_MME_USER_STATE, VENDOR_TGPP, type_class=MmeUserState),
+        AvpGenDef("sgsn_user_state", AVP_TGPP_SGSN_USER_STATE, VENDOR_TGPP, type_class=SgsnUserState)
+    )
+
+
+@dataclasses.dataclass
+class UserCsgInformation:
+    """A data container that represents the "User-CSG-Information" (2319) grouped AVP.
+
+    3GPP TS 32.299 version 16.2.0
+    """
+    csg_id: int = None
+    csg_access_mode: int = None
+    csg_membership_indication: int = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("csg_id", AVP_TGPP_CSG_ID, VENDOR_TGPP),
+        AvpGenDef("csg_access_mode", AVP_TGPP_CSG_ACCESS_MODE, VENDOR_TGPP),
+        AvpGenDef("csg_membership_indication", AVP_TGPP_CSG_MEMBERSHIP_INDICATION, VENDOR_TGPP)
+    )
+
+
+@dataclasses.dataclass
+class MmeLocationInformation:
+    """A data container that represents the "MME-Location-Information" (1600) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    e_utran_cell_global_identity: bytes = None
+    tracking_area_identity: bytes = None
+    geographical_information: bytes = None
+    geodetic_information: bytes = None
+    current_location_retrieved: int = None
+    age_of_location_information: int = None
+    user_csg_information: UserCsgInformation = None
+    enodeb_id: bytes = None
+    extended_enodeb_id: bytes = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("e_utran_cell_global_identity", AVP_TGPP_E_UTRAN_CELL_GLOBAL_IDENTITY, VENDOR_TGPP),
+        AvpGenDef("tracking_area_identity", AVP_TGPP_TRACKING_AREA_IDENTITY, VENDOR_TGPP),
+        AvpGenDef("geographical_information", AVP_TGPP_GEOGRAPHICAL_INFORMATION, VENDOR_TGPP),
+        AvpGenDef("geodetic_information", AVP_TGPP_GEODETIC_INFORMATION, VENDOR_TGPP),
+        AvpGenDef("current_location_retrieved", AVP_TGPP_CURRENT_LOCATION_RETRIEVED, VENDOR_TGPP),
+        AvpGenDef("age_of_location_information", AVP_TGPP_AGE_OF_LOCATION_INFORMATION, VENDOR_TGPP),
+        AvpGenDef("user_csg_information", AVP_TGPP_USER_CSG_INFORMATION, VENDOR_TGPP, type_class=UserCsgInformation),
+        AvpGenDef("enodeb_id", AVP_TGPP_ENODEB_ID, VENDOR_TGPP),
+        AvpGenDef("extended_enodeb_id", AVP_TGPP_EXTENDED_ENODEB_ID, VENDOR_TGPP)
+    )
+
+
+@dataclasses.dataclass
+class SgsnLocationInformation:
+    """A data container that represents the "SGSN-Location-Information" (1601) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    cell_global_identity: bytes = None
+    location_area_identity: bytes = None
+    service_area_identity: bytes = None
+    routing_area_identity: bytes = None
+    geographical_information: bytes = None
+    geodetic_information: bytes = None
+    current_location_retrieved: int = None
+    age_of_location_information: int = None
+    user_csg_information: UserCsgInformation = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("cell_global_identity", AVP_TGPP_CELL_GLOBAL_IDENTITY, VENDOR_TGPP),
+        AvpGenDef("location_area_identity", AVP_TGPP_LOCATION_AREA_IDENTITY, VENDOR_TGPP),
+        AvpGenDef("service_area_identity", AVP_TGPP_SERVICE_AREA_IDENTITY, VENDOR_TGPP),
+        AvpGenDef("routing_area_identity", AVP_TGPP_ROUTING_AREA_IDENTITY, VENDOR_TGPP),
+        AvpGenDef("geographical_information", AVP_TGPP_GEOGRAPHICAL_INFORMATION, VENDOR_TGPP),
+        AvpGenDef("geodetic_information", AVP_TGPP_GEODETIC_INFORMATION, VENDOR_TGPP),
+        AvpGenDef("current_location_retrieved", AVP_TGPP_CURRENT_LOCATION_RETRIEVED, VENDOR_TGPP),
+        AvpGenDef("age_of_location_information", AVP_TGPP_AGE_OF_LOCATION_INFORMATION, VENDOR_TGPP),
+        AvpGenDef("user_csg_information", AVP_TGPP_USER_CSG_INFORMATION, VENDOR_TGPP, type_class=UserCsgInformation)
+    )
+
+
+@dataclasses.dataclass
+class ActiveApn:
+    """A data container that represents the "Active-APN" (1612) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    context_identifier: int = None
+    service_selection: str = None
+    mip6_agent_info: Mip6AgentInfo = None
+    visited_network_identifier: bytes = None
+    specific_apn_info: list[SpecificApnInfo] = dataclasses.field(default_factory=list)
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("context_identifier", AVP_TGPP_CONTEXT_IDENTIFIER, VENDOR_TGPP, is_required=True),
+        AvpGenDef("service_selection", AVP_SERVICE_SELECTION),
+        AvpGenDef("mip6_agent_info", AVP_MIP6_AGENT_INFO, type_class=Mip6AgentInfo),
+        AvpGenDef("visited_network_identifier", AVP_TGPP_VISITED_NETWORK_IDENTIFIER, VENDOR_TGPP),
+        AvpGenDef("specific_apn_info", AVP_TGPP_SPECIFIC_APN_INFO, VENDOR_TGPP, type_class=SpecificApnInfo)
+    )
+
+
+@dataclasses.dataclass
+class EquivalentPlmnList:
+    """A data container that represents the "Equivalent-PLMN-List" (1637) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    visited_plmn_id: list[bytes] = dataclasses.field(default_factory=list)
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("visited_plmn_id", AVP_TGPP_VISITED_PLMN_ID, VENDOR_TGPP, is_required=True),
+    )
+
+
+@dataclasses.dataclass
+class VplmnCsgSubscriptionData:
+    """A data container that represents the "VPLMN-CSG-Subscription-Data" (1641) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    csg_id: int = None
+    expiration_date: datetime.datetime = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("csg_id", AVP_TGPP_CSG_ID, VENDOR_TGPP, is_required=True),
+        AvpGenDef("expiration_date", AVP_TGPP_EXPIRATION_DATE, VENDOR_TGPP)
+    )
+
+
+@dataclasses.dataclass
+class LocalTimeZone:
+    """A data container that represents the "Local-Time-Zone" (1649) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    time_zone: str = None
+    daylight_saving_time: int = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("time_zone", AVP_TGPP_TIME_ZONE, VENDOR_TGPP, is_required=True),
+        AvpGenDef("daylight_saving_time", AVP_TGPP_DAYLIGHT_SAVING_TIME, VENDOR_TGPP, is_required=True)
+    )
+
+
+@dataclasses.dataclass
+class AdjacentPlmns:
+    """A data container that represents the "Adjacent-PLMNs" (1672) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    visited_plmn_id: list[bytes] = dataclasses.field(default_factory=list)
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("visited_plmn_id", AVP_TGPP_VISITED_PLMN_ID, VENDOR_TGPP, is_required=True),
+    )
+
+
+@dataclasses.dataclass
+class AdjacentAccessRestrictionData:
+    """A data container that represents the "Adjacent-Access-Restriction-Data" (1673) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    visited_plmn_id: bytes = None
+    access_restriction_data: int = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("visited_plmn_id", AVP_TGPP_VISITED_PLMN_ID, VENDOR_TGPP, is_required=True),
+        AvpGenDef("access_restriction_data", AVP_TGPP_ACCESS_RESTRICTION_DATA, VENDOR_TGPP, is_required=True)
+    )
+
+
+@dataclasses.dataclass
+class ImsiGroupId:
+    """A data container that represents the "IMSI-Group-Id" (1675) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    group_service_id: int = None
+    group_plmn_id: bytes = None
+    local_group_id: bytes = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("group_service_id", AVP_TGPP_GROUP_SERVICE_ID, VENDOR_TGPP, is_required=True),
+        AvpGenDef("group_plmn_id", AVP_TGPP_GROUP_PLMN_ID, VENDOR_TGPP, is_required=True),
+        AvpGenDef("local_group_id", AVP_TGPP_LOCAL_GROUP_ID, VENDOR_TGPP, is_required=True)
+    )
+
+
+@dataclasses.dataclass
+class EpsLocationInformation:
+    """A data container that represents the "EPS-Location-Information" (1496) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    mme_location_information: MmeLocationInformation = None
+    sgsn_location_information: SgsnLocationInformation = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("mme_location_information", AVP_TGPP_MME_LOCATION_INFORMATION, VENDOR_TGPP, type_class=MmeLocationInformation),
+        AvpGenDef("sgsn_location_information", AVP_TGPP_SGSN_LOCATION_INFORMATION, VENDOR_TGPP, type_class=SgsnLocationInformation)
+    )
+
+
+@dataclasses.dataclass
+class EmergencyInfo:
+    """A data container that represents the "Emergency-Info" (1687) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    mip6_agent_info: Mip6AgentInfo = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("mip6_agent_info", AVP_MIP6_AGENT_INFO, type_class=Mip6AgentInfo),
+    )
+
+
+@dataclasses.dataclass
+class V2xSubscriptionData:
+    """A data container that represents the "V2X-Subscription-Data" (1688) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    v2x_permission: int = None
+    ue_pc5_ambr: int = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("v2x_permission", AVP_TGPP_V2X_PERMISSION, VENDOR_TGPP),
+        AvpGenDef("ue_pc5_ambr", AVP_TGPP_UE_PC5_AMBR, VENDOR_TGPP)
+    )
+
+
+@dataclasses.dataclass
+class EdrxCycleLength:
+    """A data container that represents the "eDRX-Cycle-Length" (1691) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    rat_type: int = None
+    edrx_cycle_length_value: bytes = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("rat_type", AVP_TGPP_RAT_TYPE, VENDOR_TGPP, is_required=True),
+        AvpGenDef("edrx_cycle_length_value", AVP_TGPP_EDRX_CYCLE_LENGTH_VALUE, VENDOR_TGPP, is_required=True)
+    )
+
+
+@dataclasses.dataclass
+class UeReachabilityConfiguration:
+    """A data container that represents the "UE-Reachability-Configuration" (3129) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    reachability_type: int = None
+    maximum_response_time: int = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("reachability_type", AVP_TGPP_REACHABILITY_TYPE, VENDOR_TGPP),
+        AvpGenDef("maximum_response_time", AVP_TGPP_MAXIMUM_RESPONSE_TIME, VENDOR_TGPP)
+    )
+
+
+@dataclasses.dataclass
+class LocationInformationConfiguration:
+    """A data container that represents the "Location-Information-Configuration" (3135) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    monte_location_type: int = None
+    accuracy: int = None
+    periodic_time: int = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("monte_location_type", AVP_TGPP_MONTE_LOCATION_TYPE, VENDOR_TGPP),
+        AvpGenDef("accuracy", AVP_TGPP_ACCURACY, VENDOR_TGPP),
+        AvpGenDef("periodic_time", AVP_TGPP_PERIODIC_TIME, VENDOR_TGPP)
+    )
+
+
+@dataclasses.dataclass
+class MtcProviderInfo:
+    """A data container that represents the "MTC-Provider-Info" (3178) AVP.
+
+    3GPP TS 29.336 version 18.2.0
+    """
+    mtc_provider_id: str = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("mtc_provider_id", AVP_TGPP_MTC_PROVIDER_ID, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
+class PdnConnectivityStatusConfiguration:
+    """A data container that represents the "PDN-Connectivity-Status-Configuration" (3180) AVP.
+
+    3GPP TS 29.336 version 18.2.0
+    """
+    service_selection: str = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("service_selection", AVP_SERVICE_SELECTION),
+    )
+
+
+@dataclasses.dataclass
+class PdnConnectivityStatusReport:
+    """A data container that represents the "PDN-Connectivity-Status-Report" (3181) AVP.
+
+    3GPP TS 29.336 version 18.2.0
+    """
+    service_selection: str = None
+    pdn_connectivity_status_type: int = None
+    pdn_type: int = None
+    non_ip_pdn_type_indicator: int = None
+    non_ip_data_delivery_mechanism: int = None
+    served_party_ip_address: list[str] = dataclasses.field(default_factory=list)
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("service_selection", AVP_SERVICE_SELECTION, is_required=True),
+        AvpGenDef("pdn_connectivity_status_type", AVP_TGPP_PDN_CONNECTIVITY_STATUS_TYPE, VENDOR_TGPP, is_required=True),
+        AvpGenDef("pdn_type", AVP_TGPP_PDN_TYPE, VENDOR_TGPP),
+        AvpGenDef("non_ip_pdn_type_indicator", AVP_TGPP_NON_IP_PDN_TYPE_INDICATOR, VENDOR_TGPP),
+        AvpGenDef("non_ip_data_delivery_mechanism", AVP_TGPP_NON_IP_DATA_DELIVERY_MECHANISM, VENDOR_TGPP),
+        AvpGenDef("served_party_ip_address", AVP_TGPP_SERVED_PARTY_IP_ADDRESS, VENDOR_TGPP)
+    )
+
+
+@dataclasses.dataclass
+class MonitoringEventConfiguration:
+    """A data container that represents the "Monitoring-Event-Configuration" (3122) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    scef_reference_id: int = None
+    scef_reference_id_ext: int = None
+    scef_id: bytes = None
+    monitoring_type: int = None
+    scef_reference_id_for_deletion: list[int] = dataclasses.field(default_factory=list)
+    scef_reference_id_for_deletion_ext: list[int] = dataclasses.field(default_factory=list)
+    maximum_number_of_reports: int = None
+    monitoring_duration: datetime.datetime = None
+    charged_party: str = None
+    ue_reachability_configuration: UeReachabilityConfiguration = None
+    location_information_configuration: LocationInformationConfiguration = None
+    scef_realm: bytes = None
+    external_identifier: str = None
+    mtc_provider_info: MtcProviderInfo = None
+    pdn_connectivity_status_configuration: PdnConnectivityStatusConfiguration = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("scef_reference_id", AVP_TGPP_SCEF_REFERENCE_ID, VENDOR_TGPP),
+        AvpGenDef("scef_reference_id_ext", AVP_TGPP_SCEF_REFERENCE_ID_EXT, VENDOR_TGPP),
+        AvpGenDef("scef_id", AVP_TGPP_SCEF_ID, VENDOR_TGPP, is_required=True),
+        AvpGenDef("monitoring_type", AVP_TGPP_MONITORING_TYPE, VENDOR_TGPP, is_required=True),
+        AvpGenDef("scef_reference_id_for_deletion", AVP_TGPP_SCEF_REFERENCE_ID_FOR_DELETION, VENDOR_TGPP),
+        AvpGenDef("scef_reference_id_for_deletion_ext", AVP_TGPP_SCEF_REFERENCE_ID_FOR_DELETION_EXT, VENDOR_TGPP),
+        AvpGenDef("maximum_number_of_reports", AVP_TGPP_MAXIMUM_NUMBER_OF_REPORTS, VENDOR_TGPP),
+        AvpGenDef("monitoring_duration", AVP_TGPP_MONITORING_DURATION, VENDOR_TGPP),
+        AvpGenDef("charged_party", AVP_TGPP_CHARGED_PARTY, VENDOR_TGPP),
+        AvpGenDef("ue_reachability_configuration", AVP_TGPP_UE_REACHABILITY_CONFIGURATION, VENDOR_TGPP, type_class=UeReachabilityConfiguration),
+        AvpGenDef("location_information_configuration", AVP_TGPP_LOCATION_INFORMATION_CONFIGURATION, VENDOR_TGPP, type_class=LocationInformationConfiguration),
+        AvpGenDef("scef_realm", AVP_TGPP_SCEF_REALM, VENDOR_TGPP),
+        AvpGenDef("external_identifier", AVP_TGPP_EXTERNAL_IDENTIFIER, VENDOR_TGPP),
+        AvpGenDef("mtc_provider_info", AVP_TGPP_MTC_PROVIDER_INFO, VENDOR_TGPP, type_class=MtcProviderInfo),
+        AvpGenDef("pdn_connectivity_status_configuration", AVP_TGPP_PDN_CONNECTIVITY_STATUS_CONFIGURATION, VENDOR_TGPP, type_class=PdnConnectivityStatusConfiguration)
+    )
+
+
+@dataclasses.dataclass
+class IdleStatusIndication:
+    """A data container that represents the "Idle-Status-Indication" (4322) AVP.
+
+    3GPP TS 29.128 version 16.5.0
+    """
+    idle_status_timestamp: datetime.datetime = None
+    active_time: int = None
+    subscribed_periodic_rau_tau_timer: int = None
+    edrx_cycle_length: EdrxCycleLength = None
+    dl_buffering_suggested_packet_count: int = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("idle_status_timestamp", AVP_TGPP_IDLE_STATUS_TIMESTAMP, VENDOR_TGPP),
+        AvpGenDef("active_time", AVP_TGPP_ACTIVE_TIME, VENDOR_TGPP),
+        AvpGenDef("subscribed_periodic_rau_tau_timer", AVP_TGPP_SUBSCRIBED_PERIODIC_RAU_TAU_TIMER, VENDOR_TGPP),
+        AvpGenDef("edrx_cycle_length", AVP_TGPP_EDRX_CYCLE_LENGTH, VENDOR_TGPP, type_class=EdrxCycleLength),
+        AvpGenDef("dl_buffering_suggested_packet_count", AVP_TGPP_DL_BUFFERING_SUGGESTED_PACKET_COUNT, VENDOR_TGPP)
+    )
+
+
+@dataclasses.dataclass
+class ScheduledCommunicationTime:
+    """A data container that represents the "Scheduled-communication-time" (3118) AVP.
+
+    3GPP TS 29.336 version 18.2.0
+    """
+    day_of_week_mask: int = None
+    time_of_day_start: int = None
+    time_of_day_end: int = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("day_of_week_mask", AVP_DAY_OF_WEEK_MASK),
+        AvpGenDef("time_of_day_start", AVP_TIME_OF_DAY_START),
+        AvpGenDef("time_of_day_end", AVP_TIME_OF_DAY_END)
+    )
+
+
+@dataclasses.dataclass
+class CommunicationPatternSet:
+    """A data container that represents the "Communication-Pattern-Set" (3114) AVP.
+
+    3GPP TS 29.336 version 18.2.0
+    """
+    periodic_communication_indicator: int = None
+    communication_duration_time: int = None
+    periodic_time: int = None
+    scheduled_communication_time: list[ScheduledCommunicationTime] = dataclasses.field(default_factory=list)
+    stationary_indication: int = None
+    reference_id_validity_time: datetime.datetime = None
+    traffic_profile: int = None
+    battery_indicator: int = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("periodic_communication_indicator", AVP_TGPP_PERIODIC_COMMUNICATION_INDICATOR, VENDOR_TGPP),
+        AvpGenDef("communication_duration_time", AVP_TGPP_COMMUNICATION_DURATION_TIME, VENDOR_TGPP),
+        AvpGenDef("periodic_time", AVP_TGPP_PERIODIC_TIME, VENDOR_TGPP),
+        AvpGenDef("scheduled_communication_time", AVP_TGPP_SCHEDULED_COMMUNICATION_TIME, VENDOR_TGPP, type_class=ScheduledCommunicationTime),
+        AvpGenDef("stationary_indication", AVP_TGPP_STATIONARY_INDICATION, VENDOR_TGPP),
+        AvpGenDef("reference_id_validity_time", AVP_TGPP_REFERENCE_ID_VALIDITY_TIME, VENDOR_TGPP),
+        AvpGenDef("traffic_profile", AVP_TGPP_TRAFFIC_PROFILE, VENDOR_TGPP),
+        AvpGenDef("battery_indicator", AVP_TGPP_BATTERY_INDICATOR, VENDOR_TGPP)
+    )
+
+
+@dataclasses.dataclass
+class AeseCommunicationPattern:
+    """A data container that represents the "AESE-Communication-Pattern" (3113) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    scef_reference_id: int = None
+    scef_reference_id_ext: int = None
+    scef_id: bytes = None
+    scef_reference_id_for_deletion: list[int] = dataclasses.field(default_factory=list)
+    scef_reference_id_for_deletion_ext: list[int] = dataclasses.field(default_factory=list)
+    communication_pattern_set: list[CommunicationPatternSet] = dataclasses.field(default_factory=list)
+    mtc_provider_info: MtcProviderInfo = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("scef_reference_id", AVP_TGPP_SCEF_REFERENCE_ID, VENDOR_TGPP),
+        AvpGenDef("scef_reference_id_ext", AVP_TGPP_SCEF_REFERENCE_ID_EXT, VENDOR_TGPP),
+        AvpGenDef("scef_id", AVP_TGPP_SCEF_ID, VENDOR_TGPP, is_required=True),
+        AvpGenDef("scef_reference_id_for_deletion", AVP_TGPP_SCEF_REFERENCE_ID_FOR_DELETION, VENDOR_TGPP),
+        AvpGenDef("scef_reference_id_for_deletion_ext", AVP_TGPP_SCEF_REFERENCE_ID_FOR_DELETION_EXT, VENDOR_TGPP),
+        AvpGenDef("communication_pattern_set", AVP_TGPP_COMMUNICATION_PATTERN_SET, VENDOR_TGPP, type_class=CommunicationPatternSet),
+        AvpGenDef("mtc_provider_info", AVP_TGPP_MTC_PROVIDER_INFO, VENDOR_TGPP, type_class=MtcProviderInfo)
+    )
+
+
+@dataclasses.dataclass
+class MonitoringEventReport:
+    """A data container that represents the "Monitoring-Event-Report" (3123) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    scef_reference_id: int = None
+    scef_reference_id_ext: int = None
+    scef_id: bytes = None
+    reachability_information: int = None
+    reachability_cause: int = None
+    eps_location_information: EpsLocationInformation = None
+    monitoring_type: int = None
+    loss_of_connectivity_reason: int = None
+    idle_status_indication: IdleStatusIndication = None
+    maximum_ue_availability_time: datetime.datetime = None
+    pdn_connectivity_status_report: list[PdnConnectivityStatusReport] = dataclasses.field(default_factory=list)
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("scef_reference_id", AVP_TGPP_SCEF_REFERENCE_ID, VENDOR_TGPP, is_required=True),
+        AvpGenDef("scef_reference_id_ext", AVP_TGPP_SCEF_REFERENCE_ID_EXT, VENDOR_TGPP),
+        AvpGenDef("scef_id", AVP_TGPP_SCEF_ID, VENDOR_TGPP),
+        AvpGenDef("reachability_information", AVP_TGPP_REACHABILITY_INFORMATION, VENDOR_TGPP),
+        AvpGenDef("reachability_cause", AVP_TGPP_REACHABILITY_CAUSE, VENDOR_TGPP),
+        AvpGenDef("eps_location_information", AVP_TGPP_EPS_LOCATION_INFORMATION, VENDOR_TGPP, type_class=EpsLocationInformation),
+        AvpGenDef("monitoring_type", AVP_TGPP_MONITORING_TYPE, VENDOR_TGPP),
+        AvpGenDef("loss_of_connectivity_reason", AVP_TGPP_LOSS_OF_CONNECTIVITY_REASON, VENDOR_TGPP),
+        AvpGenDef("idle_status_indication", AVP_TGPP_IDLE_STATUS_INDICATION, VENDOR_TGPP, type_class=IdleStatusIndication),
+        AvpGenDef("maximum_ue_availability_time", AVP_TGPP_MAXIMUM_UE_AVAILABILITY_TIME, VENDOR_TGPP),
+        AvpGenDef("pdn_connectivity_status_report", AVP_TGPP_PDN_CONNECTIVITY_STATUS_REPORT, VENDOR_TGPP, type_class=PdnConnectivityStatusReport)
+    )
+
+
+@dataclasses.dataclass
+class SupportedServices:
+    """A data container that represents the "Supported-Services" (3143) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    supported_monitoring_events: int = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("supported_monitoring_events", AVP_TGPP_SUPPORTED_MONITORING_EVENTS, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
+class ProseAllowedPlmn:
+    """A data container that represents the "ProSe-Allowed-PLMN" (3703) AVP.
+
+    3GPP TS 29.344 version 18.0.0
+    """
+    visited_plmn_id: bytes = None
+    authorized_discovery_range: int = None
+    prose_direct_allowed: int = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("visited_plmn_id", AVP_TGPP_VISITED_PLMN_ID, VENDOR_TGPP),
+        AvpGenDef("authorized_discovery_range", AVP_TGPP_AUTHORIZED_DISCOVERY_RANGE, VENDOR_TGPP),
+        AvpGenDef("prose_direct_allowed", AVP_TGPP_PROSE_DIRECT_ALLOWED, VENDOR_TGPP)
+    )
+
+
+@dataclasses.dataclass
+class ProSeSubscriptionData:
+    """A data container that represents the "ProSe-Subscription-Data" (3701) AVP.
+
+    3GPP TS 29.344 version 18.0.0
+    """
+    prose_permission: int = None
+    prose_allowed_plmn: list[ProseAllowedPlmn] = dataclasses.field(default_factory=list)
+    tgpp_charging_characteristics: str = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("prose_permission", AVP_TGPP_PROSE_PERMISSION, VENDOR_TGPP, is_required=True),
+        AvpGenDef("prose_allowed_plmn", AVP_TGPP_PROSE_ALLOWED_PLMN, VENDOR_TGPP, type_class=ProseAllowedPlmn),
+        AvpGenDef("tgpp_charging_characteristics", AVP_TGPP_3GPP_CHARGING_CHARACTERISTICS, VENDOR_TGPP)
+    )
+
+
+@dataclasses.dataclass
+class Pc5FlowBitrates:
+    """A data container that represents the "PC5-Flow-Bitrates" (1714) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    guaranteed_flow_bitrates: int = None
+    maximum_flow_bitrates: int = None
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("guaranteed_flow_bitrates", AVP_TGPP_GUARANTEED_FLOW_BITRATES, VENDOR_TGPP),
+        AvpGenDef("maximum_flow_bitrates", AVP_TGPP_MAXIMUM_FLOW_BITRATES, VENDOR_TGPP)
+    )
+
+
+@dataclasses.dataclass
+class Pc5QosFlow:
+    """A data container that represents the "PC5-QoS-Flow" (1712) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    fiveqi: int = None
+    pc5_flow_bitrates: Pc5FlowBitrates = None
+    pc5_range: int = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("fiveqi", AVP_TGPP_5QI, VENDOR_TGPP, is_required=True),
+        AvpGenDef("pc5_flow_bitrates", AVP_TGPP_PC5_FLOW_BITRATES, VENDOR_TGPP, type_class=Pc5FlowBitrates),
+        AvpGenDef("pc5_range", AVP_TGPP_PC5_RANGE, VENDOR_TGPP)
+    )
+
+
+@dataclasses.dataclass
+class UePc5Qos:
+    """A data container that represents the "UE-PC5-QoS" (1711) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    pc5_qos_flow: list[Pc5QosFlow] = dataclasses.field(default_factory=list)
+    pc5_link_ambr: int = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("pc5_qos_flow", AVP_TGPP_PC5_QOS_FLOW, VENDOR_TGPP, is_required=True, type_class=Pc5QosFlow),
+        AvpGenDef("pc5_link_ambr", AVP_TGPP_PC5_LINK_AMBR, VENDOR_TGPP)
+    )
+
+
+@dataclasses.dataclass
+class V2xSubscriptionData:
+    """A data container that represents the "V2X-Subscription-Data" (1688) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    v2x_permission: int = None
+    ue_pc5_ambr: int = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("v2x_permission", AVP_TGPP_V2X_PERMISSION, VENDOR_TGPP),
+        AvpGenDef("ue_pc5_ambr", AVP_TGPP_UE_PC5_AMBR, VENDOR_TGPP)
+    )
+
+
+@dataclasses.dataclass
+class V2xSubscriptionDataNr:
+    """A data container that represents the "V2X-Subscription-Data-Nr" (1710) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    v2x_permission: int = None
+    ue_pc5_ambr: int = None
+    ue_pc5_qos: UePc5Qos = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("v2x_permission", AVP_TGPP_V2X_PERMISSION, VENDOR_TGPP),
+        AvpGenDef("ue_pc5_ambr", AVP_TGPP_UE_PC5_AMBR, VENDOR_TGPP),
+        AvpGenDef("ue_pc5_qos", AVP_TGPP_UE_PC5_QOS, VENDOR_TGPP, type_class=UePc5Qos)
+    )
+
+
+@dataclasses.dataclass
+class PagingTimeWindow:
+    """A data container that represents the "Paging-Time-Window" (1701) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    operation_mode: int = None
+    paging_time_window_length: bytes = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("operation_mode", AVP_TGPP_OPERATION_MODE, VENDOR_TGPP, is_required=True),
+        AvpGenDef("paging_time_window_length", AVP_TGPP_PAGING_TIME_WINDOW_LENGTH, VENDOR_TGPP, is_required=True)
+    )
+
+
+@dataclasses.dataclass
+class SubscriptionData:
+    """A data container that represents the "Subscription-Data" (1400) grouped AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    subscriber_status: int = None
+    msisdn: bytes = None
+    a_msisdn: bytes = None
+    stn_sr: bytes = None
+    ics_indicator: int = None
+    network_access_mode: int = None
+    operator_determined_barring: int = None
+    hplmn_odb: int = None
+    regional_subscription_zone_code: list[bytes] = dataclasses.field(default_factory=list)
+    access_restriction_data: int = None
+    apn_oi_replacement: str = None
+    lcs_info: LcsInfo = None
+    teleservice_list: TeleServiceList = None
+    call_barring_info: list[CallBarringInfo] = dataclasses.field(default_factory=list)
+    tgpp_charging_characteristics: str = None
+    ambr: Ambr = None
+    apn_configuration_profile: ApnConfigurationProfile = None
+    rat_frequency_selection_priority_id: int = None
+    trace_data: TraceData = None
+    gprs_subscription_data: GprsSubscriptionData = None
+    csg_subscription_data: list[CsgSubscriptionData] = dataclasses.field(default_factory=list)
+    roaming_restricted_due_to_unsupported_feature: int = None
+    subscribed_periodic_rau_tau_timer: int = None
+    mps_priority: int = None
+    vplmn_lipa_allowed: int = None
+    relay_node_indicator: int = None
+    mdt_user_consent: int = None
+    subscribed_vsrvcc: int = None
+    prose_subscription_data: ProSeSubscriptionData = None
+    subscription_data_flags: int = None
+    adjacent_access_restriction_data: list[AdjacentAccessRestrictionData] = dataclasses.field(default_factory=list)
+    dl_buffering_suggested_packet_count: int = None
+    imsi_group_id: list[ImsiGroupId] = dataclasses.field(default_factory=list)
+    ue_usage_type: int = None
+    aese_communication_pattern: list[AeseCommunicationPattern] = dataclasses.field(default_factory=list)
+    monitoring_event_configuration: list[MonitoringEventConfiguration] = dataclasses.field(default_factory=list)
+    emergency_info: EmergencyInfo = None
+    v2x_subscription_data: V2xSubscriptionData = None
+    v2x_subscription_data_nr: V2xSubscriptionDataNr = None
+    edrx_cycle_length: list[EdrxCycleLength] = dataclasses.field(default_factory=list)
+    external_identifier: str = None
+    active_time: int = None
+    service_gap_time: int = None
+    broadcast_location_assistance_data_types: int = None
+    aerial_ue_subscription_information: int = None
+    core_network_restrictions: int = None
+    paging_time_window: list[PagingTimeWindow] = dataclasses.field(default_factory=list)
+    subscribed_arpi: int = None
+    iab_operation_permission: int = None
+    plmn_rat_usage_control: int = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("subscriber_status", AVP_TGPP_SUBSCRIBER_STATUS, VENDOR_TGPP),
+        AvpGenDef("msisdn", AVP_TGPP_MSISDN, VENDOR_TGPP),
+        AvpGenDef("a_msisdn", AVP_TGPP_A_MSISDN, VENDOR_TGPP),
+        AvpGenDef("stn_sr", AVP_TGPP_STN_SR, VENDOR_TGPP),
+        AvpGenDef("ics_indicator", AVP_TGPP_ICS_INDICATOR, VENDOR_TGPP),
+        AvpGenDef("network_access_mode", AVP_TGPP_NETWORK_ACCESS_MODE, VENDOR_TGPP),
+        AvpGenDef("operator_determined_barring", AVP_TGPP_OPERATOR_DETERMINED_BARRING, VENDOR_TGPP),
+        AvpGenDef("hplmn_odb", AVP_TGPP_HPLMN_ODB, VENDOR_TGPP),
+        AvpGenDef("regional_subscription_zone_code", AVP_TGPP_REGIONAL_SUBSCRIPTION_ZONE_CODE, VENDOR_TGPP),
+        AvpGenDef("access_restriction_data", AVP_TGPP_ACCESS_RESTRICTION_DATA, VENDOR_TGPP),
+        AvpGenDef("apn_oi_replacement", AVP_TGPP_APN_OI_REPLACEMENT, VENDOR_TGPP),
+        AvpGenDef("lcs_info", AVP_TGPP_LCS_INFO, VENDOR_TGPP, type_class=LcsInfo),
+        AvpGenDef("teleservice_list", AVP_TGPP_TELESERVICE_LIST, VENDOR_TGPP, type_class=TeleServiceList),
+        AvpGenDef("call_barring_info", AVP_TGPP_CALL_BARRING_INFO, VENDOR_TGPP, type_class=CallBarringInfo),
+        AvpGenDef("tgpp_charging_characteristics", AVP_TGPP_3GPP_CHARGING_CHARACTERISTICS, VENDOR_TGPP),
+        AvpGenDef("ambr", AVP_TGPP_AMBR, VENDOR_TGPP, type_class=Ambr),
+        AvpGenDef("apn_configuration_profile", AVP_TGPP_APN_CONFIGURATION_PROFILE, VENDOR_TGPP, type_class=ApnConfigurationProfile),
+        AvpGenDef("rat_frequency_selection_priority_id", AVP_TGPP_RAT_FREQUENCY_SELECTION_PRIORITY_ID, VENDOR_TGPP),
+        AvpGenDef("trace_data", AVP_TGPP_TRACE_DATA, VENDOR_TGPP, type_class=TraceData),
+        AvpGenDef("gprs_subscription_data", AVP_TGPP_GPRS_SUBSCRIPTION_DATA, VENDOR_TGPP, type_class=GprsSubscriptionData),
+        AvpGenDef("csg_subscription_data", AVP_TGPP_CSG_SUBSCRIPTION_DATA, VENDOR_TGPP, type_class=CsgSubscriptionData),
+        AvpGenDef("roaming_restricted_due_to_unsupported_feature", AVP_TGPP_ROAMING_RESTRICTED_DUE_TO_UNSUPPORTED_FEATURE, VENDOR_TGPP),
+        AvpGenDef("subscribed_periodic_rau_tau_timer", AVP_TGPP_SUBSCRIBED_PERIODIC_RAU_TAU_TIMER, VENDOR_TGPP),
+        AvpGenDef("mps_priority", AVP_TGPP_MPS_PRIORITY, VENDOR_TGPP),
+        AvpGenDef("vplmn_lipa_allowed", AVP_TGPP_VPLMN_LIPA_ALLOWED, VENDOR_TGPP),
+        AvpGenDef("relay_node_indicator", AVP_TGPP_RELAY_NODE_INDICATOR, VENDOR_TGPP),
+        AvpGenDef("mdt_user_consent", AVP_TGPP_MDT_USER_CONSENT, VENDOR_TGPP),
+        AvpGenDef("subscribed_vsrvcc", AVP_TGPP_SUBSCRIBED_VSRVCC, VENDOR_TGPP),
+        AvpGenDef("prose_subscription_data", AVP_TGPP_PROSE_SUBSCRIPTION_DATA, VENDOR_TGPP, type_class=ProSeSubscriptionData),
+        AvpGenDef("subscription_data_flags", AVP_TGPP_SUBSCRIPTION_DATA_FLAGS, VENDOR_TGPP),
+        AvpGenDef("adjacent_access_restriction_data", AVP_TGPP_ADJACENT_ACCESS_RESTRICTION_DATA, VENDOR_TGPP, type_class=AdjacentAccessRestrictionData),
+        AvpGenDef("dl_buffering_suggested_packet_count", AVP_TGPP_DL_BUFFERING_SUGGESTED_PACKET_COUNT, VENDOR_TGPP),
+        AvpGenDef("imsi_group_id", AVP_TGPP_IMSI_GROUP_ID, VENDOR_TGPP, type_class=ImsiGroupId),
+        AvpGenDef("ue_usage_type", AVP_TGPP_UE_USAGE_TYPE, VENDOR_TGPP),
+        AvpGenDef("aese_communication_pattern", AVP_TGPP_AESE_COMMUNICATION_PATTERN, VENDOR_TGPP, type_class=AeseCommunicationPattern),
+        AvpGenDef("monitoring_event_configuration", AVP_TGPP_MONITORING_EVENT_CONFIGURATION, VENDOR_TGPP, type_class=MonitoringEventConfiguration),
+        AvpGenDef("emergency_info", AVP_TGPP_EMERGENCY_INFO, VENDOR_TGPP, type_class=EmergencyInfo),
+        AvpGenDef("v2x_subscription_data", AVP_TGPP_V2X_SUBSCRIPTION_DATA, VENDOR_TGPP, type_class=V2xSubscriptionData),
+        AvpGenDef("v2x_subscription_data_nr", AVP_TGPP_V2X_SUBSCRIPTION_DATA_NR, VENDOR_TGPP, type_class=V2xSubscriptionDataNr),
+        AvpGenDef("edrx_cycle_length", AVP_TGPP_EDRX_CYCLE_LENGTH, VENDOR_TGPP, type_class=EdrxCycleLength),
+        AvpGenDef("external_identifier", AVP_TGPP_EXTERNAL_IDENTIFIER, VENDOR_TGPP),
+        AvpGenDef("active_time", AVP_TGPP_ACTIVE_TIME, VENDOR_TGPP),
+        AvpGenDef("service_gap_time", AVP_TGPP_SERVICE_GAP_TIME, VENDOR_TGPP),
+        AvpGenDef("broadcast_location_assistance_data_types", AVP_TGPP_BROADCAST_LOCATION_ASSISTANCE_DATA_TYPES, VENDOR_TGPP),
+        AvpGenDef("aerial_ue_subscription_information", AVP_TGPP_AERIAL_UE_SUBSCRIPTION_INFORMATION, VENDOR_TGPP),
+        AvpGenDef("core_network_restrictions", AVP_TGPP_CORE_NETWORK_RESTRICTIONS, VENDOR_TGPP),
+        AvpGenDef("paging_time_window", AVP_TGPP_PAGING_TIME_WINDOW, VENDOR_TGPP, type_class=PagingTimeWindow),
+        AvpGenDef("subscribed_arpi", AVP_TGPP_SUBSCRIBED_ARPI, VENDOR_TGPP),
+        AvpGenDef("iab_operation_permission", AVP_TGPP_IAB_OPERATION_PERMISSION, VENDOR_TGPP),
+        AvpGenDef("plmn_rat_usage_control", AVP_TGPP_PLMN_RAT_USAGE_CONTROL, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
+class SubscriptionDataDeletion:
+    """A data container that represents the "Subscription-Data-Deletion" (1685) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    dsr_flags: int = None
+    scef_id: bytes = None
+    context_identifier: list[int] = dataclasses.field(default_factory=list)
+    trace_reference: bytes = None
+    ts_code: list[bytes] = dataclasses.field(default_factory=list)
+    ss_code: list[bytes] = dataclasses.field(default_factory=list)
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("dsr_flags", AVP_TGPP_DSR_FLAGS, VENDOR_TGPP, is_required=True),
+        AvpGenDef("scef_id", AVP_TGPP_SCEF_ID, VENDOR_TGPP),
+        AvpGenDef("context_identifier", AVP_TGPP_CONTEXT_IDENTIFIER, VENDOR_TGPP),
+        AvpGenDef("trace_reference", AVP_TGPP_TRACE_REFERENCE, VENDOR_TGPP),
+        AvpGenDef("ts_code", AVP_TGPP_TS_CODE, VENDOR_TGPP),
+        AvpGenDef("ss_code", AVP_TGPP_SS_CODE, VENDOR_TGPP)
+    )
+
+
+@dataclasses.dataclass
+class EdrxRelatedRat:
+    """A data container that represents the "eDRX-Related-RAT" (1705) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    rat_type: list[int] = dataclasses.field(default_factory=list)
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("rat_type", AVP_TGPP_RAT_TYPE, VENDOR_TGPP, is_required=True),
+    )
+
+
+@dataclasses.dataclass
 class TerminalInformation:
     """A data container that represents the "Terminal-Information" (1401) grouped AVP.
 
@@ -2204,24 +3908,6 @@ class RecipientInfo:
         AvpGenDef("recipient_received_address", AVP_TGPP_RECIPIENT_RECEIVED_ADDRESS, VENDOR_TGPP, type_class=RecipientReceivedAddress),
         AvpGenDef("recipient_sccp_address", AVP_TGPP_RECIPIENT_SCCP_ADDRESS, VENDOR_TGPP),
         AvpGenDef("sm_protocol_id", AVP_TGPP_SM_PROTOCOL_ID, VENDOR_TGPP),
-    )
-
-
-@dataclasses.dataclass
-class UserCsgInformation:
-    """A data container that represents the "User-CSG-Information" (2319) grouped AVP.
-
-    3GPP TS 32.299 version 16.2.0
-    """
-    csg_id: int = None
-    csg_access_mode: int = None
-    csg_membership_indication: int = None
-
-    # noinspection PyDataclass
-    avp_def: dataclasses.InitVar[AvpGenType] = (
-        AvpGenDef("csg_id", AVP_TGPP_CSG_ID, VENDOR_TGPP),
-        AvpGenDef("csg_access_mode", AVP_TGPP_CSG_ACCESS_MODE, VENDOR_TGPP),
-        AvpGenDef("csg_membership_indication", AVP_TGPP_CSG_MEMBERSHIP_INDICATION, VENDOR_TGPP)
     )
 
 
@@ -4114,6 +5800,21 @@ class ProseInformation:
 
 
 @dataclasses.dataclass
+class ProseSubscriptionData:
+    """A data container that represents the "ProSe-Subscription-Data" (3701) AVP.
+
+    3GPP TS 29.272 version 19.4.0
+    """
+    prose_permission: int = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("prose_permission", AVP_TGPP_PROSE_PERMISSION, VENDOR_TGPP, is_required=True),
+    )
+
+
+@dataclasses.dataclass
 class CpdtInformation:
     """A data container that represents the "CPDT-Information" (3927) grouped AVP.
 
@@ -4179,34 +5880,6 @@ class ServiceInformation:
         AvpGenDef("dcd_information", AVP_TGPP_DCD_INFORMATION, VENDOR_TGPP, type_class=DcdInformation),
         AvpGenDef("m2m_information", AVP_ONEM2M_M2M_INFORMATION, VENDOR_ONEM2M, type_class=M2mInformation),
         AvpGenDef("cpdt_information", AVP_TGPP_CPDT_INFORMATION, VENDOR_TGPP, type_class=CpdtInformation),
-    )
-
-
-@dataclasses.dataclass
-class AllocationRetentionPriority:
-    """A data container that represents the "Allocation-Retention-Priority" (1034) grouped AVP."""
-    priority_level: int = None
-    pre_emption_vulnerability: int = None
-    pre_emption_capability: int = None
-
-    # noinspection PyDataclass
-    avp_def: dataclasses.InitVar[AvpGenType] = (
-        AvpGenDef("priority_level", AVP_TGPP_PRIORITY_LEVEL, VENDOR_TGPP),
-        AvpGenDef("pre_emption_vulnerability", AVP_TGPP_PRE_EMPTION_VULNERABILITY, VENDOR_TGPP),
-        AvpGenDef("pre_emption_capability", AVP_TGPP_PRE_EMPTION_CAPABILITY, VENDOR_TGPP),
-    )
-
-
-@dataclasses.dataclass
-class DefaultEpsBearerQos:
-    """A data container that represents the "Default-EPS-Bearer-QoS" (1435) grouped AVP."""
-    qos_class_identifier: int = None
-    allocation_retention_priority: AllocationRetentionPriority = AllocationRetentionPriority
-
-    # noinspection PyDataclass
-    avp_def: dataclasses.InitVar[AvpGenType] = (
-        AvpGenDef("qos_class_identifier", AVP_TGPP_QOS_CLASS_IDENTIFIER, VENDOR_TGPP),
-        AvpGenDef("allocation_retention_priority", AVP_TGPP_ALLOCATION_RETENTION_PRIORITY, VENDOR_TGPP,type_class=AllocationRetentionPriority),
     )
 
 
