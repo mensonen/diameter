@@ -14,6 +14,7 @@ from .aa_mobile_node import *
 from .abort_session import *
 from .accounting import *
 from .authentication_information import *
+from .cancel_location import *
 from .capabilities_exchange import *
 from .credit_control import *
 from .device_watchdog import *
@@ -213,21 +214,6 @@ class MessageProcess(UndefinedMessage):
     """
     code: int = 311
     name: str = "Message-Process"
-
-    def __post_init__(self):
-        super().__post_init__()
-        self.header.command_code = self.code
-
-
-class CancelLocation(UndefinedMessage):
-    """A 3GPP-Cancel-Location message.
-
-    This message implementation provides no python subclasses for requests and
-    answers; AVPs must be created manually and added using the
-    [CancelLocation.append_avp][diameter.message.Message.append_avp] method.
-    """
-    code: int = 317
-    name: str = "3GPP-Cancel-Location"
 
     def __post_init__(self):
         super().__post_init__()
