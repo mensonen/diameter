@@ -136,7 +136,8 @@ class UpdateLocationAnswer(UpdateLocation):
         self.header.is_request = False
         self.header.is_proxyable = True
 
-        setattr(self, "supported_features", [])
+        setattr(self, "load", [])
+        setattr(self, "reset_id", [])
         setattr(self, "failed_avp", [])
         setattr(self, "proxy_info", [])
         setattr(self, "route_record", [])
@@ -218,6 +219,7 @@ class UpdateLocationRequest(UpdateLocation):
         self.header.is_proxyable = True
 
         setattr(self, "supported_features", [])
+        setattr(self, "active_apn", [])
         setattr(self, "proxy_info", [])
         setattr(self, "route_record", [])
 
