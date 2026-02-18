@@ -62,8 +62,8 @@ __all__ = [
     "CostInformation",
     "CoverageInfo",
     "CpdtInformation",
-    "CurrentTariff",
     "CsgSubscriptionData",
+    "CurrentTariff",
     "DcdInformation",
     "DefaultEpsBearerQos",
     "DeregistrationReason",
@@ -142,12 +142,13 @@ __all__ = [
     "MipMnToFaMsa",
     "MipMnToHaMsa",
     "MipOriginatingForeignAaa",
+    "MmContentType",
     "MmeLocationInformation",
     "MmeUserState",
-    "MmContentType",
     "MmsInformation",
     "MmtelInformation",
     "MoLr",
+    "MonitoringEventConfigStatus",
     "MonitoringEventConfiguration",
     "MonitoringEventReport",
     "MtcProviderInfo",
@@ -161,6 +162,7 @@ __all__ = [
     "OriginatorAddress",
     "OriginatorInterface",
     "OriginatorReceivedAddress",
+    "PagingTimeWindow",
     "ParticipantGroup",
     "Pc5FlowBitrates",
     "Pc5QosFlow",
@@ -174,9 +176,9 @@ __all__ = [
     "PresenceReportingAreaInformation",
     "ProSeDirectCommunicationReceptionDataContainer",
     "ProSeDirectCommunicationTransmissionDataContainer",
+    "ProSeSubscriptionData",
     "ProseAllowedPlmn",
     "ProseInformation",
-    "ProSeSubscriptionData",
     "ProxyInfo",
     "PsFurnishChargingInformation",
     "PsInformation",
@@ -212,6 +214,8 @@ __all__ = [
     "ServiceGenericInformation",
     "ServiceInformation",
     "ServiceParameterInfo",
+    "ServiceReport",
+    "ServiceResult",
     "ServiceSpecificInfo",
     "ServiceType",
     "ServingNode",
@@ -268,7 +272,6 @@ __all__ = [
     "VplmnCsgSubscriptionData",
     "WlanOffloadability",
     "WlanOperatorId",
-    "PagingTimeWindow",
 ]
 
 
@@ -3331,6 +3334,59 @@ class MonitoringEventConfiguration:
         AvpGenDef("external_identifier", AVP_TGPP_EXTERNAL_IDENTIFIER, VENDOR_TGPP),
         AvpGenDef("mtc_provider_info", AVP_TGPP_MTC_PROVIDER_INFO, VENDOR_TGPP, type_class=MtcProviderInfo),
         AvpGenDef("pdn_connectivity_status_configuration", AVP_TGPP_PDN_CONNECTIVITY_STATUS_CONFIGURATION, VENDOR_TGPP, type_class=PdnConnectivityStatusConfiguration)
+    )
+
+
+@dataclasses.dataclass
+class ServiceResult:
+    """A data container that represents the "Service-Result" (3146) AVP.
+
+    3GPP TS 29.336 version 18.2.0
+    """
+    vendor_id: int = None
+    service_result_code: int = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("vendor_id", AVP_VENDOR_ID),
+        AvpGenDef("service_result_code", AVP_TGPP_SERVICE_RESULT_CODE, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
+class ServiceReport:
+    """A data container that represents the "Service-Report" (3152) AVP.
+
+    3GPP TS 29.336 version 18.2.0
+    """
+    service_result: ServiceResult = None
+    node_type: int = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("service_result", AVP_TGPP_SERVICE_RESULT, VENDOR_TGPP, type_class=ServiceResult),
+        AvpGenDef("node_type", AVP_TGPP_NODE_TYPE, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
+class MonitoringEventConfigStatus:
+    """A data container that represents the "Monitoring-Event-Config-Status" (3142) AVP.
+
+    3GPP TS 29.336 version 18.2.0
+    """
+    service_report: list[ServiceReport] = dataclasses.field(default_factory=list)
+    scef_reference_id: int = None
+    scef_id: bytes = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("service_report", AVP_TGPP_SERVICE_REPORT, VENDOR_TGPP, type_class=ServiceReport),
+        AvpGenDef("scef_reference_id", AVP_TGPP_SCEF_REFERENCE_ID, VENDOR_TGPP, is_required=True),
+        AvpGenDef("scef_id", AVP_TGPP_SCEF_ID, VENDOR_TGPP),
     )
 
 
