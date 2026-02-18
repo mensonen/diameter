@@ -18,6 +18,7 @@ from .cancel_location import *
 from .capabilities_exchange import *
 from .credit_control import *
 from .device_watchdog import *
+from .delete_subscriber_data import *
 from .diameter_eap import *
 from .disconnect_peer import *
 from .home_agent_mip import *
@@ -215,22 +216,6 @@ class MessageProcess(UndefinedMessage):
     """
     code: int = 311
     name: str = "Message-Process"
-
-    def __post_init__(self):
-        super().__post_init__()
-        self.header.command_code = self.code
-
-
-class DeleteSubscriberData(UndefinedMessage):
-    """A 3GPP-Delete-Subscriber-Data message.
-
-    This message implementation provides no python subclasses for requests and
-    answers; AVPs must be created manually and added using the
-    [DeleteSubscriberData.append_avp][diameter.message.Message.append_avp]
-    method.
-    """
-    code: int = 320
-    name: str = "3GPP-Delete-Subscriber-Data"
 
     def __post_init__(self):
         super().__post_init__()
