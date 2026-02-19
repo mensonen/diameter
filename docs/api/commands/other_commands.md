@@ -10,6 +10,7 @@ API reference for `diameter.message.commands`.
       show_submodules: false
       filters:
         - "!^Aa"
+        - "!^AaMobileNode"
         - "!^AbortSession"
         - "!^Accounting"
         - "!^CapabilitiesExchange"
