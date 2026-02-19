@@ -63,12 +63,19 @@ the following Diameter Commands:
  * Capabilities-Exchange
  * Credit-Control
  * Device-Watchdog
- * Disconnect-PeerConnection
+ * Diameter-EAP
+ * Disconnect-Peer
  * Home-Agent-MIP
+ * Location-Info
+ * Multimedia-Auth
+ * Push-Profile
  * Re-Auth
+ * Registration-Termination
+ * Server-Assignment
  * Session-Termination
  * Spending-Limit
  * Spending-Status-Notification
+ * User-Authorization
 
 For messages that do not have a Python implementation, an instance of 
 [`UndefinedMessage`][diameter.message.UndefinedMessage], or one of its 
@@ -149,6 +156,23 @@ session_id = ulr.find_avps((AVP_SESSION_ID, 0))[0]
 for route_record in ulr.route_record:
     print(route_record)
 ```
+
+
+## AVP validation
+
+For every message that extends [`DefinedMessage`][diameter.message.DefinedMessage],
+and is received via network through a [`Node`](node.md), the presence of every
+AVP marked as required in their respective specifications is checked. Every AVP
+that is missing in an incoming message will result in an automatic message 
+rejection and a `DIAMETER_MISSING_AVP` error being returned back to the 
+originating peer.
+
+This behaviour may be unwanted, if working with peers that deliberately send 
+messages that lack mandatory AVPs. The validation can be turned off by setting
+[`Node.validate_received_request_avps`][diameter.node.Node.validate_received_request_avps] 
+to `False`. 
+
+This is the only scenario where AVP presence is validated.
 
 
 ## Creating messages
