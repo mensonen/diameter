@@ -72,6 +72,34 @@ Each individual AVP type has their specific python value, refer to
 [AVP API reference](../api/avp/index.md) for details.
 
 
+## Diameter types to Python types
+
+The Diameter AVP base and derived data formats map to python classes as follows:
+
+| Diameter type    | Python class                                            |
+|------------------|---------------------------------------------------------|
+| Address          | [`AvpAddress`][diameter.message.avp.AvpAddress]         |
+| AvpEnumerated    | [`AvpInteger32`][diameter.message.avp.AvpInteger32]     |
+| DiameterIdentity | [`AvpOctetString`][diameter.message.avp.AvpOctetString] |
+| DiameterURI      | [`AvpUtf8String`][diameter.message.avp.AvpUtf8String]   |
+| Float32          | [`AvpFloat32`][diameter.message.avp.AvpFloat32]         |
+| Float64          | [`AvpFloat64`][diameter.message.avp.AvpFloat64]         |
+| Grouped          | [`AvpGrouped`][diameter.message.avp.AvpGrouped]         |
+| IPFilterRule     | [`AvpOctetString`][diameter.message.avp.AvpOctetString] |
+| Integer32        | [`AvpInteger32`][diameter.message.avp.AvpInteger32]     |
+| Integer64        | [`AvpInteger64`][diameter.message.avp.AvpInteger64]     |
+| OctetString      | [`AvpOctetString`][diameter.message.avp.AvpOctetString] |
+| Unsigned32       | [`AvpUnsigned32`][diameter.message.avp.AvpUnsigned32]   |
+| Unsigned64       | [`AvpUnsigned64`][diameter.message.avp.AvpUnsigned64]   |
+| UTF8String       | [`AvpUtf8String`][diameter.message.avp.AvpUtf8String]   |
+| Time             | [`AvpTime`][diameter.message.avp.AvpTime]               |
+
+For the "DiameterURI" type, helper method and class 
+[`parse_diameter_uri`][diameter.node.parse_diameter_uri] and 
+[`DiameterUri`][diameter.node._helpers.DiameterUri] exist, which assist parsing 
+diameter URI syntax and return a `NamedTuple` similar to Python's inbuilt 
+`urllib.parse.urlsplit`.
+
 ## Creating an AVP
 
 [`Avp.new`][diameter.message.Avp.new] class method is the expected way to 
