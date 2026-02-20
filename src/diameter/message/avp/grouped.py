@@ -42,6 +42,7 @@ __all__ = [
     "CalledIdentityChange",
     "CalleeInformation",
     "Cause",
+    "CallReferenceInfo",
     "CcMoney",
     "ChapAuth",
     "ChargingInformation",
@@ -89,6 +90,7 @@ __all__ = [
     "LcsClientName",
     "LcsInformation",
     "LcsRequestorId",
+    "Load",
     "LocationInfoGrouped",
     "LocationType",
     "M2mInformation",
@@ -140,6 +142,7 @@ __all__ = [
     "RanSecondaryRatUsageReport",
     "RateElement",
     "RealTimeTariffInformation",
+    "RepositoryDataId",
     "RecipientAddress",
     "RecipientInfo",
     "RecipientReceivedAddress",
@@ -190,6 +193,7 @@ __all__ = [
     "UnitCost",
     "UnitValue",
     "UsedServiceUnit",
+    "UserIdentity",
     "UserCsgInformation",
     "UserEquipmentInfo",
     "UserEquipmentInfoExtension",
@@ -4273,4 +4277,64 @@ class ChargingRuleRemove:
     avp_def: dataclasses.InitVar[AvpGenType] = (
         AvpGenDef("charging_rule_base_name", AVP_TGPP_CHARGING_RULE_BASE_NAME, VENDOR_TGPP),
         AvpGenDef("charging_rule_name", AVP_TGPP_CHARGING_RULE_NAME, VENDOR_TGPP),
+    )
+    
+
+@dataclasses.dataclass
+class Load:
+    """A data container that represents the "Load" (650) grouped AVP."""
+    load_type: int = None
+    load_value: int = None
+    source_id: bytes = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("load_type", AVP_LOAD_TYPE, is_required=True),
+        AvpGenDef("load_value", AVP_LOAD_VALUE, is_required=True),
+        AvpGenDef("source_id", AVP_SOURCEID, is_required=True),
+    )
+
+
+@dataclasses.dataclass
+class UserIdentity:
+    """A data container that represents the "User-Identity" (700) grouped AVP."""
+    public_identity: str = None
+    msisdn: bytes = None
+    external_identifier: str = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("public_identity", AVP_TGPP_PUBLIC_IDENTITY, VENDOR_TGPP),
+        AvpGenDef("msisdn", AVP_TGPP_MSISDN, VENDOR_TGPP),
+        AvpGenDef("external_identifier", AVP_TGPP_EXTERNAL_IDENTIFIER, VENDOR_TGPP),
+    )
+
+
+@dataclasses.dataclass
+class CallReferenceInfo:
+    """A data container that represents the "Call-Reference-Info" (720) grouped AVP."""
+    call_reference_number: bytes = None
+    as_number: bytes = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("call_reference_number", AVP_TGPP_CALL_REFERENCE_NUMBER, VENDOR_TGPP, is_required=True),
+        AvpGenDef("as_number", AVP_TGPP_AS_NUMBER, VENDOR_TGPP, is_required=True),
+    )
+
+
+@dataclasses.dataclass
+class RepositoryDataId:
+    """A data container that represents the "Repository-Data-ID" (715) grouped AVP."""
+    service_indication: bytes = None
+    sequence_number: int = None
+    additional_avps: list[Avp] = dataclasses.field(default_factory=list)
+
+    # noinspection PyDataclass
+    avp_def: dataclasses.InitVar[AvpGenType] = (
+        AvpGenDef("service_indication", AVP_TGPP_SERVICE_INDICATION, VENDOR_TGPP, is_required=True),
+        AvpGenDef("sequence_number", AVP_TGPP_SEQUENCE_NUMBER, VENDOR_TGPP, is_required=True),
     )
