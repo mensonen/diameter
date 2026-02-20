@@ -29,6 +29,7 @@ from .purge_ue import *
 from .push_profile import *
 from .re_auth import *
 from .registration_termination import *
+from .reset import *
 from .server_assignment import *
 from .spending_limit import *
 from .spending_status_notification import *
@@ -217,21 +218,6 @@ class MessageProcess(UndefinedMessage):
     """
     code: int = 311
     name: str = "Message-Process"
-
-    def __post_init__(self):
-        super().__post_init__()
-        self.header.command_code = self.code
-
-
-class TgppReset(UndefinedMessage):
-    """A 3GPP-Reset message.
-
-    This message implementation provides no python subclasses for requests and
-    answers; AVPs must be created manually and added using the
-    [Reset.append_avp][diameter.message.Message.append_avp] method.
-    """
-    code: int = 322
-    name: str = "3GPP-Reset"
 
     def __post_init__(self):
         super().__post_init__()
@@ -1203,12 +1189,18 @@ class ProSeNotify(UndefinedMessage):
         self.header.command_code = self.code
 
 
-class Reset(UndefinedMessage):
+class ProSeReset(UndefinedMessage):
     """A Reset message.
 
     This message implementation provides no python subclasses for requests and
     answers; AVPs must be created manually and added using the
-    [MTData.append_avp][diameter.message.Message.append_avp] method.
+    [ProSeReset.append_avp][diameter.message.Message.append_avp] method.
+
+    !!! Note
+        Latest ProSe specification no longer lists this code. The RSR/RSA
+        procedure in ProSe now uses [`Reset`][diameter.message.commands.Reset],
+        code 322 instead. This class is left as an undefined placeholder.
+
     """
     code: int = 8388667
     name: str = "Reset"
