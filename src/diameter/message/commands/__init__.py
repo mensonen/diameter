@@ -25,6 +25,7 @@ from .home_agent_mip import *
 from .insert_subscriber_data import *
 from .location_info import *
 from .multimedia_auth import *
+from .notify import *
 from .purge_ue import *
 from .push_profile import *
 from .re_auth import *
@@ -218,21 +219,6 @@ class MessageProcess(UndefinedMessage):
     """
     code: int = 311
     name: str = "Message-Process"
-
-    def __post_init__(self):
-        super().__post_init__()
-        self.header.command_code = self.code
-
-
-class Notify(UndefinedMessage):
-    """A 3GPP-Notify message.
-
-    This message implementation provides no python subclasses for requests and
-    answers; AVPs must be created manually and added using the
-    [Notify.append_avp][diameter.message.Message.append_avp] method.
-    """
-    code: int = 323
-    name: str = "3GPP-Notify"
 
     def __post_init__(self):
         super().__post_init__()
