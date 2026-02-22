@@ -13,21 +13,29 @@ from .aa import *
 from .aa_mobile_node import *
 from .abort_session import *
 from .accounting import *
+from .authentication_information import *
+from .cancel_location import *
 from .capabilities_exchange import *
 from .credit_control import *
 from .device_watchdog import *
+from .delete_subscriber_data import *
 from .diameter_eap import *
 from .disconnect_peer import *
 from .home_agent_mip import *
+from .insert_subscriber_data import *
 from .location_info import *
 from .multimedia_auth import *
+from .notify import *
+from .purge_ue import *
 from .push_profile import *
 from .re_auth import *
 from .registration_termination import *
+from .reset import *
 from .server_assignment import *
 from .spending_limit import *
 from .spending_status_notification import *
 from .session_termination import *
+from .update_location import *
 from .user_authorization import *
 
 
@@ -211,127 +219,6 @@ class MessageProcess(UndefinedMessage):
     """
     code: int = 311
     name: str = "Message-Process"
-
-    def __post_init__(self):
-        super().__post_init__()
-        self.header.command_code = self.code
-
-
-class UpdateLocation(UndefinedMessage):
-    """A 3GPP-Update-Location message.
-
-    This message implementation provides no python subclasses for requests and
-    answers; AVPs must be created manually and added using the
-    [UpdateLocation.append_avp][diameter.message.Message.append_avp] method.
-    """
-    code: int = 316
-    name: str = "3GPP-Update-Location"
-
-    def __post_init__(self):
-        super().__post_init__()
-        self.header.command_code = self.code
-
-
-class CancelLocation(UndefinedMessage):
-    """A 3GPP-Cancel-Location message.
-
-    This message implementation provides no python subclasses for requests and
-    answers; AVPs must be created manually and added using the
-    [CancelLocation.append_avp][diameter.message.Message.append_avp] method.
-    """
-    code: int = 317
-    name: str = "3GPP-Cancel-Location"
-
-    def __post_init__(self):
-        super().__post_init__()
-        self.header.command_code = self.code
-
-
-class AuthenticationInformation(UndefinedMessage):
-    """A 3GPP-Authentication-Information message.
-
-    This message implementation provides no python subclasses for requests and
-    answers; AVPs must be created manually and added using the
-    [AuthenticationInformation.append_avp][diameter.message.Message.append_avp] method.
-    """
-    code: int = 318
-    name: str = "3GPP-Authentication-Information"
-
-    def __post_init__(self):
-        super().__post_init__()
-        self.header.command_code = self.code
-
-
-class InsertSubscriberData(UndefinedMessage):
-    """A 3GPP-Insert-Subscriber-Data message.
-
-    This message implementation provides no python subclasses for requests and
-    answers; AVPs must be created manually and added using the
-    [InsertSubscriberData.append_avp][diameter.message.Message.append_avp] method.
-    """
-    code: int = 319
-    name: str = "3GPP-Insert-Subscriber-Data"
-
-    def __post_init__(self):
-        super().__post_init__()
-        self.header.command_code = self.code
-
-
-class DeleteSubscriberData(UndefinedMessage):
-    """A 3GPP-Delete-Subscriber-Data message.
-
-    This message implementation provides no python subclasses for requests and
-    answers; AVPs must be created manually and added using the
-    [DeleteSubscriberData.append_avp][diameter.message.Message.append_avp]
-    method.
-    """
-    code: int = 320
-    name: str = "3GPP-Delete-Subscriber-Data"
-
-    def __post_init__(self):
-        super().__post_init__()
-        self.header.command_code = self.code
-
-
-class PurgeUE(UndefinedMessage):
-    """A 3GPP-Purge-UE message.
-
-    This message implementation provides no python subclasses for requests and
-    answers; AVPs must be created manually and added using the
-    [PurgeUE.append_avp][diameter.message.Message.append_avp] method.
-    """
-    code: int = 321
-    name: str = "3GPP-Purge-UE"
-
-    def __post_init__(self):
-        super().__post_init__()
-        self.header.command_code = self.code
-
-
-class TgppReset(UndefinedMessage):
-    """A 3GPP-Reset message.
-
-    This message implementation provides no python subclasses for requests and
-    answers; AVPs must be created manually and added using the
-    [Reset.append_avp][diameter.message.Message.append_avp] method.
-    """
-    code: int = 322
-    name: str = "3GPP-Reset"
-
-    def __post_init__(self):
-        super().__post_init__()
-        self.header.command_code = self.code
-
-
-class Notify(UndefinedMessage):
-    """A 3GPP-Notify message.
-
-    This message implementation provides no python subclasses for requests and
-    answers; AVPs must be created manually and added using the
-    [Notify.append_avp][diameter.message.Message.append_avp] method.
-    """
-    code: int = 323
-    name: str = "3GPP-Notify"
 
     def __post_init__(self):
         super().__post_init__()
@@ -1288,12 +1175,18 @@ class ProSeNotify(UndefinedMessage):
         self.header.command_code = self.code
 
 
-class Reset(UndefinedMessage):
+class ProSeReset(UndefinedMessage):
     """A Reset message.
 
     This message implementation provides no python subclasses for requests and
     answers; AVPs must be created manually and added using the
-    [MTData.append_avp][diameter.message.Message.append_avp] method.
+    [ProSeReset.append_avp][diameter.message.Message.append_avp] method.
+
+    !!! Note
+        Latest ProSe specification no longer lists this code. The RSR/RSA
+        procedure in ProSe now uses [`Reset`][diameter.message.commands.Reset],
+        code 322 instead. This class is left as an undefined placeholder.
+
     """
     code: int = 8388667
     name: str = "Reset"
