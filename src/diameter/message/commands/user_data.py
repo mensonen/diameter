@@ -21,8 +21,58 @@ __all__ = ["UserData",
 
 
 class UserData(DefinedMessage):
-    """A User-Data base message."""
+    """A User-Data base message.
 
+    This message class lists message attributes based on the current 3GPP TS
+    29.329 version 17.0.0 Release 17 as python properties, accessible as
+    instance attributes. AVPs not listed in the spec protocol can be
+    retrieved using the
+    [UserData.find_avps][diameter.message.Message.find_avps]
+    search method.
+
+    Examples:
+        AVPs accessible either as instance attributes or by searching:
+
+        >>> msg = Message.from_bytes(b"...")
+        >>> msg.session_id
+        dra1.python-diameter.org;2323;546
+        >>> msg.find_avps((AVP_SESSION_ID, 0))
+        ['dra1.python-diameter.org;2323;546']
+
+        When diameter message is decoded using
+        [Message.from_bytes][diameter.message.Message.from_bytes], it returns
+        either an instance of `UserDataRequest` or
+        `UserDataAnswer` automatically:
+
+        >>> msg = Message.from_bytes(b"...")
+        >>> assert msg.header.is_request is True
+        >>> assert isinstance(msg, UserDataRequest)
+
+        When creating a new message, the `UserDataRequest` or
+        `UserDataAnswer` class should be instantiated directly,
+        and values for AVPs set as class attributes:
+
+        >>> msg = UserDataRequest()
+        >>> msg.session_id = "dra1.python-diameter.org;2323;546"
+
+    Other, custom AVPs can be appended to the message using the
+    [UserData.append_avp][diameter.message.Message.append_avp]
+    method, or by overwriting the `avp` attribute entirely. Regardless of the
+    custom AVPs set, the mandatory values listed in TS 29.272 must be set,
+    however they can be set as `None`, if they are not to be used.
+
+    !!! Warning
+        Every AVP documented for the subclasses of this command can be accessed
+        as an instance attribute, even if the original network-received message
+        did not contain that specific AVP. Such AVPs will be returned with the
+        value `None` when accessed.
+
+        Every other AVP not mentioned here, and not present in a
+        network-received message will raise an `AttributeError` when being
+        accessed; their presence should be validated with `hasattr` before
+        accessing.
+
+    """
     code: int = 306
     name: str = "User-Data"
     avp_def: AvpGenType
@@ -43,7 +93,6 @@ class UserDataAnswer(UserData):
 
     3GPP TS 29.329 version 17.0.0
     """
-
     session_id: str
     drmp: int
     vendor_specific_application_id: VendorSpecificApplicationId
@@ -103,7 +152,6 @@ class UserDataRequest(UserData):
 
     3GPP TS 29.329 version 17.0.0
     """
-
     session_id: str
     drmp: int
     vendor_specific_application_id: VendorSpecificApplicationId

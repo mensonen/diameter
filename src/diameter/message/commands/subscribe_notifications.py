@@ -23,8 +23,58 @@ __all__ = ["SubscribeNotifications",
 
 
 class SubscribeNotifications(DefinedMessage):
-    """A Subscribe-Notifications base message."""
+    """A Subscribe-Notifications base message.
 
+    This message class lists message attributes based on the current 3GPP TS
+    29.329 version 17.0.0 Release 17 as python properties, accessible as
+    instance attributes. AVPs not listed in the spec protocol can be
+    retrieved using the
+    [SubscribeNotifications.find_avps][diameter.message.Message.find_avps]
+    search method.
+
+    Examples:
+        AVPs accessible either as instance attributes or by searching:
+
+        >>> msg = Message.from_bytes(b"...")
+        >>> msg.session_id
+        dra1.python-diameter.org;2323;546
+        >>> msg.find_avps((AVP_SESSION_ID, 0))
+        ['dra1.python-diameter.org;2323;546']
+
+        When diameter message is decoded using
+        [Message.from_bytes][diameter.message.Message.from_bytes], it returns
+        either an instance of `SubscribeNotificationsRequest` or
+        `SubscribeNotificationsAnswer` automatically:
+
+        >>> msg = Message.from_bytes(b"...")
+        >>> assert msg.header.is_request is True
+        >>> assert isinstance(msg, SubscribeNotificationsRequest)
+
+        When creating a new message, the `SubscribeNotificationsRequest` or
+        `SubscribeNotificationsAnswer` class should be instantiated directly,
+        and values for AVPs set as class attributes:
+
+        >>> msg = SubscribeNotificationsRequest()
+        >>> msg.session_id = "dra1.python-diameter.org;2323;546"
+
+    Other, custom AVPs can be appended to the message using the
+    [SubscribeNotifications.append_avp][diameter.message.Message.append_avp]
+    method, or by overwriting the `avp` attribute entirely. Regardless of the
+    custom AVPs set, the mandatory values listed in TS 29.272 must be set,
+    however they can be set as `None`, if they are not to be used.
+
+    !!! Warning
+        Every AVP documented for the subclasses of this command can be accessed
+        as an instance attribute, even if the original network-received message
+        did not contain that specific AVP. Such AVPs will be returned with the
+        value `None` when accessed.
+
+        Every other AVP not mentioned here, and not present in a
+        network-received message will raise an `AttributeError` when being
+        accessed; their presence should be validated with `hasattr` before
+        accessing.
+
+    """
     code: int = 308
     name: str = "Subscribe-Notifications"
     avp_def: AvpGenType
@@ -45,7 +95,6 @@ class SubscribeNotificationsAnswer(SubscribeNotifications):
 
     3GPP TS 29.329 version 17.0.0
     """
-
     session_id: str
     drmp: int
     vendor_specific_application_id: VendorSpecificApplicationId
@@ -107,7 +156,6 @@ class SubscribeNotificationsRequest(SubscribeNotifications):
 
     3GPP TS 29.329 version 17.0.0
     """
-
     session_id: str
     drmp: int
     vendor_specific_application_id: VendorSpecificApplicationId
