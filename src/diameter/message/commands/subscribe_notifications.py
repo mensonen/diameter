@@ -3,10 +3,8 @@ Diameter Sh Interface.
 
 This module contains Subscribe Notifications Request and Answer messages,
 implementing AVPs documented in 3GPP TS 29.329.
-
-Used TS: 129 329 - V17.0.0.
-https://www.etsi.org/deliver/etsi_ts/129300_129399/129329/17.00.00_60/ts_129329v170000p.pdf
 """
+from __future__ import annotations
 
 import datetime
 
@@ -19,7 +17,9 @@ from ._attributes import assign_attr_from_defs
 from ..constants import *
 
 
-__all__ = ["SubscribeNotifications", "SubscribeNotificationsAnswer", "SubscribeNotificationsRequest"]
+__all__ = ["SubscribeNotifications",
+           "SubscribeNotificationsAnswer",
+           "SubscribeNotificationsRequest"]
 
 
 class SubscribeNotifications(DefinedMessage):
@@ -41,7 +41,10 @@ class SubscribeNotifications(DefinedMessage):
 
 
 class SubscribeNotificationsAnswer(SubscribeNotifications):
-    """A Subscribe-Notifications-Answer message."""
+    """A Subscribe-Notifications-Answer message.
+
+    3GPP TS 29.329 version 17.0.0
+    """
 
     session_id: str
     drmp: int
@@ -89,6 +92,7 @@ class SubscribeNotificationsAnswer(SubscribeNotifications):
         super().__post_init__()
         self.header.is_request = False
         self.header.is_proxyable = True
+
         setattr(self, "supported_features", [])
         setattr(self, "load", [])
         setattr(self, "proxy_info", [])
@@ -99,7 +103,10 @@ class SubscribeNotificationsAnswer(SubscribeNotifications):
 
 
 class SubscribeNotificationsRequest(SubscribeNotifications):
-    """A Subscribe-Notifications-Request message."""
+    """A Subscribe-Notifications-Request message.
+
+    3GPP TS 29.329 version 17.0.0
+    """
 
     session_id: str
     drmp: int
@@ -159,6 +166,7 @@ class SubscribeNotificationsRequest(SubscribeNotifications):
         super().__post_init__()
         self.header.is_request = True
         self.header.is_proxyable = True
+
         setattr(self, "supported_features", [])
         setattr(self, "service_indication", [])
         setattr(self, "data_reference", [])

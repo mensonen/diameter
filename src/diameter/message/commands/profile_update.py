@@ -3,10 +3,8 @@ Diameter Sh Interface.
 
 This module contains Profile Update Request and Answer messages,
 implementing AVPs documented in 3GPP TS 29.329.
-
-Used TS: 129 329 - V17.0.0.
-https://www.etsi.org/deliver/etsi_ts/129300_129399/129329/17.00.00_60/ts_129329v170000p.pdf
 """
+from __future__ import annotations
 
 from typing import Type
 
@@ -17,7 +15,9 @@ from ._attributes import assign_attr_from_defs
 from ..constants import *
 
 
-__all__ = ["ProfileUpdate", "ProfileUpdateAnswer", "ProfileUpdateRequest"]
+__all__ = ["ProfileUpdate",
+           "ProfileUpdateAnswer",
+           "ProfileUpdateRequest"]
 
 
 class ProfileUpdate(DefinedMessage):
@@ -39,7 +39,10 @@ class ProfileUpdate(DefinedMessage):
 
 
 class ProfileUpdateAnswer(ProfileUpdate):
-    """A Profile-Update-Answer message."""
+    """A Profile-Update-Answer message.
+
+    3GPP TS 29.329 version 17.0.0
+    """
 
     session_id: str
     drmp: int
@@ -87,6 +90,7 @@ class ProfileUpdateAnswer(ProfileUpdate):
         super().__post_init__()
         self.header.is_request = False
         self.header.is_proxyable = True
+
         setattr(self, "supported_features", [])
         setattr(self, "load", [])
         setattr(self, "proxy_info", [])
@@ -97,7 +101,10 @@ class ProfileUpdateAnswer(ProfileUpdate):
 
 
 class ProfileUpdateRequest(ProfileUpdate):
-    """A Profile-Update-Request message."""
+    """A Profile-Update-Request message.
+
+    3GPP TS 29.329 version 17.0.0
+    """
 
     session_id: str
     drmp: int
@@ -143,6 +150,7 @@ class ProfileUpdateRequest(ProfileUpdate):
         super().__post_init__()
         self.header.is_request = True
         self.header.is_proxyable = True
+
         setattr(self, "supported_features", [])
         setattr(self, "data_reference", [])
         setattr(self, "proxy_info", [])
