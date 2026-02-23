@@ -27,6 +27,8 @@ from .location_info import *
 from .multimedia_auth import *
 from .notify import *
 from .purge_ue import *
+from .profile_update import *
+from .push_notification import *
 from .push_profile import *
 from .re_auth import *
 from .registration_termination import *
@@ -35,8 +37,10 @@ from .server_assignment import *
 from .spending_limit import *
 from .spending_status_notification import *
 from .session_termination import *
+from .subscribe_notifications import *
 from .update_location import *
 from .user_authorization import *
+from .user_data import *
 
 
 # Remaining Message types that have no implementation (yet), either because
@@ -129,66 +133,6 @@ class SipPushProfile(UndefinedMessage):
     """
     code: int = 288
     name: str = "SIP-Push-Profile"
-
-    def __post_init__(self):
-        super().__post_init__()
-        self.header.command_code = self.code
-
-
-class UserData(UndefinedMessage):
-    """A User-Data message.
-
-    This message implementation provides no python subclasses for requests and
-    answers; AVPs must be created manually and added using the
-    [UserData.append_avp][diameter.message.Message.append_avp] method.
-    """
-    code: int = 306
-    name: str = "User-Data"
-
-    def __post_init__(self):
-        super().__post_init__()
-        self.header.command_code = self.code
-
-
-class ProfileUpdate(UndefinedMessage):
-    """A Profile-Update message.
-
-    This message implementation provides no python subclasses for requests and
-    answers; AVPs must be created manually and added using the
-    [ProfileUpdate.append_avp][diameter.message.Message.append_avp] method.
-    """
-    code: int = 307
-    name: str = "Profile-Update"
-
-    def __post_init__(self):
-        super().__post_init__()
-        self.header.command_code = self.code
-
-
-class SubscribeNotifications(UndefinedMessage):
-    """A Subscribe-Notifications message.
-
-    This message implementation provides no python subclasses for requests and
-    answers; AVPs must be created manually and added using the
-    [SubscribeNotifications.append_avp][diameter.message.Message.append_avp] method.
-    """
-    code: int = 308
-    name: str = "Subscribe-Notifications"
-
-    def __post_init__(self):
-        super().__post_init__()
-        self.header.command_code = self.code
-
-
-class PushNotification(UndefinedMessage):
-    """A Push-Notification message.
-
-    This message implementation provides no python subclasses for requests and
-    answers; AVPs must be created manually and added using the
-    [PushNotification.append_avp][diameter.message.Message.append_avp] method.
-    """
-    code: int = 309
-    name: str = "Push-Notification"
 
     def __post_init__(self):
         super().__post_init__()
