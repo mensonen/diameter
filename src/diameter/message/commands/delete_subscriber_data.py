@@ -1,5 +1,5 @@
 """
-Diameter S6a/S67 Interface.
+Diameter S6a/S6d and S7a/S7d interfaces.
 
 This module contains Delete Subscriber Data Request and Answer messages,
 implementing AVPs documented in 3GPP TS 29.727.

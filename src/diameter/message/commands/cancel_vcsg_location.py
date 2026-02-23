@@ -1,20 +1,8 @@
 """
-Diameter S6a/S6d and S7a/S7d interfaces.
+Diameter S7a/S7d Interface.
 
-This module contains Reset Request and Answer messages, implementing AVPs
-documented in 3GPP TS 29.272.
-
-!!! Note
-    The `Reset` command used to be defined in both ProSe function (TS 29.344),
-    as command code 8388667, and in S6a/S67 (TS 29.272), as command code 322
-    and name `3GPP-Reset`. Later versions of the standards have since dropped
-    the ProSe-specific command code and has replaced it with the S6a/S67-specific
-    command code 322.
-
-    The old command code 8388667 maps currently to
-    [`ProSeReset`][diameter.message.commands.ProSeReset], which is left as an
-    undefined placeholder.
-
+This module contains Cancel VCSG Location Request and Answer messages,
+implementing AVPs documented in 3GPP TS 29.272.
 """
 from __future__ import annotations
 
@@ -27,19 +15,20 @@ from ._attributes import assign_attr_from_defs
 from ..constants import *
 
 
-__all__ = ["Reset",
-           "ResetAnswer",
-           "ResetRequest"]
+__all__ = ["CancelVcsgLocation",
+           "CancelVcsgLocationAnswer",
+           "CancelVcsgLocationRequest"]
 
 
-class Reset(DefinedMessage):
-    """A Reset base message.
+class CancelVcsgLocation(DefinedMessage):
+    """A Cancel-VCSG-Location base message.
 
-    This message class lists message attributes based on the current 3GPP TS
+    This message class lists message attributes based on the current 3GPP TS 
     29.272 version 19.4.0 Release 19 as python properties, accessible as
-    instance attributes. AVPs not listed in the spec protocol can be retrieved
-    using the [Reset.find_avps][diameter.message.Message.find_avps]
-    search method.
+    instance attributes. AVPs not listed in the spec protocol can be
+    retrieved using the 
+    [CancelVcsgLocation.find_avps][diameter.message.Message.find_avps] search
+    method.
 
     Examples:
         AVPs accessible either as instance attributes or by searching:
@@ -52,25 +41,25 @@ class Reset(DefinedMessage):
 
         When diameter message is decoded using
         [Message.from_bytes][diameter.message.Message.from_bytes], it returns
-        either an instance of `ResetRequest` or
-        `ResetAnswer` automatically:
+        either an instance of `CancelVcsgLocationRequest` or
+        `CancelVcsgLocationAnswer` automatically:
 
         >>> msg = Message.from_bytes(b"...")
         >>> assert msg.header.is_request is True
-        >>> assert isinstance(msg, ResetRequest)
+        >>> assert isinstance(msg, CancelVcsgLocationRequest)
 
-        When creating a new message, the `ResetRequest` or
-        `ResetAnswer` class should be instantiated directly,
-        and values for AVPs set as class attributes:
+        When creating a new message, the `CancelVcsgLocationRequest` or
+        `CancelVcsgLocationAnswer` class should be instantiated directly, and
+        values for AVPs set as class attributes:
 
-        >>> msg = ResetRequest()
+        >>> msg = CancelVcsgLocationRequest()
         >>> msg.session_id = "dra1.python-diameter.org;2323;546"
 
     Other, custom AVPs can be appended to the message using the
-    [Reset.append_avp][diameter.message.Message.append_avp]
-    method, or by overwriting the `avp` attribute entirely. Regardless of the
-    custom AVPs set, the mandatory values listed in TS 29.272 must be set,
-    however they can be set as `None`, if they are not to be used.
+    [CancelVcsgLocation.append_avp][diameter.message.Message.append_avp] method,
+    or by overwriting the `avp` attribute entirely. Regardless of the custom
+    AVPs set, the mandatory values listed in TS 29.272 must be set, however
+    they can be set as `None`, if they are not to be used.
 
     !!! Warning
         Every AVP documented for the subclasses of this command can be accessed
@@ -84,8 +73,8 @@ class Reset(DefinedMessage):
         accessing.
 
     """
-    code: int = 322
-    name: str = "3GPP-Reset"
+    code: int = 8388642
+    name: str = "3GPP-Cancel-VCSG-Location"
     avp_def: AvpGenType
 
     def __post_init__(self):
@@ -95,12 +84,12 @@ class Reset(DefinedMessage):
     @classmethod
     def type_factory(cls, header: MessageHeader) -> Type[_AnyMessageType] | None:
         if header.is_request:
-            return ResetRequest
-        return ResetAnswer
+            return CancelVcsgLocationRequest
+        return CancelVcsgLocationAnswer
 
 
-class ResetAnswer(Reset):
-    """A Reset-Answer message.
+class CancelVcsgLocationAnswer(CancelVcsgLocation):
+    """A Cancel-VCSG-Location-Answer message.
 
     3GPP TS 29.272 version 19.4.0
     """
@@ -146,8 +135,8 @@ class ResetAnswer(Reset):
         self._avps = []
 
 
-class ResetRequest(Reset):
-    """A Reset-Request message.
+class CancelVcsgLocationRequest(CancelVcsgLocation):
+    """A Cancel-VCSG-Location-Request message.
 
     3GPP TS 29.272 version 19.4.0
     """
@@ -159,11 +148,9 @@ class ResetRequest(Reset):
     origin_realm: bytes
     destination_host: bytes
     destination_realm: bytes
+    user_name: str
     supported_features: list[SupportedFeatures]
-    user_id: list[str]
-    reset_id: list[bytes]
-    subscription_data: SubscriptionData
-    subscription_data_deletion: SubscriptionDataDeletion
+    cancellation_type: int
     proxy_info: list[ProxyInfo]
     route_record: list[bytes]
 
@@ -176,11 +163,9 @@ class ResetRequest(Reset):
         AvpGenDef("origin_realm", AVP_ORIGIN_REALM, is_required=True),
         AvpGenDef("destination_host", AVP_DESTINATION_HOST, is_required=True),
         AvpGenDef("destination_realm", AVP_DESTINATION_REALM, is_required=True),
+        AvpGenDef("user_name", AVP_USER_NAME, is_required=True),
         AvpGenDef("supported_features", AVP_TGPP_SUPPORTED_FEATURES, VENDOR_TGPP, type_class=SupportedFeatures),
-        AvpGenDef("user_id", AVP_TGPP_USER_ID, VENDOR_TGPP),
-        AvpGenDef("reset_id", AVP_TGPP_RESET_ID, VENDOR_TGPP),
-        AvpGenDef("subscription_data", AVP_TGPP_SUBSCRIPTION_DATA, VENDOR_TGPP, type_class=SubscriptionData),
-        AvpGenDef("subscription_data_deletion", AVP_TGPP_SUBSCRIPTION_DATA_DELETION, VENDOR_TGPP, type_class=SubscriptionDataDeletion),
+        AvpGenDef("cancellation_type", AVP_TGPP_CANCELLATION_TYPE, VENDOR_TGPP, is_required=True),
         AvpGenDef("proxy_info", AVP_PROXY_INFO, type_class=ProxyInfo),
         AvpGenDef("route_record", AVP_ROUTE_RECORD),
     )
@@ -191,8 +176,6 @@ class ResetRequest(Reset):
         self.header.is_proxyable = True
 
         setattr(self, "supported_features", [])
-        setattr(self, "user_id", [])
-        setattr(self, "reset_id", [])
         setattr(self, "proxy_info", [])
         setattr(self, "route_record", [])
 
