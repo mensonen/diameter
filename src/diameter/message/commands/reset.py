@@ -1,8 +1,8 @@
 """
-Diameter S6a/S67 Interface.
+Diameter S6a/S6d and S7a/S7d interfaces.
 
 This module contains Reset Request and Answer messages, implementing AVPs
-documented in 3GPP TS 29.727.
+documented in 3GPP TS 29.272.
 
 !!! Note
     The `Reset` command used to be defined in both ProSe function (TS 29.344),
