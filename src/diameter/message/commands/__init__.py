@@ -24,6 +24,7 @@ from .disconnect_peer import *
 from .home_agent_mip import *
 from .insert_subscriber_data import *
 from .location_info import *
+from .me_identity_check import *
 from .multimedia_auth import *
 from .notify import *
 from .purge_ue import *
@@ -163,21 +164,6 @@ class MessageProcess(UndefinedMessage):
     """
     code: int = 311
     name: str = "Message-Process"
-
-    def __post_init__(self):
-        super().__post_init__()
-        self.header.command_code = self.code
-
-
-class MeIdentityCheck(UndefinedMessage):
-    """A 3GPP-ME-Identity-Check message.
-
-    This message implementation provides no python subclasses for requests and
-    answers; AVPs must be created manually and added using the
-    [AaMobileNode.append_avp][diameter.message.Message.append_avp] method.
-    """
-    code: int = 324
-    name: str = "3GPP-ME-Identity-Check"
 
     def __post_init__(self):
         super().__post_init__()
