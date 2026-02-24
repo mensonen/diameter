@@ -1,15 +1,21 @@
 ---
-shallow_toc: 3
+shallow_toc: 4
 ---
-# Changelog for the 0.9.x release
+# Changes in the 0.9.x release
 
-## 0.9.0
+!!! Warning
+    This release contains changes that may break existing applications.
+    See [AVP Validation](#avp-validation) and 
+    [Changed and/or renamed AVPs](#changed-andor-renamed-avps).
 
-### New interfaces and commands implemented
 
-Support for the S6a/S6d, S13, S7a/S7d (`3GPP TS 29.272`) and the Sh
-(`3GPP TS 29.329`) interfaces has been added, with the following command codes
-implemented:
+## New features
+
+### S6a/S6d, S13, S7a/S7d and Sh interface support
+
+A Python implementation for the S6a/S6d, S13, S7a/S7d (`3GPP TS 29.272`) and 
+the Sh (`3GPP TS 29.329`) interfaces has been added, with the following command 
+codes now implemented as Python classes:
 
 | Command-Name                      | Interface | Abbreviation | Code    |
 | ----------------------------------|-----------|--------------|---------|
@@ -50,10 +56,7 @@ implemented:
 | Push-Notification-Request         | Sh        | PNR          | 309     |
 | Push-Notification-Answer          | Sh        | PNA          | 309     |
 
-
-### New grouped AVPs implemented
-
-The following grouped AVPs have been added, from `3GPP TS 29.272`:
+Also the following grouped AVPs have been added, from `3GPP TS 29.272`:
 
 * Active-APN (1612)
 * Adjacent-Access-Restriction-Data (1673)
@@ -133,14 +136,18 @@ From `3GPP TS 29.344`:
 * ProSe-Allowed-PLMN (3703)
 * ProSe-Subscription-Data (3701)
 
+And from `3GPP TS 29.329`:
+
+* User-Identity (700)
+* Repository-Data-ID (715)
+* Call-Reference-Info (720)
+
 And from `RFC 8583`:
 
 * Load (650)
 
-
-### New AVP definitions added
-
-Adds new AVPs to the dictionary, from `3GPP TS 29.272`:
+ And the following base AVP types have been added to the dictionary, 
+ from `3GPP TS 29.272`:
 
 * Third-Context-Identifier (1719)
 * MDT-Configuration-NR (1720)
@@ -161,33 +168,48 @@ From `3GPP TS 29.336`:
 * SCEF-Reference-ID-Ex (3186)
 * SCEF-Reference-ID-for-Deletion-Ext (3187)
 
-From `3GPP TS 29.329`:
+And from `3GPP TS 29.329`:
 
 * Call-Reference-Info (720)
 * Call-Reference-Number (721)
 * AS-Number (722)
 
 
+## Changes and bugfixes
+
 ### Changed and/or renamed AVPs
 
-* Call-Barring-Infor-List (1488) renamed to Call-Barring-Info (1488)
-* Time-First-Reception code changed from 3456 to 3466 as it overlapped with
-  Proximity-Cancellation-Timestamp
+* `Call-Barring-Infor-List` (1488) renamed to `Call-Barring-Info` (1488)
+* `Time-First-Reception` code changed from 3456 to 3466 as it overlapped with
+  Proximity-Cancellation-Timestamp. Its type has also been changed to `AvpTime`
 
 
-### Other changes and bugfixes
+### AVP validation
 
-* Issue fixed, with an AVP length not being set at all if it has no content at all
+Validation of AVPs in messages received via `Node` was previously broken, 
+permitting receiving messages without required AVPs present. This behavious
+has now been fixed; every incoming message that lacks any AVP flagged as 
+required will now reject the message with an 
+`E_RESULT_CODE_DIAMETER_MISSING_AVP` error and the corresponding AVP marked in
+the `Failed-AVP` grouped AVP.
+
+As fixing this feature may potentially break existing applications, a new 
+`Node.validate_received_request_avps` attribute has also been added, which 
+permits disabling AVP validation in runtime. When validation is disabled, the
+behaviour is as before.
+
+
+### Other
+
+* Issue fixed, where an AVP length was not being set at all if it had no content
 * `MultipleServicesCreditControl.trigger` type is now corrected to `Trigger`
 * `ServiceDataContainer.traffic_steering_policy_identifier_dl` corrected to 
   `ServiceDataContainer.traffic_steering_policy_identifier_ul`
 * `RelatedChangeConditionInformation.presence_reporting_area_information` corrected to
-  `RelatedChangeConditionInformation.presence_reporting_area_information`
-* `Classifier` missing attribute `classifier_id` added
-* Check for missing, mandatory AVPs in messages received via `Node` has been
-  fixed, missing AVPs now produce an `E_RESULT_CODE_DIAMETER_MISSING_AVP` error
-  correctly
-* `Node.validate_received_request_avps` attribute added, which permits disabling
-  AVP validation during runtime
+  `RelatedChangeConditionInformation.presence_reporting_area_status`
+* `Classifier` grouped AVP missing attribute `classifier_id` added
 * AVPs serialised using the `dump` function now show `"(unset)"` as the value 
   for every AVP that has no value at all
+* `diameter.message.avp.get_avp_dictionary_entry` helper method added, for 
+  an easier way to look up AVPs in the dictionary
+* Multiple minor corrections of type hints in command and AVP definitions

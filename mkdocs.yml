@@ -33,7 +33,7 @@ nav:
   - About:
     - About: index.md
     - What's new:
-      - Changes in 0.9.x: changelogs/changes_in_0.9.x.md
+      - Changes in 0.9: changelogs/changes_in_0.9.md
   - Installation: setup.md
   - User Guide:
     - guide/index.md
