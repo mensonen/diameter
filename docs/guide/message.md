@@ -56,26 +56,41 @@ while an answer message would return an instance of
 Python implementations with direct attribute access are currently provided for 
 the following Diameter Commands:
 
- * AA
- * AA-Mobile-Node
- * Abort-Session
- * Accounting
- * Capabilities-Exchange
- * Credit-Control
- * Device-Watchdog
- * Diameter-EAP
- * Disconnect-Peer
- * Home-Agent-MIP
- * Location-Info
- * Multimedia-Auth
- * Push-Profile
- * Re-Auth
- * Registration-Termination
- * Server-Assignment
- * Session-Termination
- * Spending-Limit
- * Spending-Status-Notification
- * User-Authorization
+ * [Aa][diameter.message.commands.Aa]
+ * [Aa-Mobile-Node][diameter.message.commands.AaMobileNode]
+ * [Abort-Session][diameter.message.commands.AbortSession]
+ * [Accounting][diameter.message.commands.Accounting]
+ * [Authentication-Information][diameter.message.commands.AuthenticationInformation]
+ * [Cancel-Location][diameter.message.commands.CancelLocation]
+ * [Cancel-VCSG-Location][diameter.message.commands.CancelVcsgLocation]
+ * [CapabilitiesExchange][diameter.message.commands.CapabilitiesExchange]
+ * [Credit-Control][diameter.message.commands.CreditControl]
+ * [Delete-Subscriber-Data][diameter.message.commands.DeleteSubscriberData]
+ * [Device-Watchdog][diameter.message.commands.DeviceWatchdog]
+ * [Diameter-EAP][diameter.message.commands.DiameterEap]
+ * [Disconnect-Peer][diameter.message.commands.DisconnectPeer]
+ * [Home-Agent-MIP][diameter.message.commands.HomeAgentMip]
+ * [Insert-Subscriber-Data][diameter.message.commands.InsertSubscriberData]
+ * [Location-Info][diameter.message.commands.LocationInfo]
+ * [ME-Identity-Check][diameter.message.commands.MeIdentityCheck]
+ * [Multimedia-Auth][diameter.message.commands.MultimediaAuth]
+ * [Notify][diameter.message.commands.Notify]
+ * [Profile-Update][diameter.message.commands.ProfileUpdate]
+ * [Purge-UE][diameter.message.commands.PurgeUe]
+ * [Push-Notification][diameter.message.commands.PushNotification]
+ * [Push-Profile][diameter.message.commands.PushProfile]
+ * [Re-Auth][diameter.message.commands.ReAuth]
+ * [Registration-Termination][diameter.message.commands.RegistrationTermination]
+ * [Reset][diameter.message.commands.Reset]
+ * [Server-Assignment][diameter.message.commands.ServerAssignment]
+ * [Session-Termination][diameter.message.commands.SessionTermination]
+ * [Spending-Limit][diameter.message.commands.SpendingLimit]
+ * [Spending-Status-Notification][diameter.message.commands.SpendingStatusNotification]
+ * [Subscribe-Notifications][diameter.message.commands.SubscribeNotifications]
+ * [Update-Location][diameter.message.commands.UpdateLocation]
+ * [Update-VCSG-Location][diameter.message.commands.UpdateVcsgLocation]
+ * [User-Authorization][diameter.message.commands.UserAuthorization]
+ * [User-Data][diameter.message.commands.UserData]
 
 For messages that do not have a Python implementation, an instance of 
 [`UndefinedMessage`][diameter.message.UndefinedMessage], or one of its 

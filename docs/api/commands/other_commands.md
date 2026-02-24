@@ -25,7 +25,7 @@ API reference for `diameter.message.commands`.
         - "!^HomeAgentMip"
         - "!^InsertSubscriberData"
         - "!^LocationInfo"
-        - "!^MeIdentityCheckAnswer"
+        - "!^MeIdentityCheck"
         - "!^MultimediaAuth"
         - "!^Notify"
         - "!^ProfileUpdate"
