@@ -41,7 +41,7 @@ from .spending_status_notification import *
 from .session_termination import *
 from .subscribe_notifications import *
 from .update_location import *
-from .update_vscg_location import *
+from .update_vcsg_location import *
 from .user_authorization import *
 from .user_data import *
 

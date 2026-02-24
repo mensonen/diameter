@@ -187,3 +187,15 @@ assert avp_def["mandatory"] is True
 assert avp_def["vendor"] == 10415
 assert avp_def["vendor"] == VENDOR_TGPP
 ```
+
+A helper method exists, which simplifies retrieving AVPs from the dictionary,
+if the AVP code is known:
+
+```python
+from diameter.message.constants import *
+from diameter.message.avp.avp import get_avp_dictionary_entry
+
+avp_def =  get_avp_dictionary_entry(AVP_TGPP_CONTENT_TYPE, VENDOR_TGPP)
+
+assert avp_def["name"] == "Content-Type"
+```

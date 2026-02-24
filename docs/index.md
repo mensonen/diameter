@@ -27,8 +27,9 @@ The `diameter` package provides tools for:
 ## Supported applications
 
 The diameter stack has inbuilt support for Diameter Base, *Gy*, *Rf*, *Ro*, 
-*Sy*, *Cx* and *Dx* applications and a generic implementation of application 
-types that allows working even with unsupported application types.
+*S6a/S6d*, *S7a/S7d*, *S13*, *Sh* *Sy*, *Cx* and *Dx* applications and a 
+generic implementation of application types that allows working even with 
+unsupported application types.
 
 ## Supported diameter application commands
 
@@ -64,6 +65,32 @@ application message types:
 *Diameter Policy and charging control* `rfc4072`
 :   * Spending-Limit
     * Spending-Status-Notification
+
+*Diameter S6a/S6d interface* `3GPP TS 29.272`
+:   * Update-Location
+    * Cancel-Location-Request
+    * Authentication-Information
+    * Insert-Subscriber-Data
+    * Delete-Subscriber-Data
+    * Purge-UE
+    * Reset
+    * Notify
+
+*Diameter S13 interface* `3GPP TS 29.272`
+:   * ME-Identity-Check
+
+*Diameter S7a/S7d interface* `3GPP TS 29.272`
+:   * Update-VCSG-Location
+    * Insert-Subscriber-Data
+    * Delete-Subscriber-Data
+    * Reset-Request
+    * Cancel-VCSG-Location-Request
+
+*Diameter Sh interface* `3GPP TS 29.329`
+:   * User-Data
+    * Profile-Update
+    * Subscribe-Notifications
+    * Push-Notification
 
 *Diameter Cx and Dx interfaces* `3GPP TS 29.229`
 :   * User-Authorization

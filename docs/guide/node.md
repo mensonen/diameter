@@ -85,10 +85,10 @@ A [utility function][diameter.node.parse_diameter_uri] exists for parsing the
 After one or more peers have been configured, the node must be started with 
 [`start`][diameter.node.Node.start] and stopped with 
 [`stop`][diameter.node.Node.stop]. When started, the node will establish an 
-outgoing connection with every connected peer and perform a CER/CEA message 
+outgoing connection with every configured peer and performs a CER/CEA message 
 exchange. When asked to stop, the node sends a DPR (Disconnect-Peer-Request) 
 towards every connected peer and ends its operations as soon as a 
-DPA (Disconnect-Peer-Answer) has been received from every peer.
+DPA (Disconnect-Peer-Answer) has been received from each peer.
 
 ```python
 from diameter.node import Node
@@ -102,9 +102,9 @@ node.stop(wait_timeout=120, force=False)
 Starting the node will spawn a thread in the background, i.e. `node.start()`
 will not block.
 
-The stop command has optional timeout and force arguments; the timeout argument
-controls how long the node should wait for DPAs to arrive and for the peer 
-connections to empty their outgoing message buffers before giving up and 
+The stop command has optional `timeout` and `force` arguments; the timeout 
+argument controls how long the node should wait for DPAs to arrive and for the 
+peer connections to empty their outgoing message buffers before giving up and 
 exiting. The force argument will just close all connections without even 
 sending out DPRs first.
 
@@ -185,6 +185,12 @@ A node has several attributes that can be used or altered after its creation:
     This value also defines how long a node will continue to run, after 
     `stop` with `force` argument set to `True` is called.
 
+`validate_received_request_avps`
+:   Enables or disables validation of required AVPs in received messages.
+    When enabled, every incoming message will be checked for required AVPs,
+    and if any AVP is mising, the message will be rejected with an 
+    `E_RESULT_CODE_DIAMETER_MISSING_AVP` error.
+
 `peers_logging`
 :   If enabled, will dump a JSON representation of each peer configuration and 
     their current connection status, at every `wakeup_interval` seconds. The 
@@ -234,7 +240,7 @@ A node has several attributes that can be used or altered after its creation:
     instances of [`Peer`][diameter.node.peer.Peer] as its values.
 
 `peer_route_select_func`
-:   A callback function used to select which peer to route a request to when
+:   A callback function used to select which peer to route a request to, when
     multiple peers are available for the same realm and application. The function
     signature is:
     
@@ -260,7 +266,7 @@ A node has several attributes that can be used or altered after its creation:
         """Select a random peer from the available peers."""
         selected = random.choice(peers)
         node.logger.debug(
-            f"Selected peer {selected.connection} randomly for app {app}"
+            f"selected peer {selected.connection} randomly for app {app}"
         )
         return selected
     
@@ -269,6 +275,7 @@ A node has several attributes that can be used or altered after its creation:
     ```
     
     The function receives:
+
     - `node`: The [`Node`][diameter.node.node.Node] instance
     - `app`: The [`Application`][diameter.node.application.Application] instance
       that wants to send the request
@@ -278,8 +285,8 @@ A node has several attributes that can be used or altered after its creation:
     
     The function must return a single [`Peer`][diameter.node.peer.Peer] instance
     from the provided list. If the message cannot be routed, the function may also
-    raise a [`NotRoutable`][diameter.node.node.NotRoutable] exception, which is provided
-    by the stack.
+    raise a [`NotRoutable`][diameter.node.node.NotRoutable] exception, which is 
+    provided by the stack.
 
 `statistics`
 :   Returns an instance of [`NodeStats`][diameter.node.node.NodeStats], which 

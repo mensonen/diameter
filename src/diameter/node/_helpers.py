@@ -15,10 +15,17 @@ _AnyMessageType = TypeVar("_AnyMessageType", bound=Message)
 
 class DiameterUri(NamedTuple):
     scheme: str
+    """The scheme portion of the URI, either 'aaa' or 'aaas'."""
     fqdn: str
+    """The fully qualified domain name or IP address portion of the URI."""
     port: int
+    """Port portion of the URI. If the URI does not contain an explicit port,
+    this will default to 3868, or to 5686 for secure transports."""
     params: dict
+    """A dictionary of key-value string pairs; the additional parameters 
+    within the URI."""
     is_secure: bool
+    """Indicates a secure transport."""
 
 
 def parse_diameter_uri(uri: str) -> DiameterUri:
