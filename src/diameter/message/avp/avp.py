@@ -6,10 +6,11 @@ from __future__ import annotations
 import datetime
 import socket
 import struct
+from enum import IntEnum
 
 from typing import Any, TypeVar, Type
 
-from ..constants import VENDORS
+from ..constants import ENUM_AVP_CODE_TO_INTENUM_CLASS, VENDORS
 from ..packer import ConversionError, Packer, Unpacker
 from .errors import AvpDecodeError, AvpEncodeError
 
@@ -749,12 +750,47 @@ class AvpTime(Avp):
                 f"timestamp: {e}") from None
 
 
-AvpEnumerated = AvpInteger32
-"""An AVP type that implements the "Enumerated". type.
+class AvpEnumerated(AvpInteger32):
+    """An AVP type that implements the "Enumerated" type.
 
-As enumeration is a list of valid integer values, is an alias for 
-[AvpInteger32][diameter.message.avp.AvpInteger32]
-"""
+    If the AVP code has a known `IntEnum` mapping in
+    `ENUM_AVP_CODE_TO_INTENUM_CLASS`, decoding returns that enum instance.
+    Otherwise (or for out-of-range values), decoding returns a raw integer.
+    """
+    def __str__(self) -> str:
+        try:
+            own_value = self.value
+        except AvpDecodeError:
+            own_value = "(unset)"
+
+        if isinstance(own_value, IntEnum):
+            own_value = f"{own_value} ({own_value.name})"
+
+        fmt_val = vnd_val = ""
+        if not isinstance(own_value, list):
+            fmt_val = f", Val: {own_value}"
+        if self.vendor_id:
+            vnd_val = f", Vnd: {VENDORS.get(self.vendor_id)}"
+
+        return (f"{self.name} <Code: 0x{self.code:02x}, Flags: "
+                f"0x{self.flags:02x} ({''.join(self._flags())}), "
+                f"Length: {self.length}{vnd_val}{fmt_val}>")
+
+    @property
+    def value(self) -> int | IntEnum:
+        raw_value = AvpInteger32.value.fget(self)
+        enum_type = ENUM_AVP_CODE_TO_INTENUM_CLASS.get(self.code)
+        if enum_type is None:
+            return raw_value
+
+        try:
+            return enum_type(raw_value)
+        except ValueError:
+            return raw_value
+
+    @value.setter
+    def value(self, new_value: int | IntEnum):
+        AvpInteger32.value.fset(self, int(new_value))
 
 _AnyAvpType = TypeVar("_AnyAvpType", bound=Avp)
 
