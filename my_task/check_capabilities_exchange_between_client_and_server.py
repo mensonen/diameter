@@ -75,7 +75,8 @@ def main():
             data = sock.recv(4096)
             if data:
                 logging.info(data)
-                logging.info("Received %d bytes (likely CEA)", len(data))
+                logging.info("CEA bytes: %s", data.hex())
+                logging.info("Received %d bytes", len(data))
             else:
                 logging.warning("No data received from server.")
         except socket.timeout:

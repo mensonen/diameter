@@ -21,7 +21,7 @@ CER_VENDOR_ID = 6527
 CER_PRODUCT_NAME = "SR-OS-MG"
 CER_ORIGIN_STATE_ID = 1771828178
 
-# ========= CCR-I (from your Wireshark) =========
+# ========= CCR-I =========
 SESSION_ID = "gpgw-01;061a7446;6994419f;234588560270609-04675026"
 ORIGIN_HOST = b"mscp05.gpgw-01"
 ORIGIN_REALM = b"worldov.com"
@@ -33,7 +33,7 @@ ORIGIN_STATE_ID = 1771828178
 
 SUB_E164 = "44745256120594"
 SUB_IMSI = "234588560270609"
-SUB_NAI = "234588560270609nai.epc.mnc20.mcc234.3gppnetwork.org"
+SUB_NAI = "234588560270609@nai.epc.mnc20.mcc234.3gppnetwork.org"
 
 RATING_GROUP = 8000
 REQUESTED_OCTETS = 2000
@@ -42,6 +42,12 @@ USED_OCTETS = 0
 PDP_IP = "198.18.153.109"
 NSAPI = bytes.fromhex("05")
 RAT_TYPE = bytes.fromhex("06")
+
+# ========= APN (new) =========
+# In 3GPP charging (TS 32.299), the APN is typically carried as Called-Station-Id (AVP code 30)
+# within PS-Information.
+APN = "eseyetest"
+
 
 def recv_one_diameter(sock: socket.socket) -> bytes:
     header = b""
@@ -61,6 +67,7 @@ def recv_one_diameter(sock: socket.socket) -> bytes:
 
     return header + body
 
+
 def build_cer() -> bytes:
     cer = CapabilitiesExchangeRequest()
     cer.origin_host = CER_ORIGIN_HOST
@@ -73,16 +80,19 @@ def build_cer() -> bytes:
     cer.inband_security_id = constants.E_INBAND_SECURITY_ID_NO_INBAND_SECURITY
     return cer.as_bytes()
 
+
+def _called_station_id_avp(apn: str) -> Avp:
+    # Prefer library constant if present, else fall back to numeric code 30.
+    # Called-Station-Id is a base Diameter AVP used to carry APN in 3GPP charging. [web:31]
+    code = getattr(constants, "AVP_CALLED_STATION_ID", 30)
+    return Avp.new(code, value=apn)
+
+
 def build_ccr_i() -> bytes:
     ccr = CreditControlRequest()
 
-    # IMPORTANT: Header application-id must be 4 for CCR
     ccr.header.application_id = constants.APP_DIAMETER_CREDIT_CONTROL_APPLICATION
-
-    # Match Wireshark "REQ,PXY"
     ccr.header.is_proxyable = True
-
-    # Non-zero identifiers
     ccr.header.hop_by_hop_identifier = int(time.time()) & 0xFFFFFFFF
     ccr.header.end_to_end_identifier = (int(time.time() * 1000) & 0xFFFFFFFF)
 
@@ -92,7 +102,7 @@ def build_ccr_i() -> bytes:
     ccr.destination_realm = DEST_REALM
     ccr.destination_host = DEST_HOST
 
-    ccr.auth_application_id = constants.APP_DIAMETER_CREDIT_CONTROL_APPLICATION  # 4
+    ccr.auth_application_id = constants.APP_DIAMETER_CREDIT_CONTROL_APPLICATION
     ccr.service_context_id = SERVICE_CONTEXT_ID
 
     ccr.cc_request_type = constants.E_CC_REQUEST_TYPE_INITIAL_REQUEST
@@ -102,15 +112,12 @@ def build_ccr_i() -> bytes:
     ccr.origin_state_id = ORIGIN_STATE_ID
     ccr.event_timestamp = datetime.datetime.now(datetime.timezone.utc)
 
-    # 3× Subscription-Id (E164/IMSI/NAI)
     ccr.add_subscription_id(constants.E_SUBSCRIPTION_ID_TYPE_END_USER_E164, SUB_E164)
     ccr.add_subscription_id(constants.E_SUBSCRIPTION_ID_TYPE_END_USER_IMSI, SUB_IMSI)
     ccr.add_subscription_id(constants.E_SUBSCRIPTION_ID_TYPE_END_USER_NAI, SUB_NAI)
 
-    # Multiple-Services-Indicator = 1
     ccr.append_avp(Avp.new(constants.AVP_MULTIPLE_SERVICES_INDICATOR, value=1))
 
-    # MSCC (via helper)
     ccr.add_multiple_services_credit_control(
         rating_group=RATING_GROUP,
         requested_service_unit=RequestedServiceUnit(cc_total_octets=REQUESTED_OCTETS),
@@ -127,16 +134,22 @@ def build_ccr_i() -> bytes:
     # Service-Information -> PS-Information
     service_info = Avp.new(constants.AVP_TGPP_SERVICE_INFORMATION, constants.VENDOR_TGPP)
     ps_info = Avp.new(constants.AVP_TGPP_PS_INFORMATION, constants.VENDOR_TGPP)
+
     ps_info.value = [
         Avp.new(constants.AVP_TGPP_3GPP_PDP_TYPE, constants.VENDOR_TGPP, value=0),
         Avp.new(constants.AVP_TGPP_PDP_ADDRESS, constants.VENDOR_TGPP, value=PDP_IP),
         Avp.new(constants.AVP_TGPP_3GPP_NSAPI, constants.VENDOR_TGPP, value=NSAPI),
         Avp.new(constants.AVP_TGPP_3GPP_RAT_TYPE, constants.VENDOR_TGPP, value=RAT_TYPE),
+
+        # APN as Called-Station-Id (base AVP code 30) inside PS-Information. [web:31]
+        _called_station_id_avp(APN),
     ]
+
     service_info.value = [ps_info]
     ccr.append_avp(service_info)
 
     return ccr.as_bytes()
+
 
 def main():
     logging.basicConfig(level=logging.INFO)
@@ -144,23 +157,25 @@ def main():
     with socket.create_connection((SERVER_FQDN, SERVER_PORT), timeout=10) as sock:
         sock.settimeout(10)
 
-        # CER/CEA
         sock.sendall(build_cer())
         cea_raw = recv_one_diameter(sock)
         cea = Message.from_bytes(cea_raw)
-        logging.info("Received CEA: result_code=%s origin_host=%s",
-                     getattr(cea, "result_code", None),
-                     getattr(cea, "origin_host", None))
+        logging.info(
+            "Received CEA: result_code=%s origin_host=%s",
+            getattr(cea, "result_code", None),
+            getattr(cea, "origin_host", None),
+        )
 
-        # CCR/CCA
         ccr = build_ccr_i()
         logging.info("Sending CCR-I (%d bytes)", len(ccr))
         sock.sendall(ccr)
+        print("CCR HEX:\n", ccr.hex())
 
         cca_raw = recv_one_diameter(sock)
         cca = Message.from_bytes(cca_raw)
         logging.info("Received CCA: result_code=%s", getattr(cca, "result_code", None))
         print("CCA HEX:\n", cca_raw.hex())
+
 
 if __name__ == "__main__":
     main()
