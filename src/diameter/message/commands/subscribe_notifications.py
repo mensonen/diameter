@@ -127,7 +127,7 @@ class SubscribeNotificationsAnswer(SubscribeNotifications):
         AvpGenDef("wildcarded_public_identity", AVP_TGPP_WILDCARDED_PSI, VENDOR_TGPP),
         AvpGenDef("wildcarded_impu", AVP_TGPP_WILDCARDED_IMPU, VENDOR_TGPP),
         AvpGenDef("supported_features", AVP_TGPP_SUPPORTED_FEATURES, VENDOR_TGPP, type_class=SupportedFeatures),
-        AvpGenDef("user_data", AVP_TGPP_CX_USER_DATA, VENDOR_TGPP),
+        AvpGenDef("user_data", AVP_TGPP_SH_USER_DATA, VENDOR_TGPP),
         AvpGenDef("expiry_time", AVP_TGPP_EXPIRY_TIME, VENDOR_TGPP),
         AvpGenDef("oc_supported_features", AVP_OC_SUPPORTED_FEATURES, type_class=OcSupportedFeatures),
         AvpGenDef("oc_olr", AVP_OC_OLR, type_class=OcOlr),
