@@ -188,7 +188,7 @@ class ProfileUpdateRequest(ProfileUpdate):
         AvpGenDef("wildcarded_impu", AVP_TGPP_WILDCARDED_IMPU, VENDOR_TGPP),
         AvpGenDef("user_name", AVP_USER_NAME),
         AvpGenDef("data_reference", AVP_TGPP_DATA_REFERENCE, VENDOR_TGPP),
-        AvpGenDef("user_data", AVP_TGPP_CX_USER_DATA, VENDOR_TGPP, is_required=True),
+        AvpGenDef("user_data", AVP_TGPP_SH_USER_DATA, VENDOR_TGPP, is_required=True),
         AvpGenDef("oc_supported_features", AVP_OC_SUPPORTED_FEATURES, type_class=OcSupportedFeatures),
         AvpGenDef("proxy_info", AVP_PROXY_INFO, type_class=ProxyInfo),
         AvpGenDef("route_record", AVP_ROUTE_RECORD),

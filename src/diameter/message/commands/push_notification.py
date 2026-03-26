@@ -170,7 +170,7 @@ class PushNotificationRequest(PushNotification):
         AvpGenDef("wildcarded_public_identity", AVP_TGPP_WILDCARDED_PSI, VENDOR_TGPP),
         AvpGenDef("wildcarded_impu", AVP_TGPP_WILDCARDED_IMPU, VENDOR_TGPP),
         AvpGenDef("user_name", AVP_USER_NAME),
-        AvpGenDef("user_data", AVP_TGPP_CX_USER_DATA, VENDOR_TGPP, is_required=True),
+        AvpGenDef("user_data", AVP_TGPP_SH_USER_DATA, VENDOR_TGPP, is_required=True),
         AvpGenDef("proxy_info", AVP_PROXY_INFO, type_class=ProxyInfo),
         AvpGenDef("route_record", AVP_ROUTE_RECORD),
     )
