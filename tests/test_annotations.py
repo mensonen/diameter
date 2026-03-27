@@ -21,6 +21,7 @@ AVP_TYPES_TO_PYTHON_TYPES = {
     AvpFloat64: float,
     AvpInteger32: int,
     AvpInteger64: int,
+    AvpEnumerated: int,
     AvpOctetString: bytes,
     AvpUnsigned32: int,
     AvpUnsigned64: int,
