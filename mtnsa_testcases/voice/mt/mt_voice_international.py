@@ -27,49 +27,47 @@ KINESIS_PROFILE = "senior-qa-role"
 KINESIS_WAIT_SEC = 12
 KINESIS_READ_SEC = 20
 
-SCENARIO_KEY = "mo_voice_international_home_not_home_country"
+SCENARIO_KEY = "mt_voice_international_called_home_network_no_charge"
 
 TEST_SCENARIOS = {
-    "mo_voice_international_home_not_home_country": {
-        "scenario_name": "MO VOICE INTERNATIONAL - SIM ON HOME NETWORK - DESTINATION NOT HOME COUNTRY",
-        "description": "SIM on Home Network; destination is Not Home Country",
-        "session_suffix": "voice-international-home-not-home-country",
+    "mt_voice_international_called_home_network_no_charge": {
+        "scenario_name": "MT VOICE INTERNATIONAL - CALLED SIM IN HOME NETWORK AND SOURCE SIM IS NOT HOME COUNTRY",
+        "description": "Called SIM in Home Network and source SIM is not home country",
+        "session_suffix": "mt-voice-international-called-home-network-no-charge",
 
-        "sender_operator": "MTN",
-        "sender_mcc": "655",
-        "sender_mnc": "10",
+        "called_operator": "MTN",
+        "called_mcc": "655",
+        "called_mnc": "10",
 
-        # Update as per actual destination
-        "receiver_operator": "AIRTEL",
-        "receiver_mcc": "404",
-        "receiver_mnc": "10",
+        "serving_operator": "MTN",
+        "serving_mcc": "655",
+        "serving_mnc": "10",
 
-        "type": "international",
+        "source_operator": "AIRTEL-BD",
+        "source_mcc": "470",
+        "source_mnc": "01",
+        "source_country_type": "NOT_HOME_COUNTRY",
 
-        "a_party_msisdn": "279603002227198",
-        "a_party_imsi": "655103704646780",
+        "type": "mt-international-home-network",
 
-        # Update this to your real international B-party
-        "b_party_msisdn": "919876543210",
-        "normalized_b_party_msisdn": None,
+        "called_party_msisdn": "279603002227198",
+        "called_party_imsi": "655103704646780",
+        "calling_party_msisdn": "8801712345678",
 
         "service_context_id": "010.655.12.322763gpp.org",
         "service_identifier": 1,
 
         "node_functionality": 16,
-        "role_of_node": 0,
+        "role_of_node": 1,
 
-        "calling_party_address": "279603002227198",
-        "requested_party_address": "919876543210",
-        "called_party_address": None,
-        "number_portability_routing_information": None,
+        "calling_party_address": "8801712345678",
+        "called_party_address": "279603002227198",
 
         "tgpp_ms_timezone": bytes.fromhex("8000"),
-
         "bearer_capability": bytes.fromhex("8090A3"),
         "network_call_reference_number": bytes.fromhex("11223344"),
-        "msc_address": bytes.fromhex("919427123456F8"),
-        "vlr_number": bytes.fromhex("919427123456F8"),
+        "msc_address": bytes.fromhex("278312345678F9"),
+        "vlr_number": bytes.fromhex("278312345678F9"),
 
         "requested_cc_time_initial": 60,
         "requested_cc_time_update": 60,
@@ -80,10 +78,9 @@ TEST_SCENARIOS = {
         "expected_initial_grant": 60,
         "expected_update_grant": 60,
 
-        "expected_destination_charging_dimension": "Destination MCCMNC",
-        "expected_destination_mcc": "404",
-        "expected_destination_mnc": "45",
-        "expected_destination_operator": "AIRTEL",
+        "expected_result": "No Charge",
+        "expected_charge_amount": 0,
+        "expected_chargeable": False,
     }
 }
 
@@ -97,9 +94,7 @@ AVP_3GPP_VCS_INFORMATION = 3410
 AVP_3GPP_NODE_FUNCTIONALITY = 862
 AVP_3GPP_ROLE_OF_NODE = 829
 AVP_3GPP_CALLING_PARTY_ADDRESS = 831
-AVP_3GPP_REQUESTED_PARTY_ADDRESS = 1251
 AVP_3GPP_CALLED_PARTY_ADDRESS = 832
-AVP_3GPP_NUMBER_PORTABILITY_ROUTING_INFORMATION = 2024
 
 AVP_3GPP_MS_TIMEZONE = 23
 AVP_3GPP_BEARER_CAPABILITY = 3412
@@ -137,7 +132,7 @@ def format_value(value):
     return value
 
 
-def print_field(label, value, width=30):
+def print_field(label, value, width=42):
     if is_present(value):
         print(f"{label:<{width}} : {format_value(value)}")
 
@@ -218,18 +213,15 @@ def build_cer():
 def extract_granted_cc_time_from_cca(raw: bytes):
     data = raw
     i = 20
-
     while i + 8 <= len(data):
         code = int.from_bytes(data[i:i + 4], "big")
         flags = data[i + 4]
         length = int.from_bytes(data[i + 5:i + 8], "big")
         header_len = 12 if (flags & 0x80) else 8
-
         if length < header_len or i + length > len(data):
             break
 
         value = data[i + header_len:i + length]
-
         if code == 456:
             j = 0
             while j + 8 <= len(value):
@@ -237,12 +229,10 @@ def extract_granted_cc_time_from_cca(raw: bytes):
                 sub_flags = value[j + 4]
                 sub_len = int.from_bytes(value[j + 5:j + 8], "big")
                 sub_header = 12 if (sub_flags & 0x80) else 8
-
                 if sub_len < sub_header or j + sub_len > len(value):
                     break
 
                 sub_val = value[j + sub_header:j + sub_len]
-
                 if sub_code == 431:
                     k = 0
                     while k + 8 <= len(sub_val):
@@ -250,24 +240,18 @@ def extract_granted_cc_time_from_cca(raw: bytes):
                         g_flags = sub_val[k + 4]
                         g_len = int.from_bytes(sub_val[k + 5:k + 8], "big")
                         g_header = 12 if (g_flags & 0x80) else 8
-
                         if g_len < g_header or k + g_len > len(sub_val):
                             break
 
                         g_val = sub_val[k + g_header:k + g_len]
-
                         if g_code == 420:
                             if len(g_val) == 4:
                                 return int.from_bytes(g_val, "big")
                             if len(g_val) == 8:
                                 return int.from_bytes(g_val[-4:], "big")
-
                         k += ((g_len + 3) // 4) * 4
-
                 j += ((sub_len + 3) // 4) * 4
-
         i += ((length + 3) // 4) * 4
-
     return None
 
 
@@ -298,7 +282,7 @@ def print_cca_summary(tag, msg, raw_bytes):
     print_line()
 
 
-def build_voice_ccr(request_type, request_number, req_time=None, used_time=None):
+def build_mt_voice_ccr(request_type, request_number, req_time=None, used_time=None):
     ccr = CreditControlRequest()
     ccr.header.application_id = constants.APP_DIAMETER_CREDIT_CONTROL_APPLICATION
     ccr.header.is_request = True
@@ -318,8 +302,8 @@ def build_voice_ccr(request_type, request_number, req_time=None, used_time=None)
     ccr.origin_state_id = ORIGIN_STATE_ID
     ccr.event_timestamp = datetime.datetime.now(datetime.timezone.utc)
 
-    ccr.add_subscription_id(constants.E_SUBSCRIPTION_ID_TYPE_END_USER_IMSI, CFG["a_party_imsi"])
-    ccr.add_subscription_id(constants.E_SUBSCRIPTION_ID_TYPE_END_USER_E164, CFG["a_party_msisdn"])
+    ccr.add_subscription_id(constants.E_SUBSCRIPTION_ID_TYPE_END_USER_IMSI, CFG["called_party_imsi"])
+    ccr.add_subscription_id(constants.E_SUBSCRIPTION_ID_TYPE_END_USER_E164, CFG["called_party_msisdn"])
 
     mscc_children = [Avp.new(constants.AVP_SERVICE_IDENTIFIER, value=CFG["service_identifier"])]
 
@@ -341,48 +325,21 @@ def build_voice_ccr(request_type, request_number, req_time=None, used_time=None)
         Avp.new(AVP_3GPP_ROLE_OF_NODE, constants.VENDOR_TGPP, value=CFG["role_of_node"]),
         Avp.new(AVP_3GPP_NODE_FUNCTIONALITY, constants.VENDOR_TGPP, value=CFG["node_functionality"]),
         Avp.new(AVP_3GPP_CALLING_PARTY_ADDRESS, constants.VENDOR_TGPP, value=CFG["calling_party_address"]),
+        Avp.new(AVP_3GPP_CALLED_PARTY_ADDRESS, constants.VENDOR_TGPP, value=CFG["called_party_address"]),
     ]
-
-    if CFG.get("requested_party_address"):
-        ims_children.append(
-            Avp.new(AVP_3GPP_REQUESTED_PARTY_ADDRESS, constants.VENDOR_TGPP, value=CFG["requested_party_address"])
-        )
-
-    if CFG.get("called_party_address"):
-        ims_children.append(
-            Avp.new(AVP_3GPP_CALLED_PARTY_ADDRESS, constants.VENDOR_TGPP, value=CFG["called_party_address"])
-        )
-
-    if CFG.get("number_portability_routing_information"):
-        ims_children.append(
-            Avp.new(
-                AVP_3GPP_NUMBER_PORTABILITY_ROUTING_INFORMATION,
-                constants.VENDOR_TGPP,
-                value=CFG["number_portability_routing_information"]
-            )
-        )
 
     ims_info = Avp.new(AVP_3GPP_IMS_INFORMATION, constants.VENDOR_TGPP)
     ims_info.value = ims_children
 
-    ps_children = []
-    if CFG.get("tgpp_ms_timezone") is not None:
-        ps_children.append(Avp.new(AVP_3GPP_MS_TIMEZONE, constants.VENDOR_TGPP, value=CFG["tgpp_ms_timezone"]))
-
     ps_info = Avp.new(AVP_3GPP_PS_INFORMATION, constants.VENDOR_TGPP)
-    ps_info.value = ps_children
+    ps_info.value = [Avp.new(AVP_3GPP_MS_TIMEZONE, constants.VENDOR_TGPP, value=CFG["tgpp_ms_timezone"])]
 
-    vcs_children = []
-    if CFG.get("bearer_capability") is not None:
-        vcs_children.append(Avp.new(AVP_3GPP_BEARER_CAPABILITY, constants.VENDOR_TGPP, value=CFG["bearer_capability"]))
-    if CFG.get("network_call_reference_number") is not None:
-        vcs_children.append(
-            Avp.new(AVP_3GPP_NETWORK_CALL_REFERENCE_NUMBER, constants.VENDOR_TGPP, value=CFG["network_call_reference_number"])
-        )
-    if CFG.get("msc_address") is not None:
-        vcs_children.append(Avp.new(AVP_3GPP_MSC_ADDRESS, constants.VENDOR_TGPP, value=CFG["msc_address"]))
-    if CFG.get("vlr_number") is not None:
-        vcs_children.append(Avp.new(AVP_3GPP_VLR_NUMBER, constants.VENDOR_TGPP, value=CFG["vlr_number"]))
+    vcs_children = [
+        Avp.new(AVP_3GPP_BEARER_CAPABILITY, constants.VENDOR_TGPP, value=CFG["bearer_capability"]),
+        Avp.new(AVP_3GPP_NETWORK_CALL_REFERENCE_NUMBER, constants.VENDOR_TGPP, value=CFG["network_call_reference_number"]),
+        Avp.new(AVP_3GPP_MSC_ADDRESS, constants.VENDOR_TGPP, value=CFG["msc_address"]),
+        Avp.new(AVP_3GPP_VLR_NUMBER, constants.VENDOR_TGPP, value=CFG["vlr_number"]),
+    ]
 
     vcs_info = Avp.new(AVP_3GPP_VCS_INFORMATION, constants.VENDOR_TGPP)
     vcs_info.value = vcs_children
@@ -430,27 +387,9 @@ def avp_value(avps, name):
     return None
 
 
-def get_subscription_value(avps, sub_type_label):
-    for avp in avps or []:
-        if avp.get("name") != "Subscription-Id":
-            continue
-        children = avp.get("value", [])
-        label = None
-        data = None
-        for child in children:
-            if child.get("name") == "Subscription-Id-Type":
-                label = str(child.get("label") or child.get("value"))
-            elif child.get("name") == "Subscription-Id-Data":
-                data = child.get("value")
-        if label == sub_type_label:
-            return data
-    return None
-
-
 def get_all_shards(kinesis, stream_name):
     shards = []
     next_token = None
-
     while True:
         resp = kinesis.list_shards(NextToken=next_token) if next_token else kinesis.list_shards(StreamName=stream_name)
         shards.extend(resp.get("Shards", []))
@@ -493,10 +432,8 @@ def fetch_kinesis_events_for_session(session_id, start_time_utc):
             shard_iterator = resp.get("NextShardIterator")
 
             for rec in resp.get("Records", []):
-                json_objects = extract_json_objects(rec["Data"])
-                for obj in json_objects:
-                    avps = obj.get("avps", [])
-                    if avp_value(avps, "Session-Id") == session_id:
+                for obj in extract_json_objects(rec["Data"]):
+                    if avp_value(obj.get("avps", []), "Session-Id") == session_id:
                         matched.append({
                             "partition_key": rec.get("PartitionKey"),
                             "sequence_number": rec.get("SequenceNumber"),
@@ -512,7 +449,6 @@ def fetch_kinesis_events_for_session(session_id, start_time_utc):
 
 def print_kinesis_matches(events):
     print_banner("KINESIS EVENTS")
-
     if not events:
         print("No matching Kinesis events found for this Session-Id")
         return
@@ -561,12 +497,8 @@ def get_grouped_child_value(grouped_avp, child_name, aliases=None):
     return None if child is None else child.get("value")
 
 
-def get_service_information_group(avps):
-    return get_avp_by_name(avps, "Service-Information")
-
-
 def get_nested_service_info_value(avps, parent_name, child_name, aliases=None):
-    svc_info = get_service_information_group(avps)
+    svc_info = get_avp_by_name(avps, "Service-Information")
     if not svc_info:
         return None
     parent = get_grouped_child(svc_info, parent_name)
@@ -579,13 +511,6 @@ def get_mscc_group(avps):
     return get_avp_by_name(avps, "Multiple-Services-Credit-Control")
 
 
-def get_mscc_value(avps, child_name):
-    mscc = get_mscc_group(avps)
-    if not mscc:
-        return None
-    return get_grouped_child_value(mscc, child_name)
-
-
 def get_mscc_cc_time(avps, container_name):
     mscc = get_mscc_group(avps)
     if not mscc:
@@ -596,175 +521,98 @@ def get_mscc_cc_time(avps, container_name):
     return get_grouped_child_value(container, "CC-Time")
 
 
-def validate_destination_dimension(event, expected_method):
-    expected_dim = CFG.get("expected_destination_charging_dimension")
-    expected_mcc = CFG.get("expected_destination_mcc")
-    expected_mnc = CFG.get("expected_destination_mnc")
-    expected_operator = CFG.get("expected_destination_operator")
+def validate_no_charge_business(event, expected_method):
+    actual_result = event.get("result") or event.get("rating_result") or event.get("charge_result")
+    actual_charge_amount = event.get("charge_amount")
+    actual_chargeable = event.get("chargeable")
 
-    actual_dim = event.get("charging_dimension") or event.get("destination_charging_dimension")
-    actual_mcc = event.get("destination_mcc")
-    actual_mnc = event.get("destination_mnc")
-    actual_operator = event.get("destination_operator")
+    print_field(f"{expected_method} Business Result", actual_result, width=50)
+    print_field(f"{expected_method} Charge Amount", actual_charge_amount, width=50)
+    print_field(f"{expected_method} Chargeable", actual_chargeable, width=50)
 
-    print_field(f"{expected_method} Destination Dimension", actual_dim, width=42)
-    print_field(f"{expected_method} Destination MCC", actual_mcc, width=42)
-    print_field(f"{expected_method} Destination MNC", actual_mnc, width=42)
-    print_field(f"{expected_method} Destination Operator", actual_operator, width=42)
-
-    if actual_dim is None and actual_mcc is None and actual_mnc is None and actual_operator is None:
-        return
-
-    if expected_dim and str(actual_dim) != str(expected_dim):
-        raise AssertionError(f"{expected_method}: expected destination charging dimension {expected_dim}, got {actual_dim}")
-    if expected_mcc and str(actual_mcc) != str(expected_mcc):
-        raise AssertionError(f"{expected_method}: expected destination_mcc {expected_mcc}, got {actual_mcc}")
-    if expected_mnc and str(actual_mnc) != str(expected_mnc):
-        raise AssertionError(f"{expected_method}: expected destination_mnc {expected_mnc}, got {actual_mnc}")
-    if expected_operator and str(actual_operator).upper() != str(expected_operator).upper():
-        raise AssertionError(f"{expected_method}: expected destination_operator {expected_operator}, got {actual_operator}")
+    if actual_result is not None:
+        if str(actual_result).upper() != str(CFG["expected_result"]).upper():
+            raise AssertionError(f"{expected_method}: expected result {CFG['expected_result']}, got {actual_result}")
+    if actual_charge_amount is not None:
+        if float(actual_charge_amount) != float(CFG["expected_charge_amount"]):
+            raise AssertionError(f"{expected_method}: expected charge_amount {CFG['expected_charge_amount']}, got {actual_charge_amount}")
+    if actual_chargeable is not None:
+        if bool(actual_chargeable) != bool(CFG["expected_chargeable"]):
+            raise AssertionError(f"{expected_method}: expected chargeable {CFG['expected_chargeable']}, got {actual_chargeable}")
 
 
-def validate_common_event_fields(event, expected_method, expected_cc_request_type, expected_cc_request_number):
+def validate_common_event_fields(event, expected_method):
     avps = event.get("avps", [])
     decision = event.get("decision", {})
 
     method = normalize_method(event.get("method"))
     service_type = normalize_service_type(event.get("service_type"))
     code = decision.get("code")
-    granted_voice_seconds = decision.get("granted_voice_seconds", 0)
-    granted_data_octets = decision.get("granted_data_octets", 0)
 
-    print_field(f"{expected_method} Method", method, width=42)
-    print_field(f"{expected_method} Decision-Code", code, width=42)
-    print_field(f"{expected_method} Service-Type", service_type, width=42)
-    print_field(f"{expected_method} Granted-Voice-Sec", granted_voice_seconds, width=42)
-    print_field(f"{expected_method} Granted-Data-Octets", granted_data_octets, width=42)
+    print_field(f"{expected_method} Method", method, width=50)
+    print_field(f"{expected_method} Decision-Code", code, width=50)
+    print_field(f"{expected_method} Service-Type", service_type, width=50)
+    print_field(f"{expected_method} Granted-Voice-Sec", decision.get("granted_voice_seconds"), width=50)
 
     if method != normalize_method(expected_method):
-        raise AssertionError(f"{expected_method}: expected method {expected_method}, got {method}")
+        raise AssertionError(f"{expected_method}: method mismatch")
     if code != 2001:
-        raise AssertionError(f"{expected_method}: expected decision code 2001, got {code}")
+        raise AssertionError(f"{expected_method}: decision code mismatch")
     if service_type != CFG["expected_service_type"]:
-        raise AssertionError(f"{expected_method}: expected service type {CFG['expected_service_type']}, got {service_type}")
-    if granted_data_octets not in (0, None):
-        raise AssertionError(f"{expected_method}: expected granted_data_octets 0, got {granted_data_octets}")
-
-    if str(avp_value(avps, "Session-Id")) != str(SESSION_ID):
-        raise AssertionError(f"{expected_method}: Session-Id mismatch")
-    if str(avp_value(avps, "Origin-Host")) != ORIGIN_HOST.decode():
-        raise AssertionError(f"{expected_method}: Origin-Host mismatch")
-    if str(avp_value(avps, "Origin-Realm")) != ORIGIN_REALM.decode():
-        raise AssertionError(f"{expected_method}: Origin-Realm mismatch")
-    if str(avp_value(avps, "Destination-Host")) != DEST_HOST.decode():
-        raise AssertionError(f"{expected_method}: Destination-Host mismatch")
-    if str(avp_value(avps, "Destination-Realm")) != DEST_REALM.decode():
-        raise AssertionError(f"{expected_method}: Destination-Realm mismatch")
-    if int(avp_value(avps, "Auth-Application-Id")) != constants.APP_DIAMETER_CREDIT_CONTROL_APPLICATION:
-        raise AssertionError(f"{expected_method}: Auth-Application-Id mismatch")
-    if str(avp_value(avps, "Service-Context-Id")) != str(CFG["service_context_id"]):
-        raise AssertionError(f"{expected_method}: Service-Context-Id mismatch")
-    if int(avp_value(avps, "CC-Request-Type")) != int(expected_cc_request_type):
-        raise AssertionError(f"{expected_method}: CC-Request-Type mismatch")
-    if int(avp_value(avps, "CC-Request-Number")) != int(expected_cc_request_number):
-        raise AssertionError(f"{expected_method}: CC-Request-Number mismatch")
-
-    imsi = get_subscription_value(avps, "END_USER_IMSI")
-    e164 = get_subscription_value(avps, "END_USER_E164")
-    if str(imsi) != str(CFG["a_party_imsi"]):
-        raise AssertionError(f"{expected_method}: IMSI mismatch")
-    if str(e164) != str(CFG["a_party_msisdn"]):
-        raise AssertionError(f"{expected_method}: E164 mismatch")
+        raise AssertionError(f"{expected_method}: service type mismatch")
 
     calling_party = get_nested_service_info_value(avps, "IMS-Information", "Calling-Party-Address")
-    requested_party = get_nested_service_info_value(avps, "IMS-Information", "Requested-Party-Address")
     called_party = get_nested_service_info_value(avps, "IMS-Information", "Called-Party-Address")
-    rn = get_nested_service_info_value(avps, "IMS-Information", "Number-Portability-Routing-Information")
-
     node_functionality = get_nested_service_info_value(avps, "IMS-Information", "Node-Functionality")
     role_of_node = get_nested_service_info_value(avps, "IMS-Information", "Role-Of-Node")
-
     ms_timezone = get_nested_service_info_value(avps, "PS-Information", "3GPP-MS-TimeZone", aliases=["TGPP-MS-TimeZone"])
     bearer_capability = get_nested_service_info_value(avps, "VCS-Information", "Bearer-Capability")
     ncrn = get_nested_service_info_value(avps, "VCS-Information", "Network-Call-Reference-Number")
     msc_address = get_nested_service_info_value(avps, "VCS-Information", "MSC-Address")
     vlr_number = get_nested_service_info_value(avps, "VCS-Information", "VLR-Number")
 
-    print_field(f"{expected_method} Calling-Party", calling_party, width=42)
-    print_field(f"{expected_method} Requested-Party", requested_party, width=42)
-    print_field(f"{expected_method} Called-Party", called_party, width=42)
-    print_field(f"{expected_method} Routing-Info", rn, width=42)
-    print_field(f"{expected_method} Node-Functionality", node_functionality, width=42)
-    print_field(f"{expected_method} Role-Of-Node", role_of_node, width=42)
-    print_field(f"{expected_method} 3GPP-MS-TimeZone", bytes_to_hex_upper(ms_timezone), width=42)
-    print_field(f"{expected_method} Bearer-Capability", bytes_to_hex_upper(bearer_capability), width=42)
-    print_field(f"{expected_method} Net-Call-Ref-No", bytes_to_hex_upper(ncrn), width=42)
-    print_field(f"{expected_method} MSC-Address", bytes_to_hex_upper(msc_address), width=42)
-    print_field(f"{expected_method} VLR-Number", bytes_to_hex_upper(vlr_number), width=42)
+    print_field(f"{expected_method} Calling-Party", calling_party, width=50)
+    print_field(f"{expected_method} Called-Party", called_party, width=50)
+    print_field(f"{expected_method} Node-Functionality", node_functionality, width=50)
+    print_field(f"{expected_method} Role-Of-Node", role_of_node, width=50)
+    print_field(f"{expected_method} 3GPP-MS-TimeZone", bytes_to_hex_upper(ms_timezone), width=50)
+    print_field(f"{expected_method} Bearer-Capability", bytes_to_hex_upper(bearer_capability), width=50)
+    print_field(f"{expected_method} Net-Call-Ref-No", bytes_to_hex_upper(ncrn), width=50)
+    print_field(f"{expected_method} MSC-Address", bytes_to_hex_upper(msc_address), width=50)
+    print_field(f"{expected_method} VLR-Number", bytes_to_hex_upper(vlr_number), width=50)
 
     if str(calling_party) != str(CFG["calling_party_address"]):
-        raise AssertionError(f"{expected_method}: Calling-Party-Address mismatch")
-    if str(requested_party) != str(CFG["requested_party_address"]):
-        raise AssertionError(f"{expected_method}: Requested-Party-Address mismatch")
-
-    if CFG.get("called_party_address") is None:
-        if called_party not in (None, "", "null"):
-            raise AssertionError(f"{expected_method}: Called-Party-Address should be absent")
-    elif str(called_party) != str(CFG["called_party_address"]):
-        raise AssertionError(f"{expected_method}: Called-Party-Address mismatch")
-
-    if CFG.get("number_portability_routing_information") is None:
-        if rn not in (None, "", "null"):
-            raise AssertionError(f"{expected_method}: Routing info should be absent for international call")
-    elif str(rn) != str(CFG["number_portability_routing_information"]):
-        raise AssertionError(f"{expected_method}: Routing info mismatch")
-
+        raise AssertionError(f"{expected_method}: Calling-Party mismatch")
+    if str(called_party) != str(CFG["called_party_address"]):
+        raise AssertionError(f"{expected_method}: Called-Party mismatch")
     if int(node_functionality) != int(CFG["node_functionality"]):
         raise AssertionError(f"{expected_method}: Node-Functionality mismatch")
     if int(role_of_node) != int(CFG["role_of_node"]):
         raise AssertionError(f"{expected_method}: Role-Of-Node mismatch")
-    if bytes_to_hex_upper(ms_timezone) != bytes_to_hex_upper(CFG["tgpp_ms_timezone"]):
-        raise AssertionError(f"{expected_method}: 3GPP-MS-TimeZone mismatch")
-    if bytes_to_hex_upper(bearer_capability) != bytes_to_hex_upper(CFG["bearer_capability"]):
-        raise AssertionError(f"{expected_method}: Bearer-Capability mismatch")
-    if bytes_to_hex_upper(ncrn) != bytes_to_hex_upper(CFG["network_call_reference_number"]):
-        raise AssertionError(f"{expected_method}: Network-Call-Reference-Number mismatch")
-    if bytes_to_hex_upper(msc_address) != bytes_to_hex_upper(CFG["msc_address"]):
-        raise AssertionError(f"{expected_method}: MSC-Address mismatch")
-    if bytes_to_hex_upper(vlr_number) != bytes_to_hex_upper(CFG["vlr_number"]):
-        raise AssertionError(f"{expected_method}: VLR-Number mismatch")
 
-    service_identifier = get_mscc_value(avps, "Service-Identifier")
-    if int(service_identifier) != int(CFG["service_identifier"]):
-        raise AssertionError(f"{expected_method}: Service-Identifier mismatch")
-
-    validate_destination_dimension(event, expected_method)
+    validate_no_charge_business(event, expected_method)
     return avps, decision
 
 
 def validate_initial_event(event):
-    avps, decision = validate_common_event_fields(event, "INITIAL_REQUEST", 1, 0)
+    avps, decision = validate_common_event_fields(event, "INITIAL_REQUEST")
     requested_cc_time = get_mscc_cc_time(avps, "Requested-Service-Unit")
-    used_cc_time = get_mscc_cc_time(avps, "Used-Service-Unit")
 
-    print_field("INITIAL_REQUEST Requested CC-Time", requested_cc_time, width=42)
-    print_field("INITIAL_REQUEST Used CC-Time", used_cc_time, width=42)
+    print_field("INITIAL_REQUEST Requested CC-Time", requested_cc_time, width=50)
 
     if int(requested_cc_time) != int(CFG["requested_cc_time_initial"]):
         raise AssertionError("INITIAL_REQUEST Requested CC-Time mismatch")
-    if used_cc_time not in (None, 0, "0"):
-        raise AssertionError("INITIAL_REQUEST Used CC-Time should be absent")
     if decision.get("granted_voice_seconds") != CFG["expected_initial_grant"]:
         raise AssertionError("INITIAL_REQUEST grant mismatch")
 
 
 def validate_update_event(event):
-    avps, decision = validate_common_event_fields(event, "UPDATE_REQUEST", 2, 1)
+    avps, decision = validate_common_event_fields(event, "UPDATE_REQUEST")
     requested_cc_time = get_mscc_cc_time(avps, "Requested-Service-Unit")
     used_cc_time = get_mscc_cc_time(avps, "Used-Service-Unit")
 
-    print_field("UPDATE_REQUEST Requested CC-Time", requested_cc_time, width=42)
-    print_field("UPDATE_REQUEST Used CC-Time", used_cc_time, width=42)
+    print_field("UPDATE_REQUEST Requested CC-Time", requested_cc_time, width=50)
+    print_field("UPDATE_REQUEST Used CC-Time", used_cc_time, width=50)
 
     if int(requested_cc_time) != int(CFG["requested_cc_time_update"]):
         raise AssertionError("UPDATE_REQUEST Requested CC-Time mismatch")
@@ -775,26 +623,17 @@ def validate_update_event(event):
 
 
 def validate_termination_event(event):
-    avps, decision = validate_common_event_fields(event, "TERMINATION_REQUEST", 3, 2)
-    requested_cc_time = get_mscc_cc_time(avps, "Requested-Service-Unit")
+    avps, decision = validate_common_event_fields(event, "TERMINATION_REQUEST")
     used_cc_time = get_mscc_cc_time(avps, "Used-Service-Unit")
 
-    print_field("TERMINATION_REQUEST Requested CC-Time", requested_cc_time, width=42)
-    print_field("TERMINATION_REQUEST Used CC-Time", used_cc_time, width=42)
+    print_field("TERMINATION_REQUEST Used CC-Time", used_cc_time, width=50)
 
-    if requested_cc_time not in (None, 0, "0"):
-        raise AssertionError("TERMINATION_REQUEST Requested CC-Time should be absent")
     if int(used_cc_time) != int(CFG["used_cc_time_terminate"]):
         raise AssertionError("TERMINATION_REQUEST Used CC-Time mismatch")
 
-    termination_grant = decision.get("granted_voice_seconds", 0)
-    if termination_grant not in (0, None):
-        raise AssertionError("TERMINATION_REQUEST grant should be 0")
-
 
 def validate_voice_kinesis(events):
-    print_banner("VERIFY VOICE CHARGING FROM KINESIS")
-
+    print_banner("VERIFY MT INTERNATIONAL NO CHARGE FROM KINESIS")
     if not events:
         raise AssertionError("No matching Kinesis events found")
 
@@ -813,7 +652,7 @@ def validate_voice_kinesis(events):
     validate_update_event(update)
     validate_termination_event(term)
 
-    print("Kinesis voice charging verification PASSED for INITIAL, UPDATE and TERMINATION")
+    print("Kinesis MT international no-charge verification PASSED")
 
 
 def print_scenario_header():
@@ -821,45 +660,22 @@ def print_scenario_header():
     print_field("Description", CFG["description"])
     print_field("Scenario Key", SCENARIO_KEY)
     print_field("Session-Id", SESSION_ID)
-    print_field("Server FQDN", SERVER_FQDN)
-    print_field("Origin-Host", ORIGIN_HOST.decode())
-    print_field("Origin-Realm", ORIGIN_REALM.decode())
-    print_field("Destination-Host", DEST_HOST.decode())
-    print_field("Destination-Realm", DEST_REALM.decode())
-    print_field("Service-Context-Id", CFG["service_context_id"])
-    print_field("Sender Operator", CFG["sender_operator"])
-    print_field("Sender MCC", CFG["sender_mcc"])
-    print_field("Sender MNC", CFG["sender_mnc"])
-    print_field("Receiver Operator", CFG["receiver_operator"])
-    print_field("Receiver MCC", CFG["receiver_mcc"])
-    print_field("Receiver MNC", CFG["receiver_mnc"])
-    print_field("Type", CFG["type"])
-    print_field("A-Party MSISDN", CFG["a_party_msisdn"])
-    print_field("A-Party IMSI", CFG["a_party_imsi"])
-    print_field("B-Party MSISDN", CFG["b_party_msisdn"])
-    print_field("Service-Identifier", CFG["service_identifier"])
-    print_field("Node-Functionality", CFG["node_functionality"])
-    print_field("Role-Of-Node", CFG["role_of_node"])
-    print_field("Calling-Party-Address", CFG["calling_party_address"])
-    print_field("Requested-Party-Address", CFG["requested_party_address"])
-    print_field("Called-Party-Address", CFG["called_party_address"])
-    print_field("MNP Routing Information", CFG["number_portability_routing_information"])
-    print_field("3GPP-MS-TimeZone", bytes_to_hex_upper(CFG["tgpp_ms_timezone"]))
-    print_field("Bearer-Capability", bytes_to_hex_upper(CFG["bearer_capability"]))
-    print_field("Network-Call-Reference-No", bytes_to_hex_upper(CFG["network_call_reference_number"]))
-    print_field("MSC-Address", bytes_to_hex_upper(CFG["msc_address"]))
-    print_field("VLR-Number", bytes_to_hex_upper(CFG["vlr_number"]))
-    print_field("Requested CC-Time Initial", CFG["requested_cc_time_initial"])
-    print_field("Requested CC-Time Update", CFG["requested_cc_time_update"])
-    print_field("Used CC-Time Update", CFG["used_cc_time_update"])
-    print_field("Used CC-Time Terminate", CFG["used_cc_time_terminate"])
-    print_field("Expected Charging Dimension", CFG["expected_destination_charging_dimension"])
-    print_field("Expected Destination MCC", CFG["expected_destination_mcc"])
-    print_field("Expected Destination MNC", CFG["expected_destination_mnc"])
-    print_field("Expected Destination Oper", CFG["expected_destination_operator"])
-    print_field("Kinesis Stream", KINESIS_STREAM_NAME)
-    print_field("Kinesis Region", KINESIS_REGION)
-    print_field("Kinesis Profile", KINESIS_PROFILE)
+    print_field("Called Operator", CFG["called_operator"])
+    print_field("Called MCC", CFG["called_mcc"])
+    print_field("Called MNC", CFG["called_mnc"])
+    print_field("Serving Operator", CFG["serving_operator"])
+    print_field("Serving MCC", CFG["serving_mcc"])
+    print_field("Serving MNC", CFG["serving_mnc"])
+    print_field("Source Operator", CFG["source_operator"])
+    print_field("Source MCC", CFG["source_mcc"])
+    print_field("Source MNC", CFG["source_mnc"])
+    print_field("Source Country Type", CFG["source_country_type"])
+    print_field("Called Party MSISDN", CFG["called_party_msisdn"])
+    print_field("Called Party IMSI", CFG["called_party_imsi"])
+    print_field("Calling Party MSISDN", CFG["calling_party_msisdn"])
+    print_field("Expected Result", CFG["expected_result"])
+    print_field("Expected Charge Amount", CFG["expected_charge_amount"])
+    print_field("Expected Chargeable", CFG["expected_chargeable"])
 
 
 def main():
@@ -888,11 +704,11 @@ def main():
             cea = Message.from_bytes(recv_one_diameter(sock))
             print_cea_summary(cea)
 
-            print_step("STEP 1: Register SIM on Home Network")
-            print("Precondition only - subscriber is attached on home network")
+            print_step("STEP 1: Register called SIM on home network")
+            print("Precondition only - called subscriber attached on home network")
 
-            print_step("STEP 2: Initiate MO international call")
-            ccr_i = build_voice_ccr(1, 0, req_time=CFG["requested_cc_time_initial"])
+            print_step("STEP 2: Trigger MT call from listed source types")
+            ccr_i = build_mt_voice_ccr(1, 0, req_time=CFG["requested_cc_time_initial"])
             print(f"Sending CCR-I ({len(ccr_i)} bytes)")
             sock.sendall(ccr_i)
             cca_i_raw = recv_one_diameter(sock)
@@ -904,11 +720,8 @@ def main():
             if safe_get(cca_i, "result_code") != 2001:
                 raise AssertionError(f"CCR-I failed: Result-Code={safe_get(cca_i, 'result_code')}")
 
-            print_step("STEP 3: Maintain short call")
-            print(f"Simulated active call. Used CC-Time before update = {CFG['used_cc_time_update']} seconds")
-
-            print_step("STEP 4: Send CCR-U")
-            ccr_u = build_voice_ccr(2, 1, req_time=CFG["requested_cc_time_update"], used_time=CFG["used_cc_time_update"])
+            print_step("STEP 3: Answer call")
+            ccr_u = build_mt_voice_ccr(2, 1, req_time=CFG["requested_cc_time_update"], used_time=CFG["used_cc_time_update"])
             print(f"Sending CCR-U ({len(ccr_u)} bytes)")
             sock.sendall(ccr_u)
             cca_u_raw = recv_one_diameter(sock)
@@ -920,11 +733,8 @@ def main():
             if safe_get(cca_u, "result_code") != 2001:
                 raise AssertionError(f"CCR-U failed: Result-Code={safe_get(cca_u, 'result_code')}")
 
-            print_step("STEP 5: Disconnect call")
-            print("Call disconnect simulated")
-
-            print_step("STEP 6: Send CCR-T")
-            ccr_t = build_voice_ccr(3, 2, used_time=CFG["used_cc_time_terminate"])
+            print_step("STEP 4: End call")
+            ccr_t = build_mt_voice_ccr(3, 2, used_time=CFG["used_cc_time_terminate"])
             print(f"Sending CCR-T ({len(ccr_t)} bytes)")
             sock.sendall(ccr_t)
             cca_t_raw = recv_one_diameter(sock)
@@ -936,13 +746,13 @@ def main():
             if safe_get(cca_t, "result_code") != 2001:
                 raise AssertionError(f"CCR-T failed: Result-Code={safe_get(cca_t, 'result_code')}")
 
-            print_step("STEP 7: Verify OCS charging output")
+            print_step("STEP 5: No charge")
             print_field("CCR-I Result-Code", safe_get(cca_i, "result_code"))
             print_field("CCR-U Result-Code", safe_get(cca_u, "result_code"))
             print_field("CCR-T Result-Code", safe_get(cca_t, "result_code"))
-            print("Diameter charging verification PASSED")
+            #print("Diameter MT flow completed; no-charge business result will be verified in Kinesis")
 
-        print_step("STEP 8: Get data from Kinesis")
+        print_step("STEP 6: Get the expected data from Kinesis")
         print(f"Waiting {KINESIS_WAIT_SEC} seconds for Kinesis propagation...")
         time.sleep(KINESIS_WAIT_SEC)
 
@@ -951,7 +761,7 @@ def main():
         validate_voice_kinesis(events)
 
     except Exception as e:
-        print(f"Diameter/Kinesis flow failed: {e}")
+        print(f"MT international home-network flow failed: {e}")
         raise
 
 

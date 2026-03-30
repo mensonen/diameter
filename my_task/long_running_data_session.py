@@ -208,7 +208,7 @@ def _walk_grouped(buf: bytes, start: int, length: int):
 def parse_grant_cc_total_octets_from_cca(raw: bytes) -> int | None:
     """
     Parse CC-Total-Octets from the common nesting:
-      Multiple-Services-Credit-Control (456) -> Granted-Service-Unit (431) -> CC-Total-Octets (421). [web:67]
+      Multiple-Services-Credit-Control (456) -> Granted-Service-Unit (431) -> CC-Total-Octets (421).
     """
     DIAMETER_HEADER_LEN = 20
     MSCC = 456

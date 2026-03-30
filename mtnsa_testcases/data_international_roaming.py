@@ -4,6 +4,8 @@ import socket
 import logging
 import datetime
 import itertools
+import json
+import boto3
 
 from diameter.message import Message, Avp, constants
 from diameter.message.commands import CapabilitiesExchangeRequest, CreditControlRequest
@@ -20,13 +22,13 @@ ORIGIN_REALM = b"mtn.co.za"
 DEST_HOST = b"diameter01.joburg.eseye.com"
 DEST_REALM = b"diameter.eseye.com"
 
-HOST_IP_ADDRESS = "198.18.152.192"
+HOST_IP_ADDRESS = "198.18.153.155"
 
 SERVICE_CONTEXT_ID = "8.32251@3gpp.org"
 ORIGIN_STATE_ID = 45
 RATING_GROUP = 1004
 
-USER_NAME = "user@drs.co.za"
+USER_NAME = "655103704646780nai.epc.mnc655.mcc10.3gppnetwork.org"
 SUB_E164 = "279603002227198"
 SUB_IMSI = "655103704646780"
 SUB_NAI = "655103704646780nai.epc.mnc655.mcc10.3gppnetwork.org"
@@ -44,19 +46,25 @@ REPORTING_REASON_THRESHOLD = 3
 REPORTING_REASON_FINAL = 2
 
 # ============================================================
+# KINESIS CONFIGURATION
+# ============================================================
+KINESIS_STREAM_NAME = "diameter-creditcontrol-test"
+KINESIS_REGION = "eu-west-1"
+KINESIS_PROFILE = "senior-qa-role"
+KINESIS_WAIT_SEC = 12
+KINESIS_READ_SEC = 15
+
+# ============================================================
 # ROAMING DIMENSION CONFIG
 # Replace these with the visited operator/country values
 # ============================================================
 SCENARIO_NAME = "DATA INTERNATIONAL ROAMING"
 HOME_MCC_MNC = "65510"
-ROAMING_MCC_MNC = "23420"   # example visited PLMN, replace with actual roaming MCCMNC
+ROAMING_MCC_MNC = "23420"
 
-# Example visited addresses; replace with roaming-network values if required
 ROAMING_SGSN_ADDRESS = "41.208.22.222"
 ROAMING_GGSN_ADDRESS = "196.13.128.128"
 
-# Example visited TAI+ECGI style ULI octets for roaming PLMN context
-# Replace with real visited network ULI if you have the exact hex from capture
 ROAMING_USER_LOCATION_INFO = bytes.fromhex("8232f402000132f40200000001")
 
 # ============================================================
@@ -329,6 +337,148 @@ def extract_granted_total_octets(cca):
 
 
 # ============================================================
+# KINESIS HELPERS
+# ============================================================
+def make_kinesis_client():
+    session = boto3.session.Session(profile_name=KINESIS_PROFILE, region_name=KINESIS_REGION)
+    return session.client("kinesis")
+
+
+def extract_json_objects(raw: bytes):
+    text = raw.decode("utf-8", errors="ignore")
+
+    json_blocks = []
+    start = None
+    depth = 0
+
+    for i, ch in enumerate(text):
+        if ch == "{":
+            if depth == 0:
+                start = i
+            depth += 1
+        elif ch == "}":
+            if depth > 0:
+                depth -= 1
+                if depth == 0 and start is not None:
+                    candidate = text[start:i + 1]
+                    try:
+                        json_blocks.append(json.loads(candidate))
+                    except Exception:
+                        pass
+                    start = None
+
+    return json_blocks
+
+
+def avp_value(avps, name):
+    for avp in avps or []:
+        if avp.get("name") == name:
+            return avp.get("value")
+    return None
+
+
+def get_all_shards(kinesis, stream_name):
+    shards = []
+    next_token = None
+
+    while True:
+        if next_token:
+            resp = kinesis.list_shards(NextToken=next_token)
+        else:
+            resp = kinesis.list_shards(StreamName=stream_name)
+
+        shards.extend(resp.get("Shards", []))
+        next_token = resp.get("NextToken")
+        if not next_token:
+            break
+
+    return shards
+
+
+def fetch_kinesis_events_for_session(session_id, start_time_utc):
+    kinesis = make_kinesis_client()
+    matched = []
+
+    shards = get_all_shards(kinesis, KINESIS_STREAM_NAME)
+    print(f"Kinesis: found {len(shards)} shard(s) in stream {KINESIS_STREAM_NAME}")
+
+    read_until = time.time() + KINESIS_READ_SEC
+    from_timestamp = start_time_utc - datetime.timedelta(seconds=2)
+
+    for shard in shards:
+        shard_id = shard["ShardId"]
+        print(f"Kinesis: reading shard {shard_id} from {from_timestamp.isoformat()}")
+
+        try:
+            itr_resp = kinesis.get_shard_iterator(
+                StreamName=KINESIS_STREAM_NAME,
+                ShardId=shard_id,
+                ShardIteratorType="AT_TIMESTAMP",
+                Timestamp=from_timestamp
+            )
+        except Exception as e:
+            print(f"Kinesis: failed to get iterator for {shard_id}: {e}")
+            continue
+
+        shard_iterator = itr_resp.get("ShardIterator")
+        if not shard_iterator:
+            continue
+
+        while shard_iterator and time.time() < read_until:
+            resp = kinesis.get_records(ShardIterator=shard_iterator, Limit=100)
+            shard_iterator = resp.get("NextShardIterator")
+
+            for rec in resp.get("Records", []):
+                json_objects = extract_json_objects(rec["Data"])
+
+                for obj in json_objects:
+                    avps = obj.get("avps", [])
+                    obj_session_id = avp_value(avps, "Session-Id")
+
+                    if obj_session_id == session_id:
+                        matched.append({
+                            "partition_key": rec.get("PartitionKey"),
+                            "sequence_number": rec.get("SequenceNumber"),
+                            "arrival": rec.get("ApproximateArrivalTimestamp"),
+                            "json": obj
+                        })
+
+            if not resp.get("Records"):
+                time.sleep(1)
+
+    unique = {}
+    for ev in matched:
+        payload = json.dumps(ev.get("json"), sort_keys=True, default=str)
+        key = (
+            ev.get("sequence_number"),
+            payload
+        )
+        unique[key] = ev
+
+    return list(unique.values())
+
+
+def print_kinesis_matches(events):
+    print_banner("KINESIS EVENTS")
+
+    if not events:
+        print("No matching Kinesis events found for this Session-Id")
+        return
+
+    print(f"Matched events          : {len(events)}")
+    print("-" * 100)
+
+    for idx, ev in enumerate(events, start=1):
+        print(f"Kinesis Event {idx}")
+        print(f"PartitionKey           : {ev.get('partition_key')}")
+        print(f"SequenceNumber         : {ev.get('sequence_number')}")
+        print(f"ApproxArrival          : {ev.get('arrival')}")
+        print("Full JSON:")
+        print(json.dumps(ev.get("json"), indent=2, ensure_ascii=False, default=str))
+        print("-" * 100)
+
+
+# ============================================================
 # CER / CEA
 # ============================================================
 def build_cer() -> bytes:
@@ -337,7 +487,7 @@ def build_cer() -> bytes:
     cer.origin_realm = ORIGIN_REALM
     cer.host_ip_address = HOST_IP_ADDRESS
     cer.vendor_id = 0
-    cer.product_name = "python-diameter-client"
+    cer.product_name = "SR-OS-MG"
     cer.origin_state_id = ORIGIN_STATE_ID
     cer.auth_application_id = constants.APP_DIAMETER_CREDIT_CONTROL_APPLICATION
     cer.inband_security_id = constants.E_INBAND_SECURITY_ID_NO_INBAND_SECURITY
@@ -438,10 +588,6 @@ def main():
     SESSION_ID = build_session_id()
 
     print_banner(f"SCENARIO: {SCENARIO_NAME}")
-    print("1. Register and attach SIM in roaming country")
-    print("2. Establish data session")
-    print("3. Generate sustained traffic")
-    print("4. Verify charging and roaming dimension")
     print()
     print(f"Server FQDN                 : {SERVER_FQDN}")
     print(f"Session-Id                  : {SESSION_ID}")
@@ -467,6 +613,9 @@ def main():
     print(f"Roaming GGSN-Address        : {GGSN_ADDRESS}")
     print(f"QCI                         : {QCI}")
     print(f"Priority-Level              : {PRIORITY_LEVEL}")
+    print(f"Kinesis Stream              : {KINESIS_STREAM_NAME}")
+    print(f"Kinesis Region              : {KINESIS_REGION}")
+    print(f"Kinesis Profile             : {KINESIS_PROFILE}")
 
     try:
         resolved_ip = resolve_fqdn_or_exit(SERVER_FQDN)
@@ -489,6 +638,8 @@ def main():
 
             print("\nSTEP 1: Register and attach SIM in roaming country")
             print("Precondition: attach completed in visited network before Gy charging starts")
+
+            test_start_time_utc = datetime.datetime.now(datetime.timezone.utc)
 
             print("\nSTEP 2: Establish data session with CCR-I")
             ccr_i = build_ccr_i()
@@ -536,8 +687,15 @@ def main():
             print(f"Expected Charging Dimension : {ROAMING_MCC_MNC}")
             print(f"Home MCCMNC                 : {HOME_MCC_MNC}")
             print(f"Final Used Total Octets     : {used_total}")
-            print("Roaming Charging Check      : Verify downstream record uses visited MCCMNC as source charging dimension")
-            print("Diameter Session Check      : PASSED")
+            print("Roaming Charging Check  : Verify downstream record uses visited MCCMNC as source charging dimension")
+
+
+            print_banner("STEP 5: FETCH KINESIS EVENTS")
+            print(f"Waiting {KINESIS_WAIT_SEC} seconds for Kinesis propagation...")
+            time.sleep(KINESIS_WAIT_SEC)
+
+            events = fetch_kinesis_events_for_session(SESSION_ID, test_start_time_utc)
+            print_kinesis_matches(events)
 
     except socket.gaierror as e:
         print(f"FQDN resolution failed: {e}")
@@ -552,7 +710,7 @@ def main():
         print(f"Validation failed: {e}")
         return
     except Exception as e:
-        print(f"Diameter flow failed: {e}")
+        print(f"Diameter/Kinesis flow failed: {e}")
         return
 
 

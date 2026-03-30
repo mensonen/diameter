@@ -22,23 +22,27 @@ ORIGIN_REALM = b"mtn.co.za"
 DEST_HOST = b"diameter01.joburg.eseye.com"
 DEST_REALM = b"diameter.eseye.com"
 
-HOST_IP_ADDRESS = "198.18.153.251"
+HOST_IP_ADDRESS = "198.18.153.236"
 
 SERVICE_CONTEXT_ID = "8.32251@3gpp.org"
 ORIGIN_STATE_ID = 45
 RATING_GROUP = 1004
 
-USER_NAME = "user@drs.co.za"
+USER_NAME = "655103704646780nai.epc.mnc655.mcc10.3gppnetwork.org"
 SUB_E164 = "279603002227198"
 SUB_IMSI = "655103704646780"
 SUB_NAI = "655103704646780nai.epc.mnc655.mcc10.3gppnetwork.org"
+
+USER_EQUIPMENT_INFO = "3564871075436638"
 
 APN = "zsmarttest11"
 PDP_IP = "10.144.18.3"
 
 REQUESTED_OCTETS = 512000
-USED_U_OCTETS = 256000
-USED_T_OCTETS = 512000
+CCR_U_USED_STEP = 128000
+SUSTAINED_UPDATES = 3
+FINAL_USED_TOTAL_OCTETS = 512000
+SUSTAINED_SLEEP_SEC = 2
 
 REPORTING_REASON_THRESHOLD = 3
 REPORTING_REASON_FINAL = 2
@@ -46,38 +50,48 @@ REPORTING_REASON_FINAL = 2
 # ============================================================
 # KINESIS CONFIGURATION
 # ============================================================
-KINESIS_STREAM_NAME = "diameter-creditcontrol-test"
+KINESIS_STREAM_NAME = "eksqan_diameter_gy"
 KINESIS_REGION = "eu-west-1"
 KINESIS_PROFILE = "senior-qa-role"
 KINESIS_WAIT_SEC = 12
 KINESIS_READ_SEC = 15
 
 # ============================================================
+# ROAMING DIMENSION CONFIG
+# ============================================================
+SCENARIO_NAME = "DATA INTERNATIONAL ROAMING WITH USER-EQUIPMENT-INFO"
+HOME_MCC_MNC = "65510"
+ROAMING_MCC_MNC = "23420"
+
+ROAMING_SGSN_ADDRESS = "41.208.22.222"
+ROAMING_GGSN_ADDRESS = "196.13.128.128"
+
+ROAMING_USER_LOCATION_INFO = bytes.fromhex("8232f402000132f40200000001")
+
+# ============================================================
 # 3GPP PS-Information values
 # ============================================================
-CHARGING_ID_HEX = "1865244739"
-#CHARGING_ID_BYTES = 1865244739
+CHARGING_ID_HEX = "6f2d6043"
 CHARGING_ID_BYTES = bytes.fromhex(CHARGING_ID_HEX)
-
 PDN_CONNECTION_CHARGING_ID = 1865244739
 
 PDP_TYPE = 0
 DYNAMIC_ADDRESS_FLAG = 1
 SERVING_NODE_TYPE = 2
 
-IMSI_MCC_MNC = "65510"
-GGSN_MCC_MNC = "65510"
-SGSN_MCC_MNC = "65510"
+IMSI_MCC_MNC = HOME_MCC_MNC
+GGSN_MCC_MNC = ROAMING_MCC_MNC
+SGSN_MCC_MNC = HOME_MCC_MNC
 
 NSAPI = b"\x06"
 SELECTION_MODE = "0"
 CHARGING_CHARACTERISTICS = "0400"
 MS_TIMEZONE = bytes.fromhex("8000")
-USER_LOCATION_INFO = bytes.fromhex("8256f5010fc356f501002af80a")
+USER_LOCATION_INFO = ROAMING_USER_LOCATION_INFO
 RAT_TYPE = b"\x06"
 
-SGSN_ADDRESS = "41.208.21.211"
-GGSN_ADDRESS = "196.13.229.129"
+SGSN_ADDRESS = ROAMING_SGSN_ADDRESS
+GGSN_ADDRESS = ROAMING_GGSN_ADDRESS
 
 QCI = 9
 PRIORITY_LEVEL = 2
@@ -85,7 +99,7 @@ APN_AMBR_UL = 1500000000
 APN_AMBR_DL = 1500000000
 
 # ============================================================
-# 3GPP AVP CODES
+# AVP CODES
 # ============================================================
 AVP_3GPP_CHARGING_ID = 2
 AVP_3GPP_PDP_TYPE = 3
@@ -111,6 +125,11 @@ AVP_TGPP_SGSN_ADDRESS = 1228
 AVP_TGPP_SERVING_NODE_TYPE = 2047
 AVP_TGPP_PDN_CONNECTION_CHARGING_ID = 2050
 AVP_TGPP_DYNAMIC_ADDRESS_FLAG = 2051
+
+AVP_USER_EQUIPMENT_INFO = 458
+AVP_USER_EQUIPMENT_INFO_TYPE = 459
+AVP_USER_EQUIPMENT_INFO_VALUE = 460
+UE_INFO_TYPE_IMEISV = 0
 
 # ============================================================
 # LOGGING
@@ -178,6 +197,15 @@ def recv_one_diameter(sock: socket.socket) -> bytes:
 
 def _called_station_id_avp(apn: str) -> Avp:
     return Avp.new(constants.AVP_CALLED_STATION_ID, value=apn)
+
+
+def _user_equipment_info_avp() -> Avp:
+    uei = Avp.new(AVP_USER_EQUIPMENT_INFO)
+    uei.value = [
+        Avp.new(AVP_USER_EQUIPMENT_INFO_TYPE, value=UE_INFO_TYPE_IMEISV),
+        Avp.new(AVP_USER_EQUIPMENT_INFO_VALUE, value=USER_EQUIPMENT_INFO.encode("utf-8")),
+    ]
+    return uei
 
 
 def _build_qos_information_avp() -> Avp:
@@ -287,7 +315,6 @@ def print_mscc_details(answer):
 
 def send_and_receive(sock: socket.socket, request_bytes: bytes, label: str):
     logging.info("Sending %s (%d bytes)", label, len(request_bytes))
-    logging.info(CHARGING_ID_BYTES)
     sock.sendall(request_bytes)
 
     answer_raw = recv_one_diameter(sock)
@@ -388,7 +415,7 @@ def fetch_kinesis_events_for_session(session_id, start_time_utc):
     matched = []
 
     shards = get_all_shards(kinesis, KINESIS_STREAM_NAME)
-    print(f"\nKinesis: found {len(shards)} shard(s) in stream {KINESIS_STREAM_NAME}")
+    print(f"Kinesis: found {len(shards)} shard(s) in stream {KINESIS_STREAM_NAME}")
 
     read_until = time.time() + KINESIS_READ_SEC
     from_timestamp = start_time_utc - datetime.timedelta(seconds=2)
@@ -425,17 +452,8 @@ def fetch_kinesis_events_for_session(session_id, start_time_utc):
 
                     if obj_session_id == session_id:
                         matched.append({
-                            "time": obj.get("time"),
-                            "peer": obj.get("peer"),
-                            "method": obj.get("method"),
-                            "session_id": obj_session_id,
-                            "cc_request_type": avp_value(avps, "CC-Request-Type"),
-                            "cc_request_number": avp_value(avps, "CC-Request-Number"),
-                            "imsi": avp_value(avps, "TGPP-IMSI"),
-                            "called_station_id": avp_value(avps, "Called-Station-Id"),
-                            "reporting_reason": avp_value(avps, "Reporting-Reason"),
-                            "rating_group": avp_value(avps, "Rating-Group"),
                             "partition_key": rec.get("PartitionKey"),
+                            "sequence_number": rec.get("SequenceNumber"),
                             "arrival": rec.get("ApproximateArrivalTimestamp"),
                             "json": obj
                         })
@@ -445,12 +463,8 @@ def fetch_kinesis_events_for_session(session_id, start_time_utc):
 
     unique = {}
     for ev in matched:
-        key = (
-            ev.get("time"),
-            ev.get("session_id"),
-            str(ev.get("cc_request_number")),
-            str(ev.get("method"))
-        )
+        payload = json.dumps(ev.get("json"), sort_keys=True, default=str)
+        key = (ev.get("sequence_number"), payload)
         unique[key] = ev
 
     return list(unique.values())
@@ -463,18 +477,17 @@ def print_kinesis_matches(events):
         print("No matching Kinesis events found for this Session-Id")
         return
 
-    events.sort(key=lambda x: (str(x.get("time")), str(x.get("cc_request_number"))))
     print(f"Matched events          : {len(events)}")
     print("-" * 100)
 
     for idx, ev in enumerate(events, start=1):
         print(f"Kinesis Event {idx}")
         print(f"PartitionKey           : {ev.get('partition_key')}")
+        print(f"SequenceNumber         : {ev.get('sequence_number')}")
         print(f"ApproxArrival          : {ev.get('arrival')}")
         print("Full JSON:")
         print(json.dumps(ev.get("json"), indent=2, ensure_ascii=False, default=str))
         print("-" * 100)
-
 
 
 # ============================================================
@@ -486,7 +499,7 @@ def build_cer() -> bytes:
     cer.origin_realm = ORIGIN_REALM
     cer.host_ip_address = HOST_IP_ADDRESS
     cer.vendor_id = 0
-    cer.product_name = "python-diameter-client"
+    cer.product_name = "SR-OS-MG"
     cer.origin_state_id = ORIGIN_STATE_ID
     cer.auth_application_id = constants.APP_DIAMETER_CREDIT_CONTROL_APPLICATION
     cer.inband_security_id = constants.E_INBAND_SECURITY_ID_NO_INBAND_SECURITY
@@ -535,18 +548,19 @@ def build_ccr_i() -> bytes:
         rating_group=RATING_GROUP,
         requested_service_unit=RequestedServiceUnit(cc_total_octets=REQUESTED_OCTETS),
     )
+    ccr.append_avp(_user_equipment_info_avp())
     ccr.append_avp(_build_service_information_avp())
 
     return ccr.as_bytes()
 
 
-def build_ccr_u() -> bytes:
-    ccr = _build_base_ccr(constants.E_CC_REQUEST_TYPE_UPDATE_REQUEST, 1)
+def build_ccr_u(request_number: int, used_total_octets: int) -> bytes:
+    ccr = _build_base_ccr(constants.E_CC_REQUEST_TYPE_UPDATE_REQUEST, request_number)
 
     ccr.add_multiple_services_credit_control(
         rating_group=RATING_GROUP,
         requested_service_unit=RequestedServiceUnit(cc_total_octets=REQUESTED_OCTETS),
-        used_service_unit=UsedServiceUnit(cc_total_octets=USED_U_OCTETS),
+        used_service_unit=UsedServiceUnit(cc_total_octets=used_total_octets),
         avp=[
             Avp.new(
                 constants.AVP_TGPP_3GPP_REPORTING_REASON,
@@ -555,17 +569,18 @@ def build_ccr_u() -> bytes:
             )
         ],
     )
+    ccr.append_avp(_user_equipment_info_avp())
     ccr.append_avp(_build_service_information_avp())
 
     return ccr.as_bytes()
 
 
-def build_ccr_t() -> bytes:
-    ccr = _build_base_ccr(constants.E_CC_REQUEST_TYPE_TERMINATION_REQUEST, 2)
+def build_ccr_t(request_number: int, used_total_octets: int) -> bytes:
+    ccr = _build_base_ccr(constants.E_CC_REQUEST_TYPE_TERMINATION_REQUEST, request_number)
 
     ccr.add_multiple_services_credit_control(
         rating_group=RATING_GROUP,
-        used_service_unit=UsedServiceUnit(cc_total_octets=USED_T_OCTETS),
+        used_service_unit=UsedServiceUnit(cc_total_octets=used_total_octets),
         avp=[
             Avp.new(
                 constants.AVP_TGPP_3GPP_REPORTING_REASON,
@@ -574,6 +589,7 @@ def build_ccr_t() -> bytes:
             )
         ],
     )
+    ccr.append_avp(_user_equipment_info_avp())
     ccr.append_avp(_build_service_information_avp())
 
     return ccr.as_bytes()
@@ -586,32 +602,37 @@ def main():
     global SESSION_ID
     SESSION_ID = build_session_id()
 
-    print_banner("SCENARIO: DATA ON-NET")
+    print_banner(f"SCENARIO: {SCENARIO_NAME}")
     print()
-    print(f"Server FQDN           : {SERVER_FQDN}")
-    print(f"Session-Id            : {SESSION_ID}")
-    print(f"Origin-Host           : {ORIGIN_HOST.decode()}")
-    print(f"Origin-Realm          : {ORIGIN_REALM.decode()}")
-    print(f"Destination-Host      : {DEST_HOST.decode()}")
-    print(f"Destination-Realm     : {DEST_REALM.decode()}")
-    print(f"Service-Context-Id    : {SERVICE_CONTEXT_ID}")
-    print(f"MSISDN                : {SUB_E164}")
-    print(f"IMSI                  : {SUB_IMSI}")
-    print(f"NAI                   : {SUB_NAI}")
-    print(f"APN                   : {APN}")
-    print(f"Rating-Group          : {RATING_GROUP}")
-    print(f"Requested Octets      : {REQUESTED_OCTETS}")
-    print(f"Used U Octets         : {USED_U_OCTETS}")
-    print(f"Used T Octets         : {USED_T_OCTETS}")
-    print(f"Charging-Id           : {CHARGING_ID_HEX} ({int.from_bytes(CHARGING_ID_BYTES, 'big')})")
-    print(f"PDN-Charging-Id       : {PDN_CONNECTION_CHARGING_ID}")
-    print(f"SGSN-Address          : {SGSN_ADDRESS}")
-    print(f"GGSN-Address          : {GGSN_ADDRESS}")
-    print(f"QCI                   : {QCI}")
-    print(f"Priority-Level        : {PRIORITY_LEVEL}")
-    print(f"Kinesis Stream        : {KINESIS_STREAM_NAME}")
-    print(f"Kinesis Region        : {KINESIS_REGION}")
-    print(f"Kinesis Profile       : {KINESIS_PROFILE}")
+    print(f"Server FQDN                 : {SERVER_FQDN}")
+    print(f"Session-Id                  : {SESSION_ID}")
+    print(f"Origin-Host                 : {ORIGIN_HOST.decode()}")
+    print(f"Origin-Realm                : {ORIGIN_REALM.decode()}")
+    print(f"Destination-Host            : {DEST_HOST.decode()}")
+    print(f"Destination-Realm           : {DEST_REALM.decode()}")
+    print(f"Service-Context-Id          : {SERVICE_CONTEXT_ID}")
+    print(f"MSISDN                      : {SUB_E164}")
+    print(f"IMSI                        : {SUB_IMSI}")
+    print(f"NAI                         : {SUB_NAI}")
+    print(f"User-Equipment-Info         : {USER_EQUIPMENT_INFO}")
+    print(f"User-Equipment-Info-Type    : IMEISV")
+    print(f"APN                         : {APN}")
+    print(f"Rating-Group                : {RATING_GROUP}")
+    print(f"Requested Octets            : {REQUESTED_OCTETS}")
+    print(f"CCR-U Step Octets           : {CCR_U_USED_STEP}")
+    print(f"Final Used Total Octets     : {FINAL_USED_TOTAL_OCTETS}")
+    print(f"Home MCCMNC                 : {HOME_MCC_MNC}")
+    print(f"Roaming MCCMNC              : {ROAMING_MCC_MNC}")
+    print(f"Expected Charging Dimension : {ROAMING_MCC_MNC}")
+    print(f"Charging-Id                 : {CHARGING_ID_HEX} ({int.from_bytes(CHARGING_ID_BYTES, 'big')})")
+    print(f"PDN-Charging-Id             : {PDN_CONNECTION_CHARGING_ID}")
+    print(f"Roaming SGSN-Address        : {SGSN_ADDRESS}")
+    print(f"Roaming GGSN-Address        : {GGSN_ADDRESS}")
+    print(f"QCI                         : {QCI}")
+    print(f"Priority-Level              : {PRIORITY_LEVEL}")
+    print(f"Kinesis Stream              : {KINESIS_STREAM_NAME}")
+    print(f"Kinesis Region              : {KINESIS_REGION}")
+    print(f"Kinesis Profile             : {KINESIS_PROFILE}")
 
     try:
         resolved_ip = resolve_fqdn_or_exit(SERVER_FQDN)
@@ -632,8 +653,8 @@ def main():
                 print("CEA failed, stopping execution")
                 return
 
-            print("\nSTEP 1: Register and attach SIM on Home Network")
-            print("Precondition: attach completed externally before Gy charging starts")
+            print("\nSTEP 1: Register and attach SIM in roaming country")
+            print("Precondition: attach completed in visited network before Gy charging starts")
 
             test_start_time_utc = datetime.datetime.now(datetime.timezone.utc)
 
@@ -642,33 +663,52 @@ def main():
             cca_i = send_and_receive(sock, ccr_i, "CCR-I")
             validate_cca("CCA-I", cca_i, 1, 0)
 
-            print("\nSTEP 3: Generate data usage")
-            print(f"Simulated used octets before CCR-U = {USED_U_OCTETS}")
+            print("\nSTEP 3: Generate sustained traffic with repeated CCR-U")
+            used_total = 0
+            cca_u_list = []
 
-            print("\nSTEP 4: Send Gy updates during session with CCR-U")
-            ccr_u = build_ccr_u()
-            cca_u = send_and_receive(sock, ccr_u, "CCR-U")
-            validate_cca("CCA-U", cca_u, 2, 1)
+            for update_no in range(1, SUSTAINED_UPDATES + 1):
+                used_total += CCR_U_USED_STEP
+                if used_total > FINAL_USED_TOTAL_OCTETS:
+                    used_total = FINAL_USED_TOTAL_OCTETS
 
-            print("\nSTEP 5: Terminate session with CCR-T")
-            ccr_t = build_ccr_t()
+                print(f"\nSustained traffic cycle {update_no}: used_total_octets={used_total}")
+                ccr_u = build_ccr_u(request_number=update_no, used_total_octets=used_total)
+                cca_u = send_and_receive(sock, ccr_u, f"CCR-U[{update_no}]")
+                validate_cca(f"CCA-U[{update_no}]", cca_u, 2, update_no)
+                cca_u_list.append(cca_u)
+
+                if used_total >= FINAL_USED_TOTAL_OCTETS:
+                    break
+
+                time.sleep(SUSTAINED_SLEEP_SEC)
+
+            final_ccr_number = len(cca_u_list) + 1
+
+            print("\nSending final CCR-T")
+            ccr_t = build_ccr_t(request_number=final_ccr_number, used_total_octets=used_total)
             cca_t = send_and_receive(sock, ccr_t, "CCR-T")
-            validate_cca("CCA-T", cca_t, 3, 2)
+            validate_cca("CCA-T", cca_t, 3, final_ccr_number)
 
             granted_octets = extract_granted_total_octets(cca_i)
 
-            print_banner("STEP 6: VERIFY CHARGING")
-            print(f"Session-Id            : {SESSION_ID}")
-            print(f"CCR-I Result-Code     : {display_value(safe_get(cca_i, 'result_code'))}")
-            print(f"CCR-U Result-Code     : {display_value(safe_get(cca_u, 'result_code'))}")
-            print(f"CCR-T Result-Code     : {display_value(safe_get(cca_t, 'result_code'))}")
-            print(f"Expected Rating-Group : {RATING_GROUP}")
-            print(f"Granted Total Octets  : {display_value(granted_octets)}")
-            print(f"Used Octets in CCR-U  : {USED_U_OCTETS}")
-            print(f"Used Octets in CCR-T  : {USED_T_OCTETS}")
-            #print("Charging Verification : PASSED")
+            print_banner("STEP 4: VERIFY CHARGING AND ROAMING DIMENSION")
+            print(f"Session-Id                  : {SESSION_ID}")
+            print(f"CCR-I Result-Code           : {display_value(safe_get(cca_i, 'result_code'))}")
+            print(f"Last CCR-U Result-Code      : {display_value(safe_get(cca_u_list[-1], 'result_code')) if cca_u_list else 'N/A'}")
+            print(f"CCR-T Result-Code           : {display_value(safe_get(cca_t, 'result_code'))}")
+            print(f"Expected Rating-Group       : {RATING_GROUP}")
+            print(f"Granted Total Octets        : {display_value(granted_octets)}")
+            print(f"Visited SGSN MCCMNC         : {SGSN_MCC_MNC}")
+            print(f"Visited GGSN MCCMNC         : {GGSN_MCC_MNC}")
+            print(f"Expected Charging Dimension : {ROAMING_MCC_MNC}")
+            print(f"Home MCCMNC                 : {HOME_MCC_MNC}")
+            print(f"Final Used Total Octets     : {used_total}")
+            print("Roaming Charging Check      : Verify downstream record uses visited MCCMNC as source charging dimension")
+            print(f"User-Equipment-Info Sent    : {USER_EQUIPMENT_INFO}")
+            print("User-Equipment-Info Type    : IMEISV")
 
-            print_banner("STEP 7: FETCH KINESIS EVENTS")
+            print_banner("STEP 5: FETCH KINESIS EVENTS")
             print(f"Waiting {KINESIS_WAIT_SEC} seconds for Kinesis propagation...")
             time.sleep(KINESIS_WAIT_SEC)
 
