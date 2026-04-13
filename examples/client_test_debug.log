@@ -1,0 +1,17 @@
+2026-02-18 17:11:00,722 diameter.node          INFO    auto-connecting to diameter01.eseye.com
+2026-02-18 17:11:00,723 diameter.node          INFO    added a new connection ['172.30.15.203']:3868 for peer Peer<(diameter01.eseye.com)>
+2026-02-18 17:11:00,723 diameter.node          WARNING <PeerConnection(cd0765e8d548, diameter01.eseye.com> was last available peer connection for <Diameter Credit Control Application (4)>, flagging app as not ready
+2026-02-18 17:11:00,723 diameter.node          DEBUG   <PeerConnection(cd0765e8d548, diameter01.eseye.com> removed
+2026-02-18 17:11:06,734 diameter.node          INFO    connection to diameter01.eseye.com has been lost for 6 seconds, reconnecting
+2026-02-18 17:11:06,736 diameter.node          INFO    added a new connection ['172.30.15.203']:3868 for peer Peer<(diameter01.eseye.com)>
+2026-02-18 17:11:06,738 diameter.node          WARNING <PeerConnection(6ce2f17de40a, diameter01.eseye.com> was last available peer connection for <Diameter Credit Control Application (4)>, flagging app as not ready
+2026-02-18 17:11:06,738 diameter.node          DEBUG   <PeerConnection(6ce2f17de40a, diameter01.eseye.com> removed
+2026-02-18 17:11:12,749 diameter.node          INFO    connection to diameter01.eseye.com has been lost for 6 seconds, reconnecting
+2026-02-18 17:11:12,753 diameter.node          INFO    added a new connection ['172.30.15.203']:3868 for peer Peer<(diameter01.eseye.com)>
+2026-02-18 17:11:12,754 diameter.node          WARNING <PeerConnection(c468a19d063e, diameter01.eseye.com> was last available peer connection for <Diameter Credit Control Application (4)>, flagging app as not ready
+2026-02-18 17:11:12,754 diameter.node          DEBUG   <PeerConnection(c468a19d063e, diameter01.eseye.com> removed
+2026-02-18 17:11:15,731 diameter.node          INFO    stopping node
+2026-02-18 17:11:18,762 diameter.connection    INFO    stop event received, closing all sockets
+2026-02-18 17:11:20,727 diameter.node          DEBUG   closing listening sockets
+2026-02-18 17:11:20,727 diameter.node          DEBUG   stopping threading applications
+2026-02-18 17:11:21,777 diameter.application   INFO    <Diameter Credit Control Application (4)> application stopped

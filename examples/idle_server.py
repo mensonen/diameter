@@ -1,10 +1,6 @@
 """
-A sample of a node acting as a server that does nothing.
-
-Starting this script, and then starting the `idle_client.py` script, located
-in the same directory, will result in the two nodes exchanging CER/CEA and then
-idling forever, with occasional Device-Watchdog messages being sent back and
-forth.
+Diameter server based on configuration.
+Listens on 0.0.0.0:3868 (TCP)
 """
 import logging
 import time
@@ -14,39 +10,78 @@ from diameter.node import Node
 from diameter.node.application import SimpleThreadingApplication
 
 
+# Configure logging
 logging.basicConfig(format="%(asctime)s %(name)-22s %(levelname)-7s %(message)s",
                     level=logging.DEBUG)
-
-# this shows a human-readable message dump in the logs
 logging.getLogger("diameter.peer.msg").setLevel(logging.DEBUG)
 
 
-# Configure our server node
-node = Node("relay1.test.realm", "test.realm",
-            ip_addresses=["127.0.0.1"],
-            tcp_port=6090,
-            vendor_ids=[VENDOR_ETSI, VENDOR_TGPP, VENDOR_TGPP2])
-# Sets a lower Device-Watchdog trigger than the client, so that the nodes will
-# not send DWRs simultaneously
-node.idle_timeout = 20
+# Server Configuration
+SERVER_CONFIG = {
+    "listen": {
+        "addr": "0.0.0.0:3868",
+        "protocol": "tcp"
+    },
+    "identity": {
+        "origin_host": "diameter01.eseye.com",
+        "origin_realm": "diameter.eseye.com",
+        "product_name": "diamserver",
+        "vendor_id": 0,
+        "firmware_revision": 1,
+        "host_ip_address": "172.30.15.203"
+    },
+    "peers": [
+        {
+            "name": "worldov",
+            "origin_realm": "worldov.com"
+        },
+        {
+            "name": "eseye.net",
+            "origin_realm": "diameter.eseye.net",
+            "origin_hosts": [".*\\.eseye\\.net"]
+        },
+        {
+            "name": "partner.net",
+            "origin_realm": "partner.net",
+            "origin_hosts": [".*\\.partner\\.net"]
+        }
+    ]
+}
 
-# Adding the other idler as a peer, setting `is_persistent` on our side only,
-# however it can also be set on both sides if that behaviour is wanted
-peer = node.add_peer("aaa://relay2.test.realm:6091",
-                     ip_addresses=["127.0.0.2"],
-                     is_persistent=True)
-# Lowering the time to wait before connecting to the peer
-peer.reconnect_wait = 5
 
+# Parse listen address
+listen_addr = SERVER_CONFIG["listen"]["addr"]
+host, port = listen_addr.split(":")
+port = int(port)
 
-# Constructing an app that does nothing and advertises it as a relay. Relay
-# agents are accepted by any diameter node as compatible, even if they do not
-# support any applications at all.
+# Create server node
+node = Node(
+    origin_host=SERVER_CONFIG["identity"]["origin_host"],
+    realm_name=SERVER_CONFIG["identity"]["origin_realm"],
+    ip_addresses=[SERVER_CONFIG["identity"]["host_ip_address"]],
+    tcp_port=port,
+    vendor_ids=[VENDOR_ETSI, VENDOR_TGPP, VENDOR_TGPP2]
+)
+
+print(f"✓ Server configured:")
+print(f"  Origin Host: {SERVER_CONFIG['identity']['origin_host']}")
+print(f"  Realm: {SERVER_CONFIG['identity']['origin_realm']}")
+print(f"  Listening on: {listen_addr}")
+print(f"  Product: {SERVER_CONFIG['identity']['product_name']}")
+
+# Create relay application
 app = SimpleThreadingApplication(APP_RELAY, is_auth_application=True)
-node.add_application(app, [peer])
+node.add_application(app, [])
 
+print(f"\n✓ Created relay application")
+print(f"\n✓ Configured peers:")
+for peer_config in SERVER_CONFIG["peers"]:
+    print(f"  - {peer_config['name']} ({peer_config['origin_realm']})")
 
-# Start the node and idle until interrupted with CTRL+C
+# Start the server
+print(f"\n{'='*60}")
+print("Starting Diameter Server...")
+print(f"{'='*60}")
 node.start()
 
 try:
@@ -54,4 +89,6 @@ try:
         time.sleep(1)
 
 except (KeyboardInterrupt, SystemExit) as e:
+    print("\nShutting down server...")
     node.stop()
+    print("Server stopped.")

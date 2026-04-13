@@ -1,0 +1,18 @@
+2026-02-18 21:59:45,830 - 
+======================================================================
+SENT CER (Capabilities-Exchange-Request)
+======================================================================
+  Header:
+    ApplicationId: 0
+    Hop-by-Hop-Id: 0
+    End-to-End-Id: 0
+
+  AVPs:
+    Origin-Host: client01.eseye.net
+    Origin-Realm: diameter.eseye.net
+    Vendor-Id: 99999
+    Product-Name: python-diameter
+    Origin-State-Id: 1771432185
+    Auth-Application-Id: 4 (Credit-Control)
+======================================================================
+

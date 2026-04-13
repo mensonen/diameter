@@ -1,0 +1,139 @@
+2026-02-19 10:46:59,153 DIAMETER_CLIENT           INFO     ======================================================================
+2026-02-19 10:46:59,153 DIAMETER_CLIENT           INFO     Starting Diameter CER Client
+2026-02-19 10:46:59,153 DIAMETER_CLIENT           INFO     ======================================================================
+2026-02-19 10:46:59,205 DIAMETER_CLIENT           INFO     Resolved server IP: 172.30.14.10
+2026-02-19 10:46:59,207 DIAMETER_CLIENT           INFO     Diameter node created with correct identity
+2026-02-19 10:46:59,207 DIAMETER_CLIENT           INFO     Peer added
+2026-02-19 10:46:59,220 DIAMETER_CLIENT           INFO     Credit-Control Application added
+2026-02-19 10:46:59,249 diameter.node             INFO     auto-connecting to k8s-diameter-diameter-e188306276-a8c44a5bd1bf993c.elb.eu-west-1.amazonaws.com
+2026-02-19 10:46:59,407 diameter.node             INFO     added a new connection ['172.30.14.10']:3868 for peer Peer<(k8s-diameter-diameter-e188306276-a8c44a5bd1bf993c.elb.eu-west-1.amazonaws.com)>
+2026-02-19 10:46:59,408 diameter.node             WARNING  <PeerConnection(0f030d683f32, k8s-diameter-diameter-e188306276-a8c44a5bd1bf993c.elb.eu-west-1.amazonaws.com> was last available peer connection for <Diameter Credit Control Application (4)>, flagging app as not ready
+2026-02-19 10:46:59,408 diameter.node             DEBUG    <PeerConnection(0f030d683f32, k8s-diameter-diameter-e188306276-a8c44a5bd1bf993c.elb.eu-west-1.amazonaws.com> removed
+2026-02-19 10:46:59,408 DIAMETER_CLIENT           INFO     Diameter client started
+2026-02-19 10:46:59,408 DIAMETER_CLIENT           INFO     Waiting for CER/CEA handshake...
+2026-02-19 10:46:59,642 diameter.connection       INFO     <PeerConnection(0f030d683f32, k8s-diameter-diameter-e188306276-a8c44a5bd1bf993c.elb.eu-west-1.amazonaws.com> is now connected, waiting CER/CEA to complete
+2026-02-19 10:46:59,642 diameter.node             INFO     <PeerConnection(0f030d683f32, k8s-diameter-diameter-e188306276-a8c44a5bd1bf993c.elb.eu-west-1.amazonaws.com> sending CER
+2026-02-19 10:46:59,673 diameter.peer.msg         DEBUG    SENT k8s-diameter-diameter-e188306276-a8c44a5bd1bf993c.elb.eu-west-1.amazonaws.com
+Capabilities-Exchange <Version: 0x01, Length: 116, Flags: 0x80 (request), Hop-by-Hop Identifier: 0x26a8b455, End-to-End Identifier: 0xccb87538>
+  Origin-Host <Code: 0x108, Flags: 0x40 (-M-), Length: 22, Val: b'mscp05.gpgw-01'>
+  Origin-Realm <Code: 0x128, Flags: 0x40 (-M-), Length: 19, Val: b'worldov.com'>
+  Vendor-Id <Code: 0x10a, Flags: 0x40 (-M-), Length: 12, Val: 6527>
+  Product-Name <Code: 0x10d, Flags: 0x00 (---), Length: 16, Val: SR-OS-MG>
+  Origin-State-Id <Code: 0x116, Flags: 0x40 (-M-), Length: 12, Val: 1771478219>
+  Auth-Application-Id <Code: 0x102, Flags: 0x40 (-M-), Length: 12, Val: 4>
+
+2026-02-19 10:46:59,689 diameter.peer             DEBUG    <PeerConnection(0f030d683f32, k8s-diameter-diameter-e188306276-a8c44a5bd1bf993c.elb.eu-west-1.amazonaws.com> sent diameter message Capabilities-Exchange <Version: 0x01, Length: 116, Flags: 0x80 (request), Hop-by-Hop Identifier: 0x26a8b455, End-to-End Identifier: 0xccb87538>
+2026-02-19 10:47:29,478 DIAMETER_CLIENT           INFO     Running... 30 seconds
+2026-02-19 10:47:59,617 DIAMETER_CLIENT           INFO     Running... 60 seconds
+2026-02-19 10:48:29,702 DIAMETER_CLIENT           INFO     Running... 90 seconds
+2026-02-19 10:48:35,604 DIAMETER_CLIENT           INFO     Stopping client...
+2026-02-19 10:48:35,620 diameter.node             INFO     stopping node
+2026-02-19 10:48:35,620 diameter.connection       INFO     stop event received, closing all sockets
+2026-02-19 10:48:35,841 diameter.node             DEBUG    closing listening sockets
+2026-02-19 10:48:35,841 diameter.node             DEBUG    stopping threading applications
+2026-02-19 10:48:36,040 diameter.application      INFO     <Diameter Credit Control Application (4)> application stopped
+2026-02-19 10:48:36,040 DIAMETER_CLIENT           INFO     Client stopped
+2026-02-19 10:52:48,392 DIAMETER_CLIENT           INFO     ======================================================================
+2026-02-19 10:52:48,392 DIAMETER_CLIENT           INFO     Starting Diameter CER Client
+2026-02-19 10:52:48,392 DIAMETER_CLIENT           INFO     ======================================================================
+2026-02-19 10:52:48,449 DIAMETER_CLIENT           INFO     Resolved server IP: 172.30.12.10
+2026-02-19 10:52:48,450 DIAMETER_CLIENT           INFO     Diameter node created with correct identity
+2026-02-19 10:52:48,450 DIAMETER_CLIENT           INFO     Peer added
+2026-02-19 10:52:48,452 DIAMETER_CLIENT           INFO     Credit-Control Application added
+2026-02-19 10:52:48,471 diameter.node             INFO     auto-connecting to k8s-diameter-diameter-e188306276-a8c44a5bd1bf993c.elb.eu-west-1.amazonaws.com
+2026-02-19 10:52:48,595 diameter.node             INFO     added a new connection ['172.30.12.10']:3868 for peer Peer<(k8s-diameter-diameter-e188306276-a8c44a5bd1bf993c.elb.eu-west-1.amazonaws.com)>
+2026-02-19 10:52:48,595 diameter.node             WARNING  <PeerConnection(ab1de638c37d, k8s-diameter-diameter-e188306276-a8c44a5bd1bf993c.elb.eu-west-1.amazonaws.com> was last available peer connection for <Diameter Credit Control Application (4)>, flagging app as not ready
+2026-02-19 10:52:48,596 diameter.node             DEBUG    <PeerConnection(ab1de638c37d, k8s-diameter-diameter-e188306276-a8c44a5bd1bf993c.elb.eu-west-1.amazonaws.com> removed
+2026-02-19 10:52:48,596 DIAMETER_CLIENT           INFO     Diameter client started
+2026-02-19 10:52:48,596 DIAMETER_CLIENT           INFO     Waiting for CER/CEA handshake...
+2026-02-19 10:52:48,818 diameter.connection       INFO     <PeerConnection(ab1de638c37d, k8s-diameter-diameter-e188306276-a8c44a5bd1bf993c.elb.eu-west-1.amazonaws.com> is now connected, waiting CER/CEA to complete
+2026-02-19 10:52:48,818 diameter.node             INFO     <PeerConnection(ab1de638c37d, k8s-diameter-diameter-e188306276-a8c44a5bd1bf993c.elb.eu-west-1.amazonaws.com> sending CER
+2026-02-19 10:52:48,833 diameter.peer.msg         DEBUG    SENT k8s-diameter-diameter-e188306276-a8c44a5bd1bf993c.elb.eu-west-1.amazonaws.com
+Capabilities-Exchange <Version: 0x01, Length: 116, Flags: 0x80 (request), Hop-by-Hop Identifier: 0x80a0b555, End-to-End Identifier: 0xe28c9bc2>
+  Origin-Host <Code: 0x108, Flags: 0x40 (-M-), Length: 22, Val: b'mscp05.gpgw-01'>
+  Origin-Realm <Code: 0x128, Flags: 0x40 (-M-), Length: 19, Val: b'worldov.com'>
+  Vendor-Id <Code: 0x10a, Flags: 0x40 (-M-), Length: 12, Val: 6527>
+  Product-Name <Code: 0x10d, Flags: 0x00 (---), Length: 16, Val: SR-OS-MG>
+  Origin-State-Id <Code: 0x116, Flags: 0x40 (-M-), Length: 12, Val: 1771478568>
+  Auth-Application-Id <Code: 0x102, Flags: 0x40 (-M-), Length: 12, Val: 4>
+
+2026-02-19 10:52:48,833 diameter.peer             DEBUG    <PeerConnection(ab1de638c37d, k8s-diameter-diameter-e188306276-a8c44a5bd1bf993c.elb.eu-west-1.amazonaws.com> sent diameter message Capabilities-Exchange <Version: 0x01, Length: 116, Flags: 0x80 (request), Hop-by-Hop Identifier: 0x80a0b555, End-to-End Identifier: 0xe28c9bc2>
+2026-02-19 10:53:18,671 DIAMETER_CLIENT           INFO     Running... 30 seconds
+2026-02-19 10:53:48,751 DIAMETER_CLIENT           INFO     Running... 60 seconds
+2026-02-19 10:54:13,950 DIAMETER_CLIENT           INFO     Stopping client...
+2026-02-19 10:54:13,965 diameter.node             INFO     stopping node
+2026-02-19 10:54:13,981 diameter.connection       INFO     stop event received, closing all sockets
+2026-02-19 10:54:14,961 diameter.node             DEBUG    closing listening sockets
+2026-02-19 10:54:14,961 diameter.node             DEBUG    stopping threading applications
+2026-02-19 10:57:56,877 DIAMETER_CLIENT           INFO     ======================================================================
+2026-02-19 10:57:56,877 DIAMETER_CLIENT           INFO     Starting Diameter CER Client
+2026-02-19 10:57:56,877 DIAMETER_CLIENT           INFO     ======================================================================
+2026-02-19 10:57:56,925 DIAMETER_CLIENT           INFO     Resolved server IP: 172.30.14.10
+2026-02-19 10:57:56,925 DIAMETER_CLIENT           INFO     Diameter node created with correct identity
+2026-02-19 10:57:56,925 DIAMETER_CLIENT           INFO     Peer added
+2026-02-19 10:57:56,927 DIAMETER_CLIENT           INFO     Credit-Control Application added
+2026-02-19 10:57:56,938 diameter.node             INFO     auto-connecting to k8s-diameter-diameter-e188306276-a8c44a5bd1bf993c.elb.eu-west-1.amazonaws.com
+2026-02-19 10:57:57,064 diameter.node             INFO     added a new connection ['172.30.14.10']:3868 for peer Peer<(k8s-diameter-diameter-e188306276-a8c44a5bd1bf993c.elb.eu-west-1.amazonaws.com)>
+2026-02-19 10:57:57,065 diameter.node             WARNING  <PeerConnection(7f1a2405e318, k8s-diameter-diameter-e188306276-a8c44a5bd1bf993c.elb.eu-west-1.amazonaws.com> was last available peer connection for <Diameter Credit Control Application (4)>, flagging app as not ready
+2026-02-19 10:57:57,065 diameter.node             DEBUG    <PeerConnection(7f1a2405e318, k8s-diameter-diameter-e188306276-a8c44a5bd1bf993c.elb.eu-west-1.amazonaws.com> removed
+2026-02-19 10:57:57,065 DIAMETER_CLIENT           INFO     Diameter client started
+2026-02-19 10:57:57,065 DIAMETER_CLIENT           INFO     Waiting for CER/CEA handshake...
+2026-02-19 10:57:57,288 diameter.connection       INFO     <PeerConnection(7f1a2405e318, k8s-diameter-diameter-e188306276-a8c44a5bd1bf993c.elb.eu-west-1.amazonaws.com> is now connected, waiting CER/CEA to complete
+2026-02-19 10:57:57,288 diameter.node             INFO     <PeerConnection(7f1a2405e318, k8s-diameter-diameter-e188306276-a8c44a5bd1bf993c.elb.eu-west-1.amazonaws.com> sending CER
+2026-02-19 10:57:57,297 diameter.peer.msg         DEBUG    SENT k8s-diameter-diameter-e188306276-a8c44a5bd1bf993c.elb.eu-west-1.amazonaws.com
+Capabilities-Exchange <Version: 0x01, Length: 136, Flags: 0x80 (request), Hop-by-Hop Identifier: 0x20c64adc, End-to-End Identifier: 0xf5c99352>
+  Origin-Host <Code: 0x108, Flags: 0x40 (-M-), Length: 32, Val: b'mscp05.gpgw-01.eseye.net'>
+  Origin-Realm <Code: 0x128, Flags: 0x40 (-M-), Length: 26, Val: b'diameter.eseye.net'>
+  Vendor-Id <Code: 0x10a, Flags: 0x40 (-M-), Length: 12, Val: 6527>
+  Product-Name <Code: 0x10d, Flags: 0x00 (---), Length: 18, Val: diamserver>
+  Origin-State-Id <Code: 0x116, Flags: 0x40 (-M-), Length: 12, Val: 1771478876>
+  Auth-Application-Id <Code: 0x102, Flags: 0x40 (-M-), Length: 12, Val: 4>
+
+2026-02-19 10:57:57,297 diameter.peer             DEBUG    <PeerConnection(7f1a2405e318, k8s-diameter-diameter-e188306276-a8c44a5bd1bf993c.elb.eu-west-1.amazonaws.com> sent diameter message Capabilities-Exchange <Version: 0x01, Length: 136, Flags: 0x80 (request), Hop-by-Hop Identifier: 0x20c64adc, End-to-End Identifier: 0xf5c99352>
+2026-02-19 10:58:27,140 DIAMETER_CLIENT           INFO     Running... 30 seconds
+2026-02-19 10:58:40,302 DIAMETER_CLIENT           INFO     Stopping client...
+2026-02-19 10:58:40,318 diameter.node             INFO     stopping node
+2026-02-19 10:58:40,318 diameter.connection       INFO     stop event received, closing all sockets
+2026-02-19 10:58:41,305 diameter.node             DEBUG    closing listening sockets
+2026-02-19 10:58:41,305 diameter.node             DEBUG    stopping threading applications
+2026-02-19 10:58:42,311 diameter.application      INFO     <Diameter Credit Control Application (4)> application stopped
+2026-02-19 10:58:42,311 DIAMETER_CLIENT           INFO     Client stopped
+2026-02-19 11:05:51,981 DIAMETER_CLIENT           INFO     ======================================================================
+2026-02-19 11:05:51,981 DIAMETER_CLIENT           INFO     Starting Diameter CER Client
+2026-02-19 11:05:51,981 DIAMETER_CLIENT           INFO     ======================================================================
+2026-02-19 11:05:52,031 DIAMETER_CLIENT           INFO     Resolved server IP: 172.30.12.10
+2026-02-19 11:05:52,031 DIAMETER_CLIENT           INFO     Diameter node created with correct identity
+2026-02-19 11:05:52,031 DIAMETER_CLIENT           INFO     Peer added
+2026-02-19 11:05:52,032 DIAMETER_CLIENT           INFO     Credit-Control Application added
+2026-02-19 11:05:52,052 diameter.node             INFO     auto-connecting to k8s-diameter-diameter-e188306276-a8c44a5bd1bf993c.elb.eu-west-1.amazonaws.com
+2026-02-19 11:05:52,147 diameter.node             INFO     added a new connection ['172.30.12.10']:3868 for peer Peer<(k8s-diameter-diameter-e188306276-a8c44a5bd1bf993c.elb.eu-west-1.amazonaws.com)>
+2026-02-19 11:05:52,148 diameter.node             WARNING  <PeerConnection(2199335141a8, k8s-diameter-diameter-e188306276-a8c44a5bd1bf993c.elb.eu-west-1.amazonaws.com> was last available peer connection for <Diameter Credit Control Application (4)>, flagging app as not ready
+2026-02-19 11:05:52,148 diameter.node             DEBUG    <PeerConnection(2199335141a8, k8s-diameter-diameter-e188306276-a8c44a5bd1bf993c.elb.eu-west-1.amazonaws.com> removed
+2026-02-19 11:05:52,148 DIAMETER_CLIENT           INFO     Diameter client started
+2026-02-19 11:05:52,148 DIAMETER_CLIENT           INFO     Waiting for CER/CEA handshake...
+2026-02-19 11:05:52,374 diameter.connection       INFO     <PeerConnection(2199335141a8, k8s-diameter-diameter-e188306276-a8c44a5bd1bf993c.elb.eu-west-1.amazonaws.com> is now connected, waiting CER/CEA to complete
+2026-02-19 11:05:52,374 diameter.node             INFO     <PeerConnection(2199335141a8, k8s-diameter-diameter-e188306276-a8c44a5bd1bf993c.elb.eu-west-1.amazonaws.com> sending CER
+2026-02-19 11:05:52,381 diameter.peer.msg         DEBUG    SENT k8s-diameter-diameter-e188306276-a8c44a5bd1bf993c.elb.eu-west-1.amazonaws.com
+Capabilities-Exchange <Version: 0x01, Length: 136, Flags: 0x80 (request), Hop-by-Hop Identifier: 0x21fca743, End-to-End Identifier: 0x138e19a3>
+  Origin-Host <Code: 0x108, Flags: 0x40 (-M-), Length: 32, Val: b'mscp05.gpgw-01.eseye.net'>
+  Origin-Realm <Code: 0x128, Flags: 0x40 (-M-), Length: 26, Val: b'diameter.eseye.net'>
+  Vendor-Id <Code: 0x10a, Flags: 0x40 (-M-), Length: 12, Val: 6527>
+  Product-Name <Code: 0x10d, Flags: 0x00 (---), Length: 18, Val: diamserver>
+  Origin-State-Id <Code: 0x116, Flags: 0x40 (-M-), Length: 12, Val: 1771479352>
+  Auth-Application-Id <Code: 0x102, Flags: 0x40 (-M-), Length: 12, Val: 4>
+
+2026-02-19 11:05:52,381 diameter.peer             DEBUG    <PeerConnection(2199335141a8, k8s-diameter-diameter-e188306276-a8c44a5bd1bf993c.elb.eu-west-1.amazonaws.com> sent diameter message Capabilities-Exchange <Version: 0x01, Length: 136, Flags: 0x80 (request), Hop-by-Hop Identifier: 0x21fca743, End-to-End Identifier: 0x138e19a3>
+2026-02-19 11:06:22,207 DIAMETER_CLIENT           INFO     Running... 30 seconds
+2026-02-19 11:06:52,324 DIAMETER_CLIENT           INFO     Running... 60 seconds
+2026-02-19 11:07:22,421 DIAMETER_CLIENT           INFO     Running... 90 seconds
+2026-02-19 11:07:52,503 DIAMETER_CLIENT           INFO     Running... 120 seconds
+2026-02-19 11:08:22,595 DIAMETER_CLIENT           INFO     Running... 150 seconds
+2026-02-19 11:08:52,698 DIAMETER_CLIENT           INFO     Running... 180 seconds
+2026-02-19 11:09:22,803 DIAMETER_CLIENT           INFO     Running... 210 seconds
+2026-02-19 11:09:28,507 DIAMETER_CLIENT           INFO     Stopping client...
+2026-02-19 11:09:28,523 diameter.node             INFO     stopping node
+2026-02-19 11:09:28,539 diameter.connection       INFO     stop event received, closing all sockets
+2026-02-19 11:09:29,414 diameter.node             DEBUG    closing listening sockets
+2026-02-19 11:09:29,414 diameter.node             DEBUG    stopping threading applications
+2026-02-19 11:09:29,675 diameter.application      INFO     <Diameter Credit Control Application (4)> application stopped
+2026-02-19 11:09:29,675 DIAMETER_CLIENT           INFO     Client stopped

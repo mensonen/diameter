@@ -14,13 +14,13 @@ def test_cer_create_new():
     # build a capabilities-exchange-request with every attribute populated and
     # attempt to parse it
     cer = CapabilitiesExchangeRequest()
-    cer.origin_host = b"dra2.gy.mno.net"
-    cer.origin_realm = b"mno.net"
-    cer.host_ip_address = "10.12.56.109"
-    cer.vendor_id = 99999  # a.k.a. "unknown"
-    cer.product_name = "python_diameter_gy"
+    cer.origin_host = b"mscp05.gpgw-01"
+    cer.origin_realm = b"worldov.com"
+    cer.host_ip_address = "0.0.0.0"
+    cer.vendor_id = 6527  # a.k.a. "unknown"
+    cer.product_name = "SR-OS-MG"
     cer.origin_state_id = 1689134718
-    cer.supported_vendor_id = constants.VENDOR_CISCOSYSTEMS  # you wouldn't do this in reality
+    #cer.supported_vendor_id = constants.VENDOR_CISCOSYSTEMS  # you wouldn't do this in reality
     cer.auth_application_id = constants.APP_DIAMETER_CREDIT_CONTROL_APPLICATION
     cer.inband_security_id = constants.E_INBAND_SECURITY_ID_NO_INBAND_SECURITY
     cer.acct_application_id = constants.APP_DIAMETER_CREDIT_CONTROL_APPLICATION
@@ -39,15 +39,15 @@ def test_cea_create_new():
     # attempt to parse it
     cea = CapabilitiesExchangeAnswer()
     cea.result_code = constants.E_RESULT_CODE_DIAMETER_UNABLE_TO_COMPLY
-    cea.origin_host = b"dra1.mvno.net"
-    cea.origin_realm = b"mvno.net"
-    cea.host_ip_address = "10.16.36.201"
-    cea.vendor_id = 39216  # Broadforward, not in the dictionary
-    cea.product_name = "BFX"
+    cea.origin_host = b"diameter01.eseye.com"
+    cea.origin_realm = b"diameter.eseye.com"
+    cea.host_ip_address = "172.30.12.10"
+    cea.vendor_id = 0  # Broadforward, not in the dictionary
+    cea.product_name = "diamserver"
     cea.origin_state_id = 1689134718
     cea.error_message = "Invalid state to receive a new connection attempt."
     cea.failed_avp = FailedAvp(additional_avps=[
-        Avp.new(constants.AVP_HOST_IP_ADDRESS, value="10.12.56.109")
+        Avp.new(constants.AVP_HOST_IP_ADDRESS, value="0.0.0.0")
     ])
     cea.supported_vendor_id = [
         constants.VENDOR_CISCO,

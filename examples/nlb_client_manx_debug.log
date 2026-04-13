@@ -1,0 +1,102 @@
+2026-02-18 21:58:32,825 NLB_CLIENT_MANX        INFO    ======================================================================
+2026-02-18 21:58:32,825 NLB_CLIENT_MANX        INFO    Diameter Client - NLB/FQDN Connection with CER/CEA Debug Logging
+2026-02-18 21:58:32,825 NLB_CLIENT_MANX        INFO    Based on Manx Reference Format
+2026-02-18 21:58:32,825 NLB_CLIENT_MANX        INFO    ======================================================================
+2026-02-18 21:58:32,826 NLB_CLIENT_MANX        INFO    
+[STEP 1] Resolving NLB FQDN to IP address...
+2026-02-18 21:58:32,826 NLB_CLIENT_MANX        INFO    Resolving FQDN: k8s-diameter-diameter-4fb9aa25ea-aa09fb21c62940ee.elb.eu-west-1.amazonaws.com:3868
+2026-02-18 21:58:32,950 NLB_CLIENT_MANX        ERROR   Failed to resolve server FQDN. Exiting.
+2026-02-18 21:59:45,254 NLB_CLIENT_MANX        INFO    ======================================================================
+2026-02-18 21:59:45,254 NLB_CLIENT_MANX        INFO    Diameter Client - NLB/FQDN Connection with CER/CEA Debug Logging
+2026-02-18 21:59:45,254 NLB_CLIENT_MANX        INFO    Based on Manx Reference Format
+2026-02-18 21:59:45,254 NLB_CLIENT_MANX        INFO    ======================================================================
+2026-02-18 21:59:45,254 NLB_CLIENT_MANX        INFO    
+[STEP 1] Resolving NLB FQDN to IP address...
+2026-02-18 21:59:45,254 NLB_CLIENT_MANX        INFO    Resolving FQDN: k8s-diameter-diameter-e188306276-a8c44a5bd1bf993c.elb.eu-west-1.amazonaws.com:3868
+2026-02-18 21:59:45,340 NLB_CLIENT_MANX        INFO    
+[STEP 2] Creating Diameter client node...
+2026-02-18 21:59:45,340 NLB_CLIENT_MANX        INFO      Origin Host: client01.eseye.net
+2026-02-18 21:59:45,340 NLB_CLIENT_MANX        INFO      Origin Realm: diameter.eseye.net
+2026-02-18 21:59:45,340 NLB_CLIENT_MANX        INFO      Vendor ID: 0
+2026-02-18 21:59:45,340 NLB_CLIENT_MANX        INFO      Supported Vendor IDs: [10415, 5535]
+2026-02-18 21:59:45,340 NLB_CLIENT_MANX        INFO      Product Name: diamserver
+2026-02-18 21:59:45,340 NLB_CLIENT_MANX        INFO      Local Bind IP: 0.0.0.0
+2026-02-18 21:59:45,341 NLB_CLIENT_MANX        INFO    
+[STEP 3] Adding server peer (FQDN-based connection)...
+2026-02-18 21:59:45,341 NLB_CLIENT_MANX        INFO      Server FQDN: k8s-diameter-diameter-e188306276-a8c44a5bd1bf993c.elb.eu-west-1.amazonaws.com
+2026-02-18 21:59:45,341 NLB_CLIENT_MANX        INFO      Server IP (resolved): 172.30.12.10
+2026-02-18 21:59:45,341 NLB_CLIENT_MANX        INFO      Server Port: 3868
+2026-02-18 21:59:45,341 NLB_CLIENT_MANX        INFO    
+[STEP 4] Creating Diameter Credit Control application...
+2026-02-18 21:59:45,341 NLB_CLIENT_MANX        INFO      Auth-Application-Id: 4 (Credit-Control)
+2026-02-18 21:59:45,343 NLB_CLIENT_MANX        INFO    
+[STEP 5] Starting Diameter client...
+2026-02-18 21:59:45,350 diameter.node          INFO    auto-connecting to k8s-diameter-diameter-e188306276-a8c44a5bd1bf993c.elb.eu-west-1.amazonaws.com
+2026-02-18 21:59:45,443 diameter.node          INFO    added a new connection ['172.30.12.10']:3868 for peer Peer<(k8s-diameter-diameter-e188306276-a8c44a5bd1bf993c.elb.eu-west-1.amazonaws.com)>
+2026-02-18 21:59:45,443 diameter.node          WARNING <PeerConnection(baf8663fab49, k8s-diameter-diameter-e188306276-a8c44a5bd1bf993c.elb.eu-west-1.amazonaws.com> was last available peer connection for <Diameter Credit Control Application (4)>, flagging app as not ready
+2026-02-18 21:59:45,444 diameter.node          DEBUG   <PeerConnection(baf8663fab49, k8s-diameter-diameter-e188306276-a8c44a5bd1bf993c.elb.eu-west-1.amazonaws.com> removed
+2026-02-18 21:59:45,444 NLB_CLIENT_MANX        INFO    
+======================================================================
+2026-02-18 21:59:45,444 NLB_CLIENT_MANX        INFO    Client is now running and attempting to connect to server...
+2026-02-18 21:59:45,444 NLB_CLIENT_MANX        INFO    ======================================================================
+2026-02-18 21:59:45,444 NLB_CLIENT_MANX        INFO    Monitoring connection... (Press CTRL+C to stop)
+2026-02-18 21:59:45,444 NLB_CLIENT_MANX        INFO    Debug logs: nlb_client_manx_debug.log
+2026-02-18 21:59:45,444 NLB_CLIENT_MANX        INFO    CER/CEA logs: cer_cea_debug.log
+2026-02-18 21:59:45,830 diameter.connection    INFO    <PeerConnection(baf8663fab49, k8s-diameter-diameter-e188306276-a8c44a5bd1bf993c.elb.eu-west-1.amazonaws.com> is now connected, waiting CER/CEA to complete
+2026-02-18 21:59:45,830 NLB_CLIENT_MANX        INFO    [CER EXCHANGE] Sending Capabilities-Exchange-Request...
+2026-02-18 21:59:45,830 diameter.node          INFO    <PeerConnection(baf8663fab49, k8s-diameter-diameter-e188306276-a8c44a5bd1bf993c.elb.eu-west-1.amazonaws.com> sending CER
+2026-02-18 21:59:45,830 NLB_CLIENT_MANX        DEBUG   
+======================================================================
+SENT CER (Capabilities-Exchange-Request)
+======================================================================
+  Header:
+    ApplicationId: 0
+    Hop-by-Hop-Id: 0
+    End-to-End-Id: 0
+
+  AVPs:
+    Origin-Host: client01.eseye.net
+    Origin-Realm: diameter.eseye.net
+    Vendor-Id: 99999
+    Product-Name: python-diameter
+    Origin-State-Id: 1771432185
+    Auth-Application-Id: 4 (Credit-Control)
+======================================================================
+
+2026-02-18 21:59:45,831 diameter.peer.msg      DEBUG   SENT k8s-diameter-diameter-e188306276-a8c44a5bd1bf993c.elb.eu-west-1.amazonaws.com
+Capabilities-Exchange <Version: 0x01, Length: 136, Flags: 0x80 (request), Hop-by-Hop Identifier: 0xceb5f654, End-to-End Identifier: 0x8f92df3b>
+  Origin-Host <Code: 0x108, Flags: 0x40 (-M-), Length: 26, Val: b'client01.eseye.net'>
+  Origin-Realm <Code: 0x128, Flags: 0x40 (-M-), Length: 26, Val: b'diameter.eseye.net'>
+  Vendor-Id <Code: 0x10a, Flags: 0x40 (-M-), Length: 12, Val: 99999>
+  Product-Name <Code: 0x10d, Flags: 0x00 (---), Length: 23, Val: python-diameter>
+  Origin-State-Id <Code: 0x116, Flags: 0x40 (-M-), Length: 12, Val: 1771432185>
+  Auth-Application-Id <Code: 0x102, Flags: 0x40 (-M-), Length: 12, Val: 4>
+
+2026-02-18 21:59:45,830 CER_CEA_DEBUG          DEBUG   
+======================================================================
+SENT CER (Capabilities-Exchange-Request)
+======================================================================
+  Header:
+    ApplicationId: 0
+    Hop-by-Hop-Id: 0
+    End-to-End-Id: 0
+
+  AVPs:
+    Origin-Host: client01.eseye.net
+    Origin-Realm: diameter.eseye.net
+    Vendor-Id: 99999
+    Product-Name: python-diameter
+    Origin-State-Id: 1771432185
+    Auth-Application-Id: 4 (Credit-Control)
+======================================================================
+
+2026-02-18 21:59:45,831 diameter.peer          DEBUG   <PeerConnection(baf8663fab49, k8s-diameter-diameter-e188306276-a8c44a5bd1bf993c.elb.eu-west-1.amazonaws.com> sent diameter message Capabilities-Exchange <Version: 0x01, Length: 136, Flags: 0x80 (request), Hop-by-Hop Identifier: 0xceb5f654, End-to-End Identifier: 0x8f92df3b>
+2026-02-18 22:02:59,104 NLB_CLIENT_MANX        INFO    
+
+[SHUTDOWN] Received CTRL+C - Shutting down gracefully...
+2026-02-18 22:02:59,104 NLB_CLIENT_MANX        INFO    Stopping client node...
+2026-02-18 22:02:59,104 diameter.node          INFO    stopping node
+2026-02-18 22:02:59,104 diameter.connection    INFO    stop event received, closing all sockets
+2026-02-18 22:03:00,618 diameter.node          DEBUG   closing listening sockets
+2026-02-18 22:03:00,618 diameter.node          DEBUG   stopping threading applications
+2026-02-18 22:03:01,851 diameter.application   INFO    <Diameter Credit Control Application (4)> application stopped
