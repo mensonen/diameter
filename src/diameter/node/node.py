@@ -6,11 +6,11 @@ import json
 import logging
 import math
 import os
-import select
 import socket
 import struct
 import threading
 import time
+from selectors import EVENT_READ, BaseSelector, DefaultSelector
 
 try:
     import sctp
@@ -196,7 +196,8 @@ class Node:
     def __init__(self, origin_host: str, realm_name: str,
                  ip_addresses: list[str] = None,
                  tcp_port: int = None, sctp_port: int = None,
-                 vendor_ids: list[int] = None):
+                 vendor_ids: list[int] = None,
+                 selector: BaseSelector = None):
         """Create a new diameter node.
 
         Args:
@@ -213,6 +214,8 @@ class Node:
             vendor_ids: List of supported vendor IDs. If not set, will default
                 to all known vendor IDs. The list of vendor IDs is only used
                 in advertising the node's capabilities in  CER/CEA
+            selector: An optional selector for handling I/O events. If not
+                set, a default selector will be used.
 
         """
         self._busy_lock = threading.Lock()
@@ -326,6 +329,7 @@ class Node:
         rp, wp = os.pipe()
         self.interrupt_read = rp
         self.interrupt_write = wp
+        self.selector = selector or DefaultSelector()
         self.logger = logging.getLogger("diameter.node")
         self.connection_logger = logging.getLogger("diameter.connection")
         self.stats_logger: StatsLogAdapter = StatsLogAdapter(
@@ -407,6 +411,7 @@ class Node:
             self.connections[conn.ident] = conn
             self.peer_sockets[conn.ident] = peer_socket
             self.socket_peers[conn.socket_fileno] = conn
+            self.selector.register(peer_socket, EVENT_READ, self.on_read)
 
         peer = self._find_connection_peer(conn)
         if peer and not peer.connection:
@@ -632,199 +637,187 @@ class Node:
         return new_id
 
     def _handle_connections(self, _thread: StoppableThread):
-        while True:
+        while not _thread.is_stopped:
             if self.peers_logging:
                 self.stats_logger.log_peers()
             if self.stats_logging:
                 self.stats_logger.log_stats()
 
-            if _thread.is_stopped:
-                self.connection_logger.info(
-                    "stop event received, closing all sockets")
-                for conn in list(self.connections.values()):
-                    self.close_connection_socket(
-                        conn, DISCONNECT_REASON_NODE_SHUTDOWN)
-                    # be nice and let the connection worker threads wind down
-                    conn.close(signal_node=False)
-                return
+            events = self.selector.select(self.wakeup_interval)
+            for key, _ in events:
+                callback = key.data
+                callback(key.fileobj)
 
-            r_list = [self.interrupt_read]
-            w_list = []
-            if self.tcp_sockets:
-                r_list += self.tcp_sockets
-            if self.sctp_sockets:
-                r_list += self.sctp_sockets
             for conn_id, conn_socket in self.peer_sockets.items():
                 conn = self.connections.get(conn_id)
                 if not conn:
-                    continue
-                if conn.state != PEER_CLOSED:
-                    r_list.append(conn_socket)
-                # peer is either waiting for the initial socket to become ready,
-                # or wants to send something
-                if (conn.state == PEER_CONNECTING or
-                        (conn.state != PEER_CLOSED and len(conn.write_buffer) > 0)):
-                    w_list.append(conn_socket)
-
-            ready_r, ready_w, _ = select.select(
-                r_list, w_list, [], self.wakeup_interval)
-
-            for rsock in ready_r:
-                if rsock == self.interrupt_read:
-                    conn_id = os.read(self.interrupt_read, 6).hex()
-                    conn = self.connections.get(conn_id)
-                    if conn:
-                        self.connection_logger.debug(f"{conn} wants attention")
-                        if conn.state == PEER_CLOSED:
-                            self.close_connection_socket(
-                                conn, DISCONNECT_REASON_CLEAN_DISCONNECT)
-                        elif len(conn.write_buffer) == 0 and conn.state == PEER_CLOSING:
-                            self.connection_logger.debug(
-                                f"{conn} in CLOSING state and no more bytes to "
-                                f"send, closing socket")
-                            self.close_connection_socket(
-                                conn, DISCONNECT_REASON_CLEAN_DISCONNECT)
-                    else:
-                        self.connection_logger.debug(
-                            f"interrupt from peer connection {conn_id}, "
-                            f"which has already gone away")
-                    continue
-
-                if rsock in self.tcp_sockets:
-                    self.connection_logger.debug(
-                        "received a TCP connection attempt")
-                    clientsocket, (ip, port) = rsock.accept()
-                    clientsocket.setblocking(False)
-                    self.connection_logger.debug(
-                        f"new client TCP connection from {ip}:{port}")
-
-                    conn = PeerConnection(ip, port, PEER_RECV,
-                                          interrupt_fileno=self.interrupt_write)
-                    conn.state = PEER_CONNECTED
-                    self._add_peer_connection(conn, clientsocket,
-                                              PEER_TRANSPORT_TCP)
-                    continue
-
-                if rsock in self.sctp_sockets:
-                    self.connection_logger.debug(
-                        "received an SCTP connection attempt")
-                    clientsocket, (ip, port) = rsock.accept()
-                    clientsocket.setblocking(False)
-                    self.connection_logger.debug(
-                        f"new client SCTP connection from {ip}:{port}")
-
-                    conn = PeerConnection(ip, port, PEER_RECV,
-                                          interrupt_fileno=self.interrupt_write)
-                    conn.state = PEER_CONNECTED
-                    self._add_peer_connection(conn, clientsocket,
-                                              PEER_TRANSPORT_SCTP)
-                    continue
-
-                conn = self.socket_peers.get(rsock.fileno())
-                if not conn:
                     self.connection_logger.warning(
-                        f"socket {rsock.fileno()} ready for reading but no "
-                        f"peer connected, ignoring")
-                    continue
-
-                self.connection_logger.debug(f"{conn} ready to receive")
-
-                try:
-                    # most diameter messages fit well within this size
-                    data = rsock.recv(2048)
-                except socket.error as e:
-                    if e.args[0] in SOFT_SOCKET_FAILURES:
-                        self.connection_logger.debug(
-                            f"{conn} socket read soft fail: {e.args[1]}, "
-                            f"errno {e.args[0]}, trying again")
-                    else:
-                        self.connection_logger.warning(
-                            f"{conn} socket read fail: {e.args[1]}, errno "
-                            f"{e.args[0]}, disconnecting peer")
-                        self.close_connection_socket(
-                            conn, DISCONNECT_REASON_SOCKET_FAIL)
-                        conn.close(signal_node=False)
-                    continue
-
-                if len(data) == 0:
-                    self.connection_logger.warning(
-                        f"{conn} has gone away (read zero bytes), closing "
-                        f"socket and removing peer")
-                    self.close_connection_socket(
-                        conn, DISCONNECT_REASON_GONE_AWAY)
-                    conn.close(signal_node=False)
-                    continue
-
-                conn.add_in_bytes(data)
-
-            for wsock in ready_w:
-                conn = self.socket_peers.get(wsock.fileno())
-                if not conn:
-                    self.connection_logger.warning(
-                        f"socket {wsock.fileno()} ready for writing but the "
+                        f"socket {conn_socket.fileno()} ready for writing but the "
                         f"peer has gone, ignoring")
-                    continue
-                if conn.state == PEER_CONNECTING:
-                    socket_error = wsock.getsockopt(
-                        socket.SOL_SOCKET, socket.SO_ERROR)
-                    if socket_error == 0:
-                        self._flag_peer_as_connected(conn)
-                        self.send_cer(conn)
-                    else:
-                        self.connection_logger.warning(
-                            f"{conn} connection socket has permanently failed "
-                            f"with error {socket_error}, removing connection")
-                        self.close_connection_socket(
-                            conn, DISCONNECT_REASON_FAILED_CONNECT)
-                        conn.close(signal_node=False)
-                        continue
-
-                if len(conn.write_buffer) == 0:
-                    if conn.state == PEER_CLOSING:
-                        self.connection_logger.debug(
-                            f"{conn} in CLOSING state nothing to write, "
-                            f"closing socket")
-                        self.close_connection_socket(
-                            conn, DISCONNECT_REASON_CLEAN_DISCONNECT)
-                    continue
-
-                try:
-                    if conn.socket_proto == PEER_TRANSPORT_TCP:
-                        sent_bytes = wsock.send(conn.write_buffer)
-                    else:
-                        # rfc6733, 2.1.1: to avoid head-of-the-line blocking,
-                        # the recommended way is to set the unordered flag
-                        sent_bytes = wsock.sctp_send(
-                            conn.write_buffer, flags=sctp.MSG_UNORDERED)
-                except socket.error as e:
-                    if e.args[0] in SOFT_SOCKET_FAILURES:
-                        self.connection_logger.debug(
-                            f"{conn} socket write soft fail: {e.args[1]}, "
-                            f"errno {e.args[0]}, trying again")
-                    else:
-                        self.connection_logger.warning(
-                            f"{conn} socket write fail: {e.args[1]}, errno "
-                            f"{e.args[0]}, disconnecting peer")
-                        conn.close()
-                    continue
-
-                with conn.write_lock:
-                    conn.remove_out_bytes(sent_bytes)
-                    self.connection_logger.debug(
-                        f"{conn} sent {sent_bytes} bytes, "
-                        f"{len(conn.write_buffer)} bytes remain")
-
-                    if len(conn.write_buffer) == 0 and conn.state == PEER_CLOSING:
-                        self.connection_logger.debug(
-                            f"{conn} in CLOSING state and no more bytes to "
-                            f"send, closing socket")
-                        self.close_connection_socket(
-                            conn, DISCONNECT_REASON_CLEAN_DISCONNECT)
+                elif conn.state != PEER_CLOSED:
+                    self.on_write(conn, conn_socket)
 
             for conn in list(self.connections.values()):
                 self._check_timers(conn)
 
             self._reconnect_peers()
+
+        self.connection_logger.info(
+            "stop event received, closing all sockets")
+        for conn in list(self.connections.values()):
+            self.close_connection_socket(
+                conn, DISCONNECT_REASON_NODE_SHUTDOWN)
+            # be nice and let the connection worker threads wind down
+            conn.close(signal_node=False)
+
+    def on_interrupt_read(self, read_fd: int) -> None:
+        conn_id = os.read(read_fd, 6).hex()
+        conn = self.connections.get(conn_id)
+        if conn:
+            self.connection_logger.debug(f"{conn} wants attention")
+            if conn.state == PEER_CLOSED:
+                self.close_connection_socket(
+                    conn, DISCONNECT_REASON_CLEAN_DISCONNECT)
+            elif len(conn.write_buffer) == 0 and conn.state == PEER_CLOSING:
+                self.connection_logger.debug(
+                    f"{conn} in CLOSING state and no more bytes to "
+                    f"send, closing socket")
+                self.close_connection_socket(
+                    conn, DISCONNECT_REASON_CLEAN_DISCONNECT)
+        else:
+            self.connection_logger.debug(
+                f"interrupt from peer connection {conn_id}, "
+                f"which has already gone away")
+
+    def on_tcp_accept(self, rsock: socket.socket) -> None:
+        self.connection_logger.debug(
+            "received a TCP connection attempt")
+        clientsocket, (ip, port) = rsock.accept()
+        clientsocket.setblocking(False)
+        self.connection_logger.debug(
+            f"new client TCP connection from {ip}:{port}")
+
+        conn = PeerConnection(ip, port, PEER_RECV,
+                              interrupt_fileno=self.interrupt_write)
+        conn.state = PEER_CONNECTED
+        self._add_peer_connection(conn, clientsocket,
+                                  PEER_TRANSPORT_TCP)
+
+    def on_sctp_accept(self, rsock: sctp.sctpsocket) -> None:
+        self.connection_logger.debug(
+            "received an SCTP connection attempt")
+        clientsocket, (ip, port) = rsock.accept()
+        clientsocket.setblocking(False)
+        self.connection_logger.debug(
+            f"new client SCTP connection from {ip}:{port}")
+
+        conn = PeerConnection(ip, port, PEER_RECV,
+                              interrupt_fileno=self.interrupt_write)
+        conn.state = PEER_CONNECTED
+        self._add_peer_connection(conn, clientsocket,
+                                  PEER_TRANSPORT_SCTP)
+
+    def on_read(self, rsock: socket.socket | sctp.sctpsocket) -> None:
+        conn = self.socket_peers.get(rsock.fileno())
+        if not conn:
+            self.connection_logger.warning(
+                f"socket {rsock.fileno()} ready for reading but no "
+                f"peer connected, ignoring")
+            return
+        elif conn.state == PEER_CLOSED:
+            self.connection_logger.warning(
+                f"{conn} ready for reading but connection is closed, "
+                f"ignoring")
+            return
+
+        self.connection_logger.debug(f"{conn} ready to receive")
+
+        try:
+            # most diameter messages fit well within this size
+            data = rsock.recv(2048)
+        except socket.error as e:
+            if e.args[0] in SOFT_SOCKET_FAILURES:
+                self.connection_logger.debug(
+                    f"{conn} socket read soft fail: {e.args[1]}, "
+                    f"errno {e.args[0]}, trying again")
+            else:
+                self.connection_logger.warning(
+                    f"{conn} socket read fail: {e.args[1]}, errno "
+                    f"{e.args[0]}, disconnecting peer")
+                self.close_connection_socket(
+                    conn, DISCONNECT_REASON_SOCKET_FAIL)
+                conn.close(signal_node=False)
+            return
+
+        if len(data) == 0:
+            self.connection_logger.warning(
+                f"{conn} has gone away (read zero bytes), closing "
+                f"socket and removing peer")
+            self.close_connection_socket(
+                conn, DISCONNECT_REASON_GONE_AWAY)
+            conn.close(signal_node=False)
+            return
+
+        conn.add_in_bytes(data)
+
+    def on_write(self, conn: PeerConnection,
+                 wsock: socket.socket | sctp.sctpsocket) -> None:
+        if conn.state == PEER_CONNECTING:
+            socket_error = wsock.getsockopt(
+                socket.SOL_SOCKET, socket.SO_ERROR)
+            if socket_error == 0:
+                self._flag_peer_as_connected(conn)
+                self.send_cer(conn)
+            else:
+                self.connection_logger.warning(
+                    f"{conn} connection socket has permanently failed "
+                    f"with error {socket_error}, removing connection")
+                self.close_connection_socket(
+                    conn, DISCONNECT_REASON_FAILED_CONNECT)
+                conn.close(signal_node=False)
+                return
+
+        if len(conn.write_buffer) == 0:
+            if conn.state == PEER_CLOSING:
+                self.connection_logger.debug(
+                    f"{conn} in CLOSING state nothing to write, "
+                    f"closing socket")
+                self.close_connection_socket(
+                    conn, DISCONNECT_REASON_CLEAN_DISCONNECT)
+            return
+
+        try:
+            if conn.socket_proto == PEER_TRANSPORT_TCP:
+                sent_bytes = wsock.send(conn.write_buffer)
+            else:
+                # rfc6733, 2.1.1: to avoid head-of-the-line blocking,
+                # the recommended way is to set the unordered flag
+                sent_bytes = wsock.sctp_send(
+                    conn.write_buffer, flags=sctp.MSG_UNORDERED)
+        except socket.error as e:
+            if e.args[0] in SOFT_SOCKET_FAILURES:
+                self.connection_logger.debug(
+                    f"{conn} socket write soft fail: {e.args[1]}, "
+                    f"errno {e.args[0]}, trying again")
+            else:
+                self.connection_logger.warning(
+                    f"{conn} socket write fail: {e.args[1]}, errno "
+                    f"{e.args[0]}, disconnecting peer")
+                conn.close()
+            return
+
+        with conn.write_lock:
+            conn.remove_out_bytes(sent_bytes)
+            self.connection_logger.debug(
+                f"{conn} sent {sent_bytes} bytes, "
+                f"{len(conn.write_buffer)} bytes remain")
+
+            if len(conn.write_buffer) == 0 and conn.state == PEER_CLOSING:
+                self.connection_logger.debug(
+                    f"{conn} in CLOSING state and no more bytes to "
+                    f"send, closing socket")
+                self.close_connection_socket(
+                    conn, DISCONNECT_REASON_CLEAN_DISCONNECT)
 
     def _receive_message(self, conn: PeerConnection, msg: _AnyMessageType):
         if hasattr(msg, "origin_host"):
@@ -1247,6 +1240,7 @@ class Node:
                 peer_socket.setsockopt(
                     socket.SOL_SOCKET, socket.SO_LINGER,
                     struct.pack("ii", 1, 0))
+            self.selector.unregister(peer_socket)
             peer_socket.close()
             conn.close(False)
 
@@ -1673,6 +1667,9 @@ class Node:
             raise RuntimeError("Cannot start a node twice")
         self._started = True
 
+        self.selector.register(self.interrupt_read, EVENT_READ,
+                               self.on_interrupt_read)
+
         if self.ip_addresses and self.tcp_port:
             for ip_addr in self.ip_addresses:
                 tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -1681,6 +1678,8 @@ class Node:
                 tcp_socket.listen(128)
                 tcp_socket.setblocking(False)
                 self.tcp_sockets.append(tcp_socket)
+                self.selector.register(tcp_socket, EVENT_READ,
+                                       self.on_tcp_accept)
 
         if self.ip_addresses and self.sctp_port:
             if sctp is None:
@@ -1693,6 +1692,8 @@ class Node:
             sctp_socket.listen(128)
             sctp_socket.setblocking(False)
             self.sctp_sockets.append(sctp_socket)
+            self.selector.register(sctp_socket, EVENT_READ,
+                                   self.on_sctp_accept)
 
         self._stat_collect_thread.start()
         self._connection_thread.start()
@@ -1761,11 +1762,15 @@ class Node:
             tcp_socket.setsockopt(
                 socket.SOL_SOCKET, socket.SO_LINGER,
                 struct.pack("ii", 1, 0))
+            self.selector.unregister(tcp_socket)
             tcp_socket.close()
         for sctp_socket in self.sctp_sockets:
             # rfc6733 wants an SCTP ABORT here, but pysctp has no easy way of
             # doing so, so just being unpolite and sending a shutdown
+            self.selector.unregister(sctp_socket)
             sctp_socket.close()
+        self.selector.unregister(self.interrupt_read)
+        self.selector.close()
 
         self.logger.debug("stopping threading applications")
         for app in self.applications:
